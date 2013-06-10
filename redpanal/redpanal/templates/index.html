@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block title %}{% trans "Welcome to RedPanal" %}{% endblock %}
+
+{% block content %}
+
+<ul>
+{% for action in action_list %}
+    <li>{% include 'social/action_teaser.html' %}</li>
+{% empty %}
+{% trans "No actions yet" %}
+{% endfor %}
+</ul>
+
+{% endblock %}
+

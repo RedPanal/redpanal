@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block title %} @{{ user.username }}{% endblock %}
+
+{% block content %}
+  <div class="span5">
+  {% for object in audios %}
+     {% include "audio/audiofile_object.html" %}
+  {% endfor%}
+  </div>
+
+  <div class="span5">
+    <ul>
+    {% for action in action_list %}
+        <li>{% include 'social/action_teaser.html' %}</li>
+    {% empty %}
+    {% trans "No actions yet" %}
+    {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
+

@@ -1,0 +1,6 @@
+syntax: glob
+
+venv/
+*.pyc
+*.sqlite3
+uploads/

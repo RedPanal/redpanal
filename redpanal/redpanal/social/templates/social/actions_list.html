@@ -1,0 +1,10 @@
+{% extends host_template %}
+{% load i18n cyclope_utils %}
+
+{% block content %}
+    {% for action in object_list %}
+        {% include action.template %} {% comment %}template is in the form "app/model_action_teaser.html" {% endcomment %}
+    {% empty %}
+    {% trans "No actions yet" %}
+    {% endfor %}
+{% endblock %}

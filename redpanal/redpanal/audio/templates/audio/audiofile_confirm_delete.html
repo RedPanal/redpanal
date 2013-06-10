@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Delete Audio" %}{% endblock %}
+
+{% block content %}
+
+<div class="alert alert-block">
+<h3>{% trans "Are you sure you want to delete this audio?" %}</h3>
+</div>
+
+{% include "audio/audiofile_object.html" %}
+
+<form method="post" action=".">
+ {% csrf_token %}
+ <input type="submit" value="{% trans "Delete" %}" class="btn btn-danger"/>
+</form>
+
+{% endblock %}
+

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block title %}{% trans "My profile" %}{% endblock %}
+
+{% block content %}
+
+<dl class="dl-horizontal">
+    <dt>{% trans "Username" %}</dt><dd>{{ request.user.username }}</dd>
+</dl>
+{% endblock %}
+

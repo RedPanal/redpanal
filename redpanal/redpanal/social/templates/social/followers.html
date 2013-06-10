@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2>{% blocktrans %}Users following {{ actor }}{% endblocktrans %}</h2>
+<ul>
+    {% for user in followers %}
+    <li>{{ user }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
