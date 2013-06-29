@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load i18n crispy_forms_tags %}
+{% load url from future %}
+
+{% block title %}{% if object %}{% trans "Edit" %}{% else %}{% trans "Create" %}{% endif %}{% trans " Project" %}{% endblock %}
+
+{% block content %}
+  {% crispy form %}
+{% endblock %}
+

@@ -5,6 +5,7 @@
     <dt>{% trans "Description" %}</dt><dd>{{ object.description }}</dd>
     <dt>{% trans "File" %}</dt><dd><a href="{{object.audio.url }}">{{ object.name }}</a></dd>
     <dt>{% trans "Created by" %}</dt><dd><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></dd>
+    <dt>{% trans "Created at" %}</dt><dd>{{ object.created_at }}</dd>
     <dt>{% trans "HashTags" %}</dt><dd>{% for tag in object.tags.all %} <a href="{% url 'hashtaged-list' slug=tag.name %}">#{{ tag.name }}</a> {% endfor %}</dd>
 
     <audio controls="control" preload="none" src="{{ object.audio.url }}" type="audio/mp3" height="30" width="240" />

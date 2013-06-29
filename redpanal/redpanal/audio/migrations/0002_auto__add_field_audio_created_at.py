@@ -8,21 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Audio'
-        db.create_table(u'audio_audio', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=100)),
-            ('slug', self.gf('autoslug.fields.AutoSlugField')(unique=True, max_length=50, populate_from='name', unique_with=(), blank=True)),
-            ('description', self.gf('django.db.models.fields.TextField')()),
-            ('audio', self.gf('django.db.models.fields.files.FileField')(max_length=250)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-        ))
-        db.send_create_signal(u'audio', ['Audio'])
+        # Adding field 'Audio.created_at'
+        db.add_column(u'audio_audio', 'created_at',
+                      self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, default=datetime.datetime(2013, 6, 29, 0, 0), blank=True),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting model 'Audio'
-        db.delete_table(u'audio_audio')
+        # Deleting field 'Audio.created_at'
+        db.delete_column(u'audio_audio', 'created_at')
 
 
     models = {
@@ -43,6 +37,7 @@ class Migration(SchemaMigration):
         u'audio.audio': {
             'Meta': {'object_name': 'Audio'},
             'audio': ('django.db.models.fields.files.FileField', [], {'max_length': '250'}),
+            'created_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'}),

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block content %}
+  {% include "core/project_object.html" %}
+
+{% if request.user == object.user %}
+    <div class="form-actions">
+        <a class="btn btn-primary" href="{% url "project-edit" object.slug %}">{% trans "Edit" %}</a>
+        <a class="btn btn-danger" href="{% url "project-delete" object.slug %}">{% trans "Delete" %}</a>
+    </div>
+{% endif %}
+{% endblock %}
+

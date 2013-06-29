@@ -4,12 +4,12 @@ from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-from models import Audio
+from models import Project
 
-class AudioForm(forms.ModelForm):
+class ProjectForm(forms.ModelForm):
 
     helper = FormHelper()
     helper.add_input(Submit('submit', 'Submit'))
 
     class Meta:
-        model = Audio
+        model = Project

@@ -1,0 +1,14 @@
+{% load i18n staticfiles %}
+{% load url from future %}
+<dl class="dl-horizontal">
+    <dt>{% trans "Name" %}</dt><dd><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}">{{ object.name }}</a></dd>
+    <dt>{% trans "Description" %}</dt><dd>{{ object.description }}</dd>
+    <dt>{% trans "File" %}</dt><dd><a href="{{object.project.url }}">{{ object.name }}</a></dd>
+    <dt>{% trans "Created by" %}</dt><dd><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></dd>
+    <dt>{% trans "Created at" %}</dt><dd>{{ object.created_at }}</dd>
+    <dt>{% trans "HashTags" %}</dt><dd>{% for tag in object.tags.all %} <a href="{% url 'hashtaged-list' slug=tag.name %}">#{{ tag.name }}</a> {% endfor %}</dd>
+
+    XXX Audios XXX
+
+    XXX Project Versions XXX
+</dl>

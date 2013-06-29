@@ -4,40 +4,29 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
-from models import AudioFile
+from models import Audio
+from ..utils.test import InstanceTestMixin
 
-
-class AudioFileTestCase(TestCase):
+class AudioTestCase(TestCase, InstanceTestMixin):
     def setUp(self):
         self.user = User.objects.create_user("owner", "e@a.com", "password")
 
-    def test_crear_audio(self):
-        user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
-        audio = AudioFile(name="Un audio", description="This is an audio",
-                          audio=SimpleUploadedFile("the audio.mp3", "content"),
-                          user=user)
-        audio.save()
+    def login(self):
+        self.client.login(username="owner", password="password")
 
-        self.assertEquals("un-audio", audio.slug)
+    def create_instance(self):
+        audio = Audio(name="Un audio", description="This is an audio",
+                          audio=SimpleUploadedFile("the audio.mp3", "content"),
+                          user=self.user)
+        audio.save()
+        return audio
+
+    def get_model_name(self):
+        return 'audio'
 
     def test_agregar_tags_a_un_audio(self):
-        user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
-        audio = AudioFile(name="Un audio", description="This is an audio",
-                          audio=SimpleUploadedFile("the audio.mp3", "content"),
-                          user=user)
-        audio.save()
+        audio = self.create_instance()
 
         audio.tags.add("rock", "MiProject", "guitarr")
-        self.assertTrue(AudioFile.objects.filter(tags__name__in=["rock"]))
-        self.assertFalse(AudioFile.objects.filter(tags__name__in=["Rock"]))
-
-    def test_upload_audio_fail_unauthenticated(self):
-        response = self.client.get(reverse('audio-create'))
-        self.assertEqual(302, response.status_code)
-
-    def test_upload_audio(self):
-
-        self.client.login(username="owner", password="password")
-        response = self.client.get(reverse('audio-create'))
-        self.assertEqual(200, response.status_code)
-
+        self.assertTrue(Audio.objects.filter(tags__name__in=["rock"]))
+        self.assertFalse(Audio.objects.filter(tags__name__in=["Rock"]))

@@ -7,8 +7,4 @@ django-crispy-forms==1.2.8
 django-taggit==0.10a1
 ipdb==0.7
 ipython==0.13.2
-oauthlib==0.4.2
-python-openid==2.2.5
-requests==1.2.3
-requests-oauthlib==0.3.2
-wsgiref==0.1.2
+pytz

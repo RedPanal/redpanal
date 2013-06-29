@@ -5,7 +5,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', 'redpanal.core.views.index', name="index"),
+    url(r'', include('redpanal.core.urls')),
     url(r'^tag/(?P<slug>[\w-]+)/$', 'redpanal.core.views.hashtaged_list', name="hashtaged-list"),
 
     url(r'^audio/', include('redpanal.audio.urls')),

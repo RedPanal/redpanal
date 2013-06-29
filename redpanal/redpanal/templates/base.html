@@ -41,6 +41,7 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li><a href="/">{% trans "Home" %}</a></li>
+              <li><a href="{% url "project-create" %}">{% trans "Create project" %}</a></li>
               <li><a href="{% url "audio-create" %}">{% trans "Upload" %}</a></li>
               {% if request.user.is_authenticated %}
               <li><a href="{{ request.user.get_absolute_url }}">{% trans "Me" %}</a></li>

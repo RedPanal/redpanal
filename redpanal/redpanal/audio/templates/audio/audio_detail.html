@@ -5,7 +5,7 @@
 {% block title %}{{ object.name }}{% endblock %}
 
 {% block content %}
-  {% include "audio/audiofile_object.html" %}
+  {% include "audio/audio_object.html" %}
 
 {% if request.user == object.user %}
     <div class="form-actions">

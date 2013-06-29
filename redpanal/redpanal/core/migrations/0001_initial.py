@@ -8,21 +8,33 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Audio'
-        db.create_table(u'audio_audio', (
+        # Adding model 'Project'
+        db.create_table(u'core_project', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=100)),
             ('slug', self.gf('autoslug.fields.AutoSlugField')(unique=True, max_length=50, populate_from='name', unique_with=(), blank=True)),
             ('description', self.gf('django.db.models.fields.TextField')()),
-            ('audio', self.gf('django.db.models.fields.files.FileField')(max_length=250)),
+            ('version_of', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Project'], null=True, blank=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
         ))
-        db.send_create_signal(u'audio', ['Audio'])
+        db.send_create_signal(u'core', ['Project'])
+
+        # Adding M2M table for field audios on 'Project'
+        m2m_table_name = db.shorten_name(u'core_project_audios')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('project', models.ForeignKey(orm[u'core.project'], null=False)),
+            ('audio', models.ForeignKey(orm[u'audio.audio'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['project_id', 'audio_id'])
 
 
     def backwards(self, orm):
-        # Deleting model 'Audio'
-        db.delete_table(u'audio_audio')
+        # Deleting model 'Project'
+        db.delete_table(u'core_project')
+
+        # Removing M2M table for field audios on 'Project'
+        db.delete_table(db.shorten_name(u'core_project_audios'))
 
 
     models = {
@@ -85,6 +97,16 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
+        u'core.project': {
+            'Meta': {'object_name': 'Project'},
+            'audios': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['audio.Audio']", 'null': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.TextField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'}),
+            'slug': ('autoslug.fields.AutoSlugField', [], {'unique': 'True', 'max_length': '50', 'populate_from': "'name'", 'unique_with': '()', 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
+            'version_of': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Project']", 'null': 'True', 'blank': 'True'})
+        },
         u'taggit.tag': {
             'Meta': {'object_name': 'Tag'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -100,4 +122,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['audio']
+    complete_apps = ['core']
