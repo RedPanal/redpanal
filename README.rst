@@ -2,7 +2,6 @@
 RedPanal
 ========
 
-
 Install
 =======
 
@@ -11,3 +10,9 @@ Install
 * Create virtualenv
 * pip install -r requirements.txt
 * enter inside and run python manage.py runserver
+
+
+License
+=======
+
+This software is licensed under AGPL.
