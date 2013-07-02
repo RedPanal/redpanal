@@ -7,6 +7,10 @@
 {% block content %}
   {% include "core/project_object.html" %}
 
+  {% for audio in object.audios.all %}
+   {% include "audio/audio_object.html" with object=audio %}
+  {% endfor %}
+
 {% if request.user == object.user %}
     <div class="form-actions">
         <a class="btn btn-primary" href="{% url "project-edit" object.slug %}">{% trans "Edit" %}</a>
