@@ -1,6 +1,5 @@
 # Django settings for redpanal project.
-import os
-PROJECT_PATH = os.path.dirname(__file__)
+from common_settings import *
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -37,19 +36,6 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 1
-
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
-USE_I18N = True
-
-# If you set this to False, Django will not format dates, numbers and
-# calendars according to the current locale.
-USE_L10N = True
-
-# If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
-
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = ''
@@ -74,91 +60,8 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_PATH, 'static'),
 )
 
-# List of finder classes that know how to find static files in
-# various locations.
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-)
-
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '-92lokpikep@okylzsh+ko+xqmbf!#v7nx6@o^in#0(pw*zhd5'
-
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-)
-
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.static",
-    "django.core.context_processors.tz",
-    "django.contrib.messages.context_processors.messages",
-    "django.core.context_processors.request",
-    "allauth.account.context_processors.account",
-    "allauth.socialaccount.context_processors.socialaccount",
-)
-
-AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
-
-ROOT_URLCONF = 'redpanal.urls'
-
-# Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'redpanal.wsgi.application'
-
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_PATH, 'templates'),
-)
-
-INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    #'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.admin',
-    'redpanal.audio',
-    'redpanal.core',
-    'redpanal.social',
-    'taggit',
-    'crispy_forms',
-    'south',
-    'actstream',
-
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-#    'allauth.socialaccount.providers.dropbox',
-#    'allauth.socialaccount.providers.facebook',
-#    'allauth.socialaccount.providers.github',
-    'allauth.socialaccount.providers.google',
-#    'allauth.socialaccount.providers.linkedin',
-    'allauth.socialaccount.providers.openid',
-#    'allauth.socialaccount.providers.persona',
-#    'allauth.socialaccount.providers.soundcloud',
-#    'allauth.socialaccount.providers.twitter',
-#    'allauth.socialaccount.providers.vimeo',
-)
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -187,22 +90,4 @@ LOGGING = {
             'propagate': True,
         },
     }
-}
-
-ABSOLUTE_URL_OVERRIDES = {
-    'auth.user': lambda o: "/%s/" % o.username,
-}
-
-ACTSTREAM_SETTINGS = {
-    'MODELS': ('auth.user', 'sites.site', 'audio.audio', 'core.project'),
-    'MANAGER': 'actstream.managers.ActionManager',
-    'FETCH_RELATIONS': True,
-    'USE_PREFETCH': True,
-    'USE_JSONFIELD': False,
-}
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google':
-        { 'SCOPE': ['https://www.googleapis.com/auth/userinfo.profile'],
-          'AUTH_PARAMS': { 'access_type': 'online' } }
 }
