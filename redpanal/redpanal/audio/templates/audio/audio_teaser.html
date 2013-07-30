@@ -1,0 +1,19 @@
+{% load i18n %}
+{% load url from future %}
+
+<div class="teaser-audio">
+    <div class="top-date">{{ object.created_at|timesince }}</div>
+    <div class="top">
+       <div class="top-user user"><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></div>
+       <div class="top-title"><h3><a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{{ object.name }}</a></h3> {{ object.description }}</div>
+       <div class="top-data">{% trans "Channels" %}: {{ object.channels }} | {{ object.samplerate }} | {{ object.get_duration }} ms</div>
+   </div> 
+
+{% include "audio/audio_object.html" %}
+    
+    <div class="bottom-tags">{% for tag in object.tags.all %} <a href="{% url 'hashtaged-list' slug=tag.name %}">#{{ tag.name }}</a> {% endfor %}</div>
+</div>
+
+
+
+

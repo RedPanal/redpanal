@@ -10,7 +10,7 @@ Install
 * Create virtualenv
 * pip install -r requirements.txt
 * enter inside and run python manage.py runserver
-
+* install timeside -> http://code.google.com/p/timeside/#Install
 
 License
 =======

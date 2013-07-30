@@ -38,7 +38,7 @@ LANGUAGE_CODE = 'en-us'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT =  os.path.abspath(os.path.join(PROJECT_PATH, '..', 'uploaded_media'))
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.

@@ -1279,6 +1279,7 @@ if (typeof jQuery != 'undefined') {
 						'<span class="mejs-time-float-current">00:00</span>' + 
 						'<span class="mejs-time-float-corner"></span>' + 
 					'</span>'+
+					'<span class="mejs-waveform"></span>' + 
 				'</span>'+
 			'</div>')
 				.appendTo(controls);

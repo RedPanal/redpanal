@@ -2,23 +2,46 @@
 {% load i18n %}
 {% load url from future %}
 
-{% block title %} @{{ user.username }}{% endblock %}
+{% block title %}{% endblock %}
+
+{% block extra_head %}
+ <script type="text/javascript">
+
+    $(function (){
+        $('video,audio').mediaelementplayer({
+            audioWidth: 460,
+            // height of audio player
+            audioHeight: 30,
+            // initial volume when the player starts
+            startVolume: 0.8});
+    }); 
+
+ </script>
+{% endblock %}
 
 {% block content %}
-  <div class="span5">
+  <div class="span6">
   {% for object in audios %}
-     {% include "audio/audio_object.html" %}
-  {% endfor%}
+     {% include "audio/audio_teaser.html" %}
+  {% endfor %}
   </div>
 
-  <div class="span5">
-    <ul>
-    {% for action in action_list %}
-        <li>{% include 'social/action_teaser.html' %}</li>
-    {% empty %}
-    {% trans "No actions yet" %}
-    {% endfor %}
-    </ul>
+  <div class="span5 user-bar">
+    <div class="user-detail">
+       <img src="/static/img/user-pic-example-big.png" />
+       <h1>@{{ user.username }}</h1>
+       <p>user info bla bla</p>
+    </div>
+
+    <div class="user-stream">
+       <ul class="action-stream">
+       {% for action in action_list %}
+           <li>{% include 'social/action_teaser.html' %}</li>
+       {% empty %}
+       {% trans "No actions yet" %}
+       {% endfor %}
+       </ul>
+    </div>
   </div>
 {% endblock %}
 

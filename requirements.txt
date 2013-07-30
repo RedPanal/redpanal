@@ -8,3 +8,4 @@ django-taggit==0.10a1
 ipdb==0.7
 ipython==0.13.2
 pytz
+timeside

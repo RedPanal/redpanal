@@ -3,4 +3,4 @@ syntax: glob
 venv/
 *.pyc
 *.sqlite3
-uploads/
+uploaded_media/

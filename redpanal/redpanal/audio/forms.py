@@ -13,3 +13,5 @@ class AudioForm(forms.ModelForm):
 
     class Meta:
         model = Audio
+        exclude = ('channels', 'blocksize', 'samplerate', 'totalframes')
+        # TODO: move this excludes to the model as editable=False

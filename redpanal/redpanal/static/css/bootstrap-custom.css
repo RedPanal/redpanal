@@ -10,6 +10,7 @@ nav,
 section {
   display: block;
 }
+
 audio,
 canvas,
 video {
@@ -132,11 +133,17 @@ body {
   background-color: #ffffff;
 }
 a {
-  color: #26ada1;
+  color: #28CCEA; /* #28ccea; #26ada1; */
   text-decoration: none;
 }
+
+.user a {
+  color: #263e4e;
+  font-weight: bold;
+}
+
 a:hover {
-  color: #186e67;
+  color: #263e4e; /* #186e67; */
   text-decoration: underline;
 }
 .img-rounded {
@@ -484,6 +491,8 @@ cite {
 .muted {
   color: #95a65b;
 }
+
+
 h1,
 h2,
 h3,
@@ -572,7 +581,8 @@ dl {
 }
 dt,
 dd {
-  line-height: 20px;
+    border-bottom: 1px solid #DDDDDD;
+    line-height: 1.9em;
 }
 dt {
   font-weight: bold;
@@ -590,8 +600,14 @@ dd {
   white-space: nowrap;
 }
 .dl-horizontal dd {
-  margin-left: 130px;
+  margin-left: 120px;
+  padding-left: 10px;
 }
+
+.dl-horizontal {
+    font-size: 1.1em;
+}
+
 hr {
   margin: 20px 0;
   border: 0;
@@ -3356,7 +3372,8 @@ input[type="submit"].btn.btn-mini {
   min-height: 40px;
   padding-left: 20px;
   padding-right: 20px;
-  background-color: #5f5339;
+  background: none repeat scroll 0 0 #28ccea; /* #5f5339; */
+/*
   background-image: -moz-linear-gradient(top, #65593d, #554b33);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#65593d), to(#554b33));
   background-image: -webkit-linear-gradient(top, #65593d, #554b33);
@@ -3371,6 +3388,7 @@ input[type="submit"].btn.btn-mini {
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
   -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+*/
 }
 .navbar .container {
   width: auto;
@@ -3487,6 +3505,7 @@ input[type="submit"].btn.btn-mini {
   left: 0;
   z-index: 1030;
   margin-bottom: 0;
+
 }
 .navbar-fixed-top .navbar-inner,
 .navbar-fixed-bottom .navbar-inner,
@@ -3511,9 +3530,11 @@ input[type="submit"].btn.btn-mini {
 }
 .navbar-fixed-top .navbar-inner,
 .navbar-static-top .navbar-inner {
+/*
   -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.1), 0 1px 10px rgba(0,0,0,.1);
   -moz-box-shadow: inset 0 -1px 0 rgba(0,0,0,.1), 0 1px 10px rgba(0,0,0,.1);
   box-shadow: inset 0 -1px 0 rgba(0,0,0,.1), 0 1px 10px rgba(0,0,0,.1);
+*/
 }
 .navbar-fixed-bottom {
   bottom: 0;
@@ -3568,7 +3589,8 @@ input[type="submit"].btn.btn-mini {
   padding: 7px 10px;
   margin-left: 5px;
   margin-right: 5px;
-  color: #ffffff;
+ color: #ffffff;
+
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   background-color: #4f4530;
   background-image: -moz-linear-gradient(top, #554b33, #453d2a);
@@ -3580,6 +3602,7 @@ input[type="submit"].btn.btn-mini {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff554b33', endColorstr='#ff453d2a', GradientType=0);
   border-color: #453d2a #453d2a #16130d;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+
   *background-color: #453d2a;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 

@@ -1,0 +1,135 @@
+
+body {
+  color: #263e4e;
+
+}
+
+header {
+   margin-bottom: 100px;
+}
+
+header .navbar-inner {
+
+   padding: 8px 0;  
+}
+
+header .navbar .nav > li > a {
+   text-decoration: none;
+   text-shadow: none;
+}
+
+header .navbar .brand {
+   padding: 0;
+}
+
+/* audio teasers */
+
+.teaser-audio { 
+   margin-top: 2em;
+}
+
+.top {
+   padding: 0 0 8px 50px;
+}
+
+.top-user, .top-title, .top-data {
+   line-height: 1.1em;
+    font-size: 0.9em;
+}
+
+.top-date {
+    color: #AAAAAA;
+    font-size: 0.75em;
+    margin-bottom: -2em;
+    text-align: right;
+}
+
+.top-title {
+}
+
+.top-title h3 {
+  color: #AAAAAA;
+  font-size: 1.25em;
+  display: inline;
+  line-height: 1.2em;
+  margin: 0;
+}
+
+.top-data {
+    color: #AAAAAA;
+    font-size: 0.75em;
+    margin-top: 1px;
+}
+
+.bottom-tags {
+    text-align: right;
+}
+
+
+.detail-audio { 
+   margin-top: 2em;
+}
+
+.detail-audio .top-title h1 {
+  color: #AAAAAA;
+  font-size: 2.8em;
+  display: inline;
+  line-height: 1em;
+  margin: 0;
+}
+
+.detail-audio .mejs-container {
+   padding-top: 120px;
+}
+
+.detail-audio .top-data {
+}
+
+.detail-audio .top {
+   padding: 0 0 8px 68px;
+}
+
+.detail-audio .bottom-tags {
+}
+
+.detail-audio .dl-horizontal {
+   margin-top: 3em;
+}
+
+/* user bar */
+
+.user-bar > div {
+  margin-left: 2em;
+}
+
+/* social streaming */
+
+ul.action-stream {
+    list-style: none outside none;
+    max-width: 400px;
+    margin: 1em 0 1em 0;
+}
+
+ul.action-stream li {
+    border-bottom: 1px solid #DDDDDD;
+    margin: 0;
+    padding: 10px 0;
+}
+
+ul.action-stream li img {
+    clear: both;
+    float: left;
+    margin: 0 7px 0 0;
+    width: 40px;
+}
+
+.verb {
+}
+
+.ago {
+    color: #999999;
+    float: right;
+    font-size: 0.75em;
+    font-style: italic;
+}
+

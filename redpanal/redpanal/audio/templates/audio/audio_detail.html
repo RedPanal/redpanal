@@ -2,10 +2,51 @@
 {% load i18n %}
 {% load url from future %}
 
-{% block title %}{{ object.name }}{% endblock %}
+{% block extra_head %}
+<script type="text/javascript">
+    $(function (){
+        $('video,audio').mediaelementplayer({
+            audioWidth: 940,
+            // height of audio player
+            audioHeight: 30,
+            // initial volume when the player starts
+            audioWaveHeight: 100,
+            customSize: 'big',
+            startVolume: 0.8});
+    }); 
+</script>
+{% endblock %}
+
+{% block title %}{% endblock %}
 
 {% block content %}
-  {% include "audio/audio_object.html" %}
+
+<div class="detail-audio">
+    <div class="top-date">{{ object.created_at|timesince }}</div>
+    <div class="top">
+       <div class="top-user user"><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></div>
+       <div class="top-title"><h1><a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{{ object.name }}</a></h1></div>
+   </div> 
+
+{% include "audio/audio_object.html" %}
+
+   <dl class="dl-horizontal">
+       <dt>{% trans "Name" %}</dt><dd><a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{{ object.name }}</a></dd>
+       <dt>{% trans "Description" %}</dt><dd>{{ object.description }}</dd>
+       <dt>{% trans "File" %}</dt><dd><a href="{{object.audio.url }}">{{object.audio.url }}</a></dd>
+
+       <dt>{% trans "Channels" %}</dt><dd>{{ object.channels }}</dd>
+       <dt>{% trans "Blocksize" %}</dt><dd>{{ object.blocksize }}</dd>
+       <dt>{% trans "Samplerate" %}</dt><dd>{{ object.samplerate }}</dd>
+       <dt>{% trans "Totalframes" %}</dt><dd>{{ object.totalframes }}</dd>
+
+       <dt>{% trans "Created by" %}</dt><dd><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></dd>
+       <dt>{% trans "Created at" %}</dt><dd>{{ object.created_at }}</dd>
+       <dt>{% trans "HashTags" %}</dt><dd>{% for tag in object.tags.all %} <a href="{% url 'hashtaged-list' slug=tag.name %}">#{{ tag.name }}</a> {% endfor %}</dd>
+   </dl>
+
+</div>
+
 
 {% if request.user == object.user %}
     <div class="form-actions">

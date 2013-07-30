@@ -1,16 +1,8 @@
 {% load i18n staticfiles %}
 {% load url from future %}
-<dl class="dl-horizontal">
-    <dt>{% trans "Name" %}</dt><dd><a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{{ object.name }}</a></dd>
-    <dt>{% trans "Description" %}</dt><dd>{{ object.description }}</dd>
-    <dt>{% trans "File" %}</dt><dd><a href="{{object.audio.url }}">{{ object.name }}</a></dd>
-    <dt>{% trans "Created by" %}</dt><dd><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></dd>
-    <dt>{% trans "Created at" %}</dt><dd>{{ object.created_at }}</dd>
-    <dt>{% trans "HashTags" %}</dt><dd>{% for tag in object.tags.all %} <a href="{% url 'hashtaged-list' slug=tag.name %}">#{{ tag.name }}</a> {% endfor %}</dd>
 
-    <audio controls="control" preload="none" src="{{ object.audio.url }}" type="audio/mp3" height="30" width="240" />
+    <audio controls="control" preload="none" src="{{ object.audio.url }}" type="audio/mp3" height="30" width="240" img_waveform_big="{{ object.img_waveform_big }}"/>
         <object width="320" height="240" type="application/x-shockwave-flash" data="{% static 'mediaelements/flashmediaelement.swf' %}">
         </object>
     </audio>
 
-</dl>
