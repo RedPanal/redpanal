@@ -149,7 +149,7 @@ def build_static():
         run("mkdir -p %s" % STATIC_ROOT)
     with virtualenv(VENV_DIR):
         with cd(MANAGEPY_SUBDIR):
-            run_venv("%s manage.py collectstatic -v 0 --noinput --clear --link" % PYTHON_BIN)
+            run_venv("%s manage.py collectstatic --settings=redpanal.production_settings -v 1 --clear --link" % PYTHON_BIN)
 
     run("chmod -R ugo+r %s" % STATIC_ROOT)
 
@@ -167,11 +167,11 @@ def update_database():
         with cd(MANAGEPY_SUBDIR):
             managepy = "%s manage.py " % PYTHON_BIN
             if getattr(env, 'initial_deploy', False):
-                run_venv(managepy + "syncdb --all")
-                run_venv(managepy + "migrate --fake --noinput")
+                run_venv(managepy + "syncdb --all --settings=redpanal.production_settings")
+                run_venv(managepy + "migrate --fake --noinput --settings=redpanal.production_settings")
             else:
-                run_venv(managepy + "syncdb --noinput")
-                run_venv(managepy + "migrate --noinput")
+                run_venv(managepy + "syncdb --noinput --settings=redpanal.production_settings")
+                run_venv(managepy + "migrate --noinput --settings=redpanal.production_settings")
 
 
 @task
