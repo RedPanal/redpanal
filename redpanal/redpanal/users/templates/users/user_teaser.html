@@ -1,0 +1,7 @@
+{% load i18n staticfiles social activity_tags%}
+<div>
+  <img src="{% static 'img/user-pic-example-small.png' %}" />
+  <a href={{ user.get_absolute_url }}>{{ user.username }}</a>
+  {% include "social/follow_button.html" %}
+</div>
+

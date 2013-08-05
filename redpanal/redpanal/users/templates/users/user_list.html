@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<ul>
+{% for user in users %}
+  <li>{% include "users/user_teaser.html" %}</li>
+{% endfor %}
+</ul>
+{% endblock %}

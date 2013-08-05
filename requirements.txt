@@ -1,7 +1,7 @@
 Django==1.5.1
 South==0.8.1
 django-activity-stream==0.4.4
-django-allauth==0.11.1
+django-allauth==0.12
 django-autoslug==1.6.1
 django-crispy-forms==1.2.8
 django-taggit==0.10a1

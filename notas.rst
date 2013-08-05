@@ -1,6 +1,25 @@
 RedPanal
 ========
 
+Roadmap
+=======
+
+
+* Lista de usuarios [Listo]
+* Botones de follow [Listo]
+* Lista de proyectos
+* Buscador
+* Fotos de perfil de usuario
+* Lista de seguidores y a quien seguis
+* Comentarios
+
+
+Organizacion Social y Comentarios
+=================================
+
+"lo que yo sigo" y  "que se dice de mi"
+e en su pestaña social un usuario tiene que ver todos los mensajes donde @usuario es mencionado, pero tambien los comentarios a los audios que le
+
 Proyectos
 =========
 

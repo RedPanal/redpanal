@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% load url from future %}
 
 {% block title %}{% endblock %}
 
@@ -14,7 +13,7 @@
             audioHeight: 30,
             // initial volume when the player starts
             startVolume: 0.8});
-    }); 
+    });
 
  </script>
 {% endblock %}
@@ -29,7 +28,7 @@
   <div class="span5 user-bar">
     <div class="user-detail">
        <img src="/static/img/user-pic-example-big.png" />
-       <h1>@{{ user.username }}</h1>
+       <h1>@{{ user.username }} {% include "social/follow_button.html" %}</h1>
        <p>user info bla bla</p>
     </div>
 

@@ -20,6 +20,45 @@
 
  {% block extra_head %}{% endblock %}
 </head>
+
+<script>
+$(function() {
+  function follow_unfollow_button(el){
+    el.ffobject = {
+        "follow_url": $(el).attr("urlFollow"),
+        "unfollow_url": $(el).attr("urlUnfollow"),
+        "following": $(el).attr("following") === "true",
+        "el": el,
+        "render": function (){
+            text = {% if request.user.is_authenticated %} this.following ? '{% trans "Unfollow" %}' : '{% trans "Follow" %}' {% else %} '<a href="{% url 'account_login' %}?next={% firstof request.path '/' %}">{% trans "login" %}</a> {% trans "to follow" %}'{% endif %};
+            $(this.el).html(text);
+        },
+        "toggle": function (){
+            this.following = !this.following;
+            $(this.el).toggleClass("following unfollowing");
+            $(this.el).toggleClass("btn-info btn-warning");
+        },
+        "click": function(){
+            $.post(this.following ? this.unfollow_url : this.follow_url)
+            this.toggle();
+            this.render();
+        }
+    }
+    if (el.ffobject.following){
+        $(el).addClass("following");
+        $(el).addClass("btn-warning");
+
+    }
+    else{
+        $(el).addClass("unfollowing");
+        $(el).addClass("btn-info");
+    }
+    $(el).click(function(){el.ffobject.click()});
+    el.ffobject.render();
+  }
+  $(".follow-unfollow").each(function(index, element){follow_unfollow_button(element)});
+});
+</script>
 <body>
 
 
@@ -33,7 +72,8 @@
           <a class="brand" href="/"><img src="{% static 'img/logo-header.png' %}" alt="logo"></a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li><a href="/">{% trans "Home" %}</a></li>
+              <li><a href="{% url "user-list" %}">{% trans "People" %}</a></li>
+              <li><a href="#">{% trans "Projects" %}</a></li>
               <li><a href="{% url "project-create" %}">{% trans "Create project" %}</a></li>
               <li><a href="{% url "audio-create" %}">{% trans "Upload" %}</a></li>
               {% if request.user.is_authenticated %}

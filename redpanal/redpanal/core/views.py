@@ -42,20 +42,6 @@ def hashtaged_list(request, slug):
         "tag": slug,
     })
 
-def user_page(request, slug):
-    user = get_object_or_404(User, username=slug)
-    audios = Audio.objects.filter(user=user)
-    action_list = actstream.models.user_stream(user)
-    return render(request, "core/user_page.html", {
-        "user": user,
-        "audios": audios,
-        "action_list": action_list,
-    })
-
-@login_required
-def user_profile(request):
-    return render(request, "core/user_profile.html", {})
-
 
 # Project views
 

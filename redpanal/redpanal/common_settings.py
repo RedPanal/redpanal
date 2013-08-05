@@ -79,6 +79,7 @@ INSTALLED_APPS = (
     'redpanal.audio',
     'redpanal.core',
     'redpanal.social',
+    'redpanal.users',
     'taggit',
     'crispy_forms',
     'south',
@@ -101,7 +102,7 @@ INSTALLED_APPS = (
 
 
 ABSOLUTE_URL_OVERRIDES = {
-    'auth.user': lambda o: "/%s/" % o.username,
+    'auth.user': lambda o: "/u/%s/" % o.username,
 }
 
 ACTSTREAM_SETTINGS = {
@@ -117,3 +118,5 @@ SOCIALACCOUNT_PROVIDERS = {
         { 'SCOPE': ['https://www.googleapis.com/auth/userinfo.profile'],
           'AUTH_PARAMS': { 'access_type': 'online' } }
 }
+
+CRISPY_TEMPLATE_PACK = "bootstrap"

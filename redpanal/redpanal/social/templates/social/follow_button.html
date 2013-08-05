@@ -1,0 +1,5 @@
+{% load social activity_tags %}
+  <div class="followers-link">
+    <button class="btn follow-unfollow" type="button" urlUnfollow="{% unfollow_url user %}"  urlFollow="{% actual_follow_all_url user %}" following="{% if request.user|is_following:user %}true{% else %}false{% endif %}">BTN</button>
+  </div>
+

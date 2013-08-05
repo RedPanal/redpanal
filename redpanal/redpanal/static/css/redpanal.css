@@ -10,7 +10,7 @@ header {
 
 header .navbar-inner {
 
-   padding: 8px 0;  
+   padding: 8px 0;
 }
 
 header .navbar .nav > li > a {
@@ -24,7 +24,7 @@ header .navbar .brand {
 
 /* audio teasers */
 
-.teaser-audio { 
+.teaser-audio {
    margin-top: 2em;
 }
 
@@ -66,7 +66,7 @@ header .navbar .brand {
 }
 
 
-.detail-audio { 
+.detail-audio {
    margin-top: 2em;
 }
 
@@ -133,3 +133,7 @@ ul.action-stream li img {
     font-style: italic;
 }
 
+.followers-link {
+    display: inline-block;
+    padding-left: 20px;
+}

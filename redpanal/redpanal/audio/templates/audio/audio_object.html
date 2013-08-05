@@ -1,5 +1,4 @@
 {% load i18n staticfiles %}
-{% load url from future %}
 
     <audio controls="control" preload="none" src="{{ object.audio.url }}" type="audio/mp3" height="30" width="240" img_waveform_big="{{ object.img_waveform_big }}"/>
         <object width="320" height="240" type="application/x-shockwave-flash" data="{% static 'mediaelements/flashmediaelement.swf' %}">

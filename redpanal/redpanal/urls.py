@@ -7,14 +7,14 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'', include('redpanal.core.urls')),
     url(r'^tag/(?P<slug>[\w-]+)/$', 'redpanal.core.views.hashtaged_list', name="hashtaged-list"),
+    url(r'^u/', include('redpanal.users.urls')),
 
     url(r'^audio/', include('redpanal.audio.urls')),
-    url(r'^accounts/profile/$', 'redpanal.core.views.user_profile', name="user-profile"),
+    url(r'^accounts/profile/$', 'redpanal.users.views.user_profile', name="user-profile"),
     (r'^accounts/', include('allauth.urls')),
     ('^activity/', include('redpanal.social.urls')),
     ('^activity/', include('actstream.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^(?P<slug>[\w-]+)/$', 'redpanal.core.views.user_page', name="user-page"),
 )
 
 
