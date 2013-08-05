@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+{% block title %}{% trans "People" %}{% endblock %}
+
 {% block content %}
 <ul>
 {% for user in users %}

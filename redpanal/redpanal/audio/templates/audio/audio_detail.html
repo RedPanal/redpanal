@@ -13,7 +13,7 @@
             audioWaveHeight: 100,
             customSize: 'big',
             startVolume: 0.8});
-    }); 
+    });
 </script>
 {% endblock %}
 
@@ -26,7 +26,7 @@
     <div class="top">
        <div class="top-user user"><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></div>
        <div class="top-title"><h1><a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{{ object.name }}</a></h1></div>
-   </div> 
+   </div>
 
 {% include "audio/audio_object.html" %}
 
@@ -42,7 +42,7 @@
 
        <dt>{% trans "Created by" %}</dt><dd><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></dd>
        <dt>{% trans "Created at" %}</dt><dd>{{ object.created_at }}</dd>
-       <dt>{% trans "HashTags" %}</dt><dd>{% for tag in object.tags.all %} <a href="{% url 'hashtaged-list' slug=tag.name %}">#{{ tag.name }}</a> {% endfor %}</dd>
+       <dt>{% trans "HashTags" %}</dt><dd>{% include 'core/hashtags_block.html' %}</dd>
    </dl>
 
 </div>

@@ -33,7 +33,7 @@ def stream(request):
 
 def hashtaged_list(request, slug):
 
-    audios = Audio.objects.filter(tags__name=slug)
+    audios = Audio.objects.filter(tags__slug=slug)
 
     return render(request, "core/hashtaged_list.html", {
         "audios": audios,

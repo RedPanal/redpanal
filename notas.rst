@@ -7,7 +7,7 @@ Roadmap
 
 * Lista de usuarios [Listo]
 * Botones de follow [Listo]
-* Lista de proyectos
+* Lista de proyectos [list]
 * Buscador
 * Fotos de perfil de usuario
 * Lista de seguidores y a quien seguis

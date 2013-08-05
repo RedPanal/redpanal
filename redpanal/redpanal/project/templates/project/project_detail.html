@@ -7,9 +7,11 @@
 {% block content %}
   {% include "project/project_object.html" %}
 
-  {% for audio in object.audios.all %}
-   {% include "audio/audio_object.html" with object=audio %}
+  {% for audio in project.audios.all %}
+    {% include "audio/audio_teaser.html" with object=audio %}
   {% endfor %}
+
+XXX Project versions XXX
 
 {% if request.user == object.user %}
     <div class="form-actions">
@@ -17,5 +19,6 @@
         <a class="btn btn-danger" href="{% url "project-delete" object.slug %}">{% trans "Delete" %}</a>
     </div>
 {% endif %}
+
 {% endblock %}
 
