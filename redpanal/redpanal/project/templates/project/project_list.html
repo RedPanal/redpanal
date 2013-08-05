@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<ul>
+  {% for project in object_list %}
+    <li><a href="{{ project.get_absolute_url }}">{{ project.name }}</a> {{ project.user }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}
+

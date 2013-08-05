@@ -9,9 +9,7 @@ from django.views.generic import ListView, UpdateView, DetailView, CreateView, D
 
 import actstream.models
 
-from models import Project
-from forms import ProjectForm
-from ..utils.views import LoginRequiredMixin, UserRequiredMixin
+from redpanal.utils.views import LoginRequiredMixin, UserRequiredMixin
 
 def index(request):
     context = {}
@@ -41,29 +39,4 @@ def hashtaged_list(request, slug):
         "audios": audios,
         "tag": slug,
     })
-
-
-# Project views
-
-class ProjectDetailView(DetailView):
-    model = Project
-
-
-class ProjectCreateView(LoginRequiredMixin, CreateView):
-    model = Project
-    form_class = ProjectForm
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super(ProjectCreateView, self).form_valid(form)
-
-
-class  ProjectUpdateView(LoginRequiredMixin, UserRequiredMixin, UpdateView):
-    model = Project
-    form_class = ProjectForm
-
-
-class  ProjectDeleteView(LoginRequiredMixin, UserRequiredMixin, DeleteView):
-    model = Project
-    success_url = reverse_lazy('index')
 

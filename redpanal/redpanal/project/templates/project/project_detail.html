@@ -5,7 +5,7 @@
 {% block title %}{{ object.name }}{% endblock %}
 
 {% block content %}
-  {% include "core/project_object.html" %}
+  {% include "project/project_object.html" %}
 
   {% for audio in object.audios.all %}
    {% include "audio/audio_object.html" with object=audio %}

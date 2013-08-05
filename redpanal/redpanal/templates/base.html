@@ -73,7 +73,7 @@ $(function() {
           <div class="nav-collapse">
             <ul class="nav">
               <li><a href="{% url "user-list" %}">{% trans "People" %}</a></li>
-              <li><a href="#">{% trans "Projects" %}</a></li>
+              <li><a href="{% url "project-list" %}">{% trans "Projects" %}</a></li>
               <li><a href="{% url "project-create" %}">{% trans "Create project" %}</a></li>
               <li><a href="{% url "audio-create" %}">{% trans "Upload" %}</a></li>
               {% if request.user.is_authenticated %}

@@ -5,6 +5,13 @@ PROJECT_PATH = os.path.dirname(__file__)
 
 SITE_ID = 1
 
+LANGUAGES = (
+    ('es', 'Spanish'),
+    ('en-us', 'English'),
+)
+
+LANGUAGE_CODE = 'es'
+
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
@@ -15,6 +22,10 @@ USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
+
+LOCALE_PATHS = (
+    os.path.join(PROJECT_PATH, 'locale'),
+)
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -77,6 +88,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'redpanal.audio',
+    'redpanal.project',
     'redpanal.core',
     'redpanal.social',
     'redpanal.users',
@@ -106,7 +118,7 @@ ABSOLUTE_URL_OVERRIDES = {
 }
 
 ACTSTREAM_SETTINGS = {
-    'MODELS': ('auth.user', 'sites.site', 'audio.audio', 'core.project'),
+    'MODELS': ('auth.user', 'sites.site', 'audio.audio', 'project.project'),
     'MANAGER': 'actstream.managers.ActionManager',
     'FETCH_RELATIONS': True,
     'USE_PREFETCH': True,
