@@ -22,7 +22,7 @@ class Project(models.Model, BaseModelMixin):
                                      blank=True, null=True)
     user = models.ForeignKey(User, editable=False, verbose_name=_('user'))
 
-    tags = TaggableManager(blank=True, verbose_name=_('tags'))
+    tags = TaggableManager(blank=True, verbose_name=_('hashtags'))
 
     def get_absolute_url(self):
         return reverse('project-detail', kwargs={'slug': self.slug})

@@ -31,7 +31,7 @@ class Audio(models.Model, BaseModelMixin):
 
     user = models.ForeignKey(User, editable=False)
 
-    tags = TaggableManager(blank=True)
+    tags = TaggableManager(blank=True, verbose_name=_('hashtags'))
 
     def get_duration(self):
         duration = None
