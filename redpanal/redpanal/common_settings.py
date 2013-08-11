@@ -118,7 +118,8 @@ ABSOLUTE_URL_OVERRIDES = {
 }
 
 ACTSTREAM_SETTINGS = {
-    'MODELS': ('auth.user', 'sites.site', 'audio.audio', 'project.project'),
+    'MODELS': ('auth.user', 'sites.site', 'audio.audio', 'project.project',
+               'social.message'),
     'MANAGER': 'actstream.managers.ActionManager',
     'FETCH_RELATIONS': True,
     'USE_PREFETCH': True,
@@ -132,3 +133,5 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 CRISPY_TEMPLATE_PACK = "bootstrap"
+
+SOUTH_TESTS_MIGRATE = False
