@@ -17,7 +17,7 @@ class Project(models.Model, BaseModelMixin):
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     description = models.TextField(verbose_name=_('description'))
     version_of = models.ForeignKey('self', verbose_name=_('version of'),
-                                   blank=True, null=True)
+                                   blank=True, null=True, editable=False)
     audios =  models.ManyToManyField("audio.Audio", verbose_name=_('audios'),
                                      blank=True, null=True)
     user = models.ForeignKey(User, editable=False, verbose_name=_('user'))

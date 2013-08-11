@@ -5,6 +5,11 @@
 {% block title %} #{{ tag }}{% endblock %}
 
 {% block content %}
+
+  {% for object in projects %}
+     {% include "project/project_object.html" %}
+  {% endfor%}
+
   {% for object in audios %}
      {% include "audio/audio_teaser.html" %}
   {% endfor%}
