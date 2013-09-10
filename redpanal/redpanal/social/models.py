@@ -3,12 +3,14 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 from django.db.models.signals import post_save
 from django.core.urlresolvers import reverse
 
 from actstream import action
 from taggit.managers import TaggableManager
 from taggit.models import Tag
+
 
 
 class Message(models.Model):
@@ -25,7 +27,7 @@ class Message(models.Model):
     _msg_html_cache = models.TextField(editable=False, blank=True, null=True)
 
     def __unicode__(self):
-        return self.msg
+        return mark_safe(self.as_html())
 
     def as_html(self):
         if not self._msg_html_cache:
