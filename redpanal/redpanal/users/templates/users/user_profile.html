@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n avatar_tags %}
 
 {% block title %}{% trans "My profile" %}{% endblock %}
 
@@ -8,5 +8,10 @@
 <dl class="dl-horizontal">
     <dt>{% trans "Username" %}</dt><dd>{{ request.user.username }}</dd>
 </dl>
+
+<a href="{% url 'avatar_change' %}">{% trans "Change your avatar" %}</a>
+
+{% avatar request.user 100 %}
+
 {% endblock %}
 

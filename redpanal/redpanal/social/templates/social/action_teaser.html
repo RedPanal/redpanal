@@ -1,7 +1,7 @@
-{% load i18n %}
-<img src="/static/img/user-pic-example-small.png" />
+{% load i18n avatar_tags %}
+{% avatar user 50 %}
 {% if action.actor.get_absolute_url %}
- <span class="user"><a href="{{ action.actor.get_absolute_url }}">{{ action.actor }}</a></span> 
+ <span class="user"><a href="{{ action.actor.get_absolute_url }}">{{ action.actor }}</a></span>
 {% else %}
  <a href="{{ action.actor_url }}">{{ action.actor }}</a>
 {% endif %}

@@ -87,7 +87,8 @@ $(function() {
               <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> {{ user }}</a>
               <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="{% url "account_logout" %}?next={{ request.path }}"><i class="icon-arrow-left"></i> {% trans "Log out" %}</a></li>
+                  <li><a href="{% url 'user-profile' %}"><i class="icon-wrench"></i> {% trans "Edit profile" %}</a></li>
+                  <li><a href="{% url 'account_logout' %}?next={{ request.path }}"><i class="icon-arrow-left"></i> {% trans "Log out" %}</a></li>
                 </ul>
             {% else %}
               <a class="btn btn-primary" href="{% url "account_login" %}?next={{ request.path }}"><i class="icon-user icon-white"></i> {% trans "Log in" %}</a>

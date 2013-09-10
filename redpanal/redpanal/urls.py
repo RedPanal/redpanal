@@ -11,9 +11,10 @@ urlpatterns = patterns('',
     url(r'^p/', include('redpanal.project.urls')),
     url(r'^a/', include('redpanal.audio.urls')),
     url(r'^accounts/profile/$', 'redpanal.users.views.user_profile', name="user-profile"),
-    (r'^accounts/', include('allauth.urls')),
-    ('^activity/', include('redpanal.social.urls')),
-    ('^activity/', include('actstream.urls')),
+    url(r'^accounts/', include('allauth.urls')),
+    url(r'^activity/', include('redpanal.social.urls')),
+    url(r'^activity/', include('actstream.urls')),
+    url(r'^avatar/', include('avatar.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
 

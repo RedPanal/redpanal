@@ -110,6 +110,7 @@ INSTALLED_APPS = (
 #    'allauth.socialaccount.providers.soundcloud',
 #    'allauth.socialaccount.providers.twitter',
 #    'allauth.socialaccount.providers.vimeo',
+    'avatar',
 )
 
 
