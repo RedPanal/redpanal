@@ -92,6 +92,8 @@ class Message(models.Model):
         if mentioned_users:
             self.mentioned_users.add(*mentioned_users)
 
+    class Meta:
+        ordering = ['-created_at']
 
 def message_created_signal(sender, instance, created, **kwargs):
     if created:

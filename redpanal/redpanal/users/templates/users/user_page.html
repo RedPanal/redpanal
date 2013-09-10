@@ -19,13 +19,30 @@
 {% endblock %}
 
 {% block content %}
-  <div class="span6">
-  {% for object in audios %}
-     {% include "audio/audio_teaser.html" %}
-  {% endfor %}
+
+
+<div class="row">
+
+  <div class="span7">
+    <div class="user-music">
+      <h3>{% trans "music"|capfirst %}</h3>
+      {% for object in audios %}
+         {% include "audio/audio_teaser.html" %}
+      {% endfor %}
+    </div>
+
+    <div class="user-own-comments">
+      <h3>{% trans "messages"|capfirst %}</h3>
+      <ul>
+      {% for message in user.message_set.all %}
+        <li>{{ message.as_html|safe }}</li>
+      {% endfor%}
+      </ul>
+    </div>
   </div>
 
   <div class="span5 user-bar">
+
     <div class="user-detail">
        <img src="/static/img/user-pic-example-big.png" />
        <h1>@{{ user.username }} {% include "social/follow_button.html" %}</h1>
@@ -42,5 +59,9 @@
        </ul>
     </div>
   </div>
+
+</div>
+
+
 {% endblock %}
 
