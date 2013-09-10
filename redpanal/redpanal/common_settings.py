@@ -107,8 +107,8 @@ INSTALLED_APPS = (
 #    'allauth.socialaccount.providers.linkedin',
     'allauth.socialaccount.providers.openid',
 #    'allauth.socialaccount.providers.persona',
-#    'allauth.socialaccount.providers.soundcloud',
-#    'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.soundcloud',
+    'allauth.socialaccount.providers.twitter',
 #    'allauth.socialaccount.providers.vimeo',
     'avatar',
 )
