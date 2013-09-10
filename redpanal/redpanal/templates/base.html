@@ -103,6 +103,13 @@ $(function() {
 
 <div id="content" class="container">
     <h1>{% block title %}{% endblock %}</h1>
+
+    {% block comment %}
+      {% if request.user.is_authenticated %}
+        {% include "social/message_form.html" %}
+      {% endif %}
+    {% endblock %}
+
     {% block content %}
     {% endblock %}
 </div>

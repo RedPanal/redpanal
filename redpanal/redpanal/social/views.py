@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
@@ -26,3 +27,17 @@ def following(request, user_id):
     return render_to_response('social/following.html', {
         'following': models.following(user), 'user': user
     }, context_instance=RequestContext(request))
+
+
+from forms import MessageForm
+from models import Message
+
+def message_create(request):
+    if request.method == "POST":
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            # TODO: content_object
+            msg = Message(msg=form.cleaned_data["msg"], user=request.user)
+            msg.save()
+    return HttpResponseRedirect("/")
+

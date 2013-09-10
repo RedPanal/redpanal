@@ -1,0 +1,7 @@
+{% load i18n %}
+
+<form method="post" action="{% url 'message-create' %}">
+{% csrf_token %}
+<input id="id_msg" maxlength="140" name="msg" type="text" />
+<input type="submit" id="submit-id-submit" class="btn btn-primary" value="{% trans "Comment" %}" name="submit">
+</form>

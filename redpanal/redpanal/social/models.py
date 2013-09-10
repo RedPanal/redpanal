@@ -4,8 +4,12 @@ from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
+from django.core.urlresolvers import reverse
 
+from actstream import action
 from taggit.managers import TaggableManager
+from taggit.models import Tag
+
 
 class Message(models.Model):
     msg = models.TextField(verbose_name=_('message'))
@@ -18,6 +22,44 @@ class Message(models.Model):
     content_type = models.ForeignKey(ContentType, null=True, editable=False)
     object_id = models.PositiveIntegerField(null=True, editable=False)
     content_object = generic.GenericForeignKey('content_type', 'object_id')
+    _msg_html_cache = models.TextField(editable=False, blank=True, null=True)
+
+    def __unicode__(self):
+        return self.msg
+
+    def as_html(self):
+        if not self._msg_html_cache:
+            self._msg_html_cache = Message.to_html(self.msg)
+            self.save()
+        return self._msg_html_cache
+
+    @staticmethod
+    def to_html(msg):
+        import re
+        USER_REGEX = re.compile(r'@(\w+)')
+        HASHTAG_REGEX = re.compile(r'#(\w+)')
+
+        def replace_user(match):
+            if match:
+                username = match.group(1)
+                try:
+                    user = User.objects.get(username=username)
+                except User.DoesNotExist:
+                    return match.group()
+                return '<a href="%s">@%s</a>' % (user.get_absolute_url(), username)
+
+        def replace_hashtags(match):
+            if match:
+                tag = match.group(1)
+                try:
+                    tagobj = Tag.objects.get(name=tag)
+                except Tag.DoesNotExist:
+                    return match.group()
+                return '<a href="%s">#%s</a>' % (reverse("hashtaged-list", None, (tagobj.slug,)), tag)
+
+        html = re.sub(USER_REGEX, replace_user, msg)
+        html = re.sub(HASHTAG_REGEX, replace_hashtags, html)
+        return html
 
     @staticmethod
     def extract_mentioned_users(msg):

@@ -32,5 +32,12 @@ class MessageTest(TestCase):
         tags = Message.extract_hashtags(msg)
         self.assertEqual(tags, ["foo", "bar", "baz", "f1", "f2", "f3"])
 
+    def test_to_html(self):
+        msg = "@owner here this #radioGaGa"
+        m = Message.objects.create(user=self.user, msg=msg)
+        html = Message.to_html(msg)
+        self.assertEqual(m.as_html(), html)
+
+
 
 
