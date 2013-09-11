@@ -1,12 +1,12 @@
 {% load i18n avatar_tags %}
-{% avatar user 50 %}
+{% avatar action.actor 50 %}
 {% if action.actor.get_absolute_url %}
  <span class="user"><a href="{{ action.actor.get_absolute_url }}">{{ action.actor }}</a></span>
 {% else %}
  <a href="{{ action.actor_url }}">{{ action.actor }}</a>
 {% endif %}
 <span class="ago">{{ action.timestamp|timesince }} {% trans "ago" %}</span><br>
-<span class="verb">{{ action.verb }}</span> 
+<span class="verb">{{ action.verb }}</span>
 {% if action.action_object %}
   <a href="{{ action.action_object.get_absolute_url }}">{{ action.action_object }}</a>
 {% endif %}
