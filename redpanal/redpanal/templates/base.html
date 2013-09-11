@@ -72,12 +72,9 @@ $(function() {
           <a class="brand" href="/"><img src="{% static 'img/logo-header.png' %}" alt="logo"></a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li><a href="{% url "user-list" %}">{% trans "People" %}</a></li>
-              <li><a href="{% url "project-list" %}">{% trans "Projects" %}</a></li>
-              <li><a href="{% url "project-create" %}">{% trans "Create project" %}</a></li>
-              <li><a href="{% url "audio-create" %}">{% trans "Upload" %}</a></li>
+              <li><a href="/">{% trans "Home" %}</a></li>
               {% if request.user.is_authenticated %}
-              <li><a href="{{ request.user.get_absolute_url }}">{% trans "Me" %}</a></li>
+              <li><a href="{{ request.user.get_absolute_url }}">{% trans "profile"|capfirst %}</a></li>
               {% endif %}
             </ul>
           </div>
@@ -104,12 +101,6 @@ $(function() {
 
 <div id="content" class="container">
     <h1>{% block title %}{% endblock %}</h1>
-
-    {% block comment %}
-      {% if request.user.is_authenticated %}
-        {% include "social/message_form.html" %}
-      {% endif %}
-    {% endblock %}
 
     {% block content %}
     {% endblock %}

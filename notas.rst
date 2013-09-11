@@ -9,10 +9,12 @@ Roadmap
 * Botones de follow [Listo]
 * Lista de proyectos [Listo]
 * Buscador
-* Fotos de perfil de usuario
+* Fotos de perfil de usuario [Listo]
 * Lista de seguidores y a quien seguis
-* Comentarios
-
+* Comentarios [Listo]
+* Agregar audios a un proyecto
+* Agregar admines/usuarios a un proyecto
+* Quitar actividad de usuario following a otro
 
 Organizacion Social y Comentarios
 =================================

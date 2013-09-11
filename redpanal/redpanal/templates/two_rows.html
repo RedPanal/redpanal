@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="row">
+  <div class="span7">
+    {% block comment %}
+      {% if request.user.is_authenticated %}
+        {% include "social/message_form.html" %}
+      {% endif %}
+    {% endblock %}
+      {% block left_row %}{% endblock %}
+  </div>
+
+  <div class="span5">
+    <ul class="nav nav-list">
+        <li><a href="{% url "project-create" %}">{% trans "Create project" %}</a></li>
+        <li><a href="{% url "audio-create" %}">{% trans "Upload file" %}</a></li>
+    </ul>
+      {% block right_row %}{% endblock %}
+  </div>
+</div>
+{% endblock %}
+

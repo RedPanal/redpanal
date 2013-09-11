@@ -1,19 +1,27 @@
-{% extends "base.html" %}
+{% extends "two_rows.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Welcome to RedPanal" %}{% endblock %}
+{% block title %}{% if not request.user.is_authenticated %} {% trans "Welcome to RedPanal" %}{% else %}  {% trans "Home" %}{% endif %}{% endblock %}
 
-{% block content %}
+{% block left_row %}
+  {% if request.user.is_authenticated %}
+  <div>
+      <ul class="action-stream">
+      {% for action in action_list %}
+          <li>{% include 'social/action_teaser.html' %}</li>
+      {% empty %}
+      {% trans "No actions yet" %}
+      {% endfor %}
+      </ul>
+  </div>
+  {% endif %}
 
-{% if request.user.is_authenticated %}
-    <ul class="action-stream">
-    {% for action in action_list %}
-        <li>{% include 'social/action_teaser.html' %}</li>
-    {% empty %}
-    {% trans "No actions yet" %}
-    {% endfor %}
+{% endblock %}
+
+{% block right_row %}
+    <ul class="nav nav-list">
+      <li><a href="{% url "user-list" %}">{% trans "People" %}</a></li>
+      <li><a href="{% url "project-list" %}">{% trans "Projects" %}</a></li>
     </ul>
-{% endif %}
-
 {% endblock %}
 

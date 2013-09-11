@@ -1,7 +1,7 @@
-{% extends "base.html" %}
+{% extends "two_rows.html" %}
 {% load i18n avatar_tags %}
 
-{% block title %}{% trans "Me" %}{% endblock %}
+{% block title %}{{ user.username }}{% endblock %}
 
 {% block extra_head %}
  <script type="text/javascript">
@@ -18,12 +18,7 @@
  </script>
 {% endblock %}
 
-{% block content %}
-
-
-<div class="row">
-
-  <div class="span7">
+{% block left_row %}
     <div class="user-music">
       <h3>{% trans "music"|capfirst %}</h3>
       {% for object in audios %}
@@ -39,9 +34,10 @@
       {% endfor%}
       </ul>
     </div>
-  </div>
+{% endblock %}
 
-  <div class="span5 user-bar">
+{% block right_row %}
+  <div class="user-bar">
 
     <div class="user-detail">
 
@@ -60,9 +56,5 @@
        </ul>
     </div>
   </div>
-
-</div>
-
-
 {% endblock %}
 
