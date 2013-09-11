@@ -3,14 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse_lazy
+
 from redpanal.audio.models import Audio
 from redpanal.project.models import Project
-from django.core.urlresolvers import reverse_lazy
-from django.views.generic import ListView, UpdateView, DetailView, CreateView, DeleteView
+from redpanal.social.models import Message
 
 import actstream.models
-
-from redpanal.utils.views import LoginRequiredMixin, UserRequiredMixin
 
 def index(request):
     context = {}
@@ -36,10 +35,12 @@ def hashtaged_list(request, slug):
 
     audios = Audio.objects.filter(tags__slug=slug)
     projects = Project.objects.filter(tags__slug=slug)
+    messages = Message.objects.filter(tags__slug=slug)
 
     return render(request, "core/hashtaged_list.html", {
         "audios": audios,
         "projects": projects,
+        "messages": messages,
         "tag": slug,
     })
 
