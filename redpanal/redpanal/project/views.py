@@ -34,3 +34,16 @@ class  ProjectDeleteView(LoginRequiredMixin, UserRequiredMixin, DeleteView):
 
 class ProjectListView(ListView):
     model = Project
+
+@login_required
+def create_version(request, slug):
+    project = get_object_or_404(Project, slug=slug)
+    if request.method == "POST":
+        new_project = project.create_version(request.user)
+        new_project.user = request.user
+        new_project.save()
+        return redirect("project-detail", slug=project.slug)
+
+    return render(request, "project/project_create_version.html", {
+        'object': project,
+    })

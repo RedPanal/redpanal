@@ -10,4 +10,5 @@ urlpatterns = patterns('redpanal.project.views',
     url(r'^(?P<slug>[\w-]+)/$', ProjectDetailView.as_view(), name='project-detail'),
     url(r'^(?P<slug>[\w-]+)/edit/$', ProjectUpdateView.as_view(), name='project-edit'),
     url(r'^(?P<slug>[\w-]+)/delete/$', ProjectDeleteView.as_view(), name='project-delete'),
+    url(r'^(?P<slug>[\w-]+)/create-version/$', "create_version", name='project-create-version'),
 )

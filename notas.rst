@@ -12,7 +12,7 @@ Roadmap
 * Fotos de perfil de usuario [Listo]
 * Lista de seguidores y a quien seguis
 * Comentarios [Listo]
-* Agregar audios a un proyecto
+* Agregar audios a un proyecto [Listo]
 * Agregar admines/usuarios a un proyecto
 * Crear una version de un proyecto
 * Mostrar todos los usuarios que participan en un proyecto y sus versiones

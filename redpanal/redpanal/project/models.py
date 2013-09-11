@@ -11,7 +11,7 @@ from ..utils.models import BaseModelMixin
 
 class Project(models.Model, BaseModelMixin):
 
-    name = models.CharField(verbose_name=_('name'), max_length=100, unique=True)
+    name = models.CharField(verbose_name=_('name'), max_length=100)
     slug = AutoSlugField(populate_from='name', always_update=False,
                          editable=False, blank=True, unique=True)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
@@ -34,6 +34,14 @@ class Project(models.Model, BaseModelMixin):
         verbose_name = "project"
         verbose_name_plural = "projects"
         ordering = ["-created_at"]
+
+    def create_version(self, user):
+        project = Project(name=self.name, description=self.description,
+                          version_of=self, user=user)
+        project.save()
+        project.tags.add(*self.tags.all())
+        return project
+
 
 def project_created_signal(sender, instance, created, **kwargs):
     if created:

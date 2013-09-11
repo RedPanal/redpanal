@@ -13,12 +13,12 @@
 
 XXX Project versions XXX
 
+<div class="form-actions">
 {% if request.user == object.user %}
-    <div class="form-actions">
-        <a class="btn btn-primary" href="{% url "project-edit" object.slug %}">{% trans "Edit" %}</a>
-        <a class="btn btn-danger" href="{% url "project-delete" object.slug %}">{% trans "Delete" %}</a>
-    </div>
+  <a class="btn btn-primary" href="{% url "project-edit" object.slug %}">{% trans "Edit" %}</a>
+  <a class="btn btn-danger" href="{% url "project-delete" object.slug %}">{% trans "Delete" %}</a>
 {% endif %}
-
+  <a class="btn btn-warning" href="{% url "project-create-version" object.slug %}">{% trans "Create version" %}</a>
+</div>
 {% endblock %}
 
