@@ -1,0 +1,5 @@
+{% load i18n avatar_tags %}
+<div class="message-teaser">
+  {% avatar object.user 50 %}
+  {{ object.as_html|safe }}
+</div>

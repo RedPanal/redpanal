@@ -75,6 +75,7 @@ $(function() {
               <li><a href="/">{% trans "Home" %}</a></li>
               {% if request.user.is_authenticated %}
               <li><a href="{{ request.user.get_absolute_url }}">{% trans "profile"|capfirst %}</a></li>
+              <li><a href="{% url 'user-interactions' request.user %}">@{% trans "user"|capfirst %}</a></li>
               {% endif %}
             </ul>
           </div>

@@ -1,0 +1,26 @@
+{% extends "two_rows.html" %}
+{% load i18n avatar_tags social %}
+
+{% block title %}@{% trans "user"%}{% endblock %}
+
+{% block left_row %}
+    <div class="user-messages-mentioned">
+      <h3>{% trans "mentions"|capfirst %}</h3>
+      {% for object in user.mentioned_messages.all %}
+        {% include "social/message_teaser.html" %}
+      {% endfor%}
+    </div>
+{% endblock %}
+
+{% block right_row %}
+  <div class="user-bar">
+
+    <div class="user-detail">
+       {% avatar user 299 %}
+       <h1>@{{ user.username }} {% include "social/follow_button.html" %}</h1>
+       <a href="{% followers_url user %}">{% trans "Followers" %}</a>
+       <a href="{% following_url user %}">{% trans "Following" %}</a>
+    </div>
+  </div>
+{% endblock %}
+

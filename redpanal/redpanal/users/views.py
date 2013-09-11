@@ -19,6 +19,12 @@ def user_page(request, slug):
         "action_list": action_list,
     })
 
+def user_interactions(request, slug):
+    user = get_object_or_404(User, username=slug)
+    return render(request, "users/user_interactions.html", {
+        "user": user,
+    })
+
 @login_required
 def user_profile(request):
     return render(request, "users/user_profile.html", {})

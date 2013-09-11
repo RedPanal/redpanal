@@ -137,3 +137,10 @@ ul.action-stream li img {
     display: inline-block;
     padding-left: 20px;
 }
+
+.message-teaser {
+    display: block;
+    margin: 1em 0 1em 0;
+    max-width: 400px;
+    border-bottom: 1px solid #DDDDDD;
+}

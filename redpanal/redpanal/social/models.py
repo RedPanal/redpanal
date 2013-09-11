@@ -20,7 +20,7 @@ class Message(models.Model):
     tags = TaggableManager(verbose_name=_('hashtags'), blank=True)
     mentioned_users = models.ManyToManyField(User, verbose_name=_('hashtags'), blank=True,
                                            null=True, editable=False,
-                                           related_name="mentioned_users")
+                                           related_name="mentioned_messages")
     content_type = models.ForeignKey(ContentType, null=True, editable=False)
     object_id = models.PositiveIntegerField(null=True, editable=False)
     content_object = generic.GenericForeignKey('content_type', 'object_id')
