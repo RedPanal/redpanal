@@ -11,7 +11,12 @@
     {% include "audio/audio_teaser.html" with object=audio %}
   {% endfor %}
 
-XXX Project versions XXX
+{% trans "Project versions" %}
+
+  {% for audio in project.audios_from_versions %}
+    {% include "audio/audio_teaser.html" with object=audio %}
+  {% endfor %}
+
 
 <div class="form-actions">
 {% if request.user == object.user %}

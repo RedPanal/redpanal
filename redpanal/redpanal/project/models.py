@@ -42,6 +42,15 @@ class Project(models.Model, BaseModelMixin):
         project.tags.add(*self.tags.all())
         return project
 
+    def audios_from_versions(self):
+        versions = Project.objects.filter(version_of=self)
+        audios = []
+        # this is really slow, replace when speed needed
+        for project in versions:
+            for audio in project.audios.all():
+                audios.append(audio)
+        return audios
+
 
 def project_created_signal(sender, instance, created, **kwargs):
     if created:
