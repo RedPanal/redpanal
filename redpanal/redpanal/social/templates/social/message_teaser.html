@@ -2,4 +2,5 @@
 <div class="message-teaser">
   {% avatar object.user 50 %}
   {{ object.as_html|safe }}
+  <span class="ago">{% blocktrans with object.created_at|timesince as timesince  %} {{ timesince }} ago {% endblocktrans %}</span><br>
 </div>
