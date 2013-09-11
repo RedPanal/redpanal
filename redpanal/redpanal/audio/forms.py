@@ -22,6 +22,7 @@ class AudioForm(forms.ModelForm):
         user = kwargs.pop('user')
         super(AudioForm, self).__init__(data, *args, **kwargs)
         self.instance.user = user
-        initial_project = self.instance.project_set.all()[0] if self.instance.pk else None
+        initial_project = self.instance.project_set.all()[0] if self.instance.pk and \
+                         self.instance.project_set.all() else None
         self.fields['project'] = forms.ModelChoiceField(queryset=Project.objects.filter(user=user),
                                                         initial=initial_project)
