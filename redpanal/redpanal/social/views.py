@@ -1,11 +1,30 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 
 from actstream import actions, models
+from actstream.views import respond
+
+@login_required
+@csrf_exempt
+def follow_unfollow(request, content_type_id, object_id, do_follow=True, actor_only=True):
+    """
+    Creates or deletes the follow relationship between ``request.user`` and the
+    actor defined by ``content_type_id``, ``object_id``.
+    """
+    ctype = get_object_or_404(ContentType, pk=content_type_id)
+    actor = get_object_or_404(ctype.model_class(), pk=object_id)
+
+    if do_follow:
+        actions.follow(request.user, actor, send_action=False, actor_only=actor_only)
+        return respond(request, 201)   # CREATED
+    actions.unfollow(request.user, actor)
+    return respond(request, 204)   # NO CONTENT
+
 
 def followers(request, content_type_id, object_id):
     """

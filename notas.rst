@@ -10,13 +10,13 @@ Roadmap
 * Lista de proyectos [Listo]
 * Buscador
 * Fotos de perfil de usuario [Listo]
-* Lista de seguidores y a quien seguis
+* Lista de seguidores y a quien seguis [Listo]
 * Comentarios [Listo]
 * Agregar audios a un proyecto [Listo]
 * Agregar admines/usuarios a un proyecto
-* Crear una version de un proyecto
+* Crear una version de un proyecto [Listo]
 * Mostrar todos los usuarios que participan en un proyecto y sus versiones
-* Quitar actividad de usuario following a otro
+* Quitar actividad de usuario following a otro [Listo]
 
 Organizacion Social y Comentarios
 =================================

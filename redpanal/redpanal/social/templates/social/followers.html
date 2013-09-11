@@ -5,7 +5,7 @@
 <h2>{% blocktrans %}Users following {{ actor }}{% endblocktrans %}</h2>
 <ul>
     {% for user in followers %}
-    <li>{{ user }}</li>
+      <li>{% include "users/user_teaser.html" %}</li>
     {% endfor %}
 </ul>
 {% endblock %}

@@ -2,10 +2,10 @@
 {% load i18n %}
 
 {% block content %}
-<h2>{% blocktrans %}Actors that {{ user }} follows{% endblocktrans %}</h2>
+<h2>{% blocktrans %}@{{ user }} follows{% endblocktrans %}</h2>
 <ul>
-    {% for actor in following %}
-    <li>{{ actor }}</li>
+    {% for user in following %}
+      <li>{% include "users/user_teaser.html" %}</li>
     {% endfor %}
 </ul>
 {% endblock %}
