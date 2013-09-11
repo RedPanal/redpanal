@@ -21,6 +21,9 @@
 {% block left_row %}
     <div class="user-music">
       <h3>{% trans "music"|capfirst %}</h3>
+      {% for object in user.project_set.all %}
+         {% include "project/project_teaser.html" %}
+      {% endfor %}
       {% for object in audios %}
          {% include "audio/audio_teaser.html" %}
       {% endfor %}

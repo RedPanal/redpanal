@@ -33,6 +33,7 @@ class Project(models.Model, BaseModelMixin):
     class Meta:
         verbose_name = "project"
         verbose_name_plural = "projects"
+        ordering = ["-created_at"]
 
 def project_created_signal(sender, instance, created, **kwargs):
     if created:

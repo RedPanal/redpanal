@@ -5,31 +5,37 @@ import string
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
-
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, UpdateView, DetailView, CreateView, DeleteView
 
 from models import Audio
+from redpanal.project.models import Project
 from forms import AudioForm
 from ..utils.views import LoginRequiredMixin, UserRequiredMixin
 
 
-class AudioCreateView(LoginRequiredMixin, CreateView):
-    model = Audio
-    form_class = AudioForm
+@login_required
+def audio_create_update(request, slug=None):
+    instance = get_object_or_404(Audio, slug=slug) if slug else None
+    if request.method == "POST":
+        form = AudioForm(request.POST, request.FILES, user=request.user,
+                         instance=instance)
+        if form.is_valid():
+            project = form.cleaned_data.get("project")
+            project = get_object_or_404(Project, pk=project.pk)
+            audio = form.save()
+            project.audios.add(audio)
+            return redirect("audio-detail", slug=audio.slug)
+    else:
+        form = AudioForm(user=request.user, instance=instance)
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super(AudioCreateView, self).form_valid(form)
-
+    return render(request, "audio/audio_form.html", {
+        'form': form,
+        'object': instance,
+    })
 
 class AudioDetailView(DetailView):
     model = Audio
-
-
-class  AudioUpdateView(LoginRequiredMixin, UserRequiredMixin, UpdateView):
-    model = Audio
-    form_class = AudioForm
-
 
 class  AudioDeleteView(LoginRequiredMixin, UserRequiredMixin, DeleteView):
     model = Audio

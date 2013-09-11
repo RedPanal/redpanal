@@ -48,6 +48,7 @@ class Audio(models.Model, BaseModelMixin):
     class Meta:
         verbose_name = "audio"
         verbose_name_plural = "audios"
+        ordering = ["-created_at"]
 
 def audio_processing(audio):
     import timeside

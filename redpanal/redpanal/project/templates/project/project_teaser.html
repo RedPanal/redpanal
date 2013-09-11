@@ -1,0 +1,7 @@
+{% load i18n staticfiles %}
+<dl class="dl-horizontal">
+    <a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}">{{ object.name }}</a>
+    {{ object.description }}
+    {{ object.created_at }}
+    {% include 'core/hashtags_block.html' %}
+</dl>
