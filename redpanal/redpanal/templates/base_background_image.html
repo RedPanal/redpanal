@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load background_images %}
+
+{% block body_class %}bkg{% endblock %}
+
+{% block footer %}
+{{ block.super }}
+{% get_background_image as bkg_img %}
+<div id="background-image">
+  <a href="{{ bkg_img.url }}">{{ bkg_img.name }}</a>
+  <span>{{ bkg_img.author }} ({{ bkg_img.license }})</span>
+  <script>$("body").css("background-image", "url({{STATIC_URL}}img/backgrounds/{{ bkg_img.filename}})");</script>
+</div>
+{% endblock %}

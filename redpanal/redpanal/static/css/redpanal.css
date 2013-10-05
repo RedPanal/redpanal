@@ -15,7 +15,7 @@ body {
 body.home {}
 
 body.bkg {
-  background: url("/static/img/backgrounds/357532726_3f96bf2578_o.jpg") no-repeat center center fixed;
+  background: no-repeat center center fixed;
   background-color: #f4fcfe;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -23,23 +23,6 @@ body.bkg {
   background-size: cover;
   /* http://css-tricks.com/perfect-full-page-background-image/ */
 }
-
-body.bkg-a { /* http://www.flickr.com/photos/vasta/357532726/ */
-  background-image: url("/static/img/backgrounds/357532726_3f96bf2578_o.jpg");
-}
-
-body.bkg-b { /* @@ http://www.flickr.com/photos/doug88888/4542297929/ @Doug88888 */
-   background-image: url("/static/img/backgrounds/4542297929_c25ee7495e_o.jpg");
-}
-
-body.bkg-c { /* @@ http://www.flickr.com/photos/evarinaldiphotography/8540647429/ */
-   background-image: url("/static/img/backgrounds/8540647429_76995ae051_o.jpg");
-}
-
-body.bkg-d { /* @@@ http://www.flickr.com/photos/marybaileythomas/3339038251/ */
-   background-image: url("/static/img/backgrounds/3339038251_be7e12ed99_o.jpg");
-}
-
 
 header {
    margin-bottom: 83px; /* HEADER HEIGHT */
@@ -98,7 +81,7 @@ h3.sign-up {
     text-align: center;
 }
 
-h3.sign-up a { 
+h3.sign-up a {
     color: #FFFFFF;
     display: block;
     padding: 15px 30px;
@@ -107,14 +90,14 @@ h3.sign-up a {
     background-color: #28CCEA;
     transition: background-color .25s ease-in-out;
 }
-h3.sign-up a:hover { 
-    background-color: #15b6d3; 
+h3.sign-up a:hover {
+    background-color: #15b6d3;
     text-decoration: none;
 }
 
 /* -- */
 
-.form-block { 
+.form-block {
     background-color: #F0FEC0;
     clear: both;
     color: #263E4E;
@@ -146,12 +129,12 @@ h3.sign-up a:hover {
     text-transform: uppercase;
 }
 
-.form-block a { 
+.form-block a {
   color: #000000;
   text-decoration: underline;
 }
 
-.form-block a:hover { 
+.form-block a:hover {
   color: #263e4e;
 
 }
@@ -521,7 +504,7 @@ ul.action-stream > li img {
     font-size: 12px;
     position: absolute;
     bottom: 0; right: 0;
-    display: none; 
+    display: none;
     text-align: right;
     color: #999;
 }

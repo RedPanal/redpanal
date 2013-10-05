@@ -92,6 +92,7 @@ INSTALLED_APPS = (
     'redpanal.core',
     'redpanal.social',
     'redpanal.users',
+    'redpanal.utils',
     'taggit',
     'crispy_forms',
     'south',
