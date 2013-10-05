@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-05 13:13-0300\n"
+"POT-Creation-Date: 2013-10-04 15:01+0200\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,7 +14,7 @@ msgstr ""
 msgid "name"
 msgstr "nombre"
 
-#: audio/models.py:22 project/models.py:17
+#: audio/models.py:22 project/models.py:17 social/models.py:19
 msgid "created at"
 msgstr "creado en"
 
@@ -26,9 +26,14 @@ msgstr "descripción"
 msgid "audio"
 msgstr "audio"
 
-#: audio/models.py:78
+#: audio/models.py:34 project/models.py:25 social/models.py:20
+#: social/models.py:21
+msgid "hashtags"
+msgstr ""
+
+#: audio/models.py:79
 msgid "uploaded"
-msgstr "subido"
+msgstr "subió"
 
 #: audio/templates/audio/audio_confirm_delete.html:4
 msgid "Delete Audio"
@@ -41,7 +46,7 @@ msgstr "¿Estás seguro que quieres borrar este audio?"
 #: audio/templates/audio/audio_confirm_delete.html:16
 #: audio/templates/audio/audio_detail.html:54
 #: project/templates/project/project_confirm_delete.html:16
-#: project/templates/project/project_detail.html:17
+#: project/templates/project/project_detail.html:24
 msgid "Delete"
 msgstr "Borrar"
 
@@ -85,7 +90,7 @@ msgstr "Creado por"
 #: audio/templates/audio/audio_detail.html:44
 #: project/templates/project/project_object.html:8
 msgid "Created at"
-msgstr ""
+msgstr "Creado el"
 
 #: audio/templates/audio/audio_detail.html:45
 #: project/templates/project/project_object.html:9
@@ -94,12 +99,12 @@ msgstr ""
 
 #: audio/templates/audio/audio_detail.html:53
 #: audio/templates/audio/audio_form.html:5
-#: project/templates/project/project_detail.html:16
+#: project/templates/project/project_detail.html:23
 #: project/templates/project/project_form.html:5
 msgid "Edit"
 msgstr "Editar"
 
-#: audio/templates/audio/audio_form.html:5 templates/base.html:78
+#: audio/templates/audio/audio_form.html:5
 msgid "Upload"
 msgstr "Subir"
 
@@ -107,11 +112,25 @@ msgstr "Subir"
 msgid " Audio"
 msgstr " Audio"
 
-#: project/models.py:20
+#: core/forms.py:16
+#, python-format
+msgid "Tag '%s' does not start with #"
+msgstr "La etiqueta '%s' no empieza con #"
+
+#: project/models.py:19
+msgid "version of"
+msgstr "versión de"
+
+#: project/models.py:21
 msgid "audios"
 msgstr "audios"
 
-#: project/models.py:39
+#: project/models.py:23 social/models.py:18
+#: users/templates/users/user_interactions.html:4
+msgid "user"
+msgstr "usuario"
+
+#: project/models.py:57
 msgid "created"
 msgstr "creado"
 
@@ -121,27 +140,57 @@ msgstr "Borrar Proyecto"
 
 #: project/templates/project/project_confirm_delete.html:9
 msgid "Are you sure you want to delete this project?"
-msgstr "¿Estás seguro que querés borrar este proyecto?"
+msgstr "¿Estás seguro que quieres borrar este proyecto?"
 
+#: project/templates/project/project_create_version.html:9
+msgid ""
+"\n"
+"  Do you want to create a version for this project?\n"
+"  "
+msgstr ""
+"\n"
+"¿Quieres crear un clon de este proyecto?  "
+
+#: project/templates/project/project_create_version.html:17
 #: project/templates/project/project_form.html:5
 msgid "Create"
 msgstr "Crear"
+
+#: project/templates/project/project_detail.html:14
+msgid "Project versions"
+msgstr "Proyectos"
+
+#: project/templates/project/project_detail.html:26
+msgid "Create version"
+msgstr "Crear clon del proyecto"
 
 #: project/templates/project/project_form.html:5
 msgid " Project"
 msgstr " Proyecto"
 
+#: project/templates/project/project_list.html:4
+msgid "Project list"
+msgstr "Proyectos"
+
+#: social/models.py:17
+msgid "message"
+msgstr "mensaje"
+
+#: social/models.py:100
+msgid "commented"
+msgstr "comentó"
+
 #: social/templates/activity/actor.html:11
 msgid "UNFOLLOW"
-msgstr ""
+msgstr "DEJAR DE SEGUIR"
 
 #: social/templates/activity/actor.html:12
 msgid "FOLLOW"
-msgstr ""
+msgstr "SEGUIR"
 
 #: social/templates/activity/actor.html:20
-#: social/templates/social/actions_list.html:9 templates/index.html:13
-#: users/templates/users/user_page.html:40
+#: social/templates/social/actions_list.html:9 templates/index.html:15
+#: users/templates/users/user_page.html:51
 msgid "No actions yet"
 msgstr "Aún no hay acciones"
 
@@ -149,9 +198,17 @@ msgstr "Aún no hay acciones"
 msgid "ago"
 msgstr "hace"
 
-#: social/templates/social/action_teaser.html:14
+#: social/templates/social/action_teaser.html:15
 msgid "to"
 msgstr "a"
+
+#: social/templates/social/action_teaser.html:22
+msgid "reply"
+msgstr "responder"
+
+#: social/templates/social/action_teaser.html:23
+msgid "forward"
+msgstr "republicar"
 
 #: social/templates/social/followers.html:5
 #, python-format
@@ -160,54 +217,55 @@ msgstr "Usuarios siguiendo %(actor)s"
 
 #: social/templates/social/following.html:5
 #, python-format
-msgid "Actors that %(user)s follows"
+msgid "@%(user)s follows"
 msgstr "A quienes sigue el %(user)s"
 
-#: templates/base.html:33
+#: social/templates/social/message_teaser.html:5
+#, python-format
+msgid " %(timesince)s ago "
+msgstr " hace %(timesince)s"
+
+#: templates/base.html:34
 msgid "Unfollow"
-msgstr ""
+msgstr "Dejar de seguir"
 
-#: templates/base.html:33
+#: templates/base.html:34
 msgid "Follow"
-msgstr ""
+msgstr "Seguir"
 
-#: templates/base.html:33
+#: templates/base.html:34
 msgid "login"
-msgstr ""
+msgstr "iniciar sesión"
 
-#: templates/base.html:33
+#: templates/base.html:34
 msgid "to follow"
-msgstr ""
+msgstr "para seguir"
 
-#: templates/base.html:75
-msgid "People"
-msgstr "Gente"
+#: templates/base.html:74 templates/index.html:6
+msgid "Home"
+msgstr "Inicio"
 
-#: templates/base.html:76
-msgid "Projects"
-msgstr "Proyectos"
+#: templates/base.html:76 users/templates/users/user_page.html:4
+msgid "profile"
+msgstr "perfil"
 
 #: templates/base.html:77
-msgid "Create project"
-msgstr "Crear proyecto"
+msgid "interactions"
+msgstr "interacciones"
 
-#: templates/base.html:80
-msgid "Me"
-msgstr "Cuenta"
+#: templates/base.html:89
+msgid "Edit profile"
+msgstr "Editar perfil"
 
 #: templates/base.html:90
 msgid "Log out"
-msgstr "Deslogearse"
+msgstr "Cerrar sesión"
 
 #: templates/base.html:93
 msgid "Log in"
-msgstr "Logearse"
+msgstr "Iniciar sesión"
 
-#: templates/base.html:105
-msgid "RedPanal"
-msgstr ""
-
-#: templates/base.html:111
+#: templates/base.html:121
 msgid ""
 "This is Free Software licensed under <a href=\"http://www.gnu.org/licenses/"
 "agpl.txt\" >AGPL</a>"
@@ -215,21 +273,133 @@ msgstr ""
 "Esto es Software Libre con licencia <a href=\"http://www.gnu.org/licenses/"
 "agpl.txt\" >AGPL</a>"
 
-#: templates/base.html:111
+#: templates/base.html:121
 msgid "Get the code!"
 msgstr "¡Obtener el código!"
 
-#: templates/index.html:4
+#: templates/index.html:6 templates/account/login.html:12
+#: templates/account/signup.html:10
 msgid "Welcome to RedPanal"
 msgstr "Bienvenido a RedPanal"
 
-#: users/templates/users/user_profile.html:4
-msgid "My profile"
-msgstr "Mi perfil"
+#: templates/index.html:25 users/templates/users/user_list.html:4
+msgid "People"
+msgstr "Gente"
 
-#: users/templates/users/user_profile.html:9
+#: templates/index.html:26
+msgid "Projects"
+msgstr "Proyectos"
+
+#: templates/two_rows.html:20
+msgid "Create project"
+msgstr "Crear proyecto"
+
+#: templates/two_rows.html:21
+msgid "Upload file"
+msgstr "Subir archivo"
+
+#: templates/account/login.html:7
+msgid "Sign In"
+msgstr "Iniciar sesión"
+
+#: templates/account/login.html:16
+msgid "Sign up for RedPanal"
+msgstr "Regístrate en RedPanal"
+
+#: templates/account/login.html:19
+msgid "Sign in:"
+msgstr "Iniciar sesión:"
+
+#: templates/account/login.html:27
+msgid "Sign in"
+msgstr "Iniciar sesión"
+
+#: templates/account/login.html:28
+msgid "Forgot Password?"
+msgstr "¿Olvidaste tu contraseña?"
+
+#: templates/account/login.html:35
+msgid "Sign in with:"
+msgstr "Iniciar sesión desde:"
+
+#: templates/account/logout.html:6 templates/account/logout.html.py:10
+#: templates/account/logout.html:14 templates/account/logout.html.py:23
+msgid "Sign Out"
+msgstr "Cerrar sesión"
+
+#: templates/account/logout.html:16
+msgid "Are you sure you want to sign out?"
+msgstr "¿Estás seguro que quieres cerrar la sesión?"
+
+#: templates/account/signup.html:6
+msgid "Signup"
+msgstr "Crear cuenta"
+
+#: templates/account/signup.html:14 templates/account/signup.html.py:24
+msgid "Sign Up"
+msgstr "Crear cuenta"
+
+#: templates/account/signup.html:16
+#, python-format
+msgid ""
+"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr ""
+"¿Ya tienes una cuenta? Entonces por favor <a href=\"%(login_url)s\">inicia "
+"sesión</a>."
+
+#: templates/avatar/change.html:5
+msgid "Your current avatar: "
+msgstr "Tu actual avatar:"
+
+#: templates/avatar/change.html:8
+msgid "You haven't uploaded an avatar yet. Please upload one now."
+msgstr "Todavía no has subido ningún avatar. Por favor, sube uno ahora."
+
+#: templates/avatar/change.html:14
+msgid "Choose new Default"
+msgstr ""
+
+#: templates/avatar/change.html:19
+msgid "Upload New Image"
+msgstr "Sube una imagen nueva"
+
+#: users/templates/users/user_interactions.html:8
+msgid "mentions"
+msgstr "menciones"
+
+#: users/templates/users/user_interactions.html:21
+#: users/templates/users/user_page.html:65
+msgid "Followers"
+msgstr "Seguidores"
+
+#: users/templates/users/user_interactions.html:22
+#: users/templates/users/user_page.html:66
+msgid "Following"
+msgstr "Siguiendo"
+
+#: users/templates/users/user_page.html:23
+msgid "music"
+msgstr "música"
+
+#: users/templates/users/user_page.html:44
+msgid "messages"
+msgstr "mensajes"
+
+#: users/templates/users/user_profile.html:4
+#: users/templates/users/user_profile.html:6
+msgid "Profile options"
+msgstr "Opciones del perfil"
+
+#: users/templates/users/user_profile.html:13
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#~ msgid "Home"
-#~ msgstr "Inicio"
+#: users/templates/users/user_profile.html:18
+msgid "Change your avatar"
+msgstr "Cambiar tu avatar"
+
+#~ msgid "My profile"
+#~ msgstr "Mi perfil"
+
+#~ msgid "Me"
+#~ msgstr "Cuenta"
