@@ -19,6 +19,8 @@ def index(request):
         'actor': request.user,
         'action_list': actstream.models.user_stream(request.user)
         })
+    else:
+	return redirect("/accounts/login/?next=/")
     return render(request, "index.html", context)
 
 def stream(request):
