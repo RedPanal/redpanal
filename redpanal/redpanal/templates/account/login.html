@@ -1,0 +1,48 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account %}
+{% load url from future %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+
+{% block body_class %}home bkg {% with rnd="abcd"|make_list|random %}bkg-{{ rnd }}{% endwith %}{% endblock %}
+
+{% block title %}<h1>{% trans "Welcome to RedPanal" %}</h1>{% endblock %}
+
+{% block content %}
+
+<h3 class="sign-up"><a href="{{ signup_url }}">{% trans "Sign up for RedPanal" %}</a></h3>
+
+<div class="form-block">
+   <h3>{% trans 'Sign in:' %}</h3>
+   <form class="login" method="POST" action="{% url 'account_login' %}">
+     {% csrf_token %}
+     {{ form.as_p }}
+     {% if redirect_field_value %}
+     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+     {% endif %}
+     <p class="action-grp">
+        <button class="btn btn-primary" type="submit">{% trans "Sign in" %}</button>
+        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+     </p>
+   </form>
+</div>
+
+{% if socialaccount.providers  %}
+<div class="form-block providers">
+   <h3>{% trans 'Sign in with:' %}</h3>
+   <div class="socialaccount_ballot">
+     <ul class="socialaccount_providers">
+       {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+     </ul>
+   </div>
+</div>
+{% comment %}
+{% include "socialaccount/snippets/login_extra.html" %}
+{% endcomment %}
+{% endif %}
+
+{% endblock %}
+
