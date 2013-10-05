@@ -1,25 +1,395 @@
 
+html, body {
+  height: 100%;
+}
+
+
+#content {
+  min-height: 600px;
+}
+
 body {
   color: #263e4e;
-
 }
+
+body.home {}
+
+body.bkg {
+  background: url("/static/img/backgrounds/357532726_3f96bf2578_o.jpg") no-repeat center center fixed;
+  background-color: #f4fcfe;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  /* http://css-tricks.com/perfect-full-page-background-image/ */
+}
+
+body.bkg-a { /* http://www.flickr.com/photos/vasta/357532726/ */
+  background-image: url("/static/img/backgrounds/357532726_3f96bf2578_o.jpg");
+}
+
+body.bkg-b { /* @@ http://www.flickr.com/photos/doug88888/4542297929/ @Doug88888 */
+   background-image: url("/static/img/backgrounds/4542297929_c25ee7495e_o.jpg");
+}
+
+body.bkg-c { /* @@ http://www.flickr.com/photos/evarinaldiphotography/8540647429/ */
+   background-image: url("/static/img/backgrounds/8540647429_76995ae051_o.jpg");
+}
+
+body.bkg-d { /* @@@ http://www.flickr.com/photos/marybaileythomas/3339038251/ */
+   background-image: url("/static/img/backgrounds/3339038251_be7e12ed99_o.jpg");
+}
+
 
 header {
-   margin-bottom: 100px;
+   margin-bottom: 83px; /* HEADER HEIGHT */
 }
 
-header .navbar-inner {
+/* logo */
 
-   padding: 8px 0;
+header .navbar .brand {
+    margin: 0;
+    padding: 0;
+}
+
+header .navbar .brand img{
+    position: relative;
+    top: -3px;
+}
+
+/* main menu */
+
+header .navbar-inner {
+   line-height: 83px; /* HEADER HEIGHT */
+   padding: 0;
+}
+
+header .navbar .nav {
+   margin: 0 0 0 90px;
+   line-height: inherit;
+}
+
+header .navbar .nav > li {
+   line-height: inherit;
+   margin: 0 10px;
 }
 
 header .navbar .nav > li > a {
    text-decoration: none;
    text-shadow: none;
+   padding: 0;
+   font-size: 15px;
+   font-weight: bold;
+   color: white;
 }
 
-header .navbar .brand {
+/* menu login */
+
+header #login .btn-group {
+   margin: -3px 0;
+}
+
+/* login page */
+
+h3.sign-up {
+    color: #FFFFFF;
+    float: right;
+    margin: 0 0 40px;
+    text-align: center;
+}
+
+h3.sign-up a { 
+    color: #FFFFFF;
+    display: block;
+    padding: 15px 30px;
+    width: 310px;
+
+    background-color: #28CCEA;
+    transition: background-color .25s ease-in-out;
+}
+h3.sign-up a:hover { 
+    background-color: #15b6d3; 
+    text-decoration: none;
+}
+
+/* -- */
+
+.form-block { 
+    background-color: #F0FEC0;
+    clear: both;
+    color: #263E4E;
+    float: right;
+    margin: 0 0 40px;
+    padding: 16px 30px 30px;
+    width: 310px;
+
+    opacity: 0.80;
+    transition: opacity .25s ease-in-out;
+}
+
+.form-block:hover {
+    opacity: 0.95;
+}
+
+
+.form-block form,
+.form-block h3 {
+  margin: 0;
+}
+
+.form-block h3 {
+    border-bottom: 1px solid;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 17px;
+    margin: 17px 0 25px;
+    text-transform: uppercase;
+}
+
+.form-block a { 
+  color: #000000;
+  text-decoration: underline;
+}
+
+.form-block a:hover { 
+  color: #263e4e;
+
+}
+
+.form-block form p {
+    clear: both;
+    margin: 0 0 16px 0;
+    text-align: right;
+}
+
+
+.form-block form p label {
+    font-size: 15px;
+    margin: 0;
+    text-align: left;
+}
+
+.form-block form p input {
+    margin: 0;
+    padding: 4px;
+    width: 300px;
+}
+
+.form-block form p label[for="id_remember"] {
+    display: inline-block;
+    font-size: 14px;
+}
+.form-block form p input#id_remember {
+    position: relative;
+    top: -2px;
+    vertical-align: middle;
+}
+
+.form-block form p.action-grp {
+    height: 34px;
+    position: relative;
+    text-align: left;
+}
+
+.form-block form p.action-grp a.button {
+    bottom: -1px;
+    color: #263E4E;
+    font-size: 13px;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    width: 154px;
+}
+
+.form-block form .btn.btn-primary {
+    font-size: 19px;
+    padding: 6px 15px;
+}
+
+
+.socialaccount_providers {
+    list-style: none outside none;
+    margin: 0;
+}
+
+.socialaccount_providers li {
+    display: inline-block;
+    line-height: 25px;
+    list-style-type: none;
+    width: 48%;
+}
+
+.socialaccount_providers li a{
+    color: #263E4E;
+    font-size: 16px;
+    margin: 0 0 0 4px;
+}
+
+.socialaccount_providers li > span{
+    color: #556e7e;
+}
+
+/* -signup-*/
+
+.form-block.sign-form {
+    width: 510px;
+}
+
+.form-block.sign-form  form p input {
+    width: 500px;
+}
+
+.form-block.profile-options {
+    width: 510px;
+}
+
+.form-block.profile-options p {
+    border-bottom: 1px solid;
+    font-size: 16px;
+    line-height: 40px;
+    width: 510px;
+    position: relative;
+}
+
+.form-block p span.item {
+ margin-right: 4px;
+}
+
+.form-block p span.value {
+ font-weight: bold;
+}
+
+.form-block p span.image {
+}
+
+.form-block p span.image img {
+    background-color: #FFFFFF;
+    border: 1px solid #BED964;
+    display: block;
+    margin: 20px 0;
+    padding: 5px;
+}
+
+
+.form-block p span.action {
+    position: absolute;
+    right: 5px;
+    top: 0;
+}
+/* -error- */
+
+.errorlist {
+    background-color: #D87878;
+    color: #FFFFFF;
+    list-style: none outside none;
+    margin: 0 0 -21px;
+    padding: 3px 6px 0 0;
+    text-align: right;
+}
+
+.errorlist li {
+    display: inline-block;
+    font-size: 13px;
+    font-style: italic;
+    line-height: 15px;
+    margin: 0 0 8px;
+    width: 60%;
+}
+
+/* breadcrumb */
+
+.bkg #breadcrumb {
+    opacity: 0.5;
+}
+#breadcrumb {
+    color: #669601;
+    background-color: #f0fec0;
+    margin-bottom: 40px;
+
+}
+
+#breadcrumb .wrapper {
+   width: 940px; /* ToDo: esto no debería estar aqui */
+   margin: 0 auto;
+   position: relative;
    padding: 0;
+}
+
+#breadcrumb form {
+    bottom: 11px;
+    float: right;
+    margin: 0;
+    position: absolute;
+    right: 0;
+}
+
+#submit-id-submit {
+   padding: 0;
+   vertical-align: baseline;
+   padding: 4px 1px 3px 5px;
+   margin: 0 0 0 5px;
+}
+#submit-id-submit:before {
+    content: "";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+    font-size: 24px;
+    vertical-align: middle;
+}
+
+#breadcrumb form input[type="text"] {
+    background-color: #FFFFFF;
+    border: 3px solid #28CCEA;
+    box-shadow: none;
+    transition: none 0s ease 0s;
+    border-radius: 0;
+    vertical-align: baseline;
+    width: 400px;
+    margin:0;
+}
+
+#breadcrumb h1 {
+    font-size: 16px;
+    line-height: 54px;
+    margin: 0;
+}
+
+
+/* ==================  main  ==================== */
+
+.main h3 {
+    border-bottom: 1px solid #DDDDDD;
+    font-size: 22px;
+    font-weight: normal;
+    line-height: 30px;
+    margin-top: 50px;
+}
+
+/* ===============  sidebar  ==================== */
+
+.sidebar .nav.nav-list {
+    float: right;
+    margin-bottom: 0;
+    width: 200px;
+}
+
+.sidebar .nav li {
+   font-size: 17px;
+   line-height: 30px;
+   color: #FFFFFF;
+}
+
+.sidebar .nav li a{
+    background-color: #28CCEA;
+    border-bottom: 1px solid;
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+.sidebar .nav li a:hover{
+    background-color: #263e4e;
 }
 
 /* audio teasers */
@@ -106,17 +476,22 @@ header .navbar .brand {
 
 ul.action-stream {
     list-style: none outside none;
-    max-width: 400px;
+    /* max-width: 400px; */
     margin: 1em 0 1em 0;
 }
 
-ul.action-stream li {
+ul.action-stream > li {
     border-bottom: 1px solid #DDDDDD;
     margin: 0;
-    padding: 10px 0;
+    padding: 10px 0 15px;
+    position: relative;
 }
 
-ul.action-stream li img {
+ul.action-stream > li:hover {
+    background-color: #f4fcfe;
+}
+
+ul.action-stream > li img {
     clear: both;
     float: left;
     margin: 0 7px 0 0;
@@ -131,6 +506,40 @@ ul.action-stream li img {
     float: right;
     font-size: 0.75em;
     font-style: italic;
+    margin-right: 6px;
+    margin-top: -6px;
+}
+
+.message {
+    display: block;
+    margin-left: 47px;
+}
+
+
+.action-stream ul.actions {
+
+    font-size: 12px;
+    position: absolute;
+    bottom: 0; right: 0;
+    display: none; 
+    text-align: right;
+    color: #999;
+}
+
+.action-stream li:hover ul.actions {
+    display: block;
+}
+
+.action-stream li:hover ul.actions li{
+    display: inline;
+    margin: 0 3px ;
+}
+
+.action-stream li:hover ul.actions li > i{
+    font-size: 10px;
+}
+
+.action-stream li ul.actions li a{
 }
 
 .followers-link {
@@ -144,3 +553,20 @@ ul.action-stream li img {
     max-width: 400px;
     border-bottom: 1px solid #DDDDDD;
 }
+
+
+/* ############ footer ############# */
+
+#footer {
+    background-color: #263E4E;
+    color: #FFFFFF;
+    margin-top: 40px;
+    padding: 10px 0;
+    text-align: center;
+    width: 100%;
+}
+
+#footer p {
+   margin: 0;
+}
+
