@@ -4,4 +4,3 @@ venv/
 *.pyc
 *.sqlite3
 uploaded_media/
-redpanal/redpanal/static/img/backgrounds/
