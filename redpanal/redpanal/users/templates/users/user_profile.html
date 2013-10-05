@@ -8,14 +8,16 @@
 {% block body_class %}bkg {% with rnd="abcd"|make_list|random %}bkg-{{ rnd }}{% endwith %}{% endblock %}
 
 {% block content %}
-
-<dl class="dl-horizontal">
-    <dt>{% trans "Username" %}</dt><dd>{{ request.user.username }}</dd>
-</dl>
-
-<a href="{% url 'avatar_change' %}">{% trans "Change your avatar" %}</a>
-
-{% avatar request.user 100 %}
+<div class="form-block profile-options">
+   <p>
+      <span class="item">{% trans "Username" %}: </span>
+      <span class="value">{{ request.user.username }}</span>
+   </p>
+   <p>
+      <span class="image">{% avatar request.user 200 %}</span>
+      <span class="action"><a href="{% url 'avatar_change' %}">{% trans "Change your avatar" %}</a></span>
+   </p>
+</div>
 
 {% endblock %}
 
