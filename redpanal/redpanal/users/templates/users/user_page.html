@@ -1,7 +1,7 @@
 {% extends "two_rows.html" %}
 {% load i18n avatar_tags social %}
 
-{% block title %}{{ user.username }}{% endblock %}
+{% block title %}<span class="icon-user"></span> @{{ user.username }} {% trans "profile" %}{% endblock %}
 
 {% block extra_head %}
  <script type="text/javascript">
