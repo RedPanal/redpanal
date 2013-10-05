@@ -97,11 +97,20 @@ $(function() {
     </div>
 </header>
 
-
+{% block breadcrumb %}
+<div id="breadcrumb">
+   <div class="wrapper">
+     <h1>{% block title %}{% endblock %}</h1>
+     {% block messageform %}
+         {% if request.user.is_authenticated %}
+            {% include "social/message_form.html" %}
+         {% endif %}
+     {% endblock %}
+   </div>
+</div>
+{% endblock %}
 
 <div id="content" class="container">
-    <h1>{% block title %}{% endblock %}</h1>
-
     {% block content %}
     {% endblock %}
 </div>
