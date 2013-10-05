@@ -1,6 +1,8 @@
 {% extends "two_rows.html" %}
 {% load i18n %}
 
+{% block body_class %}home{% endblock %}
+
 {% block title %}{% if not request.user.is_authenticated %} {% trans "Welcome to RedPanal" %}{% else %}  {% trans "Home" %}{% endif %}{% endblock %}
 
 {% block left_row %}
