@@ -16,3 +16,10 @@
     {% if action.target.get_absolute_url %}<a href="{{ action.target.get_absolute_url }}">@{{ action.target }}</a>
     {% else %}<a href="{{ action.target_url }}">@{{ action.target }}</a>{% endif %}
 {% endif %}
+</span>
+{# if request.user.is_authenticated #}
+<ul class="actions">
+<li><i class="icon-reply"></i> <a href="#">{% trans 'reply' %}</a></li>
+<li><i class="icon-repeat"></i> <a href="#">{% trans 'forward' %}</a></li>
+</ul>
+{# endif #}
