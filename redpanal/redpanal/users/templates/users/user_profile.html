@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% load i18n avatar_tags %}
 
-{% block title %}{% trans "My profile" %}{% endblock %}
+{% block head_title %}{% trans "Profile options" %}{% endblock %}
+
+{% block title %}<h1>{% trans "Profile options" %}</h1>{% endblock %}
+
+{% block body_class %}bkg {% with rnd="abcd"|make_list|random %}bkg-{{ rnd }}{% endwith %}{% endblock %}
 
 {% block content %}
 
