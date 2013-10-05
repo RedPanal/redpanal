@@ -60,9 +60,7 @@ $(function() {
   $(".follow-unfollow").each(function(index, element){follow_unfollow_button(element)});
 });
 </script>
-<body>
-
-
+<body class="{% block body_class %}{% endblock %}">
 
 <header id="header">
     <div class="navbar navbar-fixed-top">
