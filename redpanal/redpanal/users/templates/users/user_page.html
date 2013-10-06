@@ -4,8 +4,9 @@
 {% block title %}<span class="icon-user"></span> @{{ user.username }} {% trans "profile" %}{% endblock %}
 
 {% block extra_head %}
- <script type="text/javascript">
-
+{{ block.super }}
+ <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+ <script>
     $(function (){
         $('video,audio').mediaelementplayer({
             audioWidth: 460,
@@ -13,8 +14,13 @@
             audioHeight: 30,
             // initial volume when the player starts
             startVolume: 0.8});
-    });
 
+        $.endlessPaginate({
+            paginateOnScroll: true,
+            paginateOnScrollChunkSize: 5,
+            paginateOnScrollMargin: 10
+        });
+    });
  </script>
 {% endblock %}
 
@@ -29,30 +35,10 @@
       {% endfor %}
     </div>
 
-{% comment %}
-    <div class="user-own-comments">
-      <h3>{% trans "messages"|capfirst %}</h3>
-      <ul>
-      {% for message in user.message_set.all %}
-        <li>{{ message.as_html|safe }}</li>
-      {% endfor%}
-      </ul>
-    </div>
-{% endcomment %}
-
     <div class="user-own-actions">
-      <h3>{% trans "messages"|capfirst %}</h3>
-       <ul class="action-stream">
-       {% for action in action_list %}
-	   {% ifequal user action.actor %}
-           <li>{% include 'social/action_teaser.html' %}</li>
-           {% endifequal %}
-       {% empty %}
-       {% trans "No actions yet" %}
-       {% endfor %}
-       </ul>
+      <h3>{% trans "actions"|capfirst %}</h3>
+       {% include "social/actions_list.html" %}
     </div>
-
 
 {% endblock %}
 
@@ -65,18 +51,6 @@
        <a href="{% followers_url user %}">{% trans "Followers" %}</a>
        <a href="{% following_url user %}">{% trans "Following" %}</a>
     </div>
-
-{% comment %}
-    <div class="user-stream">
-       <ul class="action-stream">
-       {% for action in action_list %}
-           <li>{% include 'social/action_teaser.html' %}</li>
-       {% empty %}
-       {% trans "No actions yet" %}
-       {% endfor %}
-       </ul>
-    </div>
-{% endcomment %}
   </div>
 {% endblock %}
 

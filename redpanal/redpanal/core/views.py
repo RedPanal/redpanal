@@ -20,8 +20,13 @@ def index(request):
         'action_list': actstream.models.user_stream(request.user)
         })
     else:
-	return redirect("/accounts/login/?next=/")
-    return render(request, "index.html", context)
+        return redirect("/accounts/login/?next=/")
+
+    if request.is_ajax():
+        template = "social/actions_list.html"
+    else:
+        template =  "index.html"
+    return render(request, template, context)
 
 def stream(request):
     """

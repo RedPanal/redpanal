@@ -12,8 +12,14 @@ from redpanal.audio.models import Audio
 def user_page(request, slug):
     user = get_object_or_404(User, username=slug)
     audios = Audio.objects.filter(user=user)
-    action_list = actstream.models.user_stream(user)
-    return render(request, "users/user_page.html", {
+    action_list = actstream.models.actor_stream(user)
+
+    if request.is_ajax():
+        template = "social/actions_list.html"
+    else:
+        template =  "users/user_page.html"
+
+    return render(request, template, {
         "user": user,
         "audios": audios,
         "action_list": action_list,

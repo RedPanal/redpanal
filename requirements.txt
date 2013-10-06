@@ -9,3 +9,4 @@ easy-thumbnails==1.3
 pytz
 timeside==0.4.4
 git+https://github.com/jezdez/django-avatar#egg=django-avatar
+django-endless-pagination==2.0
