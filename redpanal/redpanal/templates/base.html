@@ -20,10 +20,8 @@
  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
 
  {% block extra_head %}{% endblock %}
-</head>
-
-<script>
-$(function() {
+ <script>
+ $(function() {
   function follow_unfollow_button(el){
     el.ffobject = {
         "follow_url": $(el).attr("urlFollow"),
@@ -58,8 +56,9 @@ $(function() {
     el.ffobject.render();
   }
   $(".follow-unfollow").each(function(index, element){follow_unfollow_button(element)});
-});
-</script>
+ });
+ </script>
+</head>
 <body class="{% block body_class %}{% endblock %}">
 
 <header id="header">

@@ -5,7 +5,7 @@
     <div class="top-date">{{ object.created_at|timesince }}</div>
     <div class="top">
        <div class="top-user user"><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></div>
-       <div class="top-title"><h3><a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{{ object.name }}</a></h3> {{ object.description }}</div>
+       <div class="top-title"><h3><a href="{% url 'audio-detail' object.slug %}">{{ object.name }}</a></h3> {{ object.description }}</div>
        <div class="top-data">{% trans "Channels" %}: {{ object.channels }} | {{ object.samplerate }} | {{ object.get_duration }} ms</div>
    </div>
 
