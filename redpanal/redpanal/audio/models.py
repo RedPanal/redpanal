@@ -60,8 +60,11 @@ def audio_processing(audio):
     img_waveform_big  =  timeside.grapher.WaveformSimple(width=940, height=150)
     img_waveform.set_colors(background=(255,255,255),  scheme='awdio')
     img_waveform_big.set_colors(background=(255,255,255),  scheme='awdio')
-
-    ( track | img_waveform | img_waveform_big ).run()
+    try:
+        ( track | img_waveform | img_waveform_big ).run()
+    except IOError:
+        # TODO: handle this
+        return
 
     img_waveform.render(output=audio.audio.path + '.png')
     img_waveform_big.render(output=audio.audio.path + '.big.png')

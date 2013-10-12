@@ -138,3 +138,5 @@ SOCIALACCOUNT_PROVIDERS = {
 CRISPY_TEMPLATE_PACK = "bootstrap"
 
 SOUTH_TESTS_MIGRATE = False
+
+TEST_RUNNER = 'redpanal.core.tests.RedPanalTestSuiteRunner'
