@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<form method="post" action="{% url 'message-create' %}">
+<form method="post" action="{% url 'message-create' %}" id="comment-form-small">
 {% csrf_token %}
 <input id="id_msg" maxlength="140" name="msg" type="text" />
 <button type="submit" id="submit-id-submit" class="btn btn-primary" value="" name="submit"></button>

@@ -19,7 +19,7 @@
 </span>
 {# if request.user.is_authenticated #}
 <ul class="actions">
-<li><i class="icon-reply"></i> <a href="#">{% trans 'reply' %}</a></li>
-<li><i class="icon-repeat"></i> <a href="#">{% trans 'forward' %}</a></li>
+<li><i class="icon-reply"></i> <button type="button" class="btn btn-link comment-reply" data-username="{{ action.actor }}">{% trans 'reply' %}</button></li>
+<li><i class="icon-repeat"></i> <button type="button" class="btn btn-link comment-amplify">{% trans 'amplify' %}</button></li>
 </ul>
 {# endif #}

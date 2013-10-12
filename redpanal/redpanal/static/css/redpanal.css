@@ -537,6 +537,11 @@ ul.action-stream > li img {
     border-bottom: 1px solid #DDDDDD;
 }
 
+.action-stream button.btn-link {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
 
 /* ############ footer ############# */
 
