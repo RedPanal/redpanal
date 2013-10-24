@@ -19,7 +19,7 @@ from fabric.context_managers import cd, lcd, settings, hide
 USER = 'sanpiccinini'
 HOST = 'panal.codigosur.com'
 APP_NAME = 'redpanal'
-REPOSITORY = "ssh://hg@bitbucket.org/san/redpanal"
+REPOSITORY = "ssh://git@github.com:RedPanal/redpanal.git"
 
 # Host and login username:
 env.hosts = ['%s@%s' % (USER, HOST)]
@@ -87,8 +87,8 @@ def ensure_src_dir():
     if not exists(SRC_DIR):
         run("mkdir -p %s" % SRC_DIR)
     with cd(SRC_DIR):
-        if not exists(posixpath.join(SRC_DIR, '.hg')):
-            run("hg init")
+        if not exists(posixpath.join(SRC_DIR, '.git')):
+            run("git init")
 
 
 @task
@@ -106,15 +106,15 @@ def push_sources():
     ensure_src_dir()
     push_rev = getattr(env, 'push_rev', None)
     if push_rev is None:
-        push_rev = local("hg id", capture=True).split(" ")[0].strip().strip("+")
+        push_rev = local("git rev-parse HEAD", capture=True).strip()
 
-    local("hg push -f ssh://%(user)s@%(host)s/%(path)s || true" %
+    local("git push ssh://%(user)s@%(host)s/%(path)s || true" %
           dict(host=env.host,
                user=env.user,
                path=SRC_DIR,
                ))
     with cd(SRC_DIR):
-        run("hg update %s" % push_rev)
+        run("git checkout %s" % push_rev)
 
 
 @task
