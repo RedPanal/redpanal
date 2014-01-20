@@ -6,10 +6,8 @@
 
 {% block content %}
 
-  {% blocktrans %}
-  Do you want to create a version for this project?
-  {% endblocktrans %}
-  {% include "project/project_teaser.html" %}
+  <p>{% blocktrans %}Do you want to create a version for this project?{% endblocktrans %}</p>
+  <div class="project-teaser-wrapper">{% include "project/project_teaser.html" %}</div>
 
 
 <form method="POST" action=".">
