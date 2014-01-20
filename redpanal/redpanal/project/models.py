@@ -54,7 +54,8 @@ class Project(models.Model, BaseModelMixin):
 
 def project_created_signal(sender, instance, created, **kwargs):
     if created:
-        action.send(instance.user, verb=_('created'), target=instance)
+        action.send(instance.user, verb='created', target=instance)
+	# TODO: 'created version' when the project is a version
 
 post_save.connect(project_created_signal, sender=Project)
 

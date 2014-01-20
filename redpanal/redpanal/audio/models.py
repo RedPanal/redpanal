@@ -79,8 +79,8 @@ def audio_processing(audio):
 
 def audio_created_signal(sender, instance, created, **kwargs):
     if created:
-        action.send(instance.user, verb=_('uploaded'), action_object=instance, target=instance.user)
-        # The target may be the project the user is uploading the project?
+        action.send(instance.user, verb='uploaded', action_object=instance)
+        # TODO: The target will be the project the user is uploading the project! target=???
         audio_processing(instance)
 
 post_save.connect(audio_created_signal, sender=Audio)

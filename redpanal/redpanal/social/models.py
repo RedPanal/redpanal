@@ -97,6 +97,6 @@ class Message(models.Model):
 
 def message_created_signal(sender, instance, created, **kwargs):
     if created:
-        action.send(instance.user, verb=_('commented'), action_object=instance)
+        action.send(instance.user, verb='commented', action_object=instance)
 
 post_save.connect(message_created_signal, sender=Message, dispatch_uid="message_created_signal")

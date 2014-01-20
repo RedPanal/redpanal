@@ -7,7 +7,12 @@
 {% endif %}
 <span class="ago">{% blocktrans %}{{ action.timestamp|timesince }} ago{% endblocktrans %}</span><br>
 <span class="message">
-   <span class="verb">{{ action.verb }}</span>
+   <span class="verb {{ action.verb }}">
+   {% ifequal action.verb 'commented' %}{# trans 'Commented' #}{% endifequal %}
+   {% ifequal action.verb 'uploaded' %}{% trans 'Uploaded' %}{% endifequal %}
+   {% ifequal action.verb 'created' %}{% trans 'Created the project' %}{% endifequal %}
+   {% ifequal action.verb 'created version' %}{% trans 'Cloned the project' %}{% endifequal %}
+   </span>
 {% if action.action_object %}
      <a href="{{ action.action_object.get_absolute_url }}">{{ action.action_object }}</a>
 {% endif %}
@@ -15,8 +20,16 @@
    {% trans "to" %}
 {% endif %}
 {% if action.target %}
-    {% if action.target.get_absolute_url %}<a href="{{ action.target.get_absolute_url }}">@{{ action.target }}</a>
-    {% else %}<a href="{{ action.target_url }}">@{{ action.target }}</a>{% endif %}
+    {% if action.target.get_absolute_url %}
+      <a href="{{ action.target.get_absolute_url }}">
+    {% else %}
+      <a href="{{ action.target_url }}">
+    {% endif %}
+         {% ifequal action.verb 'commented' %}@{{ action.target }}{% endifequal %}
+         {% ifequal action.verb 'created' %}{{ action.target|capfirst }}{% endifequal %}
+         {% ifequal action.verb 'created version' %}{{ action.target|capfirst }}{% endifequal %}
+         {% ifequal action.verb 'uploaded' %}{{ action.target|capfirst }}{% endifequal %}
+      </a>
 {% endif %}
 </span>
 {# if request.user.is_authenticated #}
