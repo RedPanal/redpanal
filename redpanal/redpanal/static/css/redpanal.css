@@ -44,6 +44,19 @@ i.fa.big-fa-icon {
    vertical-align: middle;
 }
 
+/* css hack for messages link bug */
+
+.message a[href=""] {  
+   color: inherit;
+   cursor: text;
+}
+
+.message a[href=""]:hover {  
+   text-decoration: none;
+}
+
+/* end css hack*/
+
 .more {
     display: block;
     margin: 13px 0 0;
