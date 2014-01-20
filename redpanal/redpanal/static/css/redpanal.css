@@ -733,6 +733,8 @@ ul.users-list .followers-link {
 }
 
 .verb {
+    color: #A0A0A0;
+    font-style: oblique;
 }
 
 .ago {
