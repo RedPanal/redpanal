@@ -1,0 +1,413 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-27 14:51-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: audio/forms.py:40
+msgid "Couldn't read uploaded file"
+msgstr ""
+
+#: audio/forms.py:42
+#, python-format
+msgid "Invalid audio file Content-Type '%s'"
+msgstr ""
+
+#: audio/forms.py:44
+msgid "Invalid audio file extension"
+msgstr ""
+
+#: audio/models.py:19 project/models.py:14
+msgid "name"
+msgstr ""
+
+#: audio/models.py:22 project/models.py:17 social/models.py:19
+msgid "created at"
+msgstr ""
+
+#: audio/models.py:23 project/models.py:18
+msgid "description"
+msgstr ""
+
+#: audio/models.py:24
+msgid "audio"
+msgstr ""
+
+#: audio/models.py:34 project/models.py:25 social/models.py:20
+#: social/models.py:21
+msgid "hashtags"
+msgstr ""
+
+#: audio/models.py:82
+msgid "uploaded"
+msgstr ""
+
+#: audio/templates/audio/audio_confirm_delete.html:4
+msgid "Delete Audio"
+msgstr ""
+
+#: audio/templates/audio/audio_confirm_delete.html:9
+msgid "Are you sure you want to delete this audio?"
+msgstr ""
+
+#: audio/templates/audio/audio_confirm_delete.html:16
+#: audio/templates/audio/audio_detail.html:54
+#: project/templates/project/project_confirm_delete.html:16
+#: project/templates/project/project_detail.html:24
+msgid "Delete"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:34
+#: project/templates/project/project_object.html:4
+msgid "Name"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:35
+#: project/templates/project/project_object.html:5
+msgid "Description"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:36
+#: project/templates/project/project_object.html:6
+msgid "File"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:38
+#: audio/templates/audio/audio_teaser.html:9
+msgid "Channels"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:39
+msgid "Blocksize"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:40
+msgid "Samplerate"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:41
+msgid "Totalframes"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:43
+#: project/templates/project/project_object.html:7
+msgid "Created by"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:44
+#: project/templates/project/project_object.html:8
+msgid "Created at"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:45
+#: project/templates/project/project_object.html:9
+msgid "HashTags"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:53
+#: audio/templates/audio/audio_form.html:5
+#: project/templates/project/project_detail.html:23
+#: project/templates/project/project_form.html:5
+msgid "Edit"
+msgstr ""
+
+#: audio/templates/audio/audio_form.html:5
+msgid "Upload"
+msgstr ""
+
+#: audio/templates/audio/audio_form.html:5
+msgid " Audio"
+msgstr ""
+
+#: core/forms.py:16
+#, python-format
+msgid "Tag '%s' does not start with #"
+msgstr ""
+
+#: project/models.py:19
+msgid "version of"
+msgstr ""
+
+#: project/models.py:21
+msgid "audios"
+msgstr ""
+
+#: project/models.py:23 social/models.py:18
+#: users/templates/users/user_interactions.html:4
+msgid "user"
+msgstr ""
+
+#: project/models.py:57
+msgid "created"
+msgstr ""
+
+#: project/templates/project/project_confirm_delete.html:4
+msgid "Delete Project"
+msgstr ""
+
+#: project/templates/project/project_confirm_delete.html:9
+msgid "Are you sure you want to delete this project?"
+msgstr ""
+
+#: project/templates/project/project_create_version.html:9
+msgid ""
+"\n"
+"  Do you want to create a version for this project?\n"
+"  "
+msgstr ""
+
+#: project/templates/project/project_create_version.html:17
+#: project/templates/project/project_form.html:5
+msgid "Create"
+msgstr ""
+
+#: project/templates/project/project_detail.html:14
+msgid "Project versions"
+msgstr ""
+
+#: project/templates/project/project_detail.html:26
+msgid "Create version"
+msgstr ""
+
+#: project/templates/project/project_form.html:5
+msgid " Project"
+msgstr ""
+
+#: project/templates/project/project_list.html:4
+msgid "Project list"
+msgstr ""
+
+#: social/models.py:17
+msgid "message"
+msgstr ""
+
+#: social/models.py:100
+msgid "commented"
+msgstr ""
+
+#: social/templates/activity/actor.html:11
+msgid "UNFOLLOW"
+msgstr ""
+
+#: social/templates/activity/actor.html:12
+msgid "FOLLOW"
+msgstr ""
+
+#: social/templates/activity/actor.html:20
+#: social/templates/social/actions_list.html:7
+msgid "No actions yet"
+msgstr ""
+
+#: social/templates/social/action_teaser.html:8
+msgid "ago"
+msgstr ""
+
+#: social/templates/social/action_teaser.html:15
+msgid "to"
+msgstr ""
+
+#: social/templates/social/action_teaser.html:22
+msgid "reply"
+msgstr ""
+
+#: social/templates/social/action_teaser.html:23
+msgid "amplify"
+msgstr ""
+
+#: social/templates/social/followers.html:5
+#, python-format
+msgid "Users following %(actor)s"
+msgstr ""
+
+#: social/templates/social/following.html:5
+#, python-format
+msgid "@%(user)s follows"
+msgstr ""
+
+#: social/templates/social/message_teaser.html:5
+#, python-format
+msgid " %(timesince)s ago "
+msgstr ""
+
+#: templates/base.html:33
+msgid "Unfollow"
+msgstr ""
+
+#: templates/base.html:33
+msgid "Follow"
+msgstr ""
+
+#: templates/base.html:33
+msgid "login"
+msgstr ""
+
+#: templates/base.html:33
+msgid "to follow"
+msgstr ""
+
+#: templates/base.html:74 templates/index.html:20
+msgid "Home"
+msgstr ""
+
+#: templates/base.html:76 users/templates/users/user_page.html:4
+msgid "profile"
+msgstr ""
+
+#: templates/base.html:77
+msgid "interactions"
+msgstr ""
+
+#: templates/base.html:89
+msgid "Edit profile"
+msgstr ""
+
+#: templates/base.html:90
+msgid "Log out"
+msgstr ""
+
+#: templates/base.html:93
+msgid "Log in"
+msgstr ""
+
+#: templates/base.html:122
+msgid ""
+"This is Free Software licensed under <a href=\"http://www.gnu.org/licenses/"
+"agpl.txt\" >AGPL</a>"
+msgstr ""
+
+#: templates/base.html:123
+msgid "Get the code!"
+msgstr ""
+
+#: templates/index.html:20 templates/account/login.html:9
+#: templates/account/signup.html:10
+msgid "Welcome to RedPanal"
+msgstr ""
+
+#: templates/index.html:33 users/templates/users/user_list.html:4
+msgid "People"
+msgstr ""
+
+#: templates/index.html:34
+msgid "Projects"
+msgstr ""
+
+#: templates/two_rows.html:20
+msgid "Create project"
+msgstr ""
+
+#: templates/two_rows.html:21
+msgid "Upload file"
+msgstr ""
+
+#: templates/account/login.html:7
+msgid "Sign In"
+msgstr ""
+
+#: templates/account/login.html:13
+msgid "Sign up for RedPanal"
+msgstr ""
+
+#: templates/account/login.html:16
+msgid "Sign in:"
+msgstr ""
+
+#: templates/account/login.html:24
+msgid "Sign in"
+msgstr ""
+
+#: templates/account/login.html:25
+msgid "Forgot Password?"
+msgstr ""
+
+#: templates/account/login.html:32
+msgid "Sign in with:"
+msgstr ""
+
+#: templates/account/logout.html:6 templates/account/logout.html.py:8
+#: templates/account/logout.html:12 templates/account/logout.html.py:21
+msgid "Sign Out"
+msgstr ""
+
+#: templates/account/logout.html:14
+msgid "Are you sure you want to sign out?"
+msgstr ""
+
+#: templates/account/signup.html:6
+msgid "Signup"
+msgstr ""
+
+#: templates/account/signup.html:14 templates/account/signup.html.py:24
+msgid "Sign Up"
+msgstr ""
+
+#: templates/account/signup.html:16
+#, python-format
+msgid ""
+"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr ""
+
+#: templates/avatar/change.html:5
+msgid "Your current avatar: "
+msgstr ""
+
+#: templates/avatar/change.html:8
+msgid "You haven't uploaded an avatar yet. Please upload one now."
+msgstr ""
+
+#: templates/avatar/change.html:14
+msgid "Choose new Default"
+msgstr ""
+
+#: templates/avatar/change.html:19
+msgid "Upload New Image"
+msgstr ""
+
+#: users/templates/users/user_interactions.html:8
+msgid "mentions"
+msgstr ""
+
+#: users/templates/users/user_interactions.html:21
+#: users/templates/users/user_page.html:51
+msgid "Followers"
+msgstr ""
+
+#: users/templates/users/user_interactions.html:22
+#: users/templates/users/user_page.html:52
+msgid "Following"
+msgstr ""
+
+#: users/templates/users/user_page.html:29
+msgid "music"
+msgstr ""
+
+#: users/templates/users/user_page.html:39
+msgid "actions"
+msgstr ""
+
+#: users/templates/users/user_profile.html:4
+#: users/templates/users/user_profile.html:6
+msgid "Profile options"
+msgstr ""
+
+#: users/templates/users/user_profile.html:11
+msgid "Username"
+msgstr ""
+
+#: users/templates/users/user_profile.html:16
+msgid "Change your avatar"
+msgstr ""
