@@ -20,7 +20,7 @@ msgstr ""
 
 #: audio/forms.py:40
 msgid "Couldn't read uploaded file"
-msgstr ""
+msgstr "Não foi possível ler o arquivo enviado"
 
 #: audio/forms.py:42
 #, python-format
@@ -29,67 +29,67 @@ msgstr ""
 
 #: audio/forms.py:44
 msgid "Invalid audio file extension"
-msgstr ""
+msgstr "Extensão de arquivo de áudio inválido"
 
 #: audio/models.py:19 project/models.py:14
 msgid "name"
-msgstr ""
+msgstr "nome"
 
 #: audio/models.py:22 project/models.py:17 social/models.py:19
 msgid "created at"
-msgstr ""
+msgstr "criado em"
 
 #: audio/models.py:23 project/models.py:18
 msgid "description"
-msgstr ""
+msgstr "descrição"
 
 #: audio/models.py:24
 msgid "audio"
-msgstr ""
+msgstr "áudio"
 
 #: audio/models.py:34 project/models.py:25 social/models.py:20
 #: social/models.py:21
 msgid "hashtags"
-msgstr ""
+msgstr "fio"
 
 #: audio/models.py:82
 msgid "uploaded"
-msgstr ""
+msgstr "carregado"
 
 #: audio/templates/audio/audio_confirm_delete.html:4
 msgid "Delete Audio"
-msgstr ""
+msgstr "Excluir Áudio"
 
 #: audio/templates/audio/audio_confirm_delete.html:9
 msgid "Are you sure you want to delete this audio?"
-msgstr ""
+msgstr "¿Tem certeza de que deseja excluir este áudio?"
 
 #: audio/templates/audio/audio_confirm_delete.html:16
 #: audio/templates/audio/audio_detail.html:54
 #: project/templates/project/project_confirm_delete.html:16
 #: project/templates/project/project_detail.html:24
 msgid "Delete"
-msgstr ""
+msgstr "Excluir"
 
 #: audio/templates/audio/audio_detail.html:34
 #: project/templates/project/project_object.html:4
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: audio/templates/audio/audio_detail.html:35
 #: project/templates/project/project_object.html:5
 msgid "Description"
-msgstr ""
+msgstr "Descrição"
 
 #: audio/templates/audio/audio_detail.html:36
 #: project/templates/project/project_object.html:6
 msgid "File"
-msgstr ""
+msgstr "Arquivo"
 
 #: audio/templates/audio/audio_detail.html:38
 #: audio/templates/audio/audio_teaser.html:9
 msgid "Channels"
-msgstr ""
+msgstr "Canais"
 
 #: audio/templates/audio/audio_detail.html:39
 msgid "Blocksize"
@@ -106,32 +106,32 @@ msgstr ""
 #: audio/templates/audio/audio_detail.html:43
 #: project/templates/project/project_object.html:7
 msgid "Created by"
-msgstr ""
+msgstr "Criado por"
 
 #: audio/templates/audio/audio_detail.html:44
 #: project/templates/project/project_object.html:8
 msgid "Created at"
-msgstr ""
+msgstr "Criado em"
 
 #: audio/templates/audio/audio_detail.html:45
 #: project/templates/project/project_object.html:9
 msgid "HashTags"
-msgstr ""
+msgstr "Fio"
 
 #: audio/templates/audio/audio_detail.html:53
 #: audio/templates/audio/audio_form.html:5
 #: project/templates/project/project_detail.html:23
 #: project/templates/project/project_form.html:5
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: audio/templates/audio/audio_form.html:5
 msgid "Upload"
-msgstr ""
+msgstr "Carregar"
 
 #: audio/templates/audio/audio_form.html:5
 msgid " Audio"
-msgstr ""
+msgstr " Áudio"
 
 #: core/forms.py:16
 #, python-format
@@ -140,93 +140,93 @@ msgstr ""
 
 #: project/models.py:19
 msgid "version of"
-msgstr ""
+msgstr "versão de"
 
 #: project/models.py:21
 msgid "audios"
-msgstr ""
+msgstr "áudios"
 
 #: project/models.py:23 social/models.py:18
 #: users/templates/users/user_interactions.html:4
 msgid "user"
-msgstr ""
+msgstr "usuário"
 
 #: project/models.py:57
 msgid "created"
-msgstr ""
+msgstr "criado"
 
 #: project/templates/project/project_confirm_delete.html:4
 msgid "Delete Project"
-msgstr ""
+msgstr "Exluir projeto"
 
 #: project/templates/project/project_confirm_delete.html:9
 msgid "Are you sure you want to delete this project?"
-msgstr ""
+msgstr "¿Tem certeza de que deseja excluir este projeto?"
 
 #: project/templates/project/project_create_version.html:9
 msgid ""
 "\n"
 "  Do you want to create a version for this project?\n"
 "  "
-msgstr ""
+msgstr "¿Você quer criar uma versão de este projeto?"
 
 #: project/templates/project/project_create_version.html:17
 #: project/templates/project/project_form.html:5
 msgid "Create"
-msgstr ""
+msgstr "Criar"
 
 #: project/templates/project/project_detail.html:14
 msgid "Project versions"
-msgstr ""
+msgstr "Versões do projeto"
 
 #: project/templates/project/project_detail.html:26
 msgid "Create version"
-msgstr ""
+msgstr "Criar versão"
 
 #: project/templates/project/project_form.html:5
 msgid " Project"
-msgstr ""
+msgstr " Projeto"
 
 #: project/templates/project/project_list.html:4
 msgid "Project list"
-msgstr ""
+msgstr " "
 
 #: social/models.py:17
 msgid "message"
-msgstr ""
+msgstr "mensagem"
 
 #: social/models.py:100
 msgid "commented"
-msgstr ""
+msgstr "comentado"
 
 #: social/templates/activity/actor.html:11
 msgid "UNFOLLOW"
-msgstr ""
+msgstr "PARAR DE SEGUIR"
 
 #: social/templates/activity/actor.html:12
 msgid "FOLLOW"
-msgstr ""
+msgstr "SEGUIR"
 
 #: social/templates/activity/actor.html:20
 #: social/templates/social/actions_list.html:7
 msgid "No actions yet"
-msgstr ""
+msgstr "Ainda não há ações"
 
 #: social/templates/social/action_teaser.html:8
 msgid "ago"
-msgstr ""
+msgstr "atrás"
 
 #: social/templates/social/action_teaser.html:15
 msgid "to"
-msgstr ""
+msgstr "para"
 
 #: social/templates/social/action_teaser.html:22
 msgid "reply"
-msgstr ""
+msgstr "responder"
 
 #: social/templates/social/action_teaser.html:23
 msgid "amplify"
-msgstr ""
+msgstr "amplificar"
 
 #: social/templates/social/followers.html:5
 #, python-format
@@ -245,19 +245,19 @@ msgstr ""
 
 #: templates/base.html:33
 msgid "Unfollow"
-msgstr ""
+msgstr "Parar de seguir"
 
 #: templates/base.html:33
 msgid "Follow"
-msgstr ""
+msgstr "Seguir"
 
 #: templates/base.html:33
 msgid "login"
-msgstr ""
+msgstr "Acesse"
 
 #: templates/base.html:33
 msgid "to follow"
-msgstr ""
+msgstr "a seguir"
 
 #: templates/base.html:74 templates/index.html:20
 msgid "Home"
@@ -304,11 +304,11 @@ msgstr ""
 
 #: templates/index.html:34
 msgid "Projects"
-msgstr ""
+msgstr "Projetos"
 
 #: templates/two_rows.html:20
 msgid "Create project"
-msgstr ""
+msgstr "Criar projeto"
 
 #: templates/two_rows.html:21
 msgid "Upload file"
@@ -320,23 +320,23 @@ msgstr ""
 
 #: templates/account/login.html:13
 msgid "Sign up for RedPanal"
-msgstr ""
+msgstr Abrir uma conta"
 
 #: templates/account/login.html:16
 msgid "Sign in:"
-msgstr ""
+msgstr "Entrar"
 
 #: templates/account/login.html:24
 msgid "Sign in"
-msgstr ""
+msgstr "Entrar"
 
 #: templates/account/login.html:25
 msgid "Forgot Password?"
-msgstr ""
+msgstr "¿Esqueceu sua senha?"
 
 #: templates/account/login.html:32
 msgid "Sign in with:"
-msgstr ""
+msgstr "Entrar com"
 
 #: templates/account/logout.html:6 templates/account/logout.html.py:8
 #: templates/account/logout.html:12 templates/account/logout.html.py:21
