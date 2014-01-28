@@ -25,11 +25,9 @@
 {% endblock %}
 
 {% block left_row %}
-<<<<<<< HEAD
-<<<<<<< HEAD
     <div class="user-music">
       <h3>{% trans "music"|capfirst %}</h3>
-      {% for object in user.project_set.all %}
+
       <p class="user-page-top">{% blocktrans %}About @{{ user.username }}{% endblocktrans %}:<br/>
       <i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip{{ user.about }}</i>
       </p>
@@ -48,7 +46,6 @@
       <h3>{% trans "Last projects" %}</h3>
       <div class="projects-wrapper">
       {% for object in user.project_set.all|slice:":5" %}
->>>>>>> 15bea6d... reorder menus and templates
          {% include "project/project_teaser.html" %}
       {% empty %}
             <span class="no-yet">{% trans "No project yet" %}</span>
@@ -71,7 +68,6 @@
       {% endfor %}
 
       <span class="more"><a href="#user tracks">more</a></span>
-
 {% endblock %}
 
 {% block right_row %}
