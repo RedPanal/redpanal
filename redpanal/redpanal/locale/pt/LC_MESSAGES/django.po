@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -168,7 +167,10 @@ msgid ""
 "\n"
 "  Do you want to create a version for this project?\n"
 "  "
-msgstr "¿Você quer criar uma versão de este projeto?"
+msgstr ""
+"\n"
+" ¿Você quer criar uma versão de este projeto?"
+" "
 
 #: project/templates/project/project_create_version.html:17
 #: project/templates/project/project_form.html:5
@@ -189,7 +191,7 @@ msgstr " Projeto"
 
 #: project/templates/project/project_list.html:4
 msgid "Project list"
-msgstr " "
+msgstr ""
 
 #: social/models.py:17
 msgid "message"
@@ -320,7 +322,7 @@ msgstr ""
 
 #: templates/account/login.html:13
 msgid "Sign up for RedPanal"
-msgstr Abrir uma conta"
+msgstr "Abrir uma conta"
 
 #: templates/account/login.html:16
 msgid "Sign in:"
