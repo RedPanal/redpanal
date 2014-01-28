@@ -1,7 +1,6 @@
 # Django settings for redpanal project.
 import os
-PROJECT_PATH = os.path.dirname(__file__)
-
+PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 SITE_ID = 1
 
