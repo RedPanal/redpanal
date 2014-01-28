@@ -28,6 +28,12 @@ header {
    margin-bottom: 83px; /* HEADER HEIGHT */
 }
 
+/* global */
+
+.btn {
+   padding: 4px 10px;
+}
+
 /* logo */
 
 header .navbar .brand {
@@ -375,6 +381,72 @@ h3.sign-up a:hover {
     background-color: #263e4e;
 }
 
+/* user stats */
+
+.user-stats {
+    background-color: #F0FEC0;
+    float: right;
+    margin: 30px 0;
+    padding: 30px;
+    width: 240px;
+}
+
+
+.user-stats .followers-link {
+    float: right;
+    margin: 15px 1px 0px;
+}
+
+.user-stats h2 {
+    display: block;
+    font-size: 25px;
+    margin: 18px 0 8px;
+}
+
+.user-stats h2 a {
+    color: #263E4E;
+}
+
+.user-stats a.field-stats {
+    display: inline-block;
+    width: 49%;
+}
+
+.user-stats a.field-stats:hover {
+    text-decoration: none;
+}
+
+.user-stats a.field-stats b{
+    color: #263E4E;
+    font-size: 25px;
+    margin-left: 10px;
+}
+
+.user-stats a.field-stats span{
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.7px;
+    margin: -4px 0 0 10px;
+    text-transform: uppercase;
+}
+
+.user-stats a.field-stats:hover span{
+    text-decoration: underline;
+}
+
+
+.user-stats hr {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #dddddd;
+    border-image: none;
+    border-style: none none solid;
+    border-width: medium medium 1px;
+    margin: 6px 0 12px;
+}
+
 /* audio teasers */
 
 .teaser-audio {
@@ -455,30 +527,40 @@ h3.sign-up a:hover {
   margin-left: 2em;
 }
 
-/* social streaming */
+/* social streaming / users list*/
 
-ul.action-stream {
+ul.action-stream,
+ul.users-list {
     list-style: none outside none;
     /* max-width: 400px; */
-    margin: 1em 0 1em 0;
+    margin: 0;
 }
 
-ul.action-stream > li {
+ul.action-stream > li,
+ul.users-list > li {
     border-bottom: 1px solid #DDDDDD;
     margin: 0;
     padding: 10px 0 15px;
     position: relative;
+    min-height: 34px;
 }
 
-ul.action-stream > li:hover {
+ul.action-stream > li:hover,
+ul.users-list > li:hover {
     background-color: #f4fcfe;
 }
 
-ul.action-stream > li img {
+ul.action-stream > li img,
+ul.users-list > li img {
     clear: both;
     float: left;
     margin: 0 7px 0 0;
     width: 40px;
+}
+
+ul.users-list .followers-link {
+   float: right;
+   padding: 0;
 }
 
 .verb {

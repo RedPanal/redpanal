@@ -43,14 +43,6 @@
 {% endblock %}
 
 {% block right_row %}
-  <div class="user-bar">
-
-    <div class="user-detail">
-       {% avatar user 299 %}
-       <h1>@{{ user.username }} {% include "social/follow_button.html" %}</h1>
-       <a href="{% followers_url user %}">{% trans "Followers" %}</a>
-       <a href="{% following_url user %}">{% trans "Following" %}</a>
-    </div>
-  </div>
+    {% include "users/user_stats.html" %}
 {% endblock %}
 

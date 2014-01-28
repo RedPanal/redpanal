@@ -1,11 +1,13 @@
-{% extends "base.html" %}
+{% extends "users/user_page.html" %}
 {% load i18n %}
 
-{% block content %}
-<h2>{% blocktrans %}Users following {{ actor }}{% endblocktrans %}</h2>
-<ul>
-    {% for user in followers %}
-      <li>{% include "users/user_teaser.html" %}</li>
-    {% endfor %}
-</ul>
+{% block left_row %}
+    <div class="users-list-wrapper">
+      <h3>{% blocktrans %}Users following {{ actor }}{% endblocktrans %}</h3>
+      <ul class="users-list followers">
+      {% for user in followers %}
+        <li>{% include "users/user_teaser.html" %}</li>
+      {% endfor %}
+      </ul>
+    </div>
 {% endblock %}

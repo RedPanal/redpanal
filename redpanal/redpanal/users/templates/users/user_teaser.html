@@ -1,7 +1,7 @@
 {% load i18n staticfiles social activity_tags avatar_tags %}
 <div>
   {% avatar user 50 %}
-  <a href={{ user.get_absolute_url }}>{{ user.username }}</a>
+  <span class="user"><a href={{ user.get_absolute_url }}>{{ user.username }}</a></span>
   {% include "social/follow_button.html" %}
 </div>
 
