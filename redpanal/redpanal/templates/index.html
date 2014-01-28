@@ -1,5 +1,5 @@
 {% extends "two_rows.html" %}
-{% load i18n %}
+{% load i18n social %}
 
 {% block extra_head %}
 {{ block.super }}
@@ -22,6 +22,7 @@
 {% block left_row %}
   {% if request.user.is_authenticated %}
   <div>
+      <h3>{% trans "Activities of users I follow" %}</h3>
       {% include "social/actions_list.html" %}
   </div>
   {% endif %}
@@ -30,7 +31,14 @@
 
 {% block right_row %}
     <ul class="nav nav-list">
-      <li><a href="{% url "user-list" %}">{% trans "People" %}</a></li>
-      <li><a href="{% url "project-list" %}">{% trans "Projects" %}</a></li>
+      {% include "not-auth-items-menu.html" %}
     </ul>
+    <div class="users-list-wrapper">
+       <h3>{% blocktrans %}@{{ user }} follows{% endblocktrans %}</h3>
+       <ul class="users-list following">
+       {% for user in following %}
+         <li>{% include "users/user_teaser.html" %}</li>
+       {% endfor %}
+       </ul>
+    </div>
 {% endblock %}

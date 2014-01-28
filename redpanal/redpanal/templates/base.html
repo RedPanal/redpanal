@@ -7,7 +7,7 @@
  {# bootstrap #}
  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
  <link href="{% static 'css/bootstrap-custom.css' %}" rel="stylesheet">
- <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+ <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
  <link href="{% static 'css/redpanal.css' %}" rel="stylesheet">
  {# /bootstrap #}
 
@@ -72,9 +72,12 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li><a href="/">{% trans "Home" %}</a></li>
+              <li><a href="http://blog.redpanal.org/">{% trans "Blog" %}</a></li>
+              <li><a href="http://twitter.com/redpanal"><i class="fa fa-twitter-square big-fa-icon"></i><span class="hide-text">Twitter</span></a></li>
+              <li><a href="https://www.facebook.com/pages/RedPanal/10150092707335128?fref=ts"><i class="fa fa-facebook-square big-fa-icon"></i><span class="hide-text">Facebook</span></a></li>
               {% if request.user.is_authenticated %}
-              <li><a href="{{ request.user.get_absolute_url }}">{% trans "profile"|capfirst %}</a></li>
-              <li><a href="{% url 'user-interactions' request.user %}">{% trans "interactions"|capfirst %}</a></li>
+              {% comment %}<li><a href="{{ request.user.get_absolute_url }}">{% trans "profile"|capfirst %}</a></li>{% endcomment %}
+              {% comment %}<li><a href="{% url 'user-interactions' request.user %}">{% trans "interactions"|capfirst %}</a></li>{% endcomment %}
               {% comment %}<li><a href="{% url 'user-interactions' request.user %}">@{% trans "user"|capfirst %}</a></li>{% endcomment %}
               {% endif %}
             </ul>
@@ -98,18 +101,28 @@
     </div>
 </header>
 
+{#      <h1>{% block title %}{% endblock %}</h1> #}
+
+{% if request.user.is_authenticated %}
 {% block breadcrumb %}
 <div id="breadcrumb">
-   <div class="wrapper">
-     <h1>{% block title %}{% endblock %}</h1>
-     {% block messageform %}
-         {% if request.user.is_authenticated %}
+    <div class="wrapper">
+    <ul class="nav">
+        <li class="discover"><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "My Account" %}</a></li>
+        <li class="discover"><a href="/"><i class="fa fa-music"></i> {% trans "My Community" %}</a></li>
+        <li class="discover"><a href="{% url 'user-interactions' request.user %}"><i class="fa fa-comments"></i> {% trans "My Interactions" %}</a></li>
+        <li class="action"><a href="{% url "audio-create" %}"><i class="fa fa-upload"></i> {% trans "Upload file" %}</a></li>
+        <li class="action"><a href="{% url "project-create" %}"><i class="fa fa-folder-open"></i> {% trans "Create project" %}</a></li>
+        <li>
+        {% block messageform %}
             {% include "social/message_form.html" %}
-         {% endif %}
-     {% endblock %}
-   </div>
+        {% endblock %}
+        </li>
+    </ul>
+    </div>
 </div>
 {% endblock %}
+{% endif %}
 
 <div id="content" class="container">
     {% block content %}

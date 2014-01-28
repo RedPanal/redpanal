@@ -13,7 +13,7 @@
 {% endfor %}
 {% endif %}
 <li>
-  <span class="icon-user icon-{{provider.id}}"></span>
+  <i class="fa fa-{{provider.id}}-square fa-user"></i>
   <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" 
      href="{% provider_login_url provider.id process=process %}">{{provider.name}}</a>
 </li>

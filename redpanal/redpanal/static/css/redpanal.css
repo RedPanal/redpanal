@@ -30,6 +30,36 @@ header {
 
 /* global */
 
+.hide-text {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+i.fa {
+}
+
+i.fa.big-fa-icon {
+   font-size: 22px;
+   vertical-align: middle;
+}
+
+.more {
+    display: block;
+    margin: 13px 0 0;
+    text-align: right;
+}
+
+.more a {
+   background-color: #28CCEA;
+   color: white;
+   padding: 1px 4px;
+}
+
+.more a:hover {
+    background-color: #263E4E;
+}
+
 .btn {
    padding: 4px 10px;
 }
@@ -335,7 +365,7 @@ h3.sign-up a:hover {
     transition: none 0s ease 0s;
     border-radius: 0;
     vertical-align: baseline;
-    width: 400px;
+    width: 250px;
     margin:0;
 }
 
@@ -344,6 +374,37 @@ h3.sign-up a:hover {
     line-height: 54px;
     margin: 0;
 }
+
+#breadcrumb ul.nav {
+}
+
+#breadcrumb ul.nav li {
+    display: inline-block;
+    height: 36px;
+    margin: 0 18px 0 0;
+    /* font-size: 17px; */
+}
+
+#breadcrumb ul.nav li a {
+   color: #263E4E;
+   background-color: transparent;
+}
+
+#breadcrumb ul.nav li a:hover {
+   color: #28CCEA;
+   background-color: transparent;
+}
+
+#breadcrumb ul.nav li.action a {
+   color: #26A0A6; /* #28CCEA; */
+   background-color: transparent;
+}
+
+#breadcrumb ul.nav li.action a:hover {
+   color: #263E4E;
+   background-color: transparent;
+}
+
 
 
 /* ==================  main  ==================== */
@@ -358,35 +419,115 @@ h3.sign-up a:hover {
 
 /* ===============  sidebar  ==================== */
 
+.sidebar > ul:first-child,
+.sidebar > div:first-child {
+   margin-top: 30px;
+}
+
 .sidebar .nav.nav-list {
     float: right;
-    margin-bottom: 0;
-    width: 200px;
+    margin-bottom: 30px;
+    width: 270px;
 }
 
 .sidebar .nav li {
-   font-size: 17px;
+   font-size: 14px;
    line-height: 30px;
    color: #FFFFFF;
 }
 
+.sidebar .nav li.auth-item{
+}
+
 .sidebar .nav li a{
     background-color: #28CCEA;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid #FFFFFF;
     color: #FFFFFF;
     text-shadow: none;
+}
+
+.sidebar .nav li.auth-item a{
+    background-color: #F0FEC0;
+    color: #263e4e;
 }
 
 .sidebar .nav li a:hover{
     background-color: #263e4e;
 }
 
+.sidebar .nav li.auth-item a:hover{
+    color: #28CCEA;
+    background-color:transparent;
+}
+
+/* user list */
+
+.users-list-wrapper {
+    float: right;
+    margin-bottom: 30px;
+    width: 270px;
+}
+
+.users-list-wrapper h3{
+    font-size: 18px;
+    line-height: 22px;
+}
+
+.users-list-wrapper ul{
+}
+
+
+/* project teaser */
+
+.projects-wrapper {
+    margin-right: -20px;
+}
+
+.project-teaser {
+    display: inline-block;
+    height: 255px;
+    margin: 0 22px 0 0;
+    vertical-align: top;
+    width: 160px;
+}
+
+.project-teaser span {
+    display: block;
+    margin: 0;
+}
+
+.project-teaser .thumbnail{
+}
+
+.project-teaser .name{
+    font-size: 16px;
+    margin: 4px 0 0;
+}
+
+.project-teaser .description{
+    color: #AAAAAA;
+    font-size: 13px;
+    height: 2.3em;
+    line-height: 15px;
+}
+
+.project-teaser .ago{
+    color: #AAAAAA;
+    font-size: 0.75em;
+    text-align: right;
+}
+
+.project-teaser .tags{
+    height: 1.4em;
+    overflow: hidden;
+}
+
 /* user stats */
 
 .user-stats {
-    background-color: #F0FEC0;
+    background-color: #f0f0f0; /* celest claro #a2f0fe / verde claro #F0FEC0 / celeste #28CCEA; */
     float: right;
-    margin: 30px 0;
+    margin: 0 0 30px 0;
     padding: 30px;
     width: 240px;
 }
@@ -405,6 +546,12 @@ h3.sign-up a:hover {
 
 .user-stats h2 a {
     color: #263E4E;
+}
+
+.user-stats .location {
+    color: gray;
+    font-size: 14px;
+    margin: -10px 0 20px;
 }
 
 .user-stats a.field-stats {
@@ -445,6 +592,15 @@ h3.sign-up a:hover {
     border-style: none none solid;
     border-width: medium medium 1px;
     margin: 6px 0 12px;
+}
+
+/* user page */
+
+.user-page-top {
+}
+
+.user-page-top i {
+   color: gray;
 }
 
 /* audio teasers */

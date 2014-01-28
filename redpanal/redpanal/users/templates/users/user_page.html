@@ -25,24 +25,66 @@
 {% endblock %}
 
 {% block left_row %}
+<<<<<<< HEAD
     <div class="user-music">
       <h3>{% trans "music"|capfirst %}</h3>
       {% for object in user.project_set.all %}
-         {% include "project/project_teaser.html" %}
-      {% endfor %}
-      {% for object in audios %}
-         {% include "audio/audio_teaser.html" %}
-      {% endfor %}
-    </div>
+=======
+      <p class="user-page-top">{% blocktrans %}About @{{ user.username }}{% endblocktrans %}:<br/>
+      <i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip{{ user.about }}</i>
+      </p>
 
-    <div class="user-own-actions">
-      <h3>{% trans "actions"|capfirst %}</h3>
-       {% include "social/actions_list.html" %}
-    </div>
+      <h3>{% trans "Last activities" %}</h3>
+       {# include "social/actions_list.html" #}
+      <ul class="action-stream">
+      {% for action in action_list|slice:":5" %}
+            <li>{% include 'social/action_teaser.html' %}</li>
+      {% empty %}
+            <span class="no-yet">{% trans "No actions yet" %}</span>
+      {% endfor %}
+      </ul>
+      <span class="more"><a href="#user tracks">more</a></span>
+
+      <h3>{% trans "Last projects" %}</h3>
+      <div class="projects-wrapper">
+      {% for object in user.project_set.all|slice:":5" %}
+>>>>>>> 15bea6d... reorder menus and templates
+         {% include "project/project_teaser.html" %}
+      {% empty %}
+            <span class="no-yet">{% trans "No project yet" %}</span>
+        {% ifequal request.user user %}
+            <span class="new"><a href="{% url "project-create" %}">{% trans "Create new project" %}</a></span>
+        {% endifequal %}
+      {% endfor %}
+      </div>
+
+      <span class="more"><a href="#user tracks">more</a></span>
+
+      <h3>{% trans "Last tracks" %}</h3>
+      {% for object in audios|slice:":5" %}
+         {% include "audio/audio_teaser.html" %}
+      {% empty %}
+            <span class="no-yet">{% trans "No tracks yet" %}</span>
+        {% ifequal request.user user %}
+            <span class="new"><a href="{% url "audio-create" %}">{% trans "Upload track" %}</a></span>
+        {% endifequal %}
+      {% endfor %}
+
+      <span class="more"><a href="#user tracks">more</a></span>
 
 {% endblock %}
 
 {% block right_row %}
+    <ul class="nav nav-list">
+      {% include "not-auth-items-menu.html" %}
+    </ul>
     {% include "users/user_stats.html" %}
+{% comment %}
+    <ul class="nav nav-list">
+    {% if request.user.is_authenticated %}
+      {% include "auth-items-menu.html" %}
+    {% endif %}
+    </ul>
+{% endcomment %}
 {% endblock %}
 
