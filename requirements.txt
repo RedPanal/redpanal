@@ -1,4 +1,4 @@
-Django==1.5.1
+Django==1.6.1
 South==0.8.2
 django-activity-stream==0.4.5beta1
 django-allauth==0.13
