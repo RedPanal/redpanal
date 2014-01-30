@@ -1,7 +1,7 @@
 {% load i18n staticfiles avatar_tags %}
 <div class="project-teaser">
     <span class="project-img">
-         {% avatar user 299 %}
+         {% avatar project.user 299 %}
     </span>
     <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}">{{ object.name }}</a></span>
     <span class="description">{{ object.description|slice:":50" }}...</span>
