@@ -73,6 +73,7 @@
             <ul class="nav">
               <li><a href="/">{% trans "Home" %}</a></li>
               <li><a href="http://blog.redpanal.org/">{% trans "Blog" %}</a></li>
+              <li><a href="{% url "haystack_search" %}"><i class="fa fa-search"></i> {% trans "Search" %}</a></li>
               <li><a href="http://twitter.com/redpanal"><i class="fa fa-twitter-square big-fa-icon"></i><span class="hide-text">Twitter</span></a></li>
               <li><a href="https://www.facebook.com/pages/RedPanal/10150092707335128?fref=ts"><i class="fa fa-facebook-square big-fa-icon"></i><span class="hide-text">Facebook</span></a></li>
               {% if request.user.is_authenticated %}

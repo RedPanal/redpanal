@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^activity/', include('redpanal.social.urls')),
     url(r'^activity/', include('actstream.urls')),
     url(r'^avatar/', include('avatar.urls')),
+    url(r'^search/', include('haystack.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
 

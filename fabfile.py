@@ -173,6 +173,11 @@ def update_database():
                 run_venv(managepy + "syncdb --noinput --settings=redpanal.production_settings")
                 run_venv(managepy + "migrate --noinput --settings=redpanal.production_settings")
 
+def rebuild_index():
+    managepy = "%s manage.py " % PYTHON_BIN
+    with virtualenv(VENV_DIR):
+        with cd(MANAGEPY_SUBDIR):
+            run_venv(managepy + "rebuild_index --noinput")
 
 @task
 def deploy():
@@ -184,6 +189,7 @@ def deploy():
     push_sources()
     install_dependencies()
     update_database()
+    rebuild_index()
     build_static()
 
     webserver_start()

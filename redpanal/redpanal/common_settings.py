@@ -88,6 +88,7 @@ INSTALLED_APPS = (
     #'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'haystack',
     'redpanal.audio',
     'redpanal.project',
     'redpanal.core',
@@ -98,7 +99,6 @@ INSTALLED_APPS = (
     'crispy_forms',
     'south',
     'actstream',
-
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -141,3 +141,12 @@ CRISPY_TEMPLATE_PACK = "bootstrap"
 SOUTH_TESTS_MIGRATE = False
 
 TEST_RUNNER = 'redpanal.core.tests.RedPanalTestSuiteRunner'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(PROJECT_PATH, 'whoosh_index'),
+    },
+}
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
