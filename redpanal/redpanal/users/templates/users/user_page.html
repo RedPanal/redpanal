@@ -28,8 +28,8 @@
     <div class="user-music">
       <h3>{% trans "music"|capfirst %}</h3>
 
-      <p class="user-page-top">{% blocktrans %}About @{{ user.username }}{% endblocktrans %}:<br/>
-      <i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip{{ user.about }}</i>
+      <p class="user-page-top">{% blocktrans %}About @{% endblocktrans %}{{ user.username }}:<br/>
+      <i>{{ user.userprofile.about }}</i> @ {{ user.userprofile.location }}
       </p>
 
       <h3>{% trans "Last activities" %}</h3>

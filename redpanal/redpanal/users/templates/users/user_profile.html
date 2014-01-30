@@ -1,5 +1,5 @@
 {% extends "base_background_image.html" %}
-{% load i18n avatar_tags %}
+{% load i18n avatar_tags crispy_forms_tags %}
 
 {% block head_title %}{% trans "Profile options" %}{% endblock %}
 
@@ -15,6 +15,7 @@
       <span class="image">{% avatar request.user 200 %}</span>
       <span class="action"><a href="{% url 'avatar_change' %}">{% trans "Change your avatar" %}</a></span>
    </p>
+   {% crispy form %}
 </div>
 
 {% endblock %}
