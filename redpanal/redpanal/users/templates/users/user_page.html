@@ -31,6 +31,7 @@
       <p class="user-page-top">{% blocktrans %}About @{% endblocktrans %}{{ user.username }}:<br/>
       <i>{{ user.userprofile.about }}</i> @ {{ user.userprofile.location }}
       </p>
+      {% with object=user.userprofile %} <span class="tags">{% include 'core/hashtags_block.html' %}</span>{% endwith %}
 
       <h3>{% trans "Last activities" %}</h3>
        {# include "social/actions_list.html" #}
