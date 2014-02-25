@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-27 14:51-0300\n"
+"POT-Creation-Date: 2014-02-25 00:50-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,13 +47,9 @@ msgid "audio"
 msgstr "áudio"
 
 #: audio/models.py:34 project/models.py:25 social/models.py:20
-#: social/models.py:21
+#: social/models.py:21 users/models.py:12
 msgid "hashtags"
 msgstr "fio"
-
-#: audio/models.py:82
-msgid "uploaded"
-msgstr "carregado"
 
 #: audio/templates/audio/audio_confirm_delete.html:4
 msgid "Delete Audio"
@@ -150,10 +146,6 @@ msgstr "áudios"
 msgid "user"
 msgstr "usuário"
 
-#: project/models.py:57
-msgid "created"
-msgstr "criado"
-
 #: project/templates/project/project_confirm_delete.html:4
 msgid "Delete Project"
 msgstr "Exluir projeto"
@@ -163,16 +155,13 @@ msgid "Are you sure you want to delete this project?"
 msgstr "¿Tem certeza de que deseja excluir este projeto?"
 
 #: project/templates/project/project_create_version.html:9
-msgid ""
-"\n"
-"  Do you want to create a version for this project?\n"
-"  "
+#, fuzzy
+msgid "Do you want to create a version for this project?"
 msgstr ""
 "\n"
-" ¿Você quer criar uma versão de este projeto?"
-" "
+" ¿Você quer criar uma versão de este projeto? "
 
-#: project/templates/project/project_create_version.html:17
+#: project/templates/project/project_create_version.html:15
 #: project/templates/project/project_form.html:5
 msgid "Create"
 msgstr "Criar"
@@ -193,13 +182,14 @@ msgstr " Projeto"
 msgid "Project list"
 msgstr ""
 
+#: project/templates/project/project_teaser.html:9
+#, python-format
+msgid "%(object.created_at|timesince)s ago"
+msgstr ""
+
 #: social/models.py:17
 msgid "message"
 msgstr "mensagem"
-
-#: social/models.py:100
-msgid "commented"
-msgstr "comentado"
 
 #: social/templates/activity/actor.html:11
 msgid "UNFOLLOW"
@@ -211,31 +201,48 @@ msgstr "SEGUIR"
 
 #: social/templates/activity/actor.html:20
 #: social/templates/social/actions_list.html:7
+#: users/templates/users/user_page.html:42
 msgid "No actions yet"
 msgstr "Ainda não há ações"
 
 #: social/templates/social/action_teaser.html:8
-msgid "ago"
-msgstr "atrás"
+#, python-format
+msgid "%(action.timestamp|timesince)s ago"
+msgstr ""
 
-#: social/templates/social/action_teaser.html:15
+#: social/templates/social/action_teaser.html:12
+#, fuzzy
+msgid "Uploaded"
+msgstr "carregado"
+
+#: social/templates/social/action_teaser.html:13
+#, fuzzy
+msgid "Created the project"
+msgstr "Criar projeto"
+
+#: social/templates/social/action_teaser.html:14
+#, fuzzy
+msgid "Cloned the project"
+msgstr "Criar projeto"
+
+#: social/templates/social/action_teaser.html:20
 msgid "to"
 msgstr "para"
 
-#: social/templates/social/action_teaser.html:22
+#: social/templates/social/action_teaser.html:37
 msgid "reply"
 msgstr "responder"
 
-#: social/templates/social/action_teaser.html:23
+#: social/templates/social/action_teaser.html:38
 msgid "amplify"
 msgstr "amplificar"
 
-#: social/templates/social/followers.html:5
+#: social/templates/social/followers.html:6
 #, python-format
 msgid "Users following %(actor)s"
 msgstr ""
 
-#: social/templates/social/following.html:5
+#: social/templates/social/following.html:6 templates/index.html:37
 #, python-format
 msgid "@%(user)s follows"
 msgstr ""
@@ -243,6 +250,10 @@ msgstr ""
 #: social/templates/social/message_teaser.html:5
 #, python-format
 msgid " %(timesince)s ago "
+msgstr ""
+
+#: templates/auth-items-menu.html:3
+msgid "Interactions"
 msgstr ""
 
 #: templates/base.html:33
@@ -265,33 +276,53 @@ msgstr "a seguir"
 msgid "Home"
 msgstr ""
 
-#: templates/base.html:76 users/templates/users/user_page.html:4
-msgid "profile"
+#: templates/base.html:75
+msgid "Blog"
 msgstr ""
 
-#: templates/base.html:77
-msgid "interactions"
+#: templates/base.html:76
+msgid "Search"
 msgstr ""
 
-#: templates/base.html:89
+#: templates/base.html:95
 msgid "Edit profile"
 msgstr ""
 
-#: templates/base.html:90
+#: templates/base.html:96
 msgid "Log out"
 msgstr ""
 
-#: templates/base.html:93
+#: templates/base.html:99
 msgid "Log in"
 msgstr ""
 
-#: templates/base.html:122
+#: templates/base.html:115
+msgid "My Account"
+msgstr ""
+
+#: templates/base.html:116
+msgid "My Community"
+msgstr ""
+
+#: templates/base.html:117
+msgid "My Interactions"
+msgstr ""
+
+#: templates/base.html:118
+msgid "Upload file"
+msgstr ""
+
+#: templates/base.html:119
+msgid "Create project"
+msgstr "Criar projeto"
+
+#: templates/base.html:138
 msgid ""
 "This is Free Software licensed under <a href=\"http://www.gnu.org/licenses/"
 "agpl.txt\" >AGPL</a>"
 msgstr ""
 
-#: templates/base.html:123
+#: templates/base.html:139
 msgid "Get the code!"
 msgstr ""
 
@@ -300,20 +331,16 @@ msgstr ""
 msgid "Welcome to RedPanal"
 msgstr ""
 
-#: templates/index.html:33 users/templates/users/user_list.html:4
-msgid "People"
+#: templates/index.html:25
+msgid "Activities of users I follow"
 msgstr ""
 
-#: templates/index.html:34
-msgid "Projects"
-msgstr "Projetos"
+#: templates/not-auth-items-menu.html:2
+msgid "Discover more users"
+msgstr ""
 
-#: templates/two_rows.html:20
-msgid "Create project"
-msgstr "Criar projeto"
-
-#: templates/two_rows.html:21
-msgid "Upload file"
+#: templates/not-auth-items-menu.html:3
+msgid "Discover more projects"
 msgstr ""
 
 #: templates/account/login.html:7
@@ -379,27 +406,67 @@ msgstr ""
 msgid "Upload New Image"
 msgstr ""
 
+#: users/models.py:10
+msgid "something about you"
+msgstr ""
+
+#: users/models.py:11
+msgid "where do you live"
+msgstr ""
+
 #: users/templates/users/user_interactions.html:8
-msgid "mentions"
+#: users/templates/users/user_stats.html:41
+msgid "interactions"
 msgstr ""
 
-#: users/templates/users/user_interactions.html:21
-#: users/templates/users/user_page.html:51
-msgid "Followers"
+#: users/templates/users/user_list.html:4
+msgid "People"
 msgstr ""
 
-#: users/templates/users/user_interactions.html:22
-#: users/templates/users/user_page.html:52
-msgid "Following"
+#: users/templates/users/user_page.html:4
+msgid "profile"
 msgstr ""
 
 #: users/templates/users/user_page.html:29
 msgid "music"
 msgstr ""
 
-#: users/templates/users/user_page.html:39
-msgid "actions"
+#: users/templates/users/user_page.html:31
+msgid "About @"
 msgstr ""
+
+#: users/templates/users/user_page.html:36
+msgid "Last activities"
+msgstr ""
+
+#: users/templates/users/user_page.html:47
+#, fuzzy
+msgid "Last projects"
+msgstr "Criar projeto"
+
+#: users/templates/users/user_page.html:52
+#, fuzzy
+msgid "No project yet"
+msgstr "Ainda não há ações"
+
+#: users/templates/users/user_page.html:54
+#, fuzzy
+msgid "Create new project"
+msgstr "Criar projeto"
+
+#: users/templates/users/user_page.html:61
+msgid "Last tracks"
+msgstr ""
+
+#: users/templates/users/user_page.html:65
+#, fuzzy
+msgid "No tracks yet"
+msgstr "Ainda não há ações"
+
+#: users/templates/users/user_page.html:67
+#, fuzzy
+msgid "Upload track"
+msgstr "Carregar"
 
 #: users/templates/users/user_profile.html:4
 #: users/templates/users/user_profile.html:6
@@ -413,3 +480,33 @@ msgstr ""
 #: users/templates/users/user_profile.html:16
 msgid "Change your avatar"
 msgstr ""
+
+#: users/templates/users/user_stats.html:15
+msgid "Projects"
+msgstr "Projetos"
+
+#: users/templates/users/user_stats.html:19
+msgid "Tracks"
+msgstr ""
+
+#: users/templates/users/user_stats.html:24
+msgid "Followers"
+msgstr ""
+
+#: users/templates/users/user_stats.html:28
+msgid "Following"
+msgstr ""
+
+#: users/templates/users/user_stats.html:33
+#, fuzzy
+msgid "Messages"
+msgstr "mensagem"
+
+#~ msgid "created"
+#~ msgstr "criado"
+
+#~ msgid "commented"
+#~ msgstr "comentado"
+
+#~ msgid "ago"
+#~ msgstr "atrás"
