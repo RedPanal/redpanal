@@ -3,7 +3,7 @@ from haystack import indexes
 from models import Project
 
 
-class AudioIndex(indexes.SearchIndex, indexes.Indexable):
+class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     author = indexes.CharField(model_attr='user')
     created_at = indexes.DateTimeField(model_attr='created_at')
