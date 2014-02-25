@@ -3,11 +3,14 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
+from taggit.managers import TaggableManager
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     about = models.TextField(blank=True, null=True, help_text=_("something about you"))
     location = models.TextField(blank=True, null=True, help_text=_("where do you live"))
+    tags = TaggableManager(blank=True, verbose_name=_('hashtags'))
 
 def create_profile(user):
     profile = UserProfile(user=user)
