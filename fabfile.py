@@ -173,11 +173,15 @@ def update_database():
                 run_venv(managepy + "syncdb --noinput --settings=redpanal.production_settings")
                 run_venv(managepy + "migrate --noinput --settings=redpanal.production_settings")
 
+@task
+def backup_database():
+    run("cp /var/www/redpanal/db/db.sqlite3 ~/redpanal.db.sqlite3_`date +%d-%m-%y`")
+
 def rebuild_index():
     managepy = "%s manage.py " % PYTHON_BIN
     with virtualenv(VENV_DIR):
         with cd(MANAGEPY_SUBDIR):
-            run_venv(managepy + "rebuild_index --noinput")
+            run_venv(managepy + "rebuild_index --noinput --settings=redpanal.production_settings")
 
 @task
 def deploy():
@@ -188,6 +192,7 @@ def deploy():
         webserver_stop()
     push_sources()
     install_dependencies()
+    backup_database()
     update_database()
     rebuild_index()
     build_static()
