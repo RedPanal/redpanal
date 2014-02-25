@@ -12,6 +12,12 @@ class UserProfile(models.Model):
     location = models.TextField(blank=True, null=True, help_text=_("where do you live"))
     tags = TaggableManager(blank=True, verbose_name=_('hashtags'))
 
+    def get_absolute_url(self):
+        return self.user.get_absolute_url()
+
+    def __unicode__(self):
+        return unicode(self.user)
+
 def create_profile(user):
     profile = UserProfile(user=user)
     profile.save()

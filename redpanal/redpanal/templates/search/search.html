@@ -10,11 +10,17 @@
 
         {% if query %}
             <h3>Results</h3>
-
             {% for result in page.object_list %}
+                {% if result.object.get_app_label %}
+                {% with result.object.get_app_label|add:"/"|add:result.object.get_model_name|add:"_teaser.html" as template %}
+                    {% include template with object=result.object %}
+                {% endwith %}
+                {% else %}
                 <p>
-                    <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a>
+                    <a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a>
                 </p>
+                {% endif %}
+
             {% empty %}
                 <p>No results found.</p>
             {% endfor %}
