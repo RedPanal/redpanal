@@ -29,7 +29,7 @@
       <h3>{% trans "music"|capfirst %}</h3>
 
       <p class="user-page-top">{% blocktrans %}About @{% endblocktrans %}{{ user.username }}:<br/>
-      <i>{{ user.userprofile.about }}</i> @ {{ user.userprofile.location }}
+      <i>{{ user.userprofile.about }}</i> {{ user.userprofile.location }}
       </p>
       {% with object=user.userprofile %} <span class="tags">{% include 'core/hashtags_block.html' %}</span>{% endwith %}
 
