@@ -71,11 +71,8 @@
           <a class="brand" href="/"><img src="{% static 'img/redpanal-50.png' %}" alt="logo"></a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li><a href="/">{% trans "Home" %}</a></li>
-              <li><a href="http://blog.redpanal.org/">{% trans "Blog" %}</a></li>
               <li><a href="{% url "haystack_search" %}"><i class="fa fa-search"></i> {% trans "Search" %}</a></li>
-              <li><a href="http://twitter.com/redpanal"><i class="fa fa-twitter-square big-fa-icon"></i><span class="hide-text">Twitter</span></a></li>
-              <li><a href="https://www.facebook.com/pages/RedPanal/10150092707335128?fref=ts"><i class="fa fa-facebook-square big-fa-icon"></i><span class="hide-text">Facebook</span></a></li>
+              {% comment %} <li><a href="/">{% trans "Home" %}</a></li>{% endcomment %}
               {% if request.user.is_authenticated %}
               {% comment %}<li><a href="{{ request.user.get_absolute_url }}">{% trans "profile"|capfirst %}</a></li>{% endcomment %}
               {% comment %}<li><a href="{% url 'user-interactions' request.user %}">{% trans "interactions"|capfirst %}</a></li>{% endcomment %}
@@ -130,11 +127,19 @@
     {% endblock %}
 </div>
 
+<div id="footer" class="container">
+   <div class="wrapper">
 {% block footer %}
-<div id="footer"  class="container">
-    <p>{% trans 'This is Free Software licensed under <a href="http://www.gnu.org/licenses/agpl.txt" >AGPL</a>' %}.
-    <a href="https://github.com/RedPanal/redpanal">{% trans 'Get the code!' %}</a>
-    Hosteado por <a href="http://www.codigosur.org">Código Sur</a>.</p>
-</div>
+      <p class="note">
+         {% trans 'This is Free Software licensed under <a href="http://www.gnu.org/licenses/agpl.txt" >AGPL</a>' %}. {% trans 'Get <a href="https://github.com/RedPanal/redpanal">the code!</a>.' %}<br />
+         {% trans 'Hosted by: <a href="http://www.codigosur.org">Código Sur</a>' %}
+      </p>
+      <ul class="nav">
+            <li><a href="http://blog.redpanal.org/" title="{% trans 'The Official RedPanal Blog!' %}">{% trans "Blog" %}</a></li>
+            <li><a href="http://twitter.com/redpanal" ><i class="fa fa-twitter-square big-fa-icon"></i><span class="hide-text">Twitter</span></a></li>
+            <li><a href="https://www.facebook.com/pages/RedPanal/10150092707335128?fref=ts"><i class="fa fa-facebook-square big-fa-icon"></i><span class="hide-text">Facebook</span></a></li>
+      </ul>
 {% endblock %}
+   </div>
+</div>
 </body>

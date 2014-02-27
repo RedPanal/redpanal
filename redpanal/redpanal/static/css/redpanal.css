@@ -97,8 +97,9 @@ header .navbar-inner {
 }
 
 header .navbar .nav {
-   margin: 0 0 0 90px;
-   line-height: inherit;
+    float: right;
+    line-height: inherit;
+    margin: 0 0 0 10px;
 }
 
 header .navbar .nav > li {
@@ -800,14 +801,50 @@ ul.users-list .followers-link {
 
 #footer {
     background-color: #263E4E;
-    color: #FFFFFF;
+    color: #859CAB; /* #556e7e #9cb7c8 */
     margin-top: 40px;
     padding: 10px 0;
-    text-align: center;
     width: 100%;
 }
 
-#footer p {
-   margin: 0;
+#footer a {
+   color: #28CCEA;
+   text-decoration: none;
 }
 
+#footer a:hover {
+   color: #ffffff;
+   background-color: transparent;
+   text-decoration: underline;
+}
+
+#footer .wrapper {
+    width: 940px;
+    margin: 0 auto;
+}
+
+#footer p.note {
+    float: left;
+    margin: 0;
+    padding: 5px 25px;
+    text-align: left;
+    width: 66%;
+}
+
+#footer .nav {
+     float: right;
+}
+
+#footer .nav li {
+    float: left;
+    padding: 12px;
+}
+
+#background-image {
+    font-size: 12px;
+    float: left;
+    margin: 0;
+    padding: 5px 25px;
+    text-align: left;
+    width: 66%;
+}
