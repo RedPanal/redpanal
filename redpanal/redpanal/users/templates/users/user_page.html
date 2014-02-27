@@ -25,11 +25,12 @@
 {% endblock %}
 
 {% block left_row %}
-    <div class="user-music">
-      <h3>{% trans "music"|capfirst %}</h3>
+   {# <div class="user-music"> #}
+      {# <h3>{% trans "music"|capfirst %}</h3> #}
 
-      <p class="user-page-top">{% blocktrans %}About @{% endblocktrans %}{{ user.username }}:<br/>
-      <i>{{ user.userprofile.about }}</i> {{ user.userprofile.location }}
+      <p class="user-page-top">
+         {% blocktrans %}About @{% endblocktrans %}{{ user.username }}:<br/>
+         <i>{{ user.userprofile.about }}</i> {{ user.userprofile.location }}
       </p>
       {% with object=user.userprofile %} <span class="tags">{% include 'core/hashtags_block.html' %}</span>{% endwith %}
 
@@ -69,6 +70,7 @@
       {% endfor %}
 
       <span class="more"><a href="#user tracks">more</a></span>
+  {# </div> #}
 {% endblock %}
 
 {% block right_row %}

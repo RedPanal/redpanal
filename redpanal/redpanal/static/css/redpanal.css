@@ -611,6 +611,7 @@ h3.sign-up a:hover {
 /* user page */
 
 .user-page-top {
+   margin-top: 20px;
 }
 
 .user-page-top i {
