@@ -22,7 +22,8 @@
 {% block left_row %}
   {% if request.user.is_authenticated %}
   <div>
-      <h3>{% trans "Activities of users I follow" %}</h3>
+      <h3 class="top-title">{% trans "My Community" %}</h3>
+      <p class="expl">{% trans "My activities and the users that I follow" %}</p>
       {% include "social/actions_list.html" %}
   </div>
   {% endif %}
@@ -30,6 +31,11 @@
 {% endblock %}
 
 {% block right_row %}
+    {% if request.user.is_authenticated %}
+    <ul class="nav nav-list auth-user">
+      {% include "auth-items-menu.html" %}
+    </ul>
+    {% endif %}
     <ul class="nav nav-list">
       {% include "not-auth-items-menu.html" %}
     </ul>

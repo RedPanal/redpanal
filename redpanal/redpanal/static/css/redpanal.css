@@ -6,6 +6,7 @@ html, body {
 
 #content {
   min-height: 600px;
+  padding-top: 40px;
 }
 
 body {
@@ -337,8 +338,7 @@ h3.sign-up a:hover {
 #breadcrumb {
     color: #669601;
     background-color: #f0fec0;
-    margin-bottom: 40px;
-
+    margin-bottom: -40px;
 }
 
 #breadcrumb .wrapper {
@@ -379,7 +379,7 @@ h3.sign-up a:hover {
     transition: none 0s ease 0s;
     border-radius: 0;
     vertical-align: baseline;
-    width: 250px;
+    width: 600px;
     margin:0;
 }
 
@@ -390,6 +390,7 @@ h3.sign-up a:hover {
 }
 
 #breadcrumb ul.nav {
+    margin-bottom: 0;
 }
 
 #breadcrumb ul.nav li {
@@ -419,7 +420,14 @@ h3.sign-up a:hover {
    background-color: transparent;
 }
 
+input:-moz-placeholder, textarea:-moz-placeholder {
+    color: #BBBBBB;
+}
 
+#breadcrumb input:-moz-placeholder {
+    font-size: 16px;
+    font-style: italic;
+}
 
 /* ==================  main  ==================== */
 
@@ -428,7 +436,17 @@ h3.sign-up a:hover {
     font-size: 22px;
     font-weight: normal;
     line-height: 30px;
-    margin-top: 50px;
+    margin: 50px 0 10px;
+}
+
+.main h3.top-title {
+    margin: 50px 0 4px;
+}
+
+p.expl {
+    color: #BBBBBB;
+    font-style: italic;
+    margin: 0 0 30px;
 }
 
 /* ===============  sidebar  ==================== */
@@ -442,6 +460,14 @@ h3.sign-up a:hover {
     float: right;
     margin-bottom: 30px;
     width: 270px;
+}
+
+.sidebar .nav.nav-list.auth-user li a {
+    background-color: #F0FEC0;
+    color: #669601;
+}
+.sidebar .nav.nav-list.auth-user li a:hover{
+    color: #263e4e;
 }
 
 .sidebar .nav li {
@@ -614,7 +640,13 @@ h3.sign-up a:hover {
    margin-top: 20px;
 }
 
-.user-page-top i {
+.user-location {
+    display: block;
+    margin: 10px 0 0 0;
+}
+
+.user-about {
+   font-style: italic;
    color: gray;
 }
 

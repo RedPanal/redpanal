@@ -5,7 +5,8 @@
 
 {% block left_row %}
     <div class="user-messages-mentioned">
-       <h3>{% trans "interactions"|capfirst %}</h3>
+       <h3 class="top-title">{% trans "My Interactions" %}</h3>
+       <p class="expl">{% trans "Mentions and replies from another users" %}</p>
        <ul class="action-stream">
          {% for object in user.mentioned_messages.all %}
            {% include "social/message_teaser.html" %}
@@ -15,6 +16,11 @@
 {% endblock %}
 
 {% block right_row %}
+   {% if request.user.is_authenticated %}
+       <ul class="nav nav-list auth-user">
+         {% include "auth-items-menu.html" %}
+       </ul>
+   {% endif %}
     <ul class="nav nav-list">
       {% include "not-auth-items-menu.html" %}
     </ul>

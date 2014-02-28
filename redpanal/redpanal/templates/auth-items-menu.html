@@ -1,3 +1,5 @@
 {% load i18n avatar_tags social %}
-      <li class="auth-item"><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-user"></i> @{{request.user}}</a></li>
-      <li class="auth-item"><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-comments"></i> {% trans "Interactions" %}</a></li>
+        <li class="discover"><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "My Account" %}</a></li>
+        <li class="discover"><a href="/"><i class="fa fa-music"></i> {% trans "My Community" %}</a></li>
+        <li class="discover"><a href="{% url 'user-interactions' request.user %}"><i class="fa fa-comments"></i> {% trans "My Interactions" %}</a></li>
+

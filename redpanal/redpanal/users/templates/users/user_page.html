@@ -25,39 +25,22 @@
 {% endblock %}
 
 {% block left_row %}
-   {# <div class="user-music"> #}
-      {# <h3>{% trans "music"|capfirst %}</h3> #}
+      {% ifequal request.user user %}
+      <h3 class="top-title">{% trans "My Account" %}</h3>
+      {% else %}
+      <h3 class="top-title">@{{ user.username }}</h3>
+      {% endifequal %}
 
-      <p class="user-page-top">
-         {% blocktrans %}About @{% endblocktrans %}{{ user.username }}:<br/>
-         <i>{{ user.userprofile.about }}</i> {{ user.userprofile.location }}
-      </p>
-      {% with object=user.userprofile %} <span class="tags">{% include 'core/hashtags_block.html' %}</span>{% endwith %}
-
-      <h3>{% trans "Last activities" %}</h3>
-       {# include "social/actions_list.html" #}
-      <ul class="action-stream">
-      {% for action in action_list|slice:":5" %}
-            <li>{% include 'social/action_teaser.html' %}</li>
-      {% empty %}
-            <span class="no-yet">{% trans "No actions yet" %}</span>
-      {% endfor %}
-      </ul>
-      <span class="more"><a href="#user tracks">more</a></span>
-
-      <h3>{% trans "Last projects" %}</h3>
-      <div class="projects-wrapper">
-      {% for object in user.project_set.all|slice:":5" %}
-         {% include "project/project_teaser.html" %}
-      {% empty %}
-            <span class="no-yet">{% trans "No project yet" %}</span>
-        {% ifequal request.user user %}
-            <span class="new"><a href="{% url "project-create" %}">{% trans "Create new project" %}</a></span>
-        {% endifequal %}
-      {% endfor %}
+      <div class="user-page-top">
+         {% ifequal request.user user %}
+            {% trans "About me" %}: 
+         {% else %}
+            {% trans "About" %} @{{ user.username }}: 
+         {% endifequal %}
+         <span class="user-about">{{ user.userprofile.about }}</span><br />
+         <span class="user-location">{{ user.userprofile.location }}</span>
+         {% with object=user.userprofile %} <span class="tags">{% include 'core/hashtags_block.html' %}</span>{% endwith %}
       </div>
-
-      <span class="more"><a href="#user tracks">more</a></span>
 
       <h3>{% trans "Last tracks" %}</h3>
       {% for object in audios|slice:":5" %}
@@ -70,10 +53,40 @@
       {% endfor %}
 
       <span class="more"><a href="#user tracks">more</a></span>
-  {# </div> #}
+
+      <h3>{% trans "Last activities" %}</h3>
+       {# include "social/actions_list.html" #}
+      <ul class="action-stream">
+         {% for action in action_list|slice:":5" %}
+            <li>{% include 'social/action_teaser.html' %}</li>
+         {% empty %}
+            <span class="no-yet">{% trans "No actions yet" %}</span>
+         {% endfor %}
+      </ul>
+      <span class="more"><a href="#user tracks">more</a></span>
+
+      <h3>{% trans "Last projects" %}</h3>
+      <div class="projects-wrapper">
+         {% for object in user.project_set.all|slice:":5" %}
+            {% include "project/project_teaser.html" %}
+         {% empty %}
+               <span class="no-yet">{% trans "No project yet" %}</span>
+            {% ifequal request.user user %}
+               <span class="new"><a href="{% url "project-create" %}">{% trans "Create new project" %}</a></span>
+            {% endifequal %}
+         {% endfor %}
+      </div>
+
+      <span class="more"><a href="#user tracks">more</a></span>
+
 {% endblock %}
 
 {% block right_row %}
+   {% if request.user.is_authenticated %}
+       <ul class="nav nav-list auth-user">
+         {% include "auth-items-menu.html" %}
+       </ul>
+   {% endif %}
     <ul class="nav nav-list">
       {% include "not-auth-items-menu.html" %}
     </ul>
