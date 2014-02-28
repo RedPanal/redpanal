@@ -357,13 +357,20 @@ h3.sign-up a:hover {
 }
 
 #submit-id-submit {
+    margin: 0 0 0 4px;
+    padding: 4px 5px 6px;
+    vertical-align: top;
+/*
    padding: 0;
    vertical-align: baseline;
    padding: 4px 1px 3px 5px;
    margin: 0 0 0 5px;
+*/
 }
+
 #submit-id-submit:before {
-    content: "";
+/*    content: ""; */
+    content: "";
     font-family: FontAwesome;
     font-style: normal;
     font-weight: normal;
