@@ -33,6 +33,8 @@ def user_page(request, slug):
         "user": user,
         "audios": audios,
         "action_list": action_list,
+        'following': actstream.models.following(user),
+        'followers': actstream.models.followers(user),
     })
 
 def user_tracks(request, slug):
