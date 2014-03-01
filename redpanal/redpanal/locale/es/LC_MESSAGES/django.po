@@ -12,16 +12,16 @@ msgstr ""
 
 #: audio/forms.py:40
 msgid "Couldn't read uploaded file"
-msgstr ""
+msgstr "No se puede leer el archivo subido"
 
 #: audio/forms.py:42
 #, python-format
 msgid "Invalid audio file Content-Type '%s'"
-msgstr ""
+msgstr "Archivo de audio inválido Tipo de Contenido'%s'"
 
 #: audio/forms.py:44
 msgid "Invalid audio file extension"
-msgstr ""
+msgstr "Extensión de audio no permitida"
 
 #: audio/models.py:19 project/models.py:14
 msgid "name"
@@ -206,17 +206,17 @@ msgstr " hace %(timesince)s"
 #: social/templates/social/action_teaser.html:12
 #, fuzzy
 msgid "Uploaded"
-msgstr "subió"
+msgstr "Subido"
 
 #: social/templates/social/action_teaser.html:13
 #, fuzzy
 msgid "Created the project"
-msgstr "Crear proyecto"
+msgstr "Crear el proyecto"
 
 #: social/templates/social/action_teaser.html:14
 #, fuzzy
 msgid "Cloned the project"
-msgstr "Crear proyecto"
+msgstr "Clonar el proyecto"
 
 #: social/templates/social/action_teaser.html:20
 msgid "to"
@@ -228,7 +228,7 @@ msgstr "responder"
 
 #: social/templates/social/action_teaser.html:38
 msgid "amplify"
-msgstr ""
+msgstr "amplificar"
 
 #: social/templates/social/followers.html:6
 #, python-format
@@ -272,11 +272,11 @@ msgstr "Inicio"
 
 #: templates/base.html:75
 msgid "Blog"
-msgstr ""
+msgstr "Blog"
 
 #: templates/base.html:76
 msgid "Search"
-msgstr ""
+msgstr "Buscar"
 
 #: templates/base.html:95
 msgid "Edit profile"
@@ -292,11 +292,11 @@ msgstr "Iniciar sesión"
 
 #: templates/base.html:115
 msgid "My Account"
-msgstr ""
+msgstr "Mi cuenta"
 
 #: templates/base.html:116
 msgid "My Community"
-msgstr ""
+msgstr "Mi comunidad"
 
 #: templates/base.html:117
 #, fuzzy
@@ -330,15 +330,15 @@ msgstr "Bienvenido a RedPanal"
 
 #: templates/index.html:25
 msgid "Activities of users I follow"
-msgstr ""
+msgstr "Actividad de los usuarios que sigo"
 
 #: templates/not-auth-items-menu.html:2
 msgid "Discover more users"
-msgstr ""
+msgstr "Descubrir mas usuarios"
 
 #: templates/not-auth-items-menu.html:3
 msgid "Discover more projects"
-msgstr ""
+msgstr "Descubrir mas proyectos"
 
 #: templates/account/login.html:7
 msgid "Sign In"
@@ -407,11 +407,11 @@ msgstr "Subí una imagen nueva"
 
 #: users/models.py:10
 msgid "something about you"
-msgstr ""
+msgstr "Algunas cosas acerca de ti"
 
 #: users/models.py:11
 msgid "where do you live"
-msgstr ""
+msgstr "¿Dónde vives?"
 
 #: users/templates/users/user_interactions.html:8
 #: users/templates/users/user_stats.html:41
@@ -432,11 +432,11 @@ msgstr "música"
 
 #: users/templates/users/user_page.html:31
 msgid "About @"
-msgstr ""
+msgstr "Acerca @"
 
 #: users/templates/users/user_page.html:36
 msgid "Last activities"
-msgstr ""
+msgstr "Última Actividad"
 
 #: users/templates/users/user_page.html:47
 #, fuzzy
@@ -455,7 +455,7 @@ msgstr "Crear proyecto"
 
 #: users/templates/users/user_page.html:61
 msgid "Last tracks"
-msgstr ""
+msgstr "Últimas pistas"
 
 #: users/templates/users/user_page.html:65
 #, fuzzy
@@ -486,7 +486,7 @@ msgstr "Proyectos"
 
 #: users/templates/users/user_stats.html:19
 msgid "Tracks"
-msgstr ""
+msgstr "Pistas"
 
 #: users/templates/users/user_stats.html:24
 msgid "Followers"
@@ -499,7 +499,7 @@ msgstr "Siguiendo"
 #: users/templates/users/user_stats.html:33
 #, fuzzy
 msgid "Messages"
-msgstr "mensajes"
+msgstr "Mensajes"
 
 #~ msgid "created"
 #~ msgstr "creado"
