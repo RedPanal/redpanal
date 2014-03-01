@@ -31,14 +31,19 @@
 {% endblock %}
 
 {% block right_row %}
-    {% if request.user.is_authenticated %}
-    <ul class="nav nav-list auth-user">
-      {% include "auth-items-menu.html" %}
-    </ul>
-    {% endif %}
+   {% if request.user.is_authenticated %}
+       <ul class="nav nav-list auth-user">
+         {% include "auth-items-menu.html" %}
+       </ul>
+   {% endif %}
+    {% include "users/user_stats.html" %}
     <ul class="nav nav-list">
       {% include "not-auth-items-menu.html" %}
     </ul>
+    <ul class="nav nav-list">
+      {% include "discover-items-menu.html" %}
+    </ul>
+
     <div class="users-list-wrapper">
        <h3>{% blocktrans %}@{{ user }} follows{% endblocktrans %}</h3>
        <ul class="users-list following">

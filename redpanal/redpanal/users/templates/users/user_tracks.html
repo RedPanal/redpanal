@@ -50,9 +50,12 @@
          {% include "auth-items-menu.html" %}
        </ul>
    {% endif %}
+    {% include "users/user_stats.html" %}
     <ul class="nav nav-list">
       {% include "not-auth-items-menu.html" %}
     </ul>
-    {% include "users/user_stats.html" %}
+    <ul class="nav nav-list">
+      {% include "discover-items-menu.html" %}
+    </ul>
 {% endblock %}
 

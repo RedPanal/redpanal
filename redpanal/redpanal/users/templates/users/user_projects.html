@@ -50,12 +50,8 @@
     <ul class="nav nav-list">
       {% include "not-auth-items-menu.html" %}
     </ul>
-{% comment %}
     <ul class="nav nav-list">
-    {% if request.user.is_authenticated %}
-      {% include "auth-items-menu.html" %}
-    {% endif %}
+      {% include "discover-items-menu.html" %}
     </ul>
-{% endcomment %}
 {% endblock %}
 

@@ -26,19 +26,14 @@
 
 {% block left_row %}
       {% ifequal request.user user %}
-      <h3 class="top-title">{% trans "My Account" %}</h3>
+      <h3 class="top-title">{% trans "About me" %}</h3>
       {% else %}
-      <h3 class="top-title">@{{ user.username }}</h3>
+      <h3 class="top-title">{% trans "About" %} @{{ user.username }}</h3>
       {% endifequal %}
 
       <div class="user-page-top">
-         {% ifequal request.user user %}
-            {% trans "About me" %}: 
-         {% else %}
-            {% trans "About" %} @{{ user.username }}: 
-         {% endifequal %}
-         <span class="user-about">{{ user.userprofile.about }}</span><br />
-         <span class="user-location">{{ user.userprofile.location }}</span>
+         <span class="user-about">{% if user.userprofile.about %}{{ user.userprofile.about }}{% else %}{% trans 'Sorry, still not put anything in my description' %}{% endif %}</span><br />
+         <span class="user-location"><i class="fa fa-map-marker"></i> {% if user.userprofile.location %}{{ user.userprofile.location }}{% else %}{% trans "from somewhere in the universe" %}{% endif %}</span>
          {% with object=user.userprofile %} <span class="tags">{% include 'core/hashtags_block.html' %}</span>{% endwith %}
       </div>
 
@@ -87,16 +82,12 @@
          {% include "auth-items-menu.html" %}
        </ul>
    {% endif %}
+    {% include "users/user_stats.html" %}
     <ul class="nav nav-list">
       {% include "not-auth-items-menu.html" %}
     </ul>
-    {% include "users/user_stats.html" %}
-{% comment %}
     <ul class="nav nav-list">
-    {% if request.user.is_authenticated %}
-      {% include "auth-items-menu.html" %}
-    {% endif %}
+      {% include "discover-items-menu.html" %}
     </ul>
-{% endcomment %}
 {% endblock %}
 

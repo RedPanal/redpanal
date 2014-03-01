@@ -1,5 +1,5 @@
 {% load i18n avatar_tags social %}
-        <li class="discover"><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "My Account" %}</a></li>
-        <li class="discover"><a href="/"><i class="fa fa-music"></i> {% trans "My Community" %}</a></li>
-        <li class="discover"><a href="{% url 'user-interactions' request.user %}"><i class="fa fa-comments"></i> {% trans "My Interactions" %}</a></li>
+        <li><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
+        <li><a href="/"><i class="fa fa-music"></i> {% trans "My Community" %}</a></li>
+        <li><a href="{% url 'user-interactions' request.user %}"><i class="fa fa-comments"></i> {% trans "My Interactions" %}</a></li>
 
