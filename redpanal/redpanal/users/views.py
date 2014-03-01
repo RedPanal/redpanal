@@ -44,6 +44,15 @@ def user_tracks(request, slug):
         "audios": audios,
     })
 
+def user_projects(request, slug):
+    user = get_object_or_404(User, username=slug)
+    projects = user.project_set.all
+
+    return render(request, "users/user_projects.html", {
+        "user": user,
+        "projects": projects,
+    })
+
 def user_interactions(request, slug):
     user = get_object_or_404(User, username=slug)
     return render(request, "users/user_interactions.html", {

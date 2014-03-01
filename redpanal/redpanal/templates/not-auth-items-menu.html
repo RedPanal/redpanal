@@ -1,4 +1,5 @@
 {% load i18n avatar_tags social %}
-      <li><a href="{% url 'user-tracks' request.user %}"><i class="fa fa-music"></i> {% blocktrans with name=request.user %}@{{ name }} Tracks{% endblocktrans %}</a></li>
+      <li><a href="{% url 'user-tracks' user %}"><i class="fa fa-music"></i> {% blocktrans with name=user %}@{{ name }} Tracks{% endblocktrans %}</a></li>
+      <li><a href="{% url 'user-projects' user %}"><i class="fa fa-folder-open"></i> {% blocktrans with name=user %}@{{ name }} Projects{% endblocktrans %}</a></li>
       <li><a href="{% url "user-list" %}"><i class="fa fa-search"></i> {% trans "Discover more users" %}</a></li>
       <li><a href="{% url "project-list" %}"><i class="fa fa-search"></i> {% trans "Discover more projects" %}</a></li>

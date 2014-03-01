@@ -9,4 +9,6 @@ urlpatterns = patterns('redpanal.users.views',
         name="user-interactions"),
     url(r'^(?P<slug>[\w-]+)/tracks/$', 'user_tracks',
         name="user-tracks"),
+    url(r'^(?P<slug>[\w-]+)/projects/$', 'user_projects',
+        name="user-projects"),
 )

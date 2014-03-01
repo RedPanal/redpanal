@@ -1,0 +1,61 @@
+{% extends "two_rows.html" %}
+{% load i18n endless %}
+
+{% block title %}<span class="icon-user"></span> @{{ user.username }} {% trans "profile" %}{% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+ <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+ <script>
+    $(function (){
+        $.endlessPaginate({
+            paginateOnScroll: true,
+            paginateOnScrollChunkSize: 3,
+            paginateOnScrollMargin: 10
+        });
+    });
+ </script>
+{% endblock %}
+
+{% block left_row %}
+      {% ifequal request.user user %}
+      <h3>{% trans "My Projects" %}</h3>
+      {% else %}
+      <h3>@{{ user.username }} Projects</h3>
+      {% endifequal %}
+
+      {# TODO: quizas deberia estar en projects/projects_list? #}
+      <div class="projects-wrapper">
+         {% paginate projects %}
+         {% for object in projects %}
+            {% include "project/project_teaser.html" %}
+         {% empty %}
+               <span class="no-yet">{% trans "No project yet" %}</span>
+            {% ifequal request.user user %}
+               <span class="new"><a href="{% url "project-create" %}">{% trans "Create new project" %}</a></span>
+            {% endifequal %}
+         {% endfor %}
+      </div>
+      {% show_more %}
+
+{% endblock %}
+
+{% block right_row %}
+   {% if request.user.is_authenticated %}
+       <ul class="nav nav-list auth-user">
+         {% include "auth-items-menu.html" %}
+       </ul>
+   {% endif %}
+    {% include "users/user_stats.html" %}
+    <ul class="nav nav-list">
+      {% include "not-auth-items-menu.html" %}
+    </ul>
+{% comment %}
+    <ul class="nav nav-list">
+    {% if request.user.is_authenticated %}
+      {% include "auth-items-menu.html" %}
+    {% endif %}
+    </ul>
+{% endcomment %}
+{% endblock %}
+
