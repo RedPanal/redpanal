@@ -3,6 +3,7 @@
       {# el link a la cuenta del usuario esta bien grande en el encabezado de las estadisticas del usuario #}
       <li><a href="{{ user.get_absolute_url }}"><i class="fa fa-user"></i> {% blocktrans with name=user %}@{{ name }} Account{% endblocktrans %}</a></li>
 {% endcomment %}
+      <li><a href="{% url 'user-activities' user %}"><i class="fa fa-comment"></i> {% blocktrans with name=user %}@{{ name }} Activities{% endblocktrans %}</a></li>
       <li><a href="{% url 'user-tracks' user %}"><i class="fa fa-music"></i> {% blocktrans with name=user %}@{{ name }} Tracks{% endblocktrans %}</a></li>
       <li><a href="{% url 'user-projects' user %}"><i class="fa fa-folder-open"></i> {% blocktrans with name=user %}@{{ name }} Projects{% endblocktrans %}</a></li>
 

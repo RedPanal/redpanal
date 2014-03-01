@@ -23,11 +23,12 @@ def user_page(request, slug):
     audios = Audio.objects.filter(user=user)
     action_list = actstream.models.actor_stream(user)
     ensure_profile(user)
+    template =  "users/user_page.html"
 
-    if request.is_ajax():
-        template = "social/actions_list.html"
-    else:
-        template =  "users/user_page.html"
+#    if request.is_ajax():
+#        template = "social/actions_list.html"
+#    else:
+#        template =  "users/user_page.html"
 
     return render(request, template, {
         "user": user,
@@ -41,7 +42,12 @@ def user_tracks(request, slug):
     user = get_object_or_404(User, username=slug)
     audios = Audio.objects.filter(user=user)
 
-    return render(request, "users/user_tracks.html", {
+    if request.is_ajax():
+        template = "audio/audios_list.html"
+    else:
+        template =  "users/user_tracks.html"
+
+    return render(request, template, {
         "user": user,
         "audios": audios,
     })
@@ -50,9 +56,28 @@ def user_projects(request, slug):
     user = get_object_or_404(User, username=slug)
     projects = user.project_set.all
 
-    return render(request, "users/user_projects.html", {
+    if request.is_ajax():
+        template = "projects/projects_list.html"
+    else:
+        template =  "users/user_projects.html"
+
+    return render(request, template, {
         "user": user,
         "projects": projects,
+    })
+
+def user_activities(request, slug):
+    user = get_object_or_404(User, username=slug)
+    action_list = actstream.models.actor_stream(user)
+
+    if request.is_ajax():
+        template = "social/actions_list.html"
+    else:
+        template =  "users/user_activities.html"
+
+    return render(request, template, {
+        "user": user,
+        "action_list": action_list,
     })
 
 def user_interactions(request, slug):

@@ -23,21 +23,9 @@
       {% else %}
       <h3>@{{ user.username }} Projects</h3>
       {% endifequal %}
-
-      {# TODO: quizas deberia estar en projects/projects_list? #}
       <div class="projects-wrapper">
-         {% paginate projects %}
-         {% for object in projects %}
-            {% include "project/project_teaser.html" %}
-         {% empty %}
-               <span class="no-yet">{% trans "No project yet" %}</span>
-            {% ifequal request.user user %}
-               <span class="new"><a href="{% url "project-create" %}">{% trans "Create new project" %}</a></span>
-            {% endifequal %}
-         {% endfor %}
+         {% include "project/projects_list.html" %}
       </div>
-      {% show_more %}
-
 {% endblock %}
 
 {% block right_row %}
