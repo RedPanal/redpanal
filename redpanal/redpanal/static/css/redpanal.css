@@ -660,7 +660,12 @@ p.expl {
 /* audio teasers */
 
 .teaser-audio {
-   margin-top: 2em;
+    border-bottom: 1px solid #DDDDDD;
+    padding: 25px 0 10px;
+}
+
+.teaser-audio:hover {
+   background-color: #F4FCFE;
 }
 
 .top {

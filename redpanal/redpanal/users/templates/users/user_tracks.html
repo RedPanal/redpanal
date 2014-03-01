@@ -1,0 +1,58 @@
+{% extends "two_rows.html" %}
+{% load i18n endless %}
+
+{% block title %}@{% trans "user"%}{% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+ <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+ <script>
+    $(function (){
+        $('video,audio').mediaelementplayer({
+            audioWidth: 460,
+            // height of audio player
+            audioHeight: 30,
+            // initial volume when the player starts
+            startVolume: 0.8});
+
+        $.endlessPaginate({
+            paginateOnScroll: true,
+            paginateOnScrollChunkSize: 5,
+            paginateOnScrollMargin: 10
+        });
+    });
+ </script>
+{% endblock %}
+
+{% block left_row %}
+      {% ifequal request.user user %}
+      <h3>{% trans "My Tracks" %}</h3>
+      {% else %}
+      <h3>@{{ user.username }} Tracks</h3>
+      {% endifequal %}
+
+      {% paginate audios %}
+      {% for object in audios %}
+         {% include "audio/audio_teaser.html" %}
+      {% empty %}
+            <span class="no-yet">{% trans "No tracks yet" %}</span>
+        {% ifequal request.user user %}
+            <span class="new"><a href="{% url "audio-create" %}">{% trans "Upload track" %}</a></span>
+        {% endifequal %}
+      {% endfor %}
+      {% show_more %}
+
+{% endblock %}
+
+{% block right_row %}
+   {% if request.user.is_authenticated %}
+       <ul class="nav nav-list auth-user">
+         {% include "auth-items-menu.html" %}
+       </ul>
+   {% endif %}
+    <ul class="nav nav-list">
+      {% include "not-auth-items-menu.html" %}
+    </ul>
+    {% include "users/user_stats.html" %}
+{% endblock %}
+

@@ -35,6 +35,15 @@ def user_page(request, slug):
         "action_list": action_list,
     })
 
+def user_tracks(request, slug):
+    user = get_object_or_404(User, username=slug)
+    audios = Audio.objects.filter(user=user)
+
+    return render(request, "users/user_tracks.html", {
+        "user": user,
+        "audios": audios,
+    })
+
 def user_interactions(request, slug):
     user = get_object_or_404(User, username=slug)
     return render(request, "users/user_interactions.html", {
