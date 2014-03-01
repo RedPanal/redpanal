@@ -6,5 +6,5 @@
     <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}">{{ object.name }}</a></span>
     <span class="description">{{ object.description|slice:":50" }}...</span>
     <span class="tags">{% include 'core/hashtags_block.html' %}</span>
-    <span class="ago">{% blocktrans with timeago=object.created_at|timesince %}{{ timeago }} ago{% endblocktrans %}</span><br>
+    <span class="ago">{% blocktrans with timesince=object.created_at|timesince %}{{ timesince }} ago{% endblocktrans %}</span><br>
 </div>

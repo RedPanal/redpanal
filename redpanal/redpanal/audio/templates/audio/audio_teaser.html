@@ -2,7 +2,7 @@
 {% load url from future %}
 
 <div class="teaser-audio">
-    <div class="top-date">{{ object.created_at|timesince }}</div>
+    <div class="top-date">{% blocktrans with timesince=object.created_at|timesince %}{{ timesince }} ago{% endblocktrans %}</div>
     <div class="top">
        <div class="top-user user"><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></div>
        <div class="top-title"><h3><a href="{% url 'audio-detail' object.slug %}">{{ object.name }}</a></h3> {{ object.description }}</div>

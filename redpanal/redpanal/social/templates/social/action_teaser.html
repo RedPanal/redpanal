@@ -5,7 +5,8 @@
 {% else %}
  <a href="{{ action.actor_url }}">{{ action.actor }}</a>
 {% endif %}
-<span class="ago">{% blocktrans %}{{ action.timestamp|timesince }} ago{% endblocktrans %}</span><br>
+
+<span class="ago">{% blocktrans with timeago=action.timestamp|timesince %}{{ timeago }} ago{% endblocktrans %}</span><br>
 <span class="message">
    <span class="verb {{ action.verb }}">
    {% ifequal action.verb 'commented' %}{# trans 'Commented' #}{% endifequal %}

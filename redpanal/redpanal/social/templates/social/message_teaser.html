@@ -2,7 +2,7 @@
 <li>
   {% avatar object.user 50 %}
   <span class="user"><a href="{{ object.user.get_absolute_url }}">{{ object.user }}</a></span>
-  <span class="ago">{% blocktrans with object.created_at|timesince as timesince  %} {{ timesince }} ago {% endblocktrans %}</span><br>
+  <span class="ago">{% blocktrans with timesince=object.created_at|timesince %}{{ timesince }} ago{% endblocktrans %}</span><br>
   <span class="message">{{ object.as_html|safe }}</span>
 </li>
 
