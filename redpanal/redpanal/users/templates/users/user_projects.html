@@ -46,8 +46,10 @@
          {% include "auth-items-menu.html" %}
        </ul>
    {% endif %}
-    {% include "users/user_stats.html" %}
     <ul class="nav nav-list">
+      {% ifnotequal request.user user %}
+      <li><a href="{{ user.get_absolute_url }}"><i class="fa fa-user"></i> {% blocktrans with name=user %}@{{ name }} Account{% endblocktrans %}</a></li>
+      {% endifnotequal %}
       {% include "not-auth-items-menu.html" %}
     </ul>
     <ul class="nav nav-list">
