@@ -114,6 +114,7 @@ INSTALLED_APPS = (
 #    'allauth.socialaccount.providers.vimeo',
     'avatar',
     'endless_pagination',
+    'easy_thumbnails',
 )
 
 
@@ -150,3 +151,10 @@ HAYSTACK_CONNECTIONS = {
 }
 
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'small': {'size': (50, 50), 'crop': True},
+        'medium': {'size': (300, 300), 'crop': True},
+    },
+}

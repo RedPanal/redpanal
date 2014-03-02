@@ -20,9 +20,12 @@ class Project(models.Model, BaseModelMixin):
                                    blank=True, null=True, editable=False)
     audios =  models.ManyToManyField("audio.Audio", verbose_name=_('audios'),
                                      blank=True, null=True)
+    image = models.ImageField(verbose_name=_('image'),
+                              upload_to="uploads/images/projects/%Y_%m",
+                              blank=True, null=True)
     user = models.ForeignKey(User, editable=False, verbose_name=_('user'))
-
     tags = TaggableManager(blank=True, verbose_name=_('hashtags'))
+
 
     def get_absolute_url(self):
         return reverse('project-detail', kwargs={'slug': self.slug})
