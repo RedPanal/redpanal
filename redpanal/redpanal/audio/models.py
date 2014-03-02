@@ -16,7 +16,7 @@ from ..utils.models import BaseModelMixin
 
 
 class Audio(models.Model, BaseModelMixin):
-    name = models.CharField(_('name'), max_length=100, unique=True)
+    name = models.CharField(_('name'), max_length=100)
     slug = AutoSlugField(populate_from='name', always_update=False,
                          editable=False, blank=True, unique=True)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
