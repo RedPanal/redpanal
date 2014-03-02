@@ -149,7 +149,7 @@ def build_static():
         run("mkdir -p %s" % STATIC_ROOT)
     with virtualenv(VENV_DIR):
         with cd(MANAGEPY_SUBDIR):
-            run_venv("%s manage.py collectstatic --settings=redpanal.production_settings -v 1 --clear --link" % PYTHON_BIN)
+            run_venv("%s manage.py collectstatic --settings=redpanal.production_settings -v 0 --noinput --clear --link" % PYTHON_BIN)
 
     run("chmod -R ugo+r %s" % STATIC_ROOT)
 
