@@ -1,11 +1,11 @@
-Django==1.6.1
+Django==1.6.2
 South==0.8.2
 django-activity-stream==0.4.5beta1
 django-allauth==0.13
 django-autoslug==1.6.1
 django-crispy-forms==1.2.8
 django-taggit==0.10
-easy-thumbnails==1.3
+easy-thumbnails==1.4
 pytz
 timeside==0.4.4
 git+https://github.com/jezdez/django-avatar#egg=django-avatar
