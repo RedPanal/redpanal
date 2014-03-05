@@ -30,13 +30,22 @@
         "following": $(el).attr("following") === "true",
         "el": el,
         "render": function (){
-            text = {% if request.user.is_authenticated %} this.following ? '{% trans "Unfollow" %}' : '{% trans "Follow" %}' {% else %} '<a href="{% url 'account_login' %}?next={% firstof request.path '/' %}">{% trans "login" %}</a> {% trans "to follow" %}'{% endif %};
+            text = {% if request.user.is_authenticated %} this.following ? '{% trans "Following" %}' : '<i class="fa fa-plus"></i> {% trans "Follow" %}' {% else %} '<a href="{% url 'account_login' %}?next={% firstof request.path '/' %}"><i class="fa fa-plus"></i> {% trans "Follow" %}</a>'{% endif %};
             $(this.el).html(text);
         },
         "toggle": function (){
             this.following = !this.following;
             $(this.el).toggleClass("following unfollowing");
             $(this.el).toggleClass("btn-info btn-warning");
+        },
+        "hoverin": function (){
+            {% if request.user.is_authenticated %}if (this.following){
+               text = '<i class="fa fa-times"></i> {% trans "Unfollow" %}';
+               $(this.el).html(text);
+            }{% endif %}
+        },
+        "hoverout": function (){
+            this.render();
         },
         "click": function(){
             $.post(this.following ? this.unfollow_url : this.follow_url)
@@ -54,6 +63,9 @@
         $(el).addClass("btn-info");
     }
     $(el).click(function(){el.ffobject.click()});
+
+    //$(el).hover(function(){$(el).html('<i>hover!</i>');});
+    $(el).hover(function(){el.ffobject.hoverin()},function(){el.ffobject.hoverout()});
     el.ffobject.render();
   }
   $(".follow-unfollow").each(function(index, element){follow_unfollow_button(element)});
@@ -111,6 +123,7 @@
         <li class="discover"><a href="/"><i class="fa fa-music"></i> {% trans "My Community" %}</a></li>
         <li class="discover"><a href="{% url 'user-interactions' request.user %}"><i class="fa fa-comments"></i> {% trans "My Interactions" %}</a></li>
       {% endcomment %}
+        <li class="action"><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
         <li class="action"><a href="{% url "audio-create" %}"><i class="fa fa-upload"></i> {% trans "Upload file" %}</a></li>
         <li class="action"><a href="{% url "project-create" %}"><i class="fa fa-folder-open"></i> {% trans "Create project" %}</a></li>
         <li>
