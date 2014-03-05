@@ -17,7 +17,9 @@ def index(request):
         context.update({
         'ctype': ContentType.objects.get_for_model(User),
         'actor': request.user,
-        'action_list': actstream.models.user_stream(request.user)
+        'action_list': actstream.models.user_stream(request.user),
+        'following': actstream.models.following(request.user),
+        'followers': actstream.models.followers(request.user)
         })
     else:
         return redirect("/accounts/login/?next=/")
