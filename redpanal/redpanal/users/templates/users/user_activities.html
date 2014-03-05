@@ -27,19 +27,9 @@
 {% endblock %}
 
 {% block right_row %}
-   {% if request.user.is_authenticated %}
-       <ul class="nav nav-list auth-user">
-         {% include "auth-items-menu.html" %}
-       </ul>
-   {% endif %}
-    <ul class="nav nav-list">
-      {% ifnotequal request.user user %}
-      <li><a href="{{ user.get_absolute_url }}"><i class="fa fa-user"></i> {% blocktrans with name=user %}@{{ name }} Account{% endblocktrans %}</a></li>
-      {% endifnotequal %}
-      {% include "not-auth-items-menu.html" %}
-    </ul>
-    <ul class="nav nav-list">
+   {% include "users/user_prof.html" %}
+   <ul class="nav nav-list">
       {% include "discover-items-menu.html" %}
-    </ul>
+   </ul>
 {% endblock %}
 

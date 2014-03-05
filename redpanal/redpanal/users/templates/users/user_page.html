@@ -33,8 +33,6 @@
 
       <div class="user-page-top">
          <span class="user-about">{% if user.userprofile.about %}{{ user.userprofile.about }}{% else %}{% trans 'Sorry, still not put anything in my description' %}{% endif %}</span><br />
-         <span class="user-location"><i class="fa fa-map-marker"></i> {% if user.userprofile.location %}{{ user.userprofile.location }}{% else %}{% trans "from somewhere in the universe" %}{% endif %}</span>
-         {% with object=user.userprofile %} <span class="tags">{% include 'core/hashtags_block.html' %}</span>{% endwith %}
       </div>
 
       <h3>{% trans "Last tracks" %}</h3>
@@ -46,8 +44,7 @@
             <span class="new"><a href="{% url "audio-create" %}">{% trans "Upload track" %}</a></span>
         {% endifequal %}
       {% endfor %}
-
-      <span class="more"><a href="#user tracks">more</a></span>
+      <span class="more"><a href="{% url 'user-tracks' user %}">{% trans "more..." %}</a></span>
 
       <h3>{% trans "Last activities" %}</h3>
        {# include "social/actions_list.html" #}
@@ -58,7 +55,7 @@
             <span class="no-yet">{% trans "No actions yet" %}</span>
          {% endfor %}
       </ul>
-      <span class="more"><a href="#user tracks">more</a></span>
+      <span class="more"><a href="{% url 'user-activities' user %}">{% trans "more..." %}</a></span>
 
       <h3>{% trans "Last projects" %}</h3>
       <div class="projects-wrapper">
@@ -71,23 +68,16 @@
             {% endifequal %}
          {% endfor %}
       </div>
-
-      <span class="more"><a href="#user tracks">more</a></span>
+      <span class="more"><a href="{% url 'user-projects' user %}">{% trans "more..." %}</a></span>
 
 {% endblock %}
 
 {% block right_row %}
-   {% if request.user.is_authenticated %}
-       <ul class="nav nav-list auth-user">
-         {% include "auth-items-menu.html" %}
-       </ul>
-   {% endif %}
-    {% include "users/user_stats.html" %}
-    <ul class="nav nav-list">
-      {% include "not-auth-items-menu.html" %}
-    </ul>
-    <ul class="nav nav-list">
+      {% with "full" as profmode %}     
+         {% include "users/user_prof.html" %}
+      {% endwith %}
+   <ul class="nav nav-list">
       {% include "discover-items-menu.html" %}
-    </ul>
+   </ul>
 {% endblock %}
 

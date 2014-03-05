@@ -16,16 +16,13 @@
 {% endblock %}
 
 {% block right_row %}
-   {% if request.user.is_authenticated %}
-       <ul class="nav nav-list auth-user">
-         {% include "auth-items-menu.html" %}
-       </ul>
-   {% endif %}
-    <ul class="nav nav-list">
-      {% include "not-auth-items-menu.html" %}
-    </ul>
-    <ul class="nav nav-list">
+   {% ifequal request.user user %}
+         {% include "users/user_prof.html" %}
+   {% else %}
+      {% include "users/user_prof.html" %}
+   {% endifequal %}
+   <ul class="nav nav-list">
       {% include "discover-items-menu.html" %}
-    </ul>
+   </ul>
 {% endblock %}
 

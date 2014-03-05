@@ -386,7 +386,7 @@ h3.sign-up a:hover {
     transition: none 0s ease 0s;
     border-radius: 0;
     vertical-align: baseline;
-    width: 600px;
+    width: 550px;
     margin:0;
 }
 
@@ -483,28 +483,15 @@ p.expl {
    color: #FFFFFF;
 }
 
-.sidebar .nav li.auth-item{
-}
-
 .sidebar .nav li a{
-    background-color: #28CCEA;
+    background-color: #263e4e;
     border-bottom: 1px solid #FFFFFF;
     color: #FFFFFF;
     text-shadow: none;
 }
 
-.sidebar .nav li.auth-item a{
-    background-color: #F0FEC0;
-    color: #263e4e;
-}
-
 .sidebar .nav li a:hover{
-    background-color: #263e4e;
-}
-
-.sidebar .nav li.auth-item a:hover{
-    color: #28CCEA;
-    background-color:transparent;
+    background-color: #28CCEA;
 }
 
 /* user list */
@@ -512,7 +499,7 @@ p.expl {
 .users-list-wrapper {
     float: right;
     margin-bottom: 30px;
-    width: 270px;
+    width: 300px;
 }
 
 .users-list-wrapper h3{
@@ -570,72 +557,220 @@ p.expl {
     overflow: hidden;
 }
 
-/* user stats */
+/* user profile */
 
-.user-stats {
-    background-color: #f0f0f0; /* celest claro #a2f0fe / verde claro #F0FEC0 / celeste #28CCEA; */
+.user-profile a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+p.tags a {
+    background-color: #A2F0FE;
+    border-radius: 3px 3px 3px 3px;
+    color: #28CCEA;
+    display: inline-block;
+    font-size: 14px;
+    margin: 1px;
+    padding: 2px 6px;
+}
+
+p.tags a:hover {
+    background-color: white;
+    color: #28CCEA;
+}
+
+.user-profile p.tags {
+   margin: 12px 0 18px;
+}
+
+.user-profile {
+    background-color:  #28CCEA; /* celest claro #a2f0fe / verde claro #F0FEC0 / celeste #28CCEA; */
     float: right;
     margin: 0 0 30px 0;
-    padding: 30px;
-    width: 240px;
+    padding: 20px;
+    width: 260px;
+}
+
+.user-profile .top-wrapper {
+    margin: 0 0 20px;
+    position: relative;
+}
+
+.user-profile.small .top-wrapper {
+    height: 111px;
+}
+
+.user-profile.full .user-profile-img img {
+    border-radius: 6px 6px 6px 6px;
+    background-color: white;
+    border: 1px solid #A2F0FE;
+    padding: 6px;
+    width: 245px;
+}
+
+.user-profile.small .user-profile-img img {
+    border-radius: 3px 3px 3px 3px;
+    background-color: white;
+    border: 1px solid #A2F0FE;
+    float: left;
+    margin: 0 15px 0 0;
+    padding: 5px;
 }
 
 
-.user-stats .followers-link {
-    float: right;
-    margin: 15px 1px 0px;
-}
 
-.user-stats h2 {
+.user-profile.full h2 {
     display: block;
-    font-size: 25px;
-    margin: 18px 0 8px;
+    font-size: 24px;
+    line-height: 24px;
+    margin: 18px 0 6px;
 }
 
-.user-stats h2 a {
+.user-profile.small h2 {
+    display: block;
+    font-size: 15px;
+    line-height: 17px;
+    margin: 0;
+}
+
+.user-profile h2 a {
     color: #263E4E;
 }
 
-.user-stats .location {
-    color: gray;
+.user-profile .location {
+    color: white;
     font-size: 14px;
-    margin: -10px 0 20px;
+    line-height: 17px;
 }
 
-.user-stats a.field-stats {
-    display: inline-block;
-    width: 49%;
+.user-profile.full .location {
+   width: 55%;
+   float: left;
+   margin-bottom: 20px;
 }
 
-.user-stats a.field-stats:hover {
+.user-profile.small .location {
+    float: left;
+    margin: 10px 0;
+    width: 50%;
+}
+
+.user-profile .followers-link {
+    padding: 0;
+}
+
+.user-profile.full .followers-link {
+   float: right;
+   margin-bottom: 20px;
+}
+
+.user-profile.small .followers-link {
+    margin-top: 59px;
+}
+
+.user-profile .edit-button {
+
+    background-color: #28CCEA;
+    border: 3px solid #A2F0FE;
+    border-radius: 8px 8px 8px 8px;
+    color: #A2F0FE;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+
+.user-profile .edit-button:hover {
+    color: white;
+    border-color: white;
     text-decoration: none;
 }
 
-.user-stats a.field-stats b{
+.user-profile.small .edit-button-wrapper {
+   margin-top: 66px;
+}
+
+.user-profile.full .edit-button {
+    float: right;
+}
+
+.user-profile a.field {
+    display: inline-block;
+}
+
+.user-profile a.field.icon {
+    width: 32%;
+}
+
+.user-profile a.field.stats {
+    width: 49%;
+    margin: 4px 0 3px;
+}
+
+.user-profile a.field.auth {
+    width: 49%;
+    margin: 5px 0 10px;
+}
+
+.user-profile a.field span{
+    display: block;
+}
+
+.user-profile a.field:hover {
+    text-decoration: none;
+}
+
+.user-profile a.field b{
     color: #263E4E;
     font-size: 25px;
     margin-left: 10px;
 }
 
-.user-stats a.field-stats span{
-    display: block;
-    font-size: 10px;
-    letter-spacing: 0.7px;
-    margin: -4px 0 0 10px;
+.user-profile a.field.icon i{
+    color: #263E4E;
+    font-size: 24px;
+    margin: 4px 0 7px 11px;
+}
+
+.user-profile a.field.icon span,
+.user-profile a.field.stats span {
+    color: white;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    margin: -2px 0 0 10px;
     text-transform: uppercase;
 }
 
-.user-stats a.field-stats:hover span{
-    text-decoration: underline;
+.user-profile a.field.auth span{
+    background-color: #F0FEC0;
+    color: #26A0A6;
+    font-size: 14px;
+    margin: 0;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.user-profile a.field.icon:hover span,
+.user-profile a.field.stats:hover span{
+    /* text-decoration: underline; */
+    color: #A2F0FE; 
 }
 
 
-.user-stats hr {
+.user-profile a.field.icon:hover i,
+.user-profile a.field.stats:hover b{
+    /* text-decoration: underline; */
+    color: white; 
+}
+.user-profile a.field.auth:hover span {
+    color: #263E4E; /* #26A0A6; #263E4E; */
+}
+.user-profile hr {
+    clear: both;
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
-    border-color: #dddddd;
+    border-color: #a2f0fe;
     border-image: none;
     border-style: none none solid;
     border-width: medium medium 1px;
@@ -894,3 +1029,49 @@ ul.users-list .followers-link {
     text-align: left;
     width: 66%;
 }
+
+/* ### follow buttons ### */
+
+
+.btn.follow-unfollow {
+    background: none repeat scroll 0 0 #28CCEA;
+    border: 3px solid #A2F0FE;
+    border-radius: 8px 8px 8px 8px;
+    box-shadow: none;
+    color: #A2F0FE;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 10px;
+    text-shadow: none;
+}
+
+.btn.follow-unfollow:hover {
+    color: white;
+    border-color: white;
+}
+
+.btn.follow-unfollow.unfollowing {
+}
+
+.btn.follow-unfollow.unfollowing a {
+    color: #A2F0FE;
+}
+
+.btn.follow-unfollow.unfollowing:hover {
+    color: #26A0A6;
+    border-color: #26A0A6;
+}
+
+.btn.follow-unfollow.following {
+    color: white;
+    border-color: #26A0A6;
+    background-color: #26A0A6;
+}
+
+.btn.follow-unfollow.following:hover {
+    color: red;
+    border-color: red;
+    background-color: #28CCEA;
+}
+
+

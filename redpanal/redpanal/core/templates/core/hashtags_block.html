@@ -1,2 +1,2 @@
-{% for tag in object.tags.all %} <a href="{% url 'hashtaged-list' slug=tag.slug %}">#{{ tag.slug }}</a> {% endfor %}
+{% for tag in object.tags.all %} <a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.slug }}</a> {% endfor %}
 
