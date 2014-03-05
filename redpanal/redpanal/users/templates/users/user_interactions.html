@@ -16,11 +16,7 @@
 {% endblock %}
 
 {% block right_row %}
-   {% ifequal request.user user %}
-         {% include "users/user_prof.html" %}
-   {% else %}
-      {% include "users/user_prof.html" %}
-   {% endifequal %}
+   {% include "users/user_prof.html" %}
    <ul class="nav nav-list">
       {% include "discover-items-menu.html" %}
    </ul>
