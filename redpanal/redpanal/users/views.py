@@ -81,10 +81,15 @@ def user_activities(request, slug):
     })
 
 def user_interactions(request, slug):
-    user = get_object_or_404(User, username=slug)
-    return render(request, "users/user_interactions.html", {
-        "user": user,
-    })
+    if request.user.is_authenticated():
+       user = get_object_or_404(User, username=slug)
+       if request.user == user:
+          return render(request, "users/user_interactions.html", {
+              "user": user,
+          })
+       return redirect(user.get_absolute_url())
+    else:
+       return redirect("/accounts/login/?next=/")
 
 @login_required
 def user_profile(request):
