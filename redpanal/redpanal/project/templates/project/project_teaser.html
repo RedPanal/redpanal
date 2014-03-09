@@ -1,10 +1,46 @@
-{% load i18n staticfiles thumbnail %}
-<div class="project-teaser">
-    <span class="project-img">
-         <img src="{{ object.image|thumbnail_url:'small' }}" alt="">
-    </span>
-    <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}">{{ object.name }}</a></span>
-    <span class="description">{{ object.description|slice:":50" }}...</span>
-    <span class="tags">{% include 'core/hashtags_block.html' %}</span>
-    <span class="ago">{% blocktrans with timesince=object.created_at|timesince %}{{ timesince }} ago{% endblocktrans %}</span><br>
+{% load i18n staticfiles thumbnail avatar_tags %}
+<div class="project-teaser {{ mode|default:"small" }}">
+    <div class="project-img">
+   {% if mode != "in-project-detail" %}
+      <a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">
+      {% if object.image %}
+         <img src="{{ object.image|thumbnail_url:'small' }}" alt="{{ object.name }}">
+      {% else %}
+         <img src="/static/img/default/p{{ object.name|length|slugify|last }}.png" alt="{{ object.name }}">
+      {% endif %}
+      </a>
+   {% else %}
+      <span>
+      {% if object.image %}
+         <img src="{{ object.image|thumbnail_url:'small' }}" alt="{{ object.name }}">
+      {% else %}
+         <img src="/static/img/default/p{{ object.name|length|slugify|last }}.png" alt="{{ object.name }}">
+      {% endif %}
+      </span>
+   {% endif %}
+    </div>
+    <div class="project-data">
+      {% if mode == "full" %}
+
+       <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|capfirst }}</a></span>
+       <span class="description">{{ object.description|capfirst }}</span>
+       <span class="tags">{% include 'core/hashtags_block.html' %}</span>
+       <span class="tracks"><b class="number">{{ object.audios.all|length }}</b> {% trans "Tracks" %}</span>
+       <span class="ago">{% blocktrans with timesince=object.created_at|timesince %}{{ timesince }} ago{% endblocktrans %}, {% trans "by" %} @{{ object.user }}</span>
+
+      {% elif mode == "in-project-detail" %}
+
+       <h1 class="name">{{ object.name|capfirst }}</h1>
+       <span class="creator">{% trans "Project created by" %} <span class="user"><a href="{{ object.user.get_absolute_url }}"><b>{{ object.user }}</b></a></span> {% trans "at" %} {{ object.created_at }}</span>
+       <span class="description">{{ object.description|capfirst }}</span>
+       <span class="tags">{% include 'core/hashtags_block.html' %}</span>
+       <span class="tracks"><b class="number">{{ object.audios.all|length }}</b> {% trans "Tracks" %}</span>
+
+      {% else %}
+
+       <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|capfirst }}</a></span>
+       <span class="description">{{ object.description|truncatechars:50|capfirst }}</span>
+       <span class="tags">{% for tag in object.tags.all|slice:":3" %} <a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.slug }}</a> {% endfor %}{# from 'core/hashtags_block.html' #}</span>
+      {% endif %}
+    </div>
 </div>

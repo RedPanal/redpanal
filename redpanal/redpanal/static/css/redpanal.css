@@ -21,7 +21,7 @@ body.home {}
 
 body.bkg {
   background: no-repeat center center fixed;
-  background-color: #f4fcfe;
+  background-color: #EDFAFD;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -64,14 +64,14 @@ i.fa.big-fa-icon {
 
 .more {
     display: block;
-    margin: 13px 0 0;
+    margin: 30px 0 0;
     text-align: right;
 }
 
 .more a {
-   background-color: #28CCEA;
-   color: white;
-   padding: 1px 4px;
+    background-color: #263E4E;
+    color: white;
+    padding: 3px 12px;
 }
 
 .more a:hover {
@@ -538,17 +538,81 @@ p.expl {
     margin-top: 40px;
 }
 
+.projects-wrapper.full {
+    margin-right: -20px;
+    margin-top: 0;
+}
+
 .project-teaser {
     display: inline-block;
-    height: 255px;
+    height: 290px;
     margin: 0 22px 0 0;
     vertical-align: top;
     width: 160px;
 }
 
-.project-teaser span {
+.project-teaser.full {
+    border-bottom: 1px solid #DDDDDD;
+    clear: both;
+    display: block;
+    height: auto;
+    margin: 0;
+    min-height: 200px;
+    padding: 40px 40px 40px 0;
+    position: relative;
+    vertical-align: top;
+    width: auto;
+}
+.project-teaser.in-project-detail {
+    clear: both;
+    display: block;
+    height: auto;
+    margin: 40px 0;
+    min-height: 200px;
+    padding: 40px 0 40px 40px;
+    position: relative;
+    vertical-align: top;
+    width: auto;
+    background-color:#EDFAFD;
+}
+
+.project-teaser.full:hover {
+    border-bottom: 1px solid #263E4E;
+}
+
+.project-data > span {
     display: block;
     margin: 0;
+}
+
+.project-teaser .project-img a {
+    border: 1px solid #DDDDDD;
+    display: inline-block;
+    height: 160px;
+    width: 160px;
+}
+
+.project-teaser.full .project-img,
+.project-teaser.in-project-detail .project-img {
+    display: inline;
+}
+
+.project-teaser.full .project-img a,
+.project-teaser.in-project-detail .project-img span {
+    border: 1px solid #DDDDDD;
+    float: left;
+    height: 200px;
+    width: 200px;
+    margin: 0 20px 0 0;
+}
+
+
+.project-teaser .project-img a:hover {
+    border: 1px solid #263E4E;
+}
+
+.project-teaser.full .project-data {
+
 }
 
 .project-teaser .thumbnail{
@@ -556,25 +620,93 @@ p.expl {
 
 .project-teaser .name{
     font-size: 16px;
-    margin: 4px 0 0;
+    margin: 8px 0 0;
+}
+
+.project-teaser.full .name {
+    font-size: 18px;
+    margin: 8px 0 0;
+}
+
+.project-teaser.in-project-detail .name{
+    font-size: 33px;
+    font-weight: bold;
+    line-height: 33px;
+    margin: 0;
 }
 
 .project-teaser .description{
     color: #AAAAAA;
     font-size: 13px;
-    height: 2.3em;
-    line-height: 15px;
+    line-height: 16px;
+    margin: 4px 0 0;
 }
 
-.project-teaser .ago{
+.project-teaser.full .description {
+    font-size: 14px;
+    line-height: 18px;
+    margin: 6px 0 0;
+}
+
+.project-teaser.in-project-detail .description{
+    color: #263E4E;
+    font-size: 15px;
+    line-height: 18px;
+    margin: 12px 0;
+}
+
+.project-teaser.full .ago{
     color: #AAAAAA;
     font-size: 0.75em;
-    text-align: right;
+    position: absolute;
+    bottom: 30px; right: 1px;
+}
+
+.project-teaser.in-project-detail .creator {
+    color: #AAAAAA;
+    font-size: 13px;
+    font-weight: normal;
+    margin: 0 0 12px;
+}
+
+.project-teaser.in-project-detail .creator img,
+.project-teaser.full .ago img {
+   vertical-align: baseline;
+}
+
+.project-teaser.in-project-detail .created-at{
+    color: #263E4E;
+    font-size: 14px;
+    font-weight: normal;
 }
 
 .project-teaser .tags{
-    height: 1.4em;
-    overflow: hidden;
+    margin: 6px 0 0;
+    /* height: 1.4em; */
+    /* overflow: hidden; */
+}
+
+.project-teaser.full .tags,
+.project-teaser.in-project-detail .tags{
+    margin: 8px 0 0;
+}
+
+.project-teaser .tags a,
+.bottom-tags a{
+    background-color: #A2F0FE;
+    border-radius: 3px 3px 3px 3px;
+    color: white;
+    display: inline-block;
+    font-size: 13px;
+    margin: 2px 0;
+    padding: 0 5px;
+    white-space: nowrap;
+}
+
+.project-teaser .tags a:hover,
+.bottom-tags a:hover {
+    background-color: #28CCEA;
+    text-decoration: none;    
 }
 
 /* user profile */
@@ -592,6 +724,7 @@ p.tags a {
     font-size: 14px;
     margin: 1px;
     padding: 2px 6px;
+    white-space: nowrap;
 }
 
 p.tags a:hover {
@@ -818,11 +951,12 @@ p.tags a:hover {
 
 .teaser-audio {
     border-bottom: 1px solid #DDDDDD;
-    padding: 25px 0 10px;
+    padding: 30px 0;
 }
 
 .teaser-audio:hover {
-   background-color: #F4FCFE;
+   /* background-color: #EDFAFD; */
+    border-bottom: 1px solid #263E4E;
 }
 
 .top {
@@ -852,6 +986,22 @@ p.tags a:hover {
   margin: 0;
 }
 
+.teaser-audio.in-project-detail .top-title h3 {
+    display: inline;
+    font-size: 18px;
+    line-height: 24px;
+    margin: 0;
+    font-weight: normal;
+}
+
+.teaser-audio.in-project-detail .mejs-container {
+   padding-top: 121px;
+}
+
+.teaser-audio.in-project-detail .top {
+   padding: 0 0 8px 68px;
+}
+
 .top-data {
     color: #AAAAAA;
     font-size: 0.75em;
@@ -859,6 +1009,7 @@ p.tags a:hover {
 }
 
 .bottom-tags {
+    margin-top: 0;
     text-align: right;
 }
 
@@ -919,7 +1070,7 @@ ul.users-list > li {
 
 ul.action-stream > li:hover,
 ul.users-list > li:hover {
-    background-color: #f4fcfe;
+    background-color: #EDFAFD;
 }
 
 ul.action-stream > li img,

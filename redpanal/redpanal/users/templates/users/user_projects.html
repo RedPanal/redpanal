@@ -23,8 +23,10 @@
       {% else %}
       <h3>@{{ user.username }} Projects</h3>
       {% endifequal %}
-      <div class="projects-wrapper">
+      <div class="projects-wrapper full">
+      {% with mode="full" %}
          {% include "project/projects_list.html" %}
+      {% endwith %}
       </div>
 {% endblock %}
 

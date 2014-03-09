@@ -9,7 +9,7 @@
  <script>
     $(function (){
         $('video,audio').mediaelementplayer({
-            audioWidth: 460,
+            audioWidth: 540, //460
             // height of audio player
             audioHeight: 30,
             // initial volume when the player starts
@@ -62,7 +62,7 @@
 
       <h3>{% trans "Last projects" %}</h3>
       <div class="projects-wrapper">
-         {% for object in user.project_set.all|slice:":5" %}
+         {% for object in user.project_set.all|slice:":6" %}
             {% include "project/project_teaser.html" %}
          {% empty %}
                <span class="no-yet">{% trans "No project yet" %}</span>

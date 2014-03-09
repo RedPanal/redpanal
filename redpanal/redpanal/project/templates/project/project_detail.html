@@ -2,14 +2,32 @@
 {% load i18n %}
 {% load url from future %}
 
-{% block title %}{{ object.name }}{% endblock %}
+{% block title %}| {{ object.name }}{% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+<script type="text/javascript">
+    $(function (){
+        $('video,audio').mediaelementplayer({
+            audioWidth: 940,
+            // height of audio player
+            audioHeight: 30,
+            // initial volume when the player starts
+            audioWaveHeight: 100,
+            customSize: 'big',
+            startVolume: 0.8});
+    });
+</script>
+{% endblock %}
 
 {% block content %}
-  {% include "project/project_object.html" %}
+   {% with mode="in-project-detail" %}
+      {% include "project/project_teaser.html" %}
+   {% endwith %}
 
-  {% for audio in project.audios.all %}
-    {% include "audio/audio_teaser.html" with object=audio %}
-  {% endfor %}
+   {% for audio in project.audios.all %}
+     {% include "audio/audio_teaser.html" with object=audio mode="in-project-detail" %}
+   {% endfor %}
 
 {% trans "Project versions" %}
 
