@@ -458,7 +458,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 }
 /* ==================  main  ==================== */
 
-.main h3 {
+.main > h3 {
     border-bottom: 1px solid #DDDDDD;
     font-size: 22px;
     font-weight: normal;
@@ -540,7 +540,7 @@ p.expl {
 
 .projects-wrapper.full {
     margin-right: -20px;
-    margin-top: 0;
+    margin-top: -10px;
 }
 
 .project-teaser {
@@ -557,8 +557,8 @@ p.expl {
     display: block;
     height: auto;
     margin: 0;
-    min-height: 200px;
-    padding: 40px 40px 40px 0;
+    min-height: 162px;
+    padding: 30px 30px 30px 0;
     position: relative;
     vertical-align: top;
     width: auto;
@@ -601,8 +601,8 @@ p.expl {
 .project-teaser.in-project-detail .project-img span {
     border: 1px solid #DDDDDD;
     float: left;
-    height: 200px;
-    width: 200px;
+    height: 160px;
+    width: 160px;
     margin: 0 20px 0 0;
 }
 
@@ -625,7 +625,8 @@ p.expl {
 
 .project-teaser.full .name {
     font-size: 18px;
-    margin: 8px 0 0;
+    margin: 1px 0 0;
+    font-weight: bold;
 }
 
 .project-teaser.in-project-detail .name{
@@ -656,10 +657,11 @@ p.expl {
 }
 
 .project-teaser.full .ago{
+    bottom: 22px;
     color: #AAAAAA;
-    font-size: 0.75em;
+    font-size: 11px;
     position: absolute;
-    bottom: 30px; right: 1px;
+    right: 1px;
 }
 
 .project-teaser.in-project-detail .creator {
@@ -693,20 +695,21 @@ p.expl {
 
 .project-teaser .tags a,
 .bottom-tags a{
-    background-color: #A2F0FE;
+    background-color: #28CCEA; /* #A2F0FE; */
     border-radius: 3px 3px 3px 3px;
-    color: white;
+    color: #fff; /* #28CCEA; */
     display: inline-block;
-    font-size: 13px;
+    font-size: 14px;
     margin: 2px 0;
-    padding: 0 5px;
+    padding: 0 6px 1px;
     white-space: nowrap;
 }
 
 .project-teaser .tags a:hover,
 .bottom-tags a:hover {
     background-color: #28CCEA;
-    text-decoration: none;    
+    text-decoration: none;
+    color: white;    
 }
 
 /* user profile */
@@ -952,6 +955,11 @@ p.tags a:hover {
     padding: 30px 0;
 }
 
+
+.teaser-audio .mejs-container {
+    padding-top: 84px;
+}
+
 .teaser-audio:hover {
    /* background-color: #EDFAFD; */
     border-bottom: 1px solid #263E4E;
@@ -968,20 +976,25 @@ p.tags a:hover {
 
 .top-date {
     color: #AAAAAA;
-    font-size: 0.75em;
-    margin-bottom: -2em;
+    font-size: 11px;
+    font-style: italic;
+    margin-bottom: -24px;
     text-align: right;
 }
 
 .top-title {
+    color: #AAAAAA;
+    margin: 0;
 }
 
 .top-title h3 {
-  color: #AAAAAA;
-  font-size: 1.25em;
-  display: inline;
-  line-height: 1.2em;
-  margin: 0;
+    color: #AAAAAA;
+    display: inline;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 25px;
+    margin: 0;
 }
 
 .teaser-audio.in-project-detail .top-title h3 {
@@ -989,7 +1002,7 @@ p.tags a:hover {
     font-size: 18px;
     line-height: 24px;
     margin: 0;
-    font-weight: normal;
+    font-weight: bold;
 }
 
 .teaser-audio.in-project-detail .mejs-container {
@@ -1002,12 +1015,12 @@ p.tags a:hover {
 
 .top-data {
     color: #AAAAAA;
-    font-size: 0.75em;
-    margin-top: 1px;
+    font-size: 11px;
+    margin: 0;
 }
 
 .bottom-tags {
-    margin-top: 0;
+    margin: 0 0 -2px;
     text-align: right;
 }
 

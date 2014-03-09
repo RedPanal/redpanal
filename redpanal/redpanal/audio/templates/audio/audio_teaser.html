@@ -10,10 +10,9 @@
        <div class="top-data">{% trans "Channels" %}: {{ object.channels }} | {{ object.samplerate }} | {{ object.get_duration }} ms</div>
    </div>
 {% else %}
-    <div class="top-date">{% blocktrans with timesince=object.created_at|timesince %}{{ timesince }} ago{% endblocktrans %}</div>
+    <div class="top-date">{% blocktrans with timesince=object.created_at|timesince user=object.user %}{{ timesince }} ago, by @{{ user }}{% endblocktrans %}</div>
     <div class="top">
-       <div class="top-user user"><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></div>
-       <div class="top-title"><h3><a href="{% url 'audio-detail' object.slug %}">{{ object.name|capfirst }}</a></h3> {{ object.description|truncatechars:50|capfirst }}</div>
+       <div class="top-title"><h3><a href="{% url 'audio-detail' object.slug %}">{{ object.name|capfirst }}</a></h3>{# object.description|truncatechars:50|capfirst #}</div>
        <div class="top-data">{% trans "Channels" %}: {{ object.channels }} | {{ object.samplerate }} | {{ object.get_duration }} ms</div>
    </div>
 {% endif %}
