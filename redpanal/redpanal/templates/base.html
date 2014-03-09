@@ -72,7 +72,7 @@
  });
  </script>
 </head>
-<body class="{% block body_class %}{% endblock %}">
+<body class="{% if request.user.is_authenticated %}logged-user{% endif %} {% block body_class %}{% endblock %}">
 
 <header id="header">
     <div class="navbar navbar-fixed-top">
@@ -112,6 +112,8 @@
 </header>
 
 {#      <h1>{% block title %}{% endblock %}</h1> #}
+
+{% block background %}{% endblock %}
 
 {% if request.user.is_authenticated %}
 {% block breadcrumb %}

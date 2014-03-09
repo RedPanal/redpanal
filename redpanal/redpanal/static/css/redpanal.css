@@ -6,6 +6,10 @@ html, body {
 
 #content {
   min-height: 600px;
+  padding-top: 20px; /* 40px */
+}
+.logged-user #content,
+.bkg #content {    /* profile forms and log-in pages */
   padding-top: 40px;
 }
 
@@ -436,6 +440,22 @@ input:-moz-placeholder, textarea:-moz-placeholder {
     font-style: italic;
 }
 
+/* === user background === */
+
+#user-background {
+    background-color: #F8FEE6;
+    height: 210px;
+    left: 0;
+    position: absolute;
+    top: 83px;
+    width: 100%;
+    z-index: -1000;
+}
+
+.logged-user #user-background {
+    top: 140px;
+    height: 190px;
+}
 /* ==================  main  ==================== */
 
 .main h3 {
@@ -657,6 +677,7 @@ p.tags a:hover {
 
 .user-profile .followers-link {
     padding: 0;
+    display: block;
 }
 
 .user-profile.full .followers-link {

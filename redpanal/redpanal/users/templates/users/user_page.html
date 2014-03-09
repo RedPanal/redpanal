@@ -24,6 +24,9 @@
  </script>
 {% endblock %}
 
+{% block background %}<div id="user-background"></div>{% endblock %}
+{# ToDo: this background will be customizable #}
+
 {% block left_row %}
       {% ifequal request.user user %}
       <h3 class="top-title">{% trans "About me" %}</h3>
