@@ -30,7 +30,8 @@
 
       {% elif mode == "in-project-detail" %}
 
-       <h1 class="name">{{ object.name|capfirst }}</h1>
+       <div class="inline-title"><h1 class="name">{{ object.name|capfirst }}</h1>
+      {% if request.user == object.user %}<span class="edit"><a title="{% trans "Edit project" %}" href="{% url "project-edit" object.slug %}">[{% trans "Edit" %}]</a> <a class="danger" title="{% trans "Delete project" %}" href="{% url "project-delete" object.slug %}">[{% trans "Delete" %}]</a></span>{% endif %}</div>
        <span class="creator">{% trans "Project created by" %} <span class="user"><a href="{{ object.user.get_absolute_url }}"><b>{{ object.user }}</b></a></span> {% trans "at" %} {{ object.created_at }}</span>
        <span class="description">{{ object.description|capfirst }}</span>
        <span class="tags">{% include 'core/hashtags_block.html' %}</span>

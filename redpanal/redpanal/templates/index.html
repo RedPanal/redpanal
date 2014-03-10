@@ -21,11 +21,9 @@
 
 {% block left_row %}
   {% if request.user.is_authenticated %}
-  <div>
-      <h3 class="top-title">{% trans "My Community" %}</h3>
-      <p class="expl">{% trans "My activities and the users that I follow" %}</p>
-      {% include "social/actions_list.html" %}
-  </div>
+     <h3 class="top-title">{% trans "My Community" %}</h3>
+     <p class="expl">{% trans "My activities and the users that I follow" %}</p>
+     {% include "social/actions_list.html" %}
   {% endif %}
 
 {% endblock %}

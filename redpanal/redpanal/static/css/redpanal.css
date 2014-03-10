@@ -564,16 +564,16 @@ p.expl {
     width: auto;
 }
 .project-teaser.in-project-detail {
+    background-color: #EDFAFD;
     clear: both;
     display: block;
     height: auto;
-    margin: 40px 0;
-    min-height: 200px;
-    padding: 40px 0 40px 40px;
+    margin: 30px 0;
+    min-height: 220px;
+    padding: 30px 0 30px 29px;
     position: relative;
     vertical-align: top;
     width: auto;
-    background-color:#EDFAFD;
 }
 
 .project-teaser.full:hover {
@@ -597,12 +597,19 @@ p.expl {
     display: inline;
 }
 
-.project-teaser.full .project-img a,
-.project-teaser.in-project-detail .project-img span {
+.project-teaser.full .project-img a {
     border: 1px solid #DDDDDD;
     float: left;
     height: 160px;
     width: 160px;
+    margin: 0 20px 0 0;
+
+}
+.project-teaser.in-project-detail .project-img span {
+    border: 1px solid #DDDDDD;
+    float: left;
+    height: 220px;
+    width: 220px;
     margin: 0 20px 0 0;
 }
 
@@ -707,9 +714,96 @@ p.expl {
 
 .project-teaser .tags a:hover,
 .bottom-tags a:hover {
-    background-color: #28CCEA;
+    background-color: #263E4E;
     text-decoration: none;
-    color: white;    
+    /* color: white; */
+}
+
+/* project detail */
+
+.project-detail {
+    position: relative;
+}
+
+.project-detail .form-actions {
+    background-color: transparent;
+    border: medium none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 27px;
+    text-align: right;
+    top: 217px;
+    width: 180px;;
+}
+
+.project-detail .project-data {
+}
+
+.project-detail .project-btn {
+   margin-bottom: 10px;
+}
+
+.edit {
+   background-color: #F0FEC0;
+   padding: 1px 2px;
+}
+
+.edit a {
+    color: #26A0A6;
+}
+
+.edit a:hover {
+    color: #263E4E;
+    text-decoration: none;
+}
+
+.inline-title h1 { /* titulo con texto al lado, TODO: unificar en todos los templates */
+    display: inline;
+}
+
+.inline-title .edit {
+    margin: 0 0 0 5px;
+    vertical-align: super;
+}
+
+
+#content .btn {
+    background: none repeat scroll 0 0 white;
+    border: 3px solid #28CCEA;
+    border-radius: 8px 8px 8px 8px;
+    box-shadow: none;
+    color: #28CCEA;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 10px;
+    text-shadow: none;
+}
+
+#content .btn:hover {
+    color: #263E4E; border-color: #263E4E;
+}
+
+#content .btn.logged {
+    color: #26A0A6;
+    border-color: #26A0A6;
+    background-color: #F0FEC0;
+}
+
+#content .btn.logged:hover {
+    color: #263E4E; border-color: #263E4E;
+}
+
+#content .btn.btn-danger:hover {
+    color: red; border-color: red;
+}
+
+#content .btn.btn-warning:hover {
+    color: orange; border-color: orange;
+}
+
+.danger:hover {
+    color: red !important;
 }
 
 /* user profile */
@@ -717,6 +811,10 @@ p.expl {
 .user-profile a:hover {
   text-decoration: none;
   color: white;
+}
+
+.user-profile .edit a:hover {
+  color: #263E4E;
 }
 
 p.tags a {
@@ -739,6 +837,10 @@ p.tags a:hover {
    margin: 12px 0 18px;
 }
 
+.user-profile.small .tags {
+    clear: both;
+    display: block;
+}
 .user-profile {
     background-color:  #28CCEA; /* celest claro #a2f0fe / verde claro #F0FEC0 / celeste #28CCEA; */
     float: right;
@@ -753,7 +855,7 @@ p.tags a:hover {
 }
 
 .user-profile.small .top-wrapper {
-    height: 111px;
+    /* height: 111px; */
 }
 
 .user-profile.full .user-profile-img img {
@@ -767,16 +869,25 @@ p.tags a:hover {
     background-color: white;
     border: 1px solid #A2F0FE;
     float: left;
-    margin: 0 15px 0 0;
+    margin: 0 15px 18px 0;
     padding: 2px;
 }
 
+.user-profile.small .edit-wrapper{
+    margin: 5px 0 0;
+}
 
+.user-profile.small .edit{
+   display: inline;
+}
 
-.user-profile.full h2 {
-    display: block;
+.user-profile.full h1 {
     font-size: 24px;
     line-height: 24px;
+}
+
+.user-profile.full .inline-title {
+    display: block;
     margin: 18px 0 6px;
 }
 
@@ -787,7 +898,8 @@ p.tags a:hover {
     margin: 0;
 }
 
-.user-profile h2 a {
+.user-profile h2 a,
+.user-profile h1 a {
     color: #263E4E;
 }
 
@@ -842,10 +954,12 @@ p.tags a:hover {
 
 .user-profile.small .edit-button-wrapper {
    margin-top: 66px;
+   /* TODO borrar*/
 }
 
 .user-profile.full .edit-button {
     float: right;
+   /* TODO borrar*/
 }
 
 .user-profile a.field {
@@ -965,16 +1079,20 @@ p.tags a:hover {
     border-bottom: 1px solid #263E4E;
 }
 
-.top {
+.teaser-audio .top,
+.detail-audio .top {
    padding: 0 0 8px 50px;
 }
 
-.top-user, .top-title, .top-data {
+.teaser-audio .top-user, 
+.teaser-audio .top-title, 
+.teaser-audio .top-data {
    line-height: 1.1em;
     font-size: 0.9em;
 }
 
-.top-date {
+.teaser-audio .top-date,
+.detail-audio .top-date {
     color: #AAAAAA;
     font-size: 11px;
     font-style: italic;
@@ -982,12 +1100,13 @@ p.tags a:hover {
     text-align: right;
 }
 
-.top-title {
+.teaser-audio .top-title,
+.detail-audio .top-title {
     color: #AAAAAA;
     margin: 0;
 }
 
-.top-title h3 {
+.teaser-audio .top-title h3 {
     color: #AAAAAA;
     display: inline;
     font-size: 18px;
@@ -1031,7 +1150,7 @@ p.tags a:hover {
 
 .detail-audio .top-title h1 {
   color: #AAAAAA;
-  font-size: 2.8em;
+  font-size: 32px;
   display: inline;
   line-height: 1em;
   margin: 0;
@@ -1045,7 +1164,7 @@ p.tags a:hover {
 }
 
 .detail-audio .top {
-   padding: 0 0 8px 68px;
+   padding: 0 0 9px 68px;
 }
 
 .detail-audio .bottom-tags {
@@ -1095,6 +1214,20 @@ ul.users-list > li img {
 ul.users-list .followers-link {
    float: right;
    padding: 0;
+}
+
+
+#content .action-stream .btn {
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    color: #28CCEA;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 0;
+    text-shadow: none;
+    margin: 0 2px;
 }
 
 .verb {
@@ -1216,7 +1349,7 @@ ul.users-list .followers-link {
 /* ### follow buttons ### */
 
 
-.btn.follow-unfollow {
+#content .user-profile .btn.follow-unfollow {
     background: none repeat scroll 0 0 #28CCEA;
     border: 3px solid #A2F0FE;
     border-radius: 8px 8px 8px 8px;
@@ -1228,33 +1361,36 @@ ul.users-list .followers-link {
     text-shadow: none;
 }
 
-.btn.follow-unfollow:hover {
+#content .user-profile .btn.follow-unfollow:hover {
     color: white;
     border-color: white;
 }
 
-.btn.follow-unfollow.unfollowing {
+#content .user-profile .btn.follow-unfollow.unfollowing {
 }
 
-.btn.follow-unfollow.unfollowing a {
+#content .user-profile .btn.follow-unfollow.unfollowing a {
     color: #A2F0FE;
 }
 
-.btn.follow-unfollow.unfollowing:hover {
+#content .user-profile .btn.follow-unfollow.unfollowing:hover {
     color: #26A0A6;
     border-color: #26A0A6;
 }
 
-.btn.follow-unfollow.following {
+#content .user-profile .btn.follow-unfollow.following {
     color: white;
     border-color: #26A0A6;
     background-color: #26A0A6;
 }
 
-.btn.follow-unfollow.following:hover {
+#content .user-profile .btn.follow-unfollow.following:hover {
     color: red;
     border-color: red;
     background-color: #28CCEA;
 }
+
+/* TODO falta definir follow-unfollow.following cuando aparecen fuera de user-profile */
+
 
 

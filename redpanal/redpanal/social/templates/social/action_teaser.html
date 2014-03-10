@@ -35,7 +35,7 @@
 </span>
 {# if request.user.is_authenticated #}
 <ul class="actions">
-<li><i class="icon-reply"></i> <button type="button" class="btn btn-link comment-reply" data-username="{{ action.actor }}">{% trans 'reply' %}</button></li>
-<li><i class="icon-repeat"></i> <button type="button" class="btn btn-link comment-amplify">{% trans 'amplify' %}</button></li>
+<li><button type="button" class="btn btn-link comment-reply" data-username="{{ action.actor }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
+<li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>
 </ul>
 {# endif #}

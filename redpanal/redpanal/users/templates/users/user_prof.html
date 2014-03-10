@@ -11,24 +11,45 @@
                </a>
             {% endifequal %}
          </span>
-         <h2 class="user-name">
-            <a href="{{ user.get_absolute_url }}" title="{% blocktrans with user=user.username %}Go to @{{ user }} profile{% endblocktrans %}">@{{ user.username }}</a>
-         </h2>
+
          {% ifequal profmode "full" %}
+
+            <div class="inline-title"><h1 class="user-name">
+               <a href="{{ user.get_absolute_url }}" title="{% blocktrans with user=user.username %}Go to @{{ user }} profile{% endblocktrans %}">@{{ user.username }}</a>
+            </h1>{% ifequal request.user user %}<span class="edit"><a href="/accounts/profile/">[{% trans "Edit profile" %}]</a></span>{% endifequal %}</div>
             {% with object=user.userprofile %} 
                {% if object.tags.all %}
                   <p class="tags">{% include 'core/hashtags_block.html' %}</p>
                {% endif %}
             {% endwith %}
+
+         {% else %}
+
+            <h2 class="user-name">
+               <a href="{{ user.get_absolute_url }}" title="{% blocktrans with user=user.username %}Go to @{{ user }} profile{% endblocktrans %}">@{{ user.username }}</a>
+            </h2>
+            {% ifequal request.user user %}
+               <div class="edit-wrapper"><div class="edit"><a href="/accounts/profile/">[{% trans "Edit profile" %}]</a></div></div>
+            {% endifequal %}
+
          {% endifequal %}
+
          {% if user.userprofile.location %}
          <p class="location"><i class="fa fa-map-marker"></i> {{ user.userprofile.location }}</p>
          {% endif %}
-         {% ifequal request.user user %}
-            <div class="edit-button-wrapper"><a class="edit-button" href="/accounts/profile/">{% trans "Edit profile" %}</a></div>
-         {% else %}
+
+         {% ifnotequal request.user user %}
             {% include "social/follow_button.html" %}
-         {% endifequal %}
+         {% endifnotequal %}
+
+         {% ifnotequal profmode "full" %}
+            {% with object=user.userprofile %} 
+               {% if object.tags.all %}
+                  <p class="tags">{% include 'core/hashtags_block.html' %}</p>
+               {% endif %}
+            {% endwith %}
+         {% endifnotequal %}
+
       </div>
       {% ifequal request.user user %}
       <hr>
