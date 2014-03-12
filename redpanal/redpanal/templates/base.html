@@ -30,7 +30,7 @@
         "following": $(el).attr("following") === "true",
         "el": el,
         "render": function (){
-            text = {% if request.user.is_authenticated %} this.following ? '{% trans "Following" %}' : '<i class="fa fa-plus"></i> {% trans "Follow" %}' {% else %} '<a href="{% url 'account_login' %}?next={% firstof request.path '/' %}"><i class="fa fa-plus"></i> {% trans "Follow" %}</a>'{% endif %};
+            text = {% if request.user.is_authenticated %} this.following ? '{% trans "Following" %}' : '<i class="fa fa-plus"></i> {% trans "Follow" %}' {% else %} '<i class="fa fa-plus"></i> {% trans "Follow" %}'{% endif %};
             $(this.el).html(text);
         },
         "toggle": function (){

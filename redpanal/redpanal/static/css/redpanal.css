@@ -763,6 +763,12 @@ p.expl {
     text-shadow: none;
 }
 
+#content .btn.following {
+    background-color: #26A0A6;
+    border-color: #26A0A6;
+    color: white;
+}
+
 #content .btn:hover {
     color: #263E4E; border-color: #263E4E;
 }
@@ -783,6 +789,7 @@ p.expl {
 
 #content .btn.btn-warning:hover {
     color: orange; border-color: orange;
+    background-color: white;
 }
 
 .danger:hover {
