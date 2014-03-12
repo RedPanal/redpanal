@@ -7,7 +7,7 @@
 
 {% block body_class %}bkg {% with rnd="abcd"|make_list|random %}bkg-{{ rnd }}{% endwith %}{% endblock %}
 
-{% block title %}<h1>{% trans "Welcome to RedPanal" %}</h1>{% endblock %}
+{% block title %}{% trans "Welcome to RedPanal" %}{% endblock %}
 
 {% block content %}
 <div class="form-block sign-form">

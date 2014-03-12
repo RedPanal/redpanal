@@ -1,7 +1,7 @@
 {% extends "two_rows.html" %}
 {% load i18n endless %}
 
-{% block title %}<span class="icon-user"></span> @{{ user.username }} {% trans "profile" %}{% endblock %}
+{% block title %}{% blocktrans with user=user.username %}@{{ user.username }} Projects{% endblocktrans %}{% endblock %}
 
 {% block extra_head %}
 {{ block.super }}

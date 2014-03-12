@@ -1,6 +1,8 @@
 {% extends "two_rows.html" %}
 {% load i18n social %}
 
+{% block title %}{% if not request.user.is_authenticated %}{% trans "Welcome!" %}{% else %}{% trans "My Community" %}{% endif %}{% endblock %}
+
 {% block extra_head %}
 {{ block.super }}
  <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
@@ -16,8 +18,6 @@
 {% endblock %}
 
 {% block body_class %}home{% endblock %}
-
-{% block title %}{% if not request.user.is_authenticated %} {% trans "Welcome to RedPanal" %}{% else %}  {% trans "Home" %}{% endif %}{% endblock %}
 
 {% block left_row %}
   {% if request.user.is_authenticated %}

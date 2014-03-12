@@ -1,7 +1,7 @@
 {% extends "two_rows.html" %}
 {% load i18n endless %}
 
-{% block title %}@{% trans "user"%}{% endblock %}
+{% block title %}{% blocktrans with user=user.username %}@{{ user }} Tracks{% endblocktrans %}{% endblock %}
 
 {% block extra_head %}
 {{ block.super }}
