@@ -1,13 +1,26 @@
-{% extends "users/user_page.html" %}
+{% extends "two_rows.html" %}
 {% load i18n %}
 
+{% block title %}{% blocktrans %}@{{ user.username }} followers{% endblocktrans %}{% endblock %}
+
 {% block left_row %}
+    <h3>{% blocktrans %}Users followers of @{{ user }}{% endblocktrans %}</h3>
     <div class="users-list-wrapper">
-      <h3>{% blocktrans %}Users following {{ actor }}{% endblocktrans %}</h3>
-      <ul class="users-list followers">
+      <ul class="users-teasers-list following">
       {% for user in followers %}
-        <li>{% include "users/user_teaser.html" %}</li>
+         {% with "full" as mode %}
+         <li>{% include "users/user_teaser.html" %}</li>
+         {% endwith %}
       {% endfor %}
       </ul>
     </div>
+{% endblock %}
+
+{% block right_row %}
+      {% with "show" as stats %}     
+         {% include "users/user_prof.html" %}
+      {% endwith %}
+   <ul class="nav nav-list">
+      {% include "discover-items-menu.html" %}
+   </ul>
 {% endblock %}

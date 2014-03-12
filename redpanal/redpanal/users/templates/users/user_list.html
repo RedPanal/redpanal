@@ -4,9 +4,17 @@
 {% block title %}{% trans "People" %}{% endblock %}
 
 {% block content %}
-<ul>
-{% for user in users %}
-  <li>{% include "users/user_teaser.html" %}</li>
-{% endfor %}
-</ul>
+
+ <h3>{% trans "RedPanal people" %}</h3>
+
+ <div class="users-list-wrapper">
+   <ul class="users-teasers-list">
+   {% for user in users %}
+      {% with "full" as mode %}
+      <li>{% include "users/user_teaser.html" %}</li>
+      {% endwith %}
+   {% endfor %}
+   </ul>
+ </div>
+
 {% endblock %}

@@ -514,23 +514,6 @@ p.expl {
     background-color: #28CCEA;
 }
 
-/* user list */
-
-.users-list-wrapper {
-    float: right;
-    margin-bottom: 30px;
-    width: 300px;
-}
-
-.users-list-wrapper h3{
-    font-size: 18px;
-    line-height: 22px;
-}
-
-.users-list-wrapper ul{
-}
-
-
 /* project teaser */
 
 .projects-wrapper {
@@ -701,7 +684,7 @@ p.expl {
 }
 
 .project-teaser .tags a,
-.bottom-tags a{
+.small-tags a{
     background-color: #28CCEA; /* #A2F0FE; */
     border-radius: 3px 3px 3px 3px;
     color: #fff; /* #28CCEA; */
@@ -713,7 +696,7 @@ p.expl {
 }
 
 .project-teaser .tags a:hover,
-.bottom-tags a:hover {
+.small-tags a:hover {
     background-color: #263E4E;
     text-decoration: none;
     /* color: white; */
@@ -770,10 +753,10 @@ p.expl {
 
 #content .btn {
     background: none repeat scroll 0 0 white;
-    border: 3px solid #28CCEA;
+    border: 3px solid #CCCCCC; /* #28CCEA; */
     border-radius: 8px 8px 8px 8px;
     box-shadow: none;
-    color: #28CCEA;
+    color: #CCCCCC; /* #28CCEA; */
     font-size: 14px;
     font-weight: bold;
     padding: 5px 10px;
@@ -1138,7 +1121,7 @@ p.tags a:hover {
     margin: 0;
 }
 
-.bottom-tags {
+.teaser-audio .small-tags {
     margin: 0 0 -2px;
     text-align: right;
 }
@@ -1167,7 +1150,7 @@ p.tags a:hover {
    padding: 0 0 9px 68px;
 }
 
-.detail-audio .bottom-tags {
+.detail-audio .small-tags {
 }
 
 .detail-audio .dl-horizontal {
@@ -1180,17 +1163,38 @@ p.tags a:hover {
   margin-left: 2em;
 }
 
-/* social streaming / users list*/
+/* user list wrapper */
 
-ul.action-stream,
-ul.users-list {
+.users-list-wrapper {
+    margin-top: 30px;
+}
+
+.sidebar .users-list-wrapper {
+    float: right;
+    margin-bottom: 30px;
+    width: 300px; 
+}
+
+.sidebar .users-list-wrapper h3{
+    font-size: 18px;
+    line-height: 22px;
+}
+
+.main .users-list-wrapper h3{
+}
+
+/* action stream / users list / users teasers list */
+
+.action-stream,
+.users-list,
+.users-teasers-list {
     list-style: none outside none;
     /* max-width: 400px; */
     margin: 0;
 }
 
-ul.action-stream > li,
-ul.users-list > li {
+.action-stream > li,
+.users-list > li {
     border-bottom: 1px solid #DDDDDD;
     margin: 0;
     padding: 10px 0 15px;
@@ -1198,24 +1202,134 @@ ul.users-list > li {
     min-height: 34px;
 }
 
-ul.action-stream > li:hover,
-ul.users-list > li:hover {
+.action-stream > li:hover,
+.users-list > li:hover {
     background-color: #EDFAFD;
 }
 
-ul.action-stream > li img,
-ul.users-list > li img {
+.action-stream > li img,
+.users-list > li img {
     clear: both;
     float: left;
     margin: 0 7px 0 0;
     width: 40px;
 }
 
-ul.users-list .followers-link {
+.users-list .followers-link {
    float: right;
    padding: 0;
 }
 
+/* user teasers */
+
+.users-teasers-list {
+   padding: 0;
+   margin-right: -40px;
+}
+
+.users-teasers-list > li {
+    border: 1px solid #ccc;
+    display: inline-block;
+    height: 222px;
+    margin: 0 24px 30px 0;
+    padding: 15px;
+    position: relative;
+    vertical-align: top;
+    width: 222px;
+}
+
+
+.users-teasers-list li br {
+    display: none;
+}
+
+.users-teasers-list > li img {
+    background-color: white;
+    border: 1px solid #A2F0FE;
+    float: left;
+    margin: -25px 0 0;
+    padding: 2px;
+}
+
+.users-teasers-list .user-about {
+    display: block;
+    font-size: 13px;
+    height: 28px;
+    line-height: 13px;
+}
+
+.users-teasers-list .user-bkg {
+    background-color: #28CCEA;
+    display: block;
+    height: 80px;
+    margin: -15px;
+    width: 252px;
+}
+
+.users-teasers-list .stats {
+    background-color: #28CCEA;
+    color: white;
+    display: block;
+    font-size: 9px;
+    height: 30px;
+    line-height: 31px;
+    margin: 0 -15px -15px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.users-teasers-list .stats span {
+    margin: 0 0 3px 0;
+}
+
+.users-teasers-list .stats b {
+    color: #263E4E;
+    font-size: 20px;
+    vertical-align: top;
+}
+
+.users-teasers-list .stats i {
+    color: #CCCCCC;
+    font-size: 13px;
+    margin: 0 6px 0 -1px;
+}
+
+.users-teasers-list .user {
+    display: block;
+    font-size: 20px;
+    height: 24px;
+    line-height: 24px;
+    margin: 7px 0 0;
+}
+
+.users-teasers-list .location {
+    bottom: 15px;
+    color: #AAAAAA;
+    display: block;
+    font-size: 13px;
+    left: 20px;
+    line-height: 16px;
+    position: absolute;
+    width: 112px;
+}
+
+
+.users-teasers-list .small-tags {
+    display: block;
+    height: 37px;
+    margin: 0;
+}
+
+.users-teasers-list .followers-link {
+    display: block;
+    height: 36px;
+    margin: 25px 0 0 98px;
+    padding: 0;
+   /* TODO: quitar display inline block y padding como propiedades generales para .followers-link */
+}
+
+
+/* action stream */
 
 #content .action-stream .btn {
     background: none;
