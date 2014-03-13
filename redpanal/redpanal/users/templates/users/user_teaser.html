@@ -3,19 +3,13 @@
 
   <span class="user-bkg"></span>
 
-  {% avatar user 80 %}
+  {% avatar user 72 %}
 
   {% include "social/follow_button.html" %}
 
-  <span class="user"><a href={{ user.get_absolute_url }}>{{ user.username }}</a></span><br />
+  <span class="user"><a href={{ user.get_absolute_url }}>{{ user.userprofile.realname|default:user.username|capfirst }}</a></span><br />
 
-
-
-  <span class="user-about">
-  {% if user.userprofile.about %}
-  {{ user.userprofile.about|truncatechars:35|capfirst }}
-  {% endif %}
-  </span><br />
+  <span class="user-name">@{{ user.username }}</span><br />
 
   <span class="small-tags">
    {% with object=user.userprofile %} 
@@ -26,6 +20,12 @@
   </span>
 
 {% comment %}
+  <span class="user-about">
+  {% if user.userprofile.about %}
+  {{ user.userprofile.about|truncatechars:35|capfirst }}
+  {% endif %}
+  </span><br />
+
   <span class="location">
   {% if user.userprofile.location %}
   <i class="fa fa-map-marker"></i> {{ user.userprofile.location }}

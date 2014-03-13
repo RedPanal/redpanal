@@ -454,7 +454,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 
 .logged-user #user-background {
     top: 140px;
-    height: 190px;
+    height: 222px;
 }
 /* ==================  main  ==================== */
 
@@ -859,21 +859,27 @@ p.tags a:hover {
     background-color: white;
     border: 1px solid #A2F0FE;
     float: left;
-    margin: 0 15px 18px 0;
+    margin: 0 14px 18px 0;
     padding: 2px;
 }
 
 .user-profile.small .edit-wrapper{
-    margin: 5px 0 0;
+    margin: 7px 0 0;
 }
 
 .user-profile.small .edit{
    display: inline;
 }
 
+.user-profile .real-name a:hover {
+   color: #263E4E;
+   text-decoration: underline;
+}
+
 .user-profile.full h1 {
     font-size: 24px;
-    line-height: 24px;
+    line-height: 25px;
+    margin: 11px 0 0;
 }
 
 .user-profile.full .inline-title {
@@ -883,14 +889,21 @@ p.tags a:hover {
 
 .user-profile.small h2 {
     display: block;
-    font-size: 15px;
+    font-size: 18px;
     line-height: 17px;
-    margin: 0;
+    margin: 0 -20px 0 0;
 }
 
 .user-profile h2 a,
 .user-profile h1 a {
     color: #263E4E;
+}
+
+.user-profile .user-name {
+    color: white;
+    font-size: 14px;
+    line-height: 17px;
+    margin-left: 1px;
 }
 
 .user-profile .location {
@@ -902,13 +915,20 @@ p.tags a:hover {
 .user-profile.full .location {
    width: 55%;
    float: left;
-   margin-bottom: 20px;
+   margin: 8px 0;
 }
 
 .user-profile.small .location {
     float: left;
     margin: 10px 0;
     width: 50%;
+}
+
+.user-profile .website {
+    margin: 10px 0;
+    color: white;
+    font-size: 14px;
+    line-height: 17px;
 }
 
 .user-profile .followers-link {
@@ -918,7 +938,8 @@ p.tags a:hover {
 
 .user-profile.full .followers-link {
    float: right;
-   margin-bottom: 20px;
+   margin-bottom: 19px;
+   margin-top: -12px;
 }
 
 .user-profile.small .followers-link {
@@ -1039,17 +1060,30 @@ p.tags a:hover {
 /* user page */
 
 .user-page-top {
-   margin-top: 20px;
+   margin-top: 12px;
 }
 
-.user-location {
-    display: block;
-    margin: 10px 0 0 0;
+p.user-location {
+   margin: 0 0 8px 2px;
+   color: gray;
+}
+
+p.user-location i {
+    font-size: 10px;
+}
+
+p.user-website {
+    margin: 0 0 0 1px;
+}
+
+p.user-website i {
+    font-size: 10px;
 }
 
 .user-about {
    font-style: italic;
    color: gray;
+   margin: 0;
 }
 
 /* audio teasers */
@@ -1254,15 +1288,16 @@ p.tags a:hover {
     background-color: white;
     border: 1px solid #A2F0FE;
     float: left;
-    margin: -25px 0 0;
+    margin: -15px 0 0;
     padding: 2px;
 }
 
-.users-teasers-list .user-about {
+.users-teasers-list .user-name {
     display: block;
-    font-size: 13px;
+    font-size: 14px;
     height: 28px;
     line-height: 13px;
+    color: gray;
 }
 
 .users-teasers-list .user-bkg {
@@ -1303,7 +1338,7 @@ p.tags a:hover {
 
 .users-teasers-list .user {
     display: block;
-    font-size: 20px;
+    font-size: 18px;
     height: 24px;
     line-height: 24px;
     margin: 7px 0 0;

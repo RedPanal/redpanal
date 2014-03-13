@@ -31,11 +31,17 @@
       {% ifequal request.user user %}
       <h3 class="top-title">{% trans "About me" %}</h3>
       {% else %}
-      <h3 class="top-title">{% trans "About" %} @{{ user.username }}</h3>
+      <h3 class="top-title">{% trans "About" %} {{ user.userprofile.realname|default:user.username|capfirst }}</h3>
       {% endifequal %}
 
       <div class="user-page-top">
-         <span class="user-about">{% if user.userprofile.about %}{{ user.userprofile.about }}{% else %}{% trans 'Sorry, still not put anything in my description' %}{% endif %}</span><br />
+      {% if user.userprofile.website %}
+          <p class="user-website"><i class="fa fa-link"></i> <a href="user.userprofile.website">{{ user.userprofile.website|truncatechars:30 }}</a></p>
+      {% endif %}
+      {% if user.userprofile.location %}
+          <p class="user-location"><i class="fa fa-map-marker"></i> {{ user.userprofile.location }}</p>
+      {% endif %}
+          <span class="user-about">{% if user.userprofile.about %}{{ user.userprofile.about }}{% else %}{% trans 'Sorry, still not put anything in my description' %}{% endif %}</span><br />
       </div>
 
       <h3>{% trans "Last tracks" %}</h3>
