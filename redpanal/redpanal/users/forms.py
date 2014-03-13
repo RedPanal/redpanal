@@ -14,4 +14,4 @@ class UserProfileForm(ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ['about', 'location', "tags"]
+        fields = ['realname', 'about', 'website', 'location', "tags",]

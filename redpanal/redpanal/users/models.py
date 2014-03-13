@@ -8,9 +8,12 @@ from taggit.managers import TaggableManager
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    about = models.TextField(blank=True, null=True, help_text=_("something about you"))
-    location = models.TextField(blank=True, null=True, help_text=_("where do you live"))
-    tags = TaggableManager(blank=True, verbose_name=_('hashtags'))
+    realname = models.CharField(null=True, max_length=20, verbose_name=_("name"), help_text=_("how you want your name on RedPanal?") )
+    about = models.TextField(blank=True, null=True, verbose_name=_("about"), help_text=_("something about you"))
+    website = models.URLField(blank=True, null=True, verbose_name=_("website"), help_text=_("your website"))
+    location = models.CharField(blank=True, null=True, max_length=50, verbose_name=_("location"), help_text=_("where do you live"))
+    tags = TaggableManager(blank=True, verbose_name=_('hashtags'), help_text=_("put tags helps you to contact users who share musical tastes"))
+   # TODO TaggableManager verbose_name & help_text does not work?
 
     def get_absolute_url(self):
         return self.user.get_absolute_url()
