@@ -10,7 +10,8 @@
 
 {% block content %}
 
-<h3 class="sign-up"><a href="{{ signup_url }}">{% trans "Sign up for RedPanal" %}</a></h3>
+<h3 class="sign-up"><a href="/accounts/signup/">{% trans "Sign up for RedPanal" %}</a></h3>
+{# TODO: cambiar {{ signup_url }} que imprime /accounts/signup/?next=%2F y no va a edit profile despues de signup #}
 
 <div class="form-block">
    <h3>{% trans 'Sign in:' %}</h3>

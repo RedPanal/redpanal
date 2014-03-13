@@ -99,6 +99,7 @@ def user_profile(request):
         form = UserProfileForm(request.POST, instance=request.user.userprofile)
         if form.is_valid():
             form.save()
+            return redirect(request.user.get_absolute_url())
     else:
         form = UserProfileForm(instance=request.user.userprofile)
     return render(request, "users/user_profile.html", {"form":form})

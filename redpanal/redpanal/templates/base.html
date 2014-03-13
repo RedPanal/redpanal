@@ -113,28 +113,30 @@
 
 {% block background %}{% endblock %}
 
-{% if request.user.is_authenticated %}
-{% block breadcrumb %}
-<div id="breadcrumb">
-    <div class="wrapper">
-    <ul class="nav">
-      {% comment %}
-        <li class="discover"><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "My Account" %}</a></li>
-        <li class="discover"><a href="/"><i class="fa fa-music"></i> {% trans "My Community" %}</a></li>
-        <li class="discover"><a href="{% url 'user-interactions' request.user %}"><i class="fa fa-comments"></i> {% trans "My Interactions" %}</a></li>
-      {% endcomment %}
-        <li class="action"><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
-        <li class="action"><a href="{% url "audio-create" %}"><i class="fa fa-upload"></i> {% trans "Upload file" %}</a></li>
-        <li class="action"><a href="{% url "project-create" %}"><i class="fa fa-folder-open"></i> {% trans "Create project" %}</a></li>
-        <li>
-        {% block messageform %}
-            {% include "social/message_form.html" %}
-        {% endblock %}
-        </li>
-    </ul>
-    </div>
-</div>
-{% endblock %}
+{# TODO controlar de una forma mas elegante la paricion de breadcrumb #}
+{% if request.user.is_authenticated and not "/accounts" in request.path %}
+   {% block breadcrumb %}
+   <!-- request.path = {{ request.path }} -->
+   <div id="breadcrumb">
+       <div class="wrapper">
+       <ul class="nav">
+         {% comment %}
+           <li class="discover"><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "My Account" %}</a></li>
+           <li class="discover"><a href="/"><i class="fa fa-music"></i> {% trans "My Community" %}</a></li>
+           <li class="discover"><a href="{% url 'user-interactions' request.user %}"><i class="fa fa-comments"></i> {% trans "My Interactions" %}</a></li>
+         {% endcomment %}
+           <li class="action"><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
+           <li class="action"><a href="{% url "audio-create" %}"><i class="fa fa-upload"></i> {% trans "Upload file" %}</a></li>
+           <li class="action"><a href="{% url "project-create" %}"><i class="fa fa-folder-open"></i> {% trans "Create project" %}</a></li>
+           <li>
+           {% block messageform %}
+               {% include "social/message_form.html" %}
+           {% endblock %}
+           </li>
+       </ul>
+       </div>
+   </div>
+   {% endblock %}
 {% endif %}
 
 <div id="content" class="container">
