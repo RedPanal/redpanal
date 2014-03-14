@@ -13,7 +13,10 @@ from taggit.managers import TaggableManager
 from autoslug.fields import AutoSlugField
 
 from ..utils.models import BaseModelMixin
+from redpanal.core import licenses
 
+
+LICENSES_CHOICES = [(lic.code, lic.name) for lic in licenses.LICENSES.values()]
 
 class Audio(models.Model, BaseModelMixin):
     name = models.CharField(_('name'), max_length=100)
@@ -23,7 +26,8 @@ class Audio(models.Model, BaseModelMixin):
     description = models.TextField(_('description'))
     audio =  models.FileField(_('audio'), max_length=250,
                               upload_to='uploads/audios/%Y_%m')
-
+    license = models.CharField(_('license'), max_length=30, choices=LICENSES_CHOICES,
+                                default=licenses.DEFAULT_LICENSE.code)
     channels = models.IntegerField(null=True, editable=False)
     blocksize  =  models.IntegerField(null=True, editable=False)
     samplerate  =  models.IntegerField(null=True, editable=False)
@@ -38,6 +42,9 @@ class Audio(models.Model, BaseModelMixin):
         if self.samplerate is not None:
            duration = self.totalframes / float(self.samplerate) * 1000
         return duration
+
+    def get_license(self):
+        return licenses.LICENSES[self.license]
 
     def get_absolute_url(self):
         return reverse('audio-detail', kwargs={'slug': self.slug})

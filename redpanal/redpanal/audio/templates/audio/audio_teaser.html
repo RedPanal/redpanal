@@ -16,6 +16,7 @@
        <div class="top-data">{% trans "Channels" %}: {{ object.channels }} | {{ object.samplerate }} | {{ object.get_duration }} ms</div>
    </div>
 {% endif %}
+<a rel="license" href="{{object.get_license.url }}"><img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon_small }}" /></a>
 
 {% include "audio/audio_object.html" %}
 
