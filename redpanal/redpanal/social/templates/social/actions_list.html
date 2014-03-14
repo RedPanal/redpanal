@@ -2,10 +2,11 @@
  <ul class="action-stream">
   {% paginate action_list %}
   {% for action in action_list %}
-      <li>{% include 'social/action_teaser.html' %}</li>
+    {% with template='social/action_'|add:action.verb|add:'_teaser.html' %}
+      {% include template %}
+    {% endwith %}
   {% empty %}
       {% trans "No actions yet" %}
   {% endfor %}
-
   </ul>
   {% show_more %}

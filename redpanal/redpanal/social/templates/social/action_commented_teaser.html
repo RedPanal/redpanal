@@ -1,0 +1,10 @@
+{% extends "social/action_teaser.html" %}
+{% load i18n endless %}
+
+{% block action_text %}
+{% trans 'Commented' %}
+{% endblock %}
+
+{% block action_body %}
+  {{ action.action_object }}
+{% endblock %}

@@ -1,41 +1,33 @@
 {% load i18n avatar_tags %}
-{% avatar action.actor 50 %}
-{% if action.actor.get_absolute_url %}
- <span class="user"><a href="{{ action.actor.get_absolute_url }}">{{ action.actor }}</a></span>
-{% else %}
- <a href="{{ action.actor_url }}">{{ action.actor }}</a>
-{% endif %}
 
+{% block image_left %}
+   {% avatar action.actor 50 %}
+   {% if action.actor.get_absolute_url %}
+    <span class="user"><a href="{{ action.actor.get_absolute_url }}">{{ action.actor }}</a></span>
+   {% else %}
+    <a href="{{ action.actor_url }}">{{ action.actor }}</a>
+   {% endif %}
+{% endblock %}
+
+{% block timestamp %}
 <span class="ago">{% blocktrans with timeago=action.timestamp|timesince %}{{ timeago }} ago{% endblocktrans %}</span><br>
-<span class="message">
-   <span class="verb {{ action.verb }}">
-   {% ifequal action.verb 'commented' %}{# trans 'Commented' #}{% endifequal %}
-   {% ifequal action.verb 'uploaded' %}{% trans 'Uploaded' %}{% endifequal %}
-   {% ifequal action.verb 'created' %}{% trans 'Created the project' %}{% endifequal %}
-   {% ifequal action.verb 'created version' %}{% trans 'Cloned the project' %}{% endifequal %}
+{% endblock %}
+{% block message %}
+   <span class="message">
+      <span class="verb {{ action.verb }}">
+      {% block action_text %}
+         {{ action.verb }}
+      {% endblock action_text %}
+      </span>
+   {% block action_body %}
+   {% endblock action_body %}
    </span>
-{% if action.action_object %}
-     <a href="{{ action.action_object.get_absolute_url }}">{{ action.action_object }}</a>
-{% endif %}
-{% if action.action_object and action.target %}
-   {% trans "to" %}
-{% endif %}
-{% if action.target %}
-    {% if action.target.get_absolute_url %}
-      <a href="{{ action.target.get_absolute_url }}">
-    {% else %}
-      <a href="{{ action.target_url }}">
-    {% endif %}
-         {% ifequal action.verb 'commented' %}@{{ action.target }}{% endifequal %}
-         {% ifequal action.verb 'created' %}{{ action.target|capfirst }}{% endifequal %}
-         {% ifequal action.verb 'created version' %}{{ action.target|capfirst }}{% endifequal %}
-         {% ifequal action.verb 'uploaded' %}{{ action.target|capfirst }}{% endifequal %}
-      </a>
-{% endif %}
-</span>
+{% endblock message %}
+{% block action_utils %}
 {# if request.user.is_authenticated #}
 <ul class="actions">
 <li><button type="button" class="btn btn-link comment-reply" data-username="{{ action.actor }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
 <li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>
 </ul>
 {# endif #}
+{% endblock action_utils %}

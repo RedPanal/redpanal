@@ -1,0 +1,10 @@
+{% extends "social/action_teaser.html" %}
+{% load i18n endless %}
+
+{% block action_text %}
+{% trans 'Uploaded' %}
+{% endblock %}
+
+{% block action_body %}
+  {% include "audio/audio_teaser.html" with object=action.target %}
+{% endblock %}
