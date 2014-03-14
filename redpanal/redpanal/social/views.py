@@ -36,8 +36,8 @@ def followers(request, content_type_id, object_id):
         ctype = get_object_or_404(ContentType, pk=content_type_id)
         actor = get_object_or_404(ctype.model_class(), pk=object_id)
         return render_to_response('social/followers.html', {
-            'followers': models.followers(actor), 
-            'following': models.following(actor),
+            'followers': models.followers(actor)[::-1],
+            'following': models.following(actor)[::-1],
             'actor': actor
         }, context_instance=RequestContext(request))
     else:
@@ -50,8 +50,8 @@ def following(request, user_id):
     if request.user.is_authenticated():
         user = get_object_or_404(User, pk=user_id)
         return render_to_response('social/following.html', {
-            'following': models.following(user), 
-            'followers': models.followers(user),
+            'following': models.following(user)[::-1],
+            'followers': models.followers(user)[::-1],
             'user': user
         }, context_instance=RequestContext(request))
     else:
