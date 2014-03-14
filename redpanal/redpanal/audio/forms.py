@@ -24,6 +24,9 @@ class AudioForm(forms.ModelForm):
     helper.add_input(Submit('submit', 'Submit'))
     class Meta:
         model = Audio
+        widgets = {
+            'license': forms.RadioSelect,
+        }
 
     def __init__(self, data=None, *args, **kwargs):
         user = kwargs.pop('user')
