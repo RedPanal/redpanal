@@ -148,7 +148,7 @@
    <div class="wrapper">
 {% block footer %}
       <p class="note">
-         {% trans 'This is Free Software licensed under <a href="http://www.gnu.org/licenses/agpl.txt" >AGPL</a>' %}. {% trans 'Get <a href="https://github.com/RedPanal/redpanal">the code!</a>.' %}<br />
+         {% blocktrans %}This is Free Software licensed under <a href="http://www.gnu.org/licenses/agpl.txt" >AGPL</a>. Get <a href="https://github.com/RedPanal/redpanal">the code!</a>. Current version is <a href="https://github.com/RedPanal/redpanal/commit/{{ GIT_SHORT_VERSION }}">{{ GIT_SHORT_VERSION }}</a>.{% endblocktrans %}<br />
          {% trans 'Hosted by: <a href="http://www.codigosur.org">Código Sur</a>' %}
       </p>
       <ul class="nav">
