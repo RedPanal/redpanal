@@ -37,6 +37,9 @@
        <dt>{% trans "License" %}</dt><dd><a rel="license" href="{{object.get_license.url }}"><img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon }}" /></a>{% blocktrans with license=object.get_license.name license_url=object.get_license.url %} This work is licensed under a <a href="{{ license_url }}">{{ license }}</a>{% endblocktrans %}</a></dd>
        <dt>{% trans "Channels" %}</dt><dd>{{ object.channels }}</dd>
        <dt>{% trans "Samplerate" %}</dt><dd>{{ object.samplerate }}</dd>
+       <dt>{% trans "Genre" %}</dt><dd>{{ object.get_genre_display|capfirst }}</dd>
+       <dt>{% trans "Type" %}</dt><dd>{{ object.get_use_type_display|capfirst }}</dd>
+       <dt>{% trans "Instrument" %}</dt><dd>{{ object.get_instrument_display|capfirst }}</dd>
        <dt>{% trans "Created by" %}</dt><dd><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></dd>
        <dt>{% trans "Created at" %}</dt><dd>{{ object.created_at }}</dd>
        <dt>{% trans "HashTags" %}</dt><dd>{% include 'core/hashtags_block.html' %}</dd>

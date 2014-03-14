@@ -3,3 +3,7 @@
 {% for tag in object.tags.all %} {{ tag.name }} {% endfor %}
 {{ object.user.get_full_name }}
 {{ object.user }}
+{{ object.genre }}
+{{ object.instrument }}
+{{ object.use_type }}
+{{ object.license }}

@@ -17,10 +17,9 @@
    </div>
 {% endif %}
 <a rel="license" href="{{object.get_license.url }}"><img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon_small }}" /></a>
-
 {% include "audio/audio_object.html" %}
 
-    <div class="small-tags">{% include 'core/hashtags_block.html' %}</div>
+    {{ object.use_type }} | {{ object.genre }} | {{ object.instrument }}  <div class="small-tags">{% include 'core/hashtags_block.html' %}</div>
 </div>
 
 

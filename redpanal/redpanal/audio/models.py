@@ -18,6 +18,41 @@ from redpanal.core import licenses
 
 LICENSES_CHOICES = [(lic.code, lic.name) for lic in licenses.LICENSES.values()]
 
+GENRE_CHOICES = (
+    ("pop", _("pop")),
+    ("rock", _("rock")),
+    ("jazz", _("jazz")),
+    ("blues", _("blues")),
+    ("folklore", _("folklore")),
+    ("electronic", _("electronic")),
+    ("other", _("other")),
+)
+
+TYPE_CHOICES = (
+    ("track", _("track")),
+    ("loop", _("loop")),
+    ("song", _("song")),
+    ("sample", _("sample")),
+    ("other", _("other")),
+)
+
+INSTRUMENT_CHOICES = (
+    ("voice", _("voice")),
+    ("guitar", _("guitar")),
+    ("electric guitar", _("electric guitar")),
+    ("bass", _("bass")),
+    ("drums", _("drums")),
+    ("saxophone", _("saxophone")),
+    ("piano", _("piano")),
+    ("sinthesizer", _("sinthesizer")),
+    ("electronic", _("electronic")),
+    ("strings", _("other strings")),
+    ("woodwind", _("woodwind")),
+    ("brass", _("brass")),
+    ("multiple", _("multiple")),
+    ("other", _("other")),
+)
+
 class Audio(models.Model, BaseModelMixin):
     name = models.CharField(_('name'), max_length=100)
     slug = AutoSlugField(populate_from='name', always_update=False,
@@ -28,6 +63,11 @@ class Audio(models.Model, BaseModelMixin):
                               upload_to='uploads/audios/%Y_%m')
     license = models.CharField(_('license'), max_length=30, choices=LICENSES_CHOICES,
                                 default=licenses.DEFAULT_LICENSE.code)
+
+    genre = models.CharField(_('genre'), max_length=30, choices=GENRE_CHOICES)
+    use_type = models.CharField(_('type'), max_length=30, choices=TYPE_CHOICES)
+    instrument = models.CharField(_('instrument'), max_length=30, choices=INSTRUMENT_CHOICES)
+
     channels = models.IntegerField(null=True, editable=False)
     blocksize  =  models.IntegerField(null=True, editable=False)
     samplerate  =  models.IntegerField(null=True, editable=False)
