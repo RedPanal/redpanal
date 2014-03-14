@@ -1,7 +1,7 @@
 {% extends "two_rows.html" %}
 {% load i18n avatar_tags social %}
 
-{% block title %}{% blocktrans with user=user.username %}@{{ user }} Profile{% endblocktrans %}{% endblock %}
+{% block title %}{% blocktrans with user=user.username %}@{{ user }} profile{% endblocktrans %}{% endblock %}
 
 {% block extra_head %}
 {{ block.super }}
@@ -31,7 +31,7 @@
       {% ifequal request.user user %}
       <h3 class="top-title">{% trans "About me" %}</h3>
       {% else %}
-      <h3 class="top-title">{% trans "About" %} {{ user.userprofile.realname|default:user.username|capfirst }}</h3>
+      <h3 class="top-title">{% trans "About" %} {{ user.userprofile.realname|default:user.username }}</h3>
       {% endifequal %}
 
       <div class="user-page-top">
