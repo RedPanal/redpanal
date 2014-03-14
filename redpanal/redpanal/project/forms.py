@@ -11,6 +11,7 @@ class ProjectForm(forms.ModelForm):
 
     helper = FormHelper()
     helper.add_input(Submit('submit', 'Submit'))
+    helper.form_class = 'form-horizontal'
 
     tags =  TagField()
 

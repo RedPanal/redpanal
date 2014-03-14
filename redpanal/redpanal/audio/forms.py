@@ -20,6 +20,7 @@ class AudioForm(forms.ModelForm):
     project = forms.ModelChoiceField(Project)
 
     helper = FormHelper()
+    helper.form_class = 'form-horizontal'
     helper.add_input(Submit('submit', 'Submit'))
     class Meta:
         model = Audio
