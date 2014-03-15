@@ -16,7 +16,7 @@
 
         <div class="user-name">@{{ user.username }} {% ifequal request.user user %}<span class="edit"><a href="/accounts/profile/">[{% trans "Edit profile" %}]</a></span>{% endifequal %}</div>
 
-        {% if object.tags.all %}
+        {% if user.userprofile.tags.all %}
             {% with object=user.userprofile %}<p class="tags">{% include 'core/hashtags_block.html' %}</p>{% endwith %}
         {% endif %}
 
@@ -34,7 +34,7 @@
             {% include "social/follow_button.html" %}
         {% endifnotequal %}
 
-        {% if object.tags.all %}
+        {% if user.userprofile.tags.all %}
             {% with object=user.userprofile %}<p class="tags">{% include 'core/hashtags_block.html' %}</p>{% endwith %}
         {% endif %}            
 
