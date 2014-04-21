@@ -3,7 +3,7 @@
   {% paginate action_list %}
   {% for action in action_list %}
     {% with template='social/action_'|add:action.verb|add:'_teaser.html' %}
-      {% include template %}
+      <li>{% include template %}</li>
     {% endwith %}
   {% empty %}
       {% trans "No actions yet" %}

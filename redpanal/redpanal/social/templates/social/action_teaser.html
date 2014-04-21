@@ -1,17 +1,22 @@
 {% load i18n avatar_tags %}
 
-{% block image_left %}
+{% block actor %}
+   <span class="avatar">
    {% avatar action.actor 50 %}
+   </span>
+   <span class="user">
    {% if action.actor.get_absolute_url %}
-    <span class="user"><a href="{{ action.actor.get_absolute_url }}">{{ action.actor }}</a></span>
+      <a href="{{ action.actor.get_absolute_url }}">{{ action.actor }}</a>
    {% else %}
-    <a href="{{ action.actor_url }}">{{ action.actor }}</a>
+      <a href="{{ action.actor_url }}">{{ action.actor }}</a>
    {% endif %}
+   </span>
 {% endblock %}
 
 {% block timestamp %}
 <span class="ago">{% blocktrans with timeago=action.timestamp|timesince %}{{ timeago }} ago{% endblocktrans %}</span><br>
 {% endblock %}
+
 {% block message %}
    <span class="message">
       <span class="verb {{ action.verb }}">
@@ -23,11 +28,12 @@
    {% endblock action_body %}
    </span>
 {% endblock message %}
+
 {% block action_utils %}
 {# if request.user.is_authenticated #}
 <ul class="actions">
-<li><button type="button" class="btn btn-link comment-reply" data-username="{{ action.actor }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
-<li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>
+   <li><button type="button" class="btn btn-link comment-reply" data-username="{{ action.actor }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
+   <li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>
 </ul>
 {# endif #}
 {% endblock action_utils %}
