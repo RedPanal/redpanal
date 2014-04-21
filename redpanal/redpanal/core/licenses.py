@@ -12,7 +12,7 @@ CC_BY_SA_4_0 = License("CC-BY-SA-4.0",
                         _("Creative Commons Attribution-ShareAlike 4.0 International"),
                         _("http://creativecommons.org/licenses/by-sa/4.0/"),
                         "http://i.creativecommons.org/l/by-sa/4.0/88x31.png",
-                        "http://i.creativecommons.org/l/by-sa/4.0/80x15.png",
+                        "/static/img/rp-cc-by-sa_45.png",
                         )
 
 LICENSES = {
