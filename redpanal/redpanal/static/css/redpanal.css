@@ -1270,7 +1270,7 @@ p.user-website i {
     font-size: 16px;
 }
 
-.license-block, .detail-block {
+.detail-block {
     border: 4px solid #EEEEEE;
     padding: 21px 28px;
 }
@@ -1287,7 +1287,9 @@ p.user-website i {
     margin-top: 5px;
 }
 
-.detail-audio .license-block,
+.detail-audio .license-block {
+   margin-top: 20px;
+}
 .detail-audio .detail-block {
     /* display: inline-block; */
     /* width: 80%; */

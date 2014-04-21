@@ -24,8 +24,8 @@
 <div class="detail-audio">
    <div class="top-date">{{ object.created_at|timesince }}</div>
    <div class="top">
-       <div class="top-user user"><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></div>
-       <div class="inline-title"><h1>{{ object.name|capfirst|truncatechars:50 }}</h1>
+       <div class="top-user user"><a href="{{ object.user.get_absolute_url }}">{{ user.userprofile.realname|default:user.username|capfirst }}</a></div>
+       <div class="inline-title"><h1 title="object.name|capfirst" >{{ object.name|capfirst|truncatechars:50 }}</h1>
        {% if request.user == object.user %}<span class="edit"><a title="{% trans "Edit audio track" %}" href="{% url "audio-edit" object.slug %}">[{% trans "Edit" %}]</a> <a class="danger" title="{% trans "Delete audio track" %}" href="{% url "audio-delete" object.slug %}">[{% trans "Delete" %}]</a></span>{% endif %}
        </div>
    </div>
@@ -35,20 +35,19 @@
    <div class="detail-block">
       <h4>{% if object.use_type != "other" %}{{ object.get_use_type_display|capfirst }}{% else %}{% trans "File" %}{% endif %} {% trans "details" %}:</h4>
       <div class="download"><a href="{{ object.audio.url }}"><i class="fa fa-download"></i> {% trans "Download" %}</a></div>
-      <p>{% trans "Title" %}: <b>{{ object.name|capfirst }}</b></p>
       <p class="description">{{ object.description|capfirst }}</p>
       <p class="tags">{% include 'core/hashtags_block.html' %}</p>  
       <p class="">{% trans "Channels" %}: <b>{{ object.channels }}</b> | {% trans "Samplerate" %}: <b>{{ object.samplerate }}</b> | {% trans "Genre" %}: <b>{{ object.get_genre_display|capfirst }}</b> | {% trans "Instrument" %}: <b>{{ object.get_instrument_display|capfirst }}</b></p>
-   </div>
 
-   <div class="license-block">
-      <img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon }}" />
-      <p><i>"{{ object.name|capfirst }}"</i> 
-      {% trans "by" %} <a href="{{ object.user.get_absolute_url }}">{{ user.userprofile.realname|default:user.username|capfirst }}</a>
-      {% blocktrans with license=object.get_license.name license_url=object.get_license.url %}is licensed under a <a rel="license" href="{{ license_url }}">{{ license }}</a>{% endblocktrans %}. 
-      {% trans "Published" %}: {{ object.created_at }} 
-      {% trans "by" %} {{ user.userprofile.realname|default:user.username|capfirst }}. 
-      <a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{% trans "Permanent link" %}</a>.</p>
+      <div class="license-block">
+         <img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon }}" />
+         <p><i>"{{ object.name|capfirst }}"</i> 
+         {% trans "by" %} <a href="{{ object.user.get_absolute_url }}">{{ user.userprofile.realname|default:user.username|capfirst }}</a>
+         {% blocktrans with license=object.get_license.name license_url=object.get_license.url %}is licensed under a <a rel="license" href="{{ license_url }}">{{ license }}</a>{% endblocktrans %}. 
+         {% trans "Published" %}: {{ object.created_at }} 
+         {% trans "by" %} {{ user.userprofile.realname|default:user.username|capfirst }}. 
+         <a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{% trans "Permanent link" %}</a>.</p>
+      </div>
    </div>
 
 </div>
