@@ -22,37 +22,37 @@
 {% block content %}
 
 <div class="detail-audio">
-    <div class="top-date">{{ object.created_at|timesince }}</div>
-    <div class="top">
+   <div class="top-date">{{ object.created_at|timesince }}</div>
+   <div class="top">
        <div class="top-user user"><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></div>
-       <div class="top-title"><h1><a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{{ object.name }}</a></h1></div>
+       <div class="inline-title"><h1>{{ object.name }}</h1>
+       {% if request.user == object.user %}<span class="edit"><a title="{% trans "Edit audio track" %}" href="{% url "audio-edit" object.slug %}">[{% trans "Edit" %}]</a> <a class="danger" title="{% trans "Delete audio track" %}" href="{% url "audio-delete" object.slug %}">[{% trans "Delete" %}]</a></span>{% endif %}
+       </div>
    </div>
 
 {% include "audio/audio_object.html" %}
 
-   <dl class="dl-horizontal">
-       <dt>{% trans "Name" %}</dt><dd><a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{{ object.name }}</a></dd>
-       <dt>{% trans "Description" %}</dt><dd>{{ object.description|default:"-" }}</dd>
-       <dt>{% trans "File" %}</dt><dd><a href="{{object.audio.url }}">{{object.audio.url }}</a></dd>
-       <dt>{% trans "License" %}</dt><dd><a rel="license" href="{{object.get_license.url }}"><img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon }}" /></a>{% blocktrans with license=object.get_license.name license_url=object.get_license.url %} This work is licensed under a <a href="{{ license_url }}">{{ license }}</a>{% endblocktrans %}</a></dd>
-       <dt>{% trans "Channels" %}</dt><dd>{{ object.channels }}</dd>
-       <dt>{% trans "Samplerate" %}</dt><dd>{{ object.samplerate }}</dd>
-       <dt>{% trans "Genre" %}</dt><dd>{{ object.get_genre_display|capfirst }}</dd>
-       <dt>{% trans "Type" %}</dt><dd>{{ object.get_use_type_display|capfirst }}</dd>
-       <dt>{% trans "Instrument" %}</dt><dd>{{ object.get_instrument_display|capfirst }}</dd>
-       <dt>{% trans "Created by" %}</dt><dd><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></dd>
-       <dt>{% trans "Created at" %}</dt><dd>{{ object.created_at }}</dd>
-       <dt>{% trans "HashTags" %}</dt><dd>{% include 'core/hashtags_block.html' %}</dd>
-   </dl>
+   <div class="download"><a href="{{ object.audio.url }}"><i class="fa fa-download"></i> {% trans "Download" %}</a></div>
+
+   <h4>{% if object.use_type != "other" %}{{ object.get_use_type_display|capfirst }}{% else %}{% trans "File" %}{% endif %} {% trans "details" %}:</h4>
+
+   <p class="description">{{ object.description|capfirst }}</p>
+
+   <div class="small-tags">{% include 'core/hashtags_block.html' %}</div>  
+
+   <p class="">{% trans "Channels" %}: <b>{{ object.channels }}</b> | {% trans "Samplerate" %}: <b>{{ object.samplerate }}</b> | {% trans "Genre" %}: <b>{{ object.get_genre_display|capfirst }}</b> | {% trans "Instrument" %}: <b>{{ object.get_instrument_display|capfirst }}</b></p>
+
+   <div class="license-block">
+      <img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon }}" />
+      <p><i>"{{ object.name|capfirst }}"</i> 
+      {% trans "by" %} <a href="{{ object.user.get_absolute_url }}">{{ user.userprofile.realname|default:user.username|capfirst }}</a>
+      {% blocktrans with license=object.get_license.name license_url=object.get_license.url %}is licensed under a <a rel="license" href="{{ license_url }}">{{ license }}</a>{% endblocktrans %}. 
+      {% trans "Published" %}: {{ object.created_at }} 
+      {% trans "by" %} {{ user.userprofile.realname|default:user.username|capfirst }}. 
+      <a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{% trans "Permanent link" %}</a>.</p>
+   </div>
 
 </div>
 
-
-{% if request.user == object.user %}
-    <div class="form-actions">
-        <a class="btn btn-primary" href="{% url "audio-edit" object.slug %}">{% trans "Edit" %}</a>
-        <a class="btn btn-danger" href="{% url "audio-delete" object.slug %}">{% trans "Delete" %}</a>
-    </div>
-{% endif %}
 {% endblock %}
 
