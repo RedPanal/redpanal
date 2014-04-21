@@ -11,7 +11,18 @@
         $.endlessPaginate({
             paginateOnScroll: true,
             paginateOnScrollChunkSize: 5,
-            paginateOnScrollMargin: 10
+            paginateOnScrollMargin: 10,
+            onCompleted: function() {
+             //  http://django-endless-pagination.readthedocs.org/en/latest/javascript.html
+               $('video,audio').each(function(index, element){
+                  $(this).mediaelementplayer({
+                     audioWidth: $(this).parent().width(), //old 540 460
+                     // height of audio player
+                     audioHeight: 30,
+                     // initial volume when the player starts
+                     startVolume: 0.8});
+              });
+            }
         });
     });
  </script>
