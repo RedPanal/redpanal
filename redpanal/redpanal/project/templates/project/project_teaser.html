@@ -20,7 +20,7 @@
    {% endif %}
     </div>
     <div class="project-data">
-      {% if mode == "full" %}
+   {% if mode == "full" %}
 
        <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|capfirst }}</a></span>
        <span class="description">{{ object.description|capfirst }}</span>
@@ -28,7 +28,7 @@
        <span class="tracks"><b class="number">{{ object.audios.all|length }}</b> {% trans "Tracks" %}</span>
        <span class="ago">{% blocktrans with timesince=object.created_at|timesince %}{{ timesince }} ago{% endblocktrans %}, {% trans "by" %} @{{ object.user }}</span>
 
-      {% elif mode == "in-project-detail" %}
+   {% elif mode == "in-project-detail" %}
 
        <div class="inline-title"><h1 class="name">{{ object.name|capfirst }}</h1>
       {% if request.user == object.user %}<span class="edit"><a title="{% trans "Edit project" %}" href="{% url "project-edit" object.slug %}">[{% trans "Edit" %}]</a> <a class="danger" title="{% trans "Delete project" %}" href="{% url "project-delete" object.slug %}">[{% trans "Delete" %}]</a></span>{% endif %}</div>
@@ -37,11 +37,18 @@
        <span class="tags">{% include 'core/hashtags_block.html' %}</span>
        <span class="tracks"><b class="number">{{ object.audios.all|length }}</b> {% trans "Tracks" %}</span>
 
-      {% else %}
+   {% elif mode == "in-action-list" %}
+
+       <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|capfirst }}</a></span>
+       <span class="description">{{ object.description|truncatechars:150|capfirst }}</span>
+       <span class="tags">{% include 'core/hashtags_block.html' %}</span>
+       <span class="tracks"><b class="number">{{ object.audios.all|length }}</b> {% trans "Tracks" %}</span>
+
+   {% else %}
 
        <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|capfirst }}</a></span>
        <span class="description">{{ object.description|truncatechars:50|capfirst }}</span>
        <span class="tags">{% for tag in object.tags.all|slice:":3" %} <a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.slug }}</a> {% endfor %}{# from 'core/hashtags_block.html' #}</span>
-      {% endif %}
+   {% endif %}
     </div>
 </div>

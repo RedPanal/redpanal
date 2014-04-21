@@ -6,5 +6,7 @@
 {% endblock %}
 
 {% block action_body %}
+  {% with mode="in-action-list" %}
   {% include "project/project_teaser.html" with object=action.target %}
+  {% endwith %}
 {% endblock %}
