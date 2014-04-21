@@ -1,2 +1,11 @@
-{% for tag in object.tags.all %} <a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.slug }}</a> {% endfor %}
 
+{% if mode == "short-list" %}
+   {% for tag in object.tags.all|slice:":5" %}
+    <a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.slug }}</a>
+   {% endfor %}
+   {% if object.tags.all|length > 5 %}<a href="{{ object_url }}">...</a>{% endif %}
+{% else %}
+   {% for tag in object.tags.all %}
+    <a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.slug }}</a>
+   {% endfor %}
+{% endif %}

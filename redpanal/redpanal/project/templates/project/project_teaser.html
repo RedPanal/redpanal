@@ -20,17 +20,20 @@
    {% endif %}
     </div>
     <div class="project-data">
-   {% if mode == "full" %}
+   {% if mode == "full" %} {# ToDo: renombrar mode a "list-style" y cambiarlo todos los with #}
 
-       <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|capfirst }}</a></span>
-       <span class="description">{{ object.description|capfirst }}</span>
-       <span class="tags">{% include 'core/hashtags_block.html' %}</span>
+       <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|truncatechars:50|capfirst }}</a></span>
+       <span class="description">{{ object.description|truncatechars:100|capfirst }}</span>
+       <span class="tags">
+          {% url 'project-detail' object.slug as object_url %}
+          {% with mode="short-list" object_url=object_url %}{% include 'core/hashtags_block.html' %}{% endwith %}
+       </span>
        <span class="tracks"><b class="number">{{ object.audios.all|length }}</b> {% trans "Tracks" %}</span>
        <span class="ago">{% blocktrans with timesince=object.created_at|timesince %}{{ timesince }} ago{% endblocktrans %}, {% trans "by" %} @{{ object.user }}</span>
 
    {% elif mode == "in-project-detail" %}
 
-       <div class="inline-title"><h1 class="name">{{ object.name|capfirst }}</h1>
+       <div class="inline-title"><h1 class="name {% if object.name|length > 50 %}very-long-name{% endif %}">{{ object.name|capfirst }}</h1>
       {% if request.user == object.user %}<span class="edit"><a title="{% trans "Edit project" %}" href="{% url "project-edit" object.slug %}">[{% trans "Edit" %}]</a> <a class="danger" title="{% trans "Delete project" %}" href="{% url "project-delete" object.slug %}">[{% trans "Delete" %}]</a></span>{% endif %}</div>
        <span class="creator">{% trans "Project created by" %} <span class="user"><a href="{{ object.user.get_absolute_url }}"><b>{{ object.user }}</b></a></span> {% trans "at" %} {{ object.created_at }}</span>
        <span class="description">{{ object.description|capfirst }}</span>
@@ -39,16 +42,19 @@
 
    {% elif mode == "in-action-list" %}
 
-       <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|capfirst }}</a></span>
+       <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|truncatechars:50|capfirst }}</a></span>
        <span class="description">{{ object.description|truncatechars:150|capfirst }}</span>
-       <span class="tags">{% include 'core/hashtags_block.html' %}</span>
+       <span class="small-tags">
+          {% url 'project-detail' object.slug as object_url %}
+          {% with mode="short-list" object_url=object_url %}{% include 'core/hashtags_block.html' %}{% endwith %}
+       </span>
        <span class="tracks"><b class="number">{{ object.audios.all|length }}</b> {% trans "Tracks" %}</span>
 
-   {% else %}
+   {% else %} {# "icon-style" default #}
 
-       <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|capfirst }}</a></span>
+       <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|truncatechars:20|capfirst }}</a></span>
        <span class="description">{{ object.description|truncatechars:50|capfirst }}</span>
-       <span class="tags">{% for tag in object.tags.all|slice:":3" %} <a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.slug }}</a> {% endfor %}{# from 'core/hashtags_block.html' #}</span>
+       <span class="small-tags">{% for tag in object.tags.all|slice:":3" %} <a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.slug }}</a> {% endfor %}{# from 'core/hashtags_block.html' #}</span>
    {% endif %}
     </div>
 </div>

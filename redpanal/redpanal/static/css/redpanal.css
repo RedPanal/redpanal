@@ -561,12 +561,13 @@ p.expl {
 
 .project-teaser.in-project-detail {
     background-color: #EDFAFD;
+    border: 4px solid #EEEEEE;
     clear: both;
     display: block;
     height: auto;
     margin: 30px 0;
     min-height: 220px;
-    padding: 30px 0 30px 29px;
+    padding: 27px 28px;
     position: relative;
     vertical-align: top;
     width: auto;
@@ -654,6 +655,11 @@ p.expl {
     margin: 0;
 }
 
+.project-teaser.in-project-detail .very-long-name {
+    font-size: 25px;
+    line-height: 25px;
+}
+
 .project-teaser .description{
     color: #AAAAAA;
     font-size: 13px;
@@ -700,17 +706,20 @@ p.expl {
     font-weight: normal;
 }
 
-.project-teaser .tags{
-    margin: 6px 0 0;
+.project-teaser .tags,
+.project-teaser .small-tags{
+    margin: 6px 0;
     /* height: 1.4em; */
     /* overflow: hidden; */
 }
 
+.detail-audio .tags,
 .project-teaser.full .tags,
 .project-teaser.in-project-detail .tags{
-    margin: 8px 0 0;
+    margin: 8px 0;
 }
 
+.detail-audio .tags a,
 .project-teaser .tags a,
 .small-tags a{
     background-color: #28CCEA; /* #A2F0FE; */
@@ -722,12 +731,17 @@ p.expl {
     padding: 0 6px 1px;
     white-space: nowrap;
 }
+.small-tags a{
+   font-size: 12px;
+    padding: 0 6px 0 6px;
+}
 
+.detail-audio .tags a:hover,
 .project-teaser .tags a:hover,
 .small-tags a:hover {
     background-color: #263E4E;
     text-decoration: none;
-    /* color: white; */
+    color: white; 
 }
 
 /* project detail */
@@ -749,6 +763,7 @@ p.expl {
 }
 
 .project-detail .project-data {
+    margin-left: 242px;
 }
 
 .project-detail .project-btn {
@@ -835,7 +850,7 @@ p.expl {
   color: #263E4E;
 }
 
-p.tags a {
+.tags a {
     background-color: #A2F0FE;
     border-radius: 3px 3px 3px 3px;
     color: #28CCEA;
@@ -846,7 +861,7 @@ p.tags a {
     white-space: nowrap;
 }
 
-p.tags a:hover {
+.tags a:hover {
     background-color: white;
     color: #28CCEA;
 }
@@ -1225,6 +1240,7 @@ p.user-website i {
     font-size: 16px;
     line-height: 20px;
     text-decoration: underline;
+    margin-top: 0;
 }
 .detail-audio .mejs-container {
    padding-top: 120px;
@@ -1254,11 +1270,9 @@ p.user-website i {
     font-size: 16px;
 }
 
-
-.license-block,
-.detail-block {
+.license-block, .detail-block {
     border: 4px solid #EEEEEE;
-    padding: 12px 18px;
+    padding: 21px 28px;
 }
 
 .license-block > p {
