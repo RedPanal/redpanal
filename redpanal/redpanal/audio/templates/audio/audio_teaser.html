@@ -28,7 +28,7 @@
       </div>
    </div>
 {% else %}
-    <div class="top-date">{% blocktrans with timesince=object.created_at|timesince user=object.user %}{{ timesince }} ago, by{% endblocktrans %} <a href="{{ object.user.get_absolute_url }}">{{ user }}</a> <a class="license" rel="license" href="{{object.get_license.url }}"><img alt="{% trans "Licencia Creative Commons" %}" style="border-width:0" src="{{ object.get_license.icon_small }}" /></a></div>
+    <div class="top-date">{% blocktrans with timesince=object.created_at|timesince user=object.user %}{{ timesince }} ago, by{% endblocktrans %} <a href="{{ object.user.get_absolute_url }}">@{{ user }}</a> <a class="license" rel="license" href="{{object.get_license.url }}"><img alt="{% trans "Licencia Creative Commons" %}" style="border-width:0" src="{{ object.get_license.icon_small }}" /></a></div>
     <div class="top">
        <div class="top-title"><h3><a href="{% url 'audio-detail' object.slug %}">{{ object.name|truncatechars:30|capfirst }}</a></h3>{# object.description|truncatechars:50|capfirst #}</div>
        <div class="top-data">

@@ -6,9 +6,9 @@
    </span>
    <span class="user">
    {% if action.actor.get_absolute_url %}
-      <a href="{{ action.actor.get_absolute_url }}">{{ action.actor }}</a>
+      <a href="{{ action.actor.get_absolute_url }}">{{ action.actor.userprofile.realname|default:action.actor|capfirst }}</a>
    {% else %}
-      <a href="{{ action.actor_url }}">{{ action.actor }}</a>
+      <a href="{{ action.actor_url }}">{{ action.actor.userprofile.realname|default:action.actor|capfirst }}</a>
    {% endif %}
    </span>
 {% endblock %}

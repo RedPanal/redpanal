@@ -670,13 +670,13 @@ p.expl {
 .project-teaser.full .description {
     font-size: 14px;
     line-height: 18px;
-    margin: 6px 0 0;
+    margin: 6px 0 10px;
 }
 
 .project-teaser.in-project-detail .description{
     color: #263E4E;
-    font-size: 15px;
-    line-height: 18px;
+    font-size: 16px;
+    line-height: 19px;
     margin: 12px 0;
 }
 
@@ -689,8 +689,9 @@ p.expl {
 }
 
 .project-teaser.in-project-detail .creator {
-    color: #AAAAAA;
+   color: #AAAAAA;
     font-size: 13px;
+    font-style: italic;
     font-weight: normal;
     margin: 0 0 12px;
 }

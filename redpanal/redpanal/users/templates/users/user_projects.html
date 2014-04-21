@@ -21,7 +21,7 @@
       {% ifequal request.user user %}
       <h3>{% trans "My Projects" %}</h3>
       {% else %}
-      <h3>@{{ user.username }} Projects</h3>
+      <h3>{{ user.userprofile.realname|default:user.username|capfirst }} Projects</h3>
       {% endifequal %}
       <div class="projects-wrapper full">
       {% with mode="full" %}
