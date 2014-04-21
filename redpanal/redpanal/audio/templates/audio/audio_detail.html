@@ -25,22 +25,21 @@
    <div class="top-date">{{ object.created_at|timesince }}</div>
    <div class="top">
        <div class="top-user user"><a href="{{ object.user.get_absolute_url }}"> {{ object.user }}</a></div>
-       <div class="inline-title"><h1>{{ object.name }}</h1>
+       <div class="inline-title"><h1>{{ object.name|capfirst|truncatechars:50 }}</h1>
        {% if request.user == object.user %}<span class="edit"><a title="{% trans "Edit audio track" %}" href="{% url "audio-edit" object.slug %}">[{% trans "Edit" %}]</a> <a class="danger" title="{% trans "Delete audio track" %}" href="{% url "audio-delete" object.slug %}">[{% trans "Delete" %}]</a></span>{% endif %}
        </div>
    </div>
 
 {% include "audio/audio_object.html" %}
 
-   <div class="download"><a href="{{ object.audio.url }}"><i class="fa fa-download"></i> {% trans "Download" %}</a></div>
-
-   <h4>{% if object.use_type != "other" %}{{ object.get_use_type_display|capfirst }}{% else %}{% trans "File" %}{% endif %} {% trans "details" %}:</h4>
-
-   <p class="description">{{ object.description|capfirst }}</p>
-
-   <div class="small-tags">{% include 'core/hashtags_block.html' %}</div>  
-
-   <p class="">{% trans "Channels" %}: <b>{{ object.channels }}</b> | {% trans "Samplerate" %}: <b>{{ object.samplerate }}</b> | {% trans "Genre" %}: <b>{{ object.get_genre_display|capfirst }}</b> | {% trans "Instrument" %}: <b>{{ object.get_instrument_display|capfirst }}</b></p>
+   <div class="detail-block">
+      <h4>{% if object.use_type != "other" %}{{ object.get_use_type_display|capfirst }}{% else %}{% trans "File" %}{% endif %} {% trans "details" %}:</h4>
+      <div class="download"><a href="{{ object.audio.url }}"><i class="fa fa-download"></i> {% trans "Download" %}</a></div>
+      <p>{% trans "Title" %}: <b>{{ object.name|capfirst }}</b></p>
+      <p class="description">{{ object.description|capfirst }}</p>
+      <div class="small-tags">{% include 'core/hashtags_block.html' %}</div>  
+      <p class="">{% trans "Channels" %}: <b>{{ object.channels }}</b> | {% trans "Samplerate" %}: <b>{{ object.samplerate }}</b> | {% trans "Genre" %}: <b>{{ object.get_genre_display|capfirst }}</b> | {% trans "Instrument" %}: <b>{{ object.get_instrument_display|capfirst }}</b></p>
+   </div>
 
    <div class="license-block">
       <img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon }}" />
