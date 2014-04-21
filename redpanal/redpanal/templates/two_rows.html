@@ -1,6 +1,20 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+{% block extra_head %}
+{{ block.super }}
+ <script>
+    $(function (){
+        $('video,audio').mediaelementplayer({
+            audioWidth: 540, //old 460
+            // height of audio player
+            audioHeight: 30,
+            // initial volume when the player starts
+            startVolume: 0.8});
+    });
+ </script>
+{% endblock %}
+
 {% block content %}
 <div class="row">
   <div class="main span7">

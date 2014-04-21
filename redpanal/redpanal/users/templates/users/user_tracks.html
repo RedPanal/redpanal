@@ -8,13 +8,6 @@
  <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
  <script>
     $(function (){
-        $('video,audio').mediaelementplayer({
-            audioWidth: 540, //old 460
-            // height of audio player
-            audioHeight: 30,
-            // initial volume when the player starts
-            startVolume: 0.8});
-
         $.endlessPaginate({
             paginateOnScroll: true,
             paginateOnScrollChunkSize: 2,
