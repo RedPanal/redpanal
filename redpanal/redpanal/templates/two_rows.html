@@ -5,12 +5,16 @@
 {{ block.super }}
  <script>
     $(function (){
-        $('video,audio').mediaelementplayer({
-            audioWidth: 540, //old 460
-            // height of audio player
-            audioHeight: 30,
-            // initial volume when the player starts
-            startVolume: 0.8});
+        $('video,audio').each(function(index, element){
+            // console.log("width" + index + ": " + $(this).parent().width()); //debug
+            $(this).mediaelementplayer({
+               audioWidth: $(this).parent().width(), //old 540 460
+               // height of audio player
+               audioHeight: 30,
+               // initial volume when the player starts
+               startVolume: 0.8});
+            // create_player(element);
+        });
     });
  </script>
 {% endblock %}
