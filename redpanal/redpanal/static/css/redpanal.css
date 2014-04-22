@@ -30,6 +30,10 @@ body.bkg {
 }
 
 header {
+   margin-bottom: 73px; /* HEADER HEIGHT */
+}
+
+.logged-user header {
    margin-bottom: 83px; /* HEADER HEIGHT */
 }
 
@@ -449,22 +453,30 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 /* === user background === */
 
 #user-background {
-    background-color: #F8FEE6;
-    height: 210px;
+    top: 83px;
+    height: 290px;
     left: 0;
     position: absolute;
-    top: 83px;
     width: 100%;
     z-index: -1000;
+    background: no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-color: #EDFAFD;
+    background-image: url(/static/img/backgrounds/8540647429_76995ae051_o.jpg);
 }
 
 .logged-user #user-background {
     top: 140px;
-    height: 222px;
+    height: 272px;
 }
+
 /* ==================  main  ==================== */
 
-.main > h3 {
+.main > h3,
+h3.main_title {
     border-bottom: 1px solid #DDDDDD;
     font-size: 22px;
     font-weight: normal;
@@ -473,7 +485,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 }
 
 .main h3.top-title {
-    margin: 50px 0 4px;
+    margin: 0;
 }
 
 p.expl {
@@ -1134,13 +1146,53 @@ p.expl {
 
 /* user page */
 
+.slide_wrapper.about_me {
+   margin: 30px 0 90px;
+/*   background-color:rgba(240,254,192,0.65); */
+    background-color: #F0FEC0;
+    color: #263E4E;
+    opacity: 0.80;
+    transition: opacity .25s ease-in-out;
+    padding-bottom: 12px;
+}
+
+.slide_wrapper.about_me:hover {
+    opacity: 0.95;
+}
+
+.slide_wrapper h3 {
+  border-bottom: 1px solid #263E4E;
+  font-size: 22px;
+  font-weight: normal;
+  line-height: 30px;
+}
+.slider_menu.more {
+    display: block;
+    margin: 3px 30px;
+    border-top: 1px solid #263E4E;
+}
+
+.slider_menu.more a {
+    background-color: rgba(0, 0, 0, 0);
+    color: #263E4E;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 13px;
+    padding: 0;
+}
+
 .user-page-top {
-   margin-top: 12px;
+   margin-top: 14px;
+}
+
+.user-page-top a {
+    color: #263E4E;
+    text-decoration: underline;
 }
 
 p.user-location {
-   margin: 0 0 8px 2px;
-   color: gray;
+   margin: 0 0 7px 2px;
+   /* color: gray; */
 }
 
 p.user-location i {
@@ -1148,7 +1200,7 @@ p.user-location i {
 }
 
 p.user-website {
-    margin: 0 0 0 1px;
+    margin: 0 0 7px 1px;
 }
 
 p.user-website i {
@@ -1157,7 +1209,7 @@ p.user-website i {
 
 .user-about {
    font-style: italic;
-   color: gray;
+   /* color: gray; */
    margin: 0;
 }
 
@@ -1674,6 +1726,16 @@ p.user-website i {
     color: red;
     border-color: red;
     background-color: #28CCEA;
+}
+
+/* slider */
+
+.slider {
+    background: none repeat scroll 0 0 transparent;
+    overflow: hidden;
+    min-height: 130px;
+    height: 130px;
+    padding: 20px 30px;
 }
 
 /* TODO falta definir follow-unfollow.following cuando aparecen fuera de user-profile */
