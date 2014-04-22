@@ -4,10 +4,11 @@
 {% block title %}{% trans "Project list" %}{% endblock %}
 
 {% block content %}
-<ul>
+<h3>{% trans "RedPanal Projects" %}</h3>
+<div class="projects-wrapper">
   {% for object in object_list %}
     {% include "project/project_teaser.html" %}
   {% endfor %}
-</ul>
+</div>
 {% endblock %}
 

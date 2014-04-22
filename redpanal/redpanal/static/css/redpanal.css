@@ -590,7 +590,7 @@ p.expl {
 
 .project-data > span.tracks-over-image {
     display: block;
-    margin: -25px 6px 15px;
+    margin: -25px 6px 20px;
     text-align: right;
 }
 
@@ -604,6 +604,9 @@ p.expl {
    font-size: 13px;
 }
 
+.project-data > span.creator a.user {
+   font-weight: normal;
+}
 .creator .avatar img {
     margin: 0 0 2px;
     vertical-align: text-bottom;
@@ -659,9 +662,9 @@ p.expl {
 }
 
 .project-teaser .name{
-    font-weight: bold;
-    font-size: 16px;
-    margin: 8px 0 0;
+    font-weight: normal;
+    font-size: 17px;
+    margin: 8px 0 2px;
 }
 
 .project-teaser.in-action-list .name {
