@@ -78,6 +78,12 @@ i.fa.big-fa-icon {
     background-color: #263E4E;
 }
 
+
+.user a, a.user {
+    color: #263E4E;
+    font-weight: bold;
+}
+
 .btn {
    padding: 4px 10px;
 }
@@ -582,6 +588,27 @@ p.expl {
     margin: 0;
 }
 
+.project-data > span.tracks-over-image {
+    display: block;
+    margin: -25px 6px 15px;
+    text-align: right;
+}
+
+.project-data > span.tracks-over-image .wrapper {
+    background: none repeat scroll 0 0 #FFFFFF;
+    font-size: 12px;
+    padding: 0 4px;
+}
+
+.project-data > span.creator {
+   font-size: 13px;
+}
+
+.creator .avatar img {
+    margin: 0 0 2px;
+    vertical-align: text-bottom;
+}
+
 .project-teaser .project-img a {
     border: 1px solid #DDDDDD;
     display: inline-block;
@@ -632,6 +659,7 @@ p.expl {
 }
 
 .project-teaser .name{
+    font-weight: bold;
     font-size: 16px;
     margin: 8px 0 0;
 }

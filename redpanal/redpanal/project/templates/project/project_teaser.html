@@ -51,10 +51,11 @@
        <span class="tracks"><b class="number">{{ object.audios.all|length }}</b> {% trans "Tracks" %}</span>
 
    {% else %} {# "icon-style" default #}
-
+       <span class="tracks-over-image"><span class="wrapper"><b class="number">{{ object.audios.all|length }}</b> {% trans "Tracks" %}</span></span>
        <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|truncatechars:20|capfirst }}</a></span>
-       <span class="description">{{ object.description|truncatechars:50|capfirst }}</span>
-       <span class="small-tags">{% for tag in object.tags.all|slice:":3" %} <a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.slug }}</a> {% endfor %}{# from 'core/hashtags_block.html' #}</span>
+       <span class="creator"><span class="avatar">{% avatar object.user 16 %}</span> <a class="user" href="{{ object.user.get_absolute_url }}">{{ object.user.userprofile.realname|default:object.user.username|capfirst }}</a></span>
+       {% comment %}<span class="description">{{ object.description|truncatechars:50|capfirst }}</span>{% endcomment%}
+       <span class="small-tags">{% for tag in object.tags.all|slice:":2" %} <a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.slug }}</a> {% endfor %}{% if object.tags.all|length > 2 %}<a href="{{ object_url }}">...</a>{% endif %}</span>
    {% endif %}
     </div>
 </div>
