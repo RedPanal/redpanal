@@ -8,7 +8,9 @@ html, body {
   min-height: 600px;
   padding-top: 20px; /* 40px */
 }
-.logged-user #content,
+.logged-user #content {
+  padding-top: 2px;
+}
 .bkg #content {    /* profile forms and log-in pages */
   padding-top: 40px;
 }
@@ -349,10 +351,12 @@ h3.sign-up a:hover {
 .bkg #breadcrumb {
     opacity: 0.5;
 }
+
 #breadcrumb {
+    background-color: #F0FEC0;
     color: #669601;
-    background-color: #f0fec0;
-    margin-bottom: -40px;
+    height: 57px;
+    margin-bottom: 0;
 }
 
 #breadcrumb .wrapper {
@@ -363,23 +367,35 @@ h3.sign-up a:hover {
 }
 
 #breadcrumb form {
-    bottom: 11px;
-    float: right;
     margin: 0;
-    position: absolute;
-    right: 0;
+}
+
+#breadcrumb li.submit {
+    float: right;
+    margin: 11px -9px 0 0 !important;
 }
 
 #submit-id-submit {
-    margin: 0 0 0 4px;
+/*    margin: 0 0 0 4px;
     padding: 4px 5px 6px;
-    vertical-align: top;
+    vertical-align: top; */
 /*
    padding: 0;
    vertical-align: baseline;
    padding: 4px 1px 3px 5px;
    margin: 0 0 0 5px;
 */
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+    box-shadow: none;
+    color: #28CCEA;
+    left: -33px;
+    margin: 0;
+    padding: 0 0 2px;
+    position: relative;
+    text-shadow: none;
+    vertical-align: middle;
+
 }
 
 #submit-id-submit:before {
@@ -389,8 +405,12 @@ h3.sign-up a:hover {
     font-style: normal;
     font-weight: normal;
     text-decoration: inherit;
-    font-size: 24px;
+    font-size: 19px;
     vertical-align: middle;
+}
+
+#submit-id-submit:hover {
+   color: #263E4E;
 }
 
 #breadcrumb form input[type="text"] {
@@ -400,7 +420,7 @@ h3.sign-up a:hover {
     transition: none 0s ease 0s;
     border-radius: 0;
     vertical-align: baseline;
-    width: 550px;
+    width: 400px;
     margin:0;
 }
 
@@ -411,14 +431,33 @@ h3.sign-up a:hover {
 }
 
 #breadcrumb ul.nav {
+    line-height: 57px;
     margin-bottom: 0;
 }
 
 #breadcrumb ul.nav li {
     display: inline-block;
-    height: 36px;
     margin: 0 18px 0 0;
-    /* font-size: 17px; */
+}
+
+
+#breadcrumb ul.nav li.profile a {
+    background-color: #FFFFFF;
+    border: 3px solid #FFFFFF;
+    border-radius: 8px 8px 8px 8px;
+    font-size: 14px;
+    line-height: 14px;
+    padding: 6px 7px;
+}
+
+#breadcrumb ul.nav li.profile a:hover {
+   border-color: #28CCEA;
+   background-color: white;
+}
+
+#breadcrumb ul.nav li.action {
+    float: right;
+    margin: 11px 10px 0 0;
 }
 
 #breadcrumb ul.nav li a {
@@ -432,13 +471,21 @@ h3.sign-up a:hover {
 }
 
 #breadcrumb ul.nav li.action a {
-   color: #26A0A6; /* #28CCEA; */
-   background-color: transparent;
+
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 3px solid #28CCEA;
+    color: #28CCEA; /* #26A0A6 */
+    border-radius: 8px 8px 8px 8px;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 4px 9px;
+
 }
 
 #breadcrumb ul.nav li.action a:hover {
    color: #263E4E;
-   background-color: transparent;
+   border-color: #263E4E;
+/*   background-color: transparent; */
 }
 
 input:-moz-placeholder, textarea:-moz-placeholder {

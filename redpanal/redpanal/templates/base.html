@@ -1,4 +1,4 @@
-{% load staticfiles i18n %}
+{% load staticfiles avatar_tags i18n %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -123,16 +123,19 @@
          {% comment %}
            <li class="discover"><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "My Account" %}</a></li>
            <li class="discover"><a href="/"><i class="fa fa-music"></i> {% trans "My Community" %}</a></li>
-           <li class="discover"><a href="{% url 'user-interactions' request.user %}"><i class="fa fa-comments"></i> {% trans "My Interactions" %}</a></li>
          {% endcomment %}
-           <li class="action"><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-home"></i> {% trans "Home" %}</a></li>
-           <li class="action"><a href="{% url "audio-create" %}"><i class="fa fa-upload"></i> {% trans "Upload file" %}</a></li>
-           <li class="action"><a href="{% url "project-create" %}"><i class="fa fa-folder-open"></i> {% trans "Create project" %}</a></li>
-           <li>
+           <li class="discover profile"><a href="{{ request.user.get_absolute_url }}" title="{% trans "My Profile" %}">{% avatar request.user 16 %}</a></li>
+           <li class="discover"><a href="/" title="{% trans 'My Community' %}"><i class="fa fa-user"></i> {% trans "My Community" %}</a></li>
+           <li class="discover"><a href="{% url 'user-interactions' request.user %}"><i class="fa fa-comments-o"></i> {% trans "My Interactions" %}</a></li>
+           <li class="action"><a href="{% url "project-create" %}" title="{% trans "Create project" %}"><i class="fa fa-folder-open"></i></a></li>
+           <li class="action"><a href="{% url "audio-create" %}" title="{% trans "Upload file" %}"><i class="fa fa-upload"></i></a></li>
+           <li class="submit">
            {% block messageform %}
                {% include "social/message_form.html" %}
            {% endblock %}
            </li>
+
+
        </ul>
        </div>
    </div>
