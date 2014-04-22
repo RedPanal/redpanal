@@ -23,18 +23,22 @@
             var s = $(this).find('.slider');
             var m = $(this).find('.slider_menu');
 
-            var minH = s.css('min-height');
-            var maxH = s[0].scrollHeight + "px"; 
-            var eleH = s.height() + "px";
-            //console.log( "minH:" + minH + " eleH:" + eleH + " maxH:" + maxH ); //debug
+            var minH = s.css('min-height'); // min must be set in css "min-height"
+            var truH = s[0].scrollHeight;   // true element height (overflowed)
+            var eleH = s.height() + "px";   // height from css
+            var maxH = truH + 20; maxH = maxH + "px" // max height to open (plus margin)
+            truH = truH + "px";
 
-            if ( maxH > minH ) {
-               // set initial height if not
+            console.log( "minH:" + minH + " eleH:" + eleH  + " truH:" + truH + " maxH:" + maxH ); //debug
+
+            if ( truH > minH ) {
+               // set initial height if not, or slide init open
                if ( eleH != minH ) s.css("height", minH );
 
                // create toogle menu
                var a = $('<a href="#"><i class="fa fa-angle-down"></i> more</a>');
                m.append(a);
+               m.css("display", "block" );
 
                // toogle function
                var open = false;
