@@ -125,8 +125,8 @@
            <li class="discover"><a href="/"><i class="fa fa-music"></i> {% trans "My Community" %}</a></li>
          {% endcomment %}
            <li class="discover profile"><a href="{{ request.user.get_absolute_url }}" title="{% trans "My Profile" %}">{% avatar request.user 16 %}</a></li>
-           <li class="discover"><a href="/" title="{% trans 'My Community' %}"><i class="fa fa-user"></i> {% trans "My Community" %}</a></li>
-           <li class="discover"><a href="{% url 'user-interactions' request.user %}"><i class="fa fa-comments-o"></i> {% trans "My Interactions" %}</a></li>
+           <li class="discover"><a href="/" title="{% trans 'What other users are doing?' %}"><i class="fa fa-user"></i> {% trans "My Community" %}</a></li>
+           <li class="discover"><a href="{% url 'user-interactions' request.user %}" title="{% trans 'Interactions with other users' %}"><i class="fa fa-comments-o"></i> {% trans "My Interactions" %}</a></li>
            <li class="action"><a href="{% url "project-create" %}" title="{% trans "Create project" %}"><i class="fa fa-folder-open"></i></a></li>
            <li class="action"><a href="{% url "audio-create" %}" title="{% trans "Upload file" %}"><i class="fa fa-upload"></i></a></li>
            <li class="submit">

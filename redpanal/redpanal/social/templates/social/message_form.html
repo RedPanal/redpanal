@@ -3,6 +3,6 @@
 <form method="post" action="{% url 'message-create' %}" id="comment-form-small">
 {% csrf_token %}
 <input id="id_msg" maxlength="140" name="msg" type="text" placeholder="{% trans "tell your fans what you're doing!" %}" />
-<button type="submit" id="submit-id-submit" class="btn btn-primary" value="" name="submit"></button>
+<button type="submit" id="submit-id-submit" class="btn btn-primary" value="" name="submit" title="{% trans 'Publish message' %}"></button>
 {% comment %}<input type="submit" id="submit-id-submit" class="btn btn-primary" value="{% trans "Send message" %}" name="submit">{% endcomment %}
 </form>
