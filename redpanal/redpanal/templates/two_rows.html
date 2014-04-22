@@ -4,6 +4,9 @@
 {% block extra_head %}
 {{ block.super }}
  <script>
+
+    //var sliderHeight = "100px";
+
     $(function (){
         $('video,audio').each(function(index, element){
             // console.log("width" + index + ": " + $(this).parent().width()); //debug
@@ -13,9 +16,43 @@
                audioHeight: 30,
                // initial volume when the player starts
                startVolume: 0.8});
-            // create_player(element);
+        });
+
+        $('.partial_slider').each(function(){
+
+            var s = $(this).find('.slider');
+            var m = $(this).find('.slider_menu');
+
+            var minH = s.css('min-height');
+            var maxH = s[0].scrollHeight + "px"; 
+            var eleH = s.height() + "px";
+            //console.log( "minH:" + minH + " eleH:" + eleH + " maxH:" + maxH ); //debug
+
+            if ( maxH > minH ) {
+               // set initial height if not
+               if ( eleH != minH ) s.css("height", minH );
+
+               // create toogle menu
+               var a = $('<a href="#"><i class="fa fa-angle-down"></i> more</a>');
+               m.append(a);
+
+               // toogle function
+               var open = false;
+               a.click(function(){
+                  if ( open == true ){
+                     s.animate({"height": minH}, {duration: "slow" });
+                     a.html('<i class="fa fa-angle-down"></i> more');
+                     open = false;
+                  } else {
+                     s.animate({"height": maxH}, {duration: "slow" });
+                     a.html('<i class="fa fa-angle-up"></i> close');
+                     open = true;
+                  }
+               })
+            }
         });
     });
+
  </script>
 {% endblock %}
 
