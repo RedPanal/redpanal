@@ -30,3 +30,4 @@ BACKGROUND_IMAGES = (
 @register.assignment_tag
 def get_background_image():
     return random.choice(BACKGROUND_IMAGES)
+

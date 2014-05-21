@@ -1,21 +1,119 @@
-{% extends "base.html" %}
-{% load i18n %}
+{% extends "two_rows.html" %}
+{% load i18n avatar_tags %}
 {% load url from future %}
 
 {% block title %} #{{ tag }}{% endblock %}
 
-{% block content %}
-
-  {% for object in projects %}
-     {% include "project/project_object.html" %}
-  {% endfor%}
-
-  {% for object in audios %}
-     {% include "audio/audio_teaser.html" %}
-  {% endfor%}
-
-  {% for object in messages %}
-     {% include "social/message_teaser.html" %}
-  {% endfor%}
+{% block extra_head %}
+{{ block.super }}
+ <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+ <script>
+    $(function (){
+        $.endlessPaginate({
+            paginateOnScroll: true,
+            paginateOnScrollChunkSize: 2,
+            paginateOnScrollMargin: 10,
+            onCompleted: function() {
+             //  http://django-endless-pagination.readthedocs.org/en/latest/javascript.html
+               $('video,audio').each(function(index, element){
+                  $(this).mediaelementplayer({
+                     audioWidth: $(this).parent().width(), //old 540 460
+                     // height of audio player
+                     audioHeight: 30,
+                     // initial volume when the player starts
+                     startVolume: 0.8});
+              });
+            }
+        });
+    });
+ </script>
 {% endblock %}
 
+{% block left_row %}
+
+  {% include "core/mixed_list.html" %}
+
+{% endblock %}
+
+{% block right_row %}
+   <div class="title-tag" >
+      <h2><a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.name }}</a></h2>
+   </div>
+
+   <ul class="nav nav-list nav-tags">
+      <li><a href="{% url 'hashtaged-list-projects' slug=tag.slug %}" 
+             class="{% ifequal list_type 'projects' %}selected{% endifequal %}">
+            <i class="fa fa-tag"></i> <b>{{ tag.name }}</b> - {% trans "only projects" %}</a>
+      <li><a href="{% url 'hashtaged-list-audios' slug=tag.slug %}" 
+             class="{% ifequal list_type 'audios' %}selected{% endifequal %}">
+            <i class="fa fa-tag"></i> <b>{{ tag.name }}</b> - {% trans "only tracks" %}</a>
+      <li><a href="{% url 'hashtaged-list-messages' slug=tag.slug %}" 
+             class="{% ifequal list_type 'messages' %}selected{% endifequal %}">
+            <i class="fa fa-tag"></i> <b>{{ tag.name }}</b> - {% trans "Only messages" %}</a>
+   </ul>
+
+   <ul class="nav nav-list">
+      {% include "discover-items-menu.html" %}
+   </ul>
+{% endblock %}
+
+
+
+
+
+
+
+
+{% comment %}
+{# Este template lista los objetos por separado, me pareció mejor la opción activa #}
+{# TODO: falta incluir users en la lista, pero no supe cómo generar una lista de usuarios por tag, el field de tags esta en UserProfile #}
+  <h3><a href="{% url 'hashtaged-list-projects' slug=tag.slug %}">{% trans "Last projects under tag" %} "#{{ tag.name }}"</a></h3>
+  {% if projects|length > 0 %}
+     <div class="projects-wrapper">
+     {% for object in projects|slice:":9" %}
+            {% include "project/project_teaser.html" %}
+     {% endfor %}
+     </div>
+  {% else %}
+  <span class="no-yet">{% trans "No projects found" %}</span>
+  {% endif %}
+  {% if projects|length > 9 %}
+  <span class="more"><a href="{% url 'hashtaged-list-projects' slug=tag.slug %}">{% trans "more projects under" %} "#{{ tag.name }}"...</a></span>
+  {% endif %}
+
+  <h3><a href="{% url 'hashtaged-list-audios' slug=tag.slug %}">{% trans "Last tracks under tag" %} "#{{ tag.name }}"</a></h3>
+  {% for object in audios|slice:":6" %}
+     {% include "audio/audio_teaser.html" %}
+  {% empty %}
+      <span class="no-yet">{% trans "No tracks found" %}</span>
+  {% endfor%}
+  {% if audios|length > 6 %}
+  <span class="more"><a href="{% url 'hashtaged-list-audios' slug=tag.slug %}">{% trans "more tracks under" %} "#{{ tag.name }}"...</a></span>
+  {% endif %}
+
+  <h3><a href="{% url 'hashtaged-list-messages' slug=tag.slug %}">{% trans "Last messages with tag" %} "#{{ tag.name }}"</a></h3>
+  {% for object in messages|slice:":6" %}
+     {% include "social/message_teaser.html" %}
+  {% empty %}
+      <span class="no-yet">{% trans "No messages found" %}</span>
+  {% endfor%}
+  {% if messages|length > 6 %}
+  <span class="more"><a href="{% url 'hashtaged-list-messages' slug=tag.slug %}">{% trans "more messages under" %} "#{{ tag.name }}"...</a></span>
+  {% endif %}
+
+  <h3><a href="{% url 'hashtaged-list-users' slug=tag.slug %}">{% trans "Last users with tag" %} "#{{ tag.name }}"</a></h3>
+  <div class="users-list-wrapper">
+    <ul class="users-teasers-list">
+    {% for user in users|slice:":6" %}
+       {% with "full" as mode %}
+       <li>{% include "users/user_teaser.html" %}</li>
+       {% endwith %}
+    {% empty %}
+       <li class="no-yet">{% trans "No users found" %}</li>
+    {% endfor %}
+    </ul>
+  </div>
+  {% if users|length > 6 %}
+  <span class="more"><a href="{% url 'hashtaged-list-users' slug=tag.slug %}">{% trans "more users under" %} "#{{ tag.name }}"...</a></span>
+  {% endif %}
+{% endcomment %}

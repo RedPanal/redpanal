@@ -548,10 +548,15 @@ p.expl {
    margin-top: 30px;
 }
 
-.sidebar .nav.nav-list {
+.sidebar .nav.nav-list, 
+.title-tag {
     float: right;
     margin-bottom: 30px;
     width: 270px;
+}
+
+.title-tag {
+    width: 300px;
 }
 
 .sidebar .nav.nav-list.auth-user li a {
@@ -573,6 +578,22 @@ p.expl {
     border-bottom: 1px solid #FFFFFF;
     color: #FFFFFF;
     text-shadow: none;
+}
+
+.sidebar .nav.nav-tags li a {
+    background-color: #28CCEA;
+}
+
+.sidebar .nav.nav-tags li a:hover{
+    background-color: #263e4e;
+}
+
+.sidebar .nav.nav-tags li a.selected {
+    background-color: #263e4e;
+}
+
+.sidebar .nav.nav-tags li a.selected:hover{
+    background-color: #28CCEA;
 }
 
 .sidebar .nav li a:hover{
@@ -939,6 +960,25 @@ p.expl {
 
 .user-profile .edit a:hover {
   color: #263E4E;
+}
+
+.title-tag {
+}
+
+.title-tag a {
+    background-color: #28CCEA;
+    border-radius: 6px 6px 6px 6px;
+    color: white;
+    display: inline-block;
+    margin: 0;
+    padding: 2px 8px;
+    white-space: nowrap;
+}
+
+.title-tag a:hover {
+    background-color: #263E4E;
+    color: white;
+    text-decoration:none;
 }
 
 .tags a {

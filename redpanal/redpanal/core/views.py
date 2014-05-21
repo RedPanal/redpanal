@@ -8,7 +8,8 @@ from django.core.urlresolvers import reverse_lazy
 from redpanal.audio.models import Audio
 from redpanal.project.models import Project
 from redpanal.social.models import Message
-
+from taggit.models import Tag
+from itertools import chain
 import actstream.models
 
 def index(request):
@@ -42,14 +43,75 @@ def stream(request):
 
 def hashtaged_list(request, slug):
 
+    #if Tag.objects.filter(slug=slug).count() == 0:
+    #   redirect? si no existe tag adonde vamos?
+
+    tag = Tag.objects.get(slug=slug)
     audios = Audio.objects.filter(tags__slug=slug)
     projects = Project.objects.filter(tags__slug=slug)
     messages = Message.objects.filter(tags__slug=slug)
+    #users = User.objects.filter(tags__slug=slug).order_by('-created_at') #ToDo !!
 
-    return render(request, "core/hashtaged_list.html", {
-        "audios": audios,
-        "projects": projects,
-        "messages": messages,
-        "tag": slug,
+    mixed = sorted(
+       chain(audios, projects, messages),
+       key=lambda instance: instance.created_at)
+
+    if request.is_ajax():
+        template = "core/mixed_list.html"
+    else:
+        template = "core/hashtaged_list.html"
+
+    return render(request, template, {
+           "list_type": 'mixed',
+           "mixed_objects": mixed,
+           "tag": tag,
+    })
+
+def hashtaged_list_messages(request, slug):
+
+    tag = Tag.objects.get(slug=slug)
+    messages = Message.objects.filter(tags__slug=slug).order_by('-created_at')
+
+    if request.is_ajax():
+        template = "core/mixed_list.html"
+    else:
+        template = "core/hashtaged_list.html"
+
+    return render(request, template, {
+           "list_type": 'messages',
+           "mixed_objects": messages,
+           "tag": tag,
+    })
+
+def hashtaged_list_projects(request, slug):
+
+    tag = Tag.objects.get(slug=slug)
+    projects = Project.objects.filter(tags__slug=slug).order_by('-created_at')
+
+    if request.is_ajax():
+        template = "core/mixed_list.html"
+    else:
+        template = "core/hashtaged_list.html"
+
+    return render(request, template, {
+           "list_type": 'projects',
+           "mixed_objects": projects,
+           "tag": tag,
+    })
+
+def hashtaged_list_audios(request, slug):
+
+    tag = Tag.objects.get(slug=slug)
+    audios = Audio.objects.filter(tags__slug=slug).order_by('-created_at')
+
+    if request.is_ajax():
+        template = "core/mixed_list.html"
+    else:
+        template = "core/hashtaged_list.html"
+
+    return render(request, template, {
+           "list_type": 'audios',
+           "mixed_objects": audios,
+           "tag": tag,
     })
 
