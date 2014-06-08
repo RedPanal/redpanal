@@ -11,6 +11,10 @@ User.add_to_class('following', lambda self: actstream.models.following(self)[::-
 User.add_to_class('followers', lambda self: actstream.models.followers(self)[::-1])
 User.add_to_class('action_list', lambda self: actstream.models.actor_stream(self))
 
+@property
+def created_at(self):
+    return self.date_joined
+User.add_to_class('created_at', created_at)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)

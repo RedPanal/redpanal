@@ -40,17 +40,7 @@
       <h2><a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.name }}</a></h2>
    </div>
 
-   <ul class="nav nav-list nav-tags">
-      <li><a href="{% url 'hashtaged-list-projects' slug=tag.slug %}" 
-             class="{% ifequal list_type 'projects' %}selected{% endifequal %}">
-            <i class="fa fa-tag"></i> <b>{{ tag.name }}</b> - {% trans "only projects" %}</a>
-      <li><a href="{% url 'hashtaged-list-audios' slug=tag.slug %}" 
-             class="{% ifequal list_type 'audios' %}selected{% endifequal %}">
-            <i class="fa fa-tag"></i> <b>{{ tag.name }}</b> - {% trans "only tracks" %}</a>
-      <li><a href="{% url 'hashtaged-list-messages' slug=tag.slug %}" 
-             class="{% ifequal list_type 'messages' %}selected{% endifequal %}">
-            <i class="fa fa-tag"></i> <b>{{ tag.name }}</b> - {% trans "Only messages" %}</a>
-   </ul>
+   {% include 'core/hashtaged_menu.html' with list_type=request.resolver_match.kwargs.filters %}
 
    <ul class="nav nav-list">
       {% include "discover-items-menu.html" %}
