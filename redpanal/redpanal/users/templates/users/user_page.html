@@ -46,7 +46,7 @@
 
 
       <h3>{% trans "Last tracks" %}</h3>
-      {% for object in audios|slice:":5" %}
+      {% for object in user.audio_set.all|slice:":5" %}
          {% include "audio/audio_teaser.html" %}
       {% empty %}
             <span class="no-yet">{% trans "No tracks yet" %}</span>
@@ -59,7 +59,7 @@
       <h3>{% trans "Last activities" %}</h3>
        {# include "social/actions_list.html" #}
       <ul class="action-stream">
-         {% for action in action_list|slice:":5" %}
+         {% for action in user.action_list|slice:":5" %}
             <li>{% include 'social/action_teaser.html' %}</li>
          {% empty %}
             <span class="no-yet">{% trans "No actions yet" %}</span>

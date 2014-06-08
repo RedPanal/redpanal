@@ -5,6 +5,12 @@ from django.utils.translation import ugettext_lazy as _
 
 from taggit.managers import TaggableManager
 
+import actstream.models
+
+User.add_to_class('following', lambda self: actstream.models.following(self))
+User.add_to_class('followers', lambda self: actstream.models.followers(self))
+User.add_to_class('action_list', lambda self: actstream.models.actor_stream(self))
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)

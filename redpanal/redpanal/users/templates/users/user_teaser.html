@@ -34,9 +34,9 @@
 {% endcomment %}
 
   <span class="stats">
-     <span title="{% trans "Tracks" %}"><b>{{ ToDotracks|length }}</b> {% trans "Tracks" %}</span>
-     <span title="{% trans "Projects" %}"><b>{{ ToDoprojects|length }}</b> {% trans "Projects" %}</span>
-     <span title="{% trans "Followers" %}"><b>{{ ToDofollowers|length }}</b> {% trans "Followers" %}</span>
+     <span title="{% trans "Tracks" %}"><b>{{ user.audio_set.all|length }}</b> {% trans "Tracks" %}</span>
+     <span title="{% trans "Projects" %}"><b>{{ user.project_set.all|length }}</b> {% trans "Projects" %}</span>
+     <span title="{% trans "Followers" %}"><b>{{ user.followers|length }}</b> {% trans "Followers" %}</span>
   </span>
 
 {% else %}

@@ -69,11 +69,11 @@
 
     {% if profmode == "full" or stats == "show" %}
     <a class="field stats user-followers" href="{% followers_url user %}">
-        <b>{{ followers|length }}</b>
+        <b>{{ user.followers|length }}</b>
         <span>{% trans "Followers" %}</span>
     </a>
     <a class="field stats user-following" href="{% following_url user %}">
-        <b>{{ following|length }}</b>
+        <b>{{ user.following|length }}</b>
         <span>{% trans "Following" %}</span>
     </a>
     <hr>
