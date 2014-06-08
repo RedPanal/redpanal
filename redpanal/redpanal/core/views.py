@@ -29,16 +29,6 @@ def index(request):
         template =  "index.html"
     return render(request, template, context)
 
-def stream(request):
-    """
-    Index page for authenticated user's activity stream. (Eg: Your feed at
-    github.com)
-    """
-    return render_to_response('activity/actor.html', {
-        'ctype': ContentType.objects.get_for_model(User),
-        'actor': request.user, 'action_list': models.user_stream(request.user)
-    }, context_instance=RequestContext(request))
-
 def hashtaged_list(request, slug):
 
     #if Tag.objects.filter(slug=slug).count() == 0:
