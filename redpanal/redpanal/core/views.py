@@ -29,15 +29,17 @@ def index(request):
         template =  "index.html"
     return render(request, template, context)
 
-def hashtaged_list(request, slug):
-
+def hashtaged_list(request, slug, filters='all'):
     #if Tag.objects.filter(slug=slug).count() == 0:
     #   redirect? si no existe tag adonde vamos?
 
     tag = Tag.objects.get(slug=slug)
-    audios = Audio.objects.filter(tags__slug=slug)
-    projects = Project.objects.filter(tags__slug=slug)
-    messages = Message.objects.filter(tags__slug=slug)
+
+    audios = Audio.objects.filter(tags__slug=slug).order_by('-created_at') if filters == 'all' or filters == 'audios' else [] 
+
+    projects = Project.objects.filter(tags__slug=slug).order_by('-created_at') if filters == 'all' or filters == 'projects' else []
+
+    messages = Message.objects.filter(tags__slug=slug).order_by('-created_at') if filters == 'all' or filters == 'messages' else []
     #users = User.objects.filter(tags__slug=slug).order_by('-created_at') #ToDo !!
 
     mixed = sorted(
@@ -54,52 +56,3 @@ def hashtaged_list(request, slug):
            "mixed_objects": mixed,
            "tag": tag,
     })
-
-def hashtaged_list_messages(request, slug):
-
-    tag = Tag.objects.get(slug=slug)
-    messages = Message.objects.filter(tags__slug=slug).order_by('-created_at')
-
-    if request.is_ajax():
-        template = "core/mixed_list.html"
-    else:
-        template = "core/hashtaged_list.html"
-
-    return render(request, template, {
-           "list_type": 'messages',
-           "mixed_objects": messages,
-           "tag": tag,
-    })
-
-def hashtaged_list_projects(request, slug):
-
-    tag = Tag.objects.get(slug=slug)
-    projects = Project.objects.filter(tags__slug=slug).order_by('-created_at')
-
-    if request.is_ajax():
-        template = "core/mixed_list.html"
-    else:
-        template = "core/hashtaged_list.html"
-
-    return render(request, template, {
-           "list_type": 'projects',
-           "mixed_objects": projects,
-           "tag": tag,
-    })
-
-def hashtaged_list_audios(request, slug):
-
-    tag = Tag.objects.get(slug=slug)
-    audios = Audio.objects.filter(tags__slug=slug).order_by('-created_at')
-
-    if request.is_ajax():
-        template = "core/mixed_list.html"
-    else:
-        template = "core/hashtaged_list.html"
-
-    return render(request, template, {
-           "list_type": 'audios',
-           "mixed_objects": audios,
-           "tag": tag,
-    })
-
