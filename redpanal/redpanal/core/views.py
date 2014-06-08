@@ -30,10 +30,7 @@ def index(request):
     return render(request, template, context)
 
 def hashtaged_list(request, slug, filters='all'):
-    #if Tag.objects.filter(slug=slug).count() == 0:
-    #   redirect? si no existe tag adonde vamos?
-
-    tag = Tag.objects.get(slug=slug)
+    tag = get_object_or_404(Tag, slug=slug)
 
     audios = Audio.objects.filter(tags__slug=slug).order_by('-created_at') if filters == 'all' or filters == 'audios' else [] 
 
