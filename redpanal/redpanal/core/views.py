@@ -19,8 +19,6 @@ def index(request):
         'ctype': ContentType.objects.get_for_model(User),
         'actor': request.user,
         'action_list': actstream.models.user_stream(request.user),
-        'following': actstream.models.following(request.user)[::-1],
-        'followers': actstream.models.followers(request.user)[::-1]
         })
     else:
         return redirect("/accounts/login/?next=/")

@@ -7,7 +7,7 @@
     <h3>{% blocktrans %}Users followers of @{{ user }}{% endblocktrans %}</h3>
     <div class="users-list-wrapper">
       <ul class="users-teasers-list following">
-      {% for user in followers %}
+      {% for user in user.followers %}
          {% with "full" as mode %}
          <li>{% include "users/user_teaser.html" %}</li>
          {% endwith %}

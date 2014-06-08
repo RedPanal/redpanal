@@ -44,7 +44,7 @@
    <div class="users-list-wrapper">
        <h3>{% trans "Last followers:" %}</h3>
        <ul class="users-list following">
-       {% for user in followers|slice:":5" %}
+       {% for user in user.followers|slice:":5" %}
          <li>{% include "users/user_teaser.html" %}</li>
        {% endfor %}
        </ul>
