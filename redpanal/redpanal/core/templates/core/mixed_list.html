@@ -13,7 +13,9 @@
          {% include "social/message_teaser.html" %}
       {% endif %}
       {% if object|get_verbose_name == 'user' %}
-         {% include "users/user_teaser.html" %}
+         {% with user=object mode="list" %}
+             {% include "users/user_teaser.html" %}
+         {% endwith %}
       {% endif %}
   {% empty %}
       <span class="no-yet">{% trans "No content found" %}</span>

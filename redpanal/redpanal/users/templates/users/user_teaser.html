@@ -1,5 +1,5 @@
 {% load i18n staticfiles social activity_tags avatar_tags %}
-{% ifequal mode "full" %}
+{% if mode == "full" %}
 
   <span class="user-bkg"></span>
 
@@ -38,10 +38,29 @@
      <span title="{% trans "Projects" %}"><b>{{ user.project_set.all|length }}</b> {% trans "Projects" %}</span>
      <span title="{% trans "Followers" %}"><b>{{ user.followers|length }}</b> {% trans "Followers" %}</span>
   </span>
-
+{% elif mode == "list" %}
+   <div class="user-teaser list">
+      <div class="wrapper">
+         {% avatar user 72 %}
+         <span class="user">
+            <a href="{{ user.get_absolute_url }}">
+               {{ user.userprofile.realname|default:user.username|capfirst }}
+            </a>
+         </span>
+         <span class="user-name">@{{ user.username }}</span>
+         <span class="small-tags">
+         {% with object=user.userprofile %} 
+            {% if object.tags.all %}
+               {% include 'core/hashtags_block.html' %}
+            {% endif %}
+         {% endwith %}
+         </span>
+      </div>
+      {% include "social/follow_button.html" %}
+   </div>
 {% else %}
   {% avatar user 50 %}
   <span class="user"><a href={{ user.get_absolute_url }}>{{ user.username }}</a></span>
   {% include "social/follow_button.html" %}
-{% endifequal %}
+{% endif %}
 

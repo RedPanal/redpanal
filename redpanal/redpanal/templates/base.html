@@ -22,7 +22,7 @@
 
  {% block extra_head %}{% endblock %}
  <script>
- $(function() {
+
   function follow_unfollow_button(el){
     el.ffobject = {
         "follow_url": $(el).attr("urlFollow"),
@@ -68,6 +68,7 @@
     $(el).hover(function(){el.ffobject.hoverin()},function(){el.ffobject.hoverout()});
     el.ffobject.render();
   }
+ $(function() {
   $(".follow-unfollow").each(function(index, element){follow_unfollow_button(element)});
  });
  </script>

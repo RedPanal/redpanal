@@ -1501,7 +1501,7 @@ p.user-website i {
 
 .action-stream,
 .users-list,
-.users-teasers-list {
+.users-list-full {
     list-style: none outside none;
     /* max-width: 400px; */
     margin: 0;
@@ -1536,12 +1536,12 @@ p.user-website i {
 
 /* user teasers */
 
-.users-teasers-list {
+.user-list-full {
    padding: 0;
    margin-right: -40px;
 }
 
-.users-teasers-list > li {
+.user-teaser.full {
     border: 1px solid #ccc;
     display: inline-block;
     height: 222px;
@@ -1553,11 +1553,11 @@ p.user-website i {
 }
 
 
-.users-teasers-list li br {
+.user-teaser.full br {
     display: none;
 }
 
-.users-teasers-list > li img {
+.user-teaser.full img {
     background-color: white;
     border: 1px solid #A2F0FE;
     float: left;
@@ -1565,7 +1565,7 @@ p.user-website i {
     padding: 2px;
 }
 
-.users-teasers-list .user-name {
+.user-teaser.full .user-name {
     display: block;
     font-size: 14px;
     height: 28px;
@@ -1573,7 +1573,7 @@ p.user-website i {
     color: gray;
 }
 
-.users-teasers-list .user-bkg {
+.user-teaser.full .user-bkg {
     background-color: #28CCEA;
     display: block;
     height: 80px;
@@ -1581,7 +1581,7 @@ p.user-website i {
     width: 252px;
 }
 
-.users-teasers-list .stats {
+.user-teaser.full .stats {
     background-color: #28CCEA;
     color: white;
     display: block;
@@ -1593,23 +1593,23 @@ p.user-website i {
     text-transform: uppercase;
 }
 
-.users-teasers-list .stats span {
+.user-teaser.full .stats span {
     margin: 0 0 3px 0;
 }
 
-.users-teasers-list .stats b {
+.user-teaser.full .stats b {
     color: #263E4E;
     font-size: 20px;
     vertical-align: top;
 }
 
-.users-teasers-list .stats i {
+.user-teaser.full .stats i {
     color: #CCCCCC;
     font-size: 13px;
     margin: 0 6px 0 -1px;
 }
 
-.users-teasers-list .user {
+.user-teaser.full .user {
     display: block;
     font-size: 18px;
     height: 24px;
@@ -1617,7 +1617,7 @@ p.user-website i {
     margin: 7px 0 0;
 }
 
-.users-teasers-list .location {
+.user-teaser.full .location {
     bottom: 15px;
     color: #AAAAAA;
     display: block;
@@ -1629,13 +1629,13 @@ p.user-website i {
 }
 
 
-.users-teasers-list .small-tags {
+.user-teaser.full .small-tags {
     display: block;
     height: 37px;
     margin: 0;
 }
 
-.users-teasers-list .followers-link {
+.user-teaser.full .followers-link {
     display: block;
     height: 36px;
     margin: 25px 0 0 98px;
@@ -1643,6 +1643,41 @@ p.user-website i {
    /* TODO: quitar display inline block y padding como propiedades generales para .followers-link */
 }
 
+/* user-teaser (mixed list) */
+
+.user-teaser.list {
+    border-bottom: 1px solid #DDDDDD;
+    padding: 30px 0;
+}
+
+.user-teaser.list .user {
+    display: block;
+    font-size: 18px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.user-teaser.list .user-name {
+    color: #808080;
+    display: block;
+    font-size: 14px;
+    height: 28px;
+    line-height: 13px;
+}
+
+.user-teaser.list > .wrapper > img {
+    float: left;
+    margin: 2px 20px 0 0;
+}
+
+.user-teaser.list .followers-link {
+    float: right;
+}
+
+.user-teaser.list > .wrapper {
+    display: inline-block;
+    width: 75%;
+}
 
 /* action stream */
 

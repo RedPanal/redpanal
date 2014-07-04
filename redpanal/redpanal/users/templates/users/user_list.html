@@ -8,10 +8,10 @@
  <h3>{% trans "RedPanal people" %}</h3>
 
  <div class="users-list-wrapper">
-   <ul class="users-teasers-list">
+   <ul class="users-list-full">
    {% for user in users %}
       {% with "full" as mode %}
-      <li>{% include "users/user_teaser.html" %}</li>
+      <li class="user-teaser full">{% include "users/user_teaser.html" %}</li>
       {% endwith %}
    {% endfor %}
    </ul>
