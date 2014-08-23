@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+from south.utils import datetime_utils as datetime
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
@@ -12,18 +12,19 @@ class Migration(DataMigration):
         # Use orm.ModelName to refer to models in this application,
         # and orm['appname.ModelName'] for models in other applications.
         for action in orm["actstream.Action"].objects.all():
-            if action.verb in ["creado", "created", u"creó"]:
-                action.verb = "project_created"
-            elif action.verb in [u"subió", "subido", "uploaded"]:
-                action.verb = "audio_created"
-            elif action.verb in [u"comentó", "commented"]:
-                action.verb = "commented"
-            action.save()
-            if action.verb not in ["commented", "audio_created", "project_created"]:
-                action.delete()
+            if action.verb in ("audio_created", "project_created"):
+                if action.target_content_type:
+                    action.action_object_content_type = action.target_content_type
+                    action.action_object_content_type_id = action.target_content_type_id
+                    action.action_object_object_id = action.target_object_id
+                    action.save()
+                    action.targe_content_type = None
+                    action.targe_content_type_id = None
+                    action.targe_object_id = None
+                    action.save()
 
     def backwards(self, orm):
-        pass
+        "Write your backwards methods here."
 
     models = {
         u'actstream.action': {
@@ -47,6 +48,24 @@ class Migration(DataMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'object_id': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'started': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
+        u'audio.audio': {
+            'Meta': {'ordering': "['-created_at']", 'object_name': 'Audio'},
+            'audio': ('django.db.models.fields.files.FileField', [], {'max_length': '250'}),
+            'blocksize': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
+            'channels': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
+            'created_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.TextField', [], {}),
+            'genre': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'instrument': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
+            'license': ('django.db.models.fields.CharField', [], {'default': "'CC-BY-SA-4.0'", 'max_length': '30'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'samplerate': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
+            'slug': ('autoslug.fields.AutoSlugField', [], {'unique': 'True', 'max_length': '50', 'populate_from': "'name'", 'unique_with': '()', 'blank': 'True'}),
+            'totalframes': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
+            'use_type': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
         u'auth.group': {
@@ -85,18 +104,19 @@ class Migration(DataMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'social.message': {
-            'Meta': {'ordering': "['-created_at']", 'object_name': 'Message'},
-            '_msg_html_cache': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']", 'null': 'True'}),
+        u'project.project': {
+            'Meta': {'ordering': "['-created_at']", 'object_name': 'Project'},
+            'audios': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['audio.Audio']", 'null': 'True', 'blank': 'True'}),
             'created_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'mentioned_users': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'mentioned_messages'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.User']"}),
-            'msg': ('django.db.models.fields.TextField', [], {}),
-            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {'null': 'True'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+            'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'slug': ('autoslug.fields.AutoSlugField', [], {'unique': 'True', 'max_length': '50', 'populate_from': "'name'", 'unique_with': '()', 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
+            'version_of': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['project.Project']", 'null': 'True', 'blank': 'True'})
         }
     }
 
-    complete_apps = ['actstream', 'social']
+    complete_apps = ['contenttypes', 'actstream', 'project']
     symmetrical = True

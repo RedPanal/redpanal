@@ -7,6 +7,6 @@
 
 {% block action_body %}
   {% with mode="in-action-list" %}
-  {% include "audio/audio_teaser.html" with object=action.target %}
+  {% include "audio/audio_teaser.html" with object=action.action_object %}
   {% endwith %}
 {% endblock %}
