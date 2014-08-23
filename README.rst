@@ -11,8 +11,8 @@ Install
 * pip install -r requirements.txt
 * enter inside and run:
 
- * python manage.py syncdb
- * python manage.py migrate
+ * python manage.py syncdb --all
+ * python manage.py migrate --fake
  * python manage.py runserver
 
 * install timeside -> http://code.google.com/p/timeside/#Install
