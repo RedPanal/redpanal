@@ -5,7 +5,7 @@
 {% if mode == "in-project-detail" %}
     <div class="top-date">{{ object.created_at|timesince }}</div>
     <div class="top">
-       <div class="top-user user"><a href="{{ object.user.get_absolute_url }}">{{ user.userprofile.realname|default:user.username|capfirst }}</a> <a class="license" rel="license" href="{{object.get_license.url }}"><img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon_small }}" /></a></div>
+       <div class="top-user user"><a href="{{ object.user.get_absolute_url }}">{{ object.user.userprofile.realname|default:object.user.username|capfirst }}</a> <a class="license" rel="license" href="{{object.get_license.url }}"><img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon_small }}" /></a></div>
        <div class="top-title"><h3><a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{{ object.name|truncatechars:80|capfirst }}</a></h3></div>
        <div class="top-data">
          {% if object.use_type != "other" %}{{ object.get_use_type_display|capfirst }} | {% endif %}
