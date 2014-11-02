@@ -13,7 +13,7 @@
    </p>
    <p>
       <span class="image">{% avatar request.user 200 %}</span>
-      <span class="action"><a href="{% url 'avatar_change' %}">{% trans "Change your avatar" %}</a></span>
+      <span class="action"><a href="{% if request.user|has_avatar %}{% url 'avatar_change' %}{% else %}{% url 'avatar_add' %}{% endif %}">{% trans "Change your avatar" %}</a></span>
    </p>
    {% crispy form %}
 </div>
