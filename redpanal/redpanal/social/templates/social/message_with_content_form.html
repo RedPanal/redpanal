@@ -1,0 +1,9 @@
+{% load i18n %}
+
+<form method="post" action="{% url 'message-with-content-create' %}" id="comment-form-small">
+{% csrf_token %}
+{{ form.content_type }}
+{{ form.object_id }}
+<input id="id_msg" maxlength="1000" name="msg" type="text" placeholder="{% trans "tell your fans what you think about this!" %}" />
+<button type="submit" id="submit-id-submit" class="btn btn-primary" value="" name="submit" title="{% trans 'Publish message' %}"></button>
+</form>

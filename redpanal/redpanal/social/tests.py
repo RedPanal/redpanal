@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.template import Template, Context
 
 from models import Message
 
@@ -38,6 +39,9 @@ class MessageTest(TestCase):
         html = Message.to_html(msg)
         self.assertEqual(m.as_html(), html)
 
-
+    def test_meessage_form_for(self):
+        t = Template('{% load social %}{% message_form_for usr %}')
+        c = Context({'usr': self.user})
+        form_html = t.render(c)
 
 

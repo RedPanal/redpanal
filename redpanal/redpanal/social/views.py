@@ -10,6 +10,9 @@ from django.contrib.contenttypes.models import ContentType
 from actstream import actions, models
 from actstream.views import respond
 
+from forms import MessageForm, MessageWithContentForm
+from models import Message
+
 @login_required
 @csrf_exempt
 def follow_unfollow(request, content_type_id, object_id, do_follow=True, actor_only=True):
@@ -53,15 +56,20 @@ def following(request, user_id):
     else:
         return redirect("/accounts/login/?next=/")
 
-from forms import MessageForm
-from models import Message
-
 def message_create(request):
     if request.method == "POST":
         form = MessageForm(request.POST)
         if form.is_valid():
-            # TODO: content_object
             msg = Message(msg=form.cleaned_data["msg"], user=request.user)
             msg.save()
     return HttpResponseRedirect("/")
 
+def message_with_content_create(request):
+    if request.method == "POST":
+        form = MessageWithContentForm(request.POST)
+        if form.is_valid():
+            msg = Message(msg=form.cleaned_data["msg"], user=request.user,
+                          content_type=form.cleaned_data["content_type"],
+                          object_id=form.cleaned_data["object_id"])
+            msg.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

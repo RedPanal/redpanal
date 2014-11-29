@@ -14,4 +14,6 @@ urlpatterns = patterns('redpanal.social.views',
         name='social-followers'),
     url(r'^following/(?P<user_id>\d+)/', 'following', name="social-following"),
     url(r'^messsage/create/', 'message_create', name="message-create"),
+    url(r'^messsage/create-with-content/', 'message_with_content_create',
+        name="message-with-content-create"),
 )

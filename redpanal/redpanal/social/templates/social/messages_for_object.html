@@ -1,0 +1,7 @@
+{% load social %}
+
+<ul class="action-stream">
+    {% for object in messages %}
+        {% include "social/message_teaser.html" %}
+    {% endfor%}
+</ul>

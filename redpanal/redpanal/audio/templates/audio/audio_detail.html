@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load url from future %}
+{% load social %}
 
 {% block title %}{{ object.name }}{% endblock %}
 
@@ -52,5 +53,7 @@
 
 </div>
 
+{% message_form_for object %}
+{% show_messages_for object %}
 {% endblock %}
 
