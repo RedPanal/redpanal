@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from taggit.managers import TaggableManager
 
 import actstream.models
+from actstream import actions
 
 User.add_to_class('following', lambda self: actstream.models.following(self)[::-1])
 User.add_to_class('followers', lambda self: actstream.models.followers(self)[::-1])
@@ -39,5 +40,15 @@ def _create_profile(sender, **kw):
     user = kw["instance"]
     if kw["created"]:
         create_profile(user)
+        follow_default_users(user)
 
 post_save.connect(_create_profile, sender=User, dispatch_uid="users-profilecreation-signal")
+
+
+class DefaultFollowedUser(models.Model):
+    user = models.OneToOneField(User)
+
+
+def follow_default_users(user):
+    for default_user in DefaultFollowedUser.objects.all():
+        actions.follow(user, default_user.user, send_action=False, actor_only=True)
