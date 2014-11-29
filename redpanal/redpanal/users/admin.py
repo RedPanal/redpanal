@@ -2,6 +2,6 @@ from django.contrib import admin
 from models import DefaultFollowedUser
 
 class DefaultFollowedUserAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('user', )
     
 admin.site.register(DefaultFollowedUser, DefaultFollowedUserAdmin)
