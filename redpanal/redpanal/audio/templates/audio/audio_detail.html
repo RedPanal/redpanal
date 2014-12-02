@@ -29,6 +29,13 @@
        <div class="inline-title"><h1 title="object.name|capfirst" >{{ object.name|capfirst|truncatechars:50 }}</h1>
        {% if request.user == object.user %}<span class="edit"><a title="{% trans "Edit audio track" %}" href="{% url "audio-edit" object.slug %}">[{% trans "Edit" %}]</a> <a class="danger" title="{% trans "Delete audio track" %}" href="{% url "audio-delete" object.slug %}">[{% trans "Delete" %}]</a></span>{% endif %}
        </div>
+       <div class="projects">
+           <ul>
+               {% for project in object.project_set.all %}
+                <li><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></li>
+               {% endfor %}
+           </ul>
+       </div>
    </div>
 
 {% include "audio/audio_object.html" %}
