@@ -1,9 +1,12 @@
 {% load i18n %}
 
-<form method="post" action="{% url 'message-with-content-create' %}" id="comment-form-small">
-{% csrf_token %}
-{{ form.content_type }}
-{{ form.object_id }}
-<input id="id_msg" maxlength="1000" name="msg" type="text" placeholder="{% trans "tell your fans what you think about this!" %}" />
-<button type="submit" id="submit-id-submit" class="btn btn-primary" value="" name="submit" title="{% trans 'Publish message' %}"></button>
-</form>
+<div class="message-form-wrapper for-object">
+   <form method="post" action="{% url 'message-with-content-create' %}" id="comment-form-small">
+    {% csrf_token %}
+    {{ form.content_type }}
+    {{ form.object_id }}
+      <textarea id="id_msg" maxlength="200" name="msg" type="text" cols="60" rows="1" placeholder="{% trans 'Add Your Comment' %}" ></textarea>    
+      <div class="btn-wrapper"><button type="submit" id="submit-id-submit" class="btn btn-primary" value="" name="submit" title="{% trans 'Publish comment' %}">{% trans 'Publish comment' %}</button></div>
+   </form>
+</div>
+

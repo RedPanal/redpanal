@@ -1,7 +1,9 @@
-{% load social %}
+{% load i18n social %}
 
 <ul class="action-stream">
     {% for object in messages %}
-        {% include "social/message_teaser.html" %}
-    {% endfor%}
+        <li>{% include "social/message_teaser.html" %}</li>
+    {% empty %}
+        {% trans "No comments yet" %}
+    {% endfor %}
 </ul>

@@ -45,8 +45,14 @@
 
 </div>
 
-{% message_form_for object %}
+<h4 class="comments-title">{% blocktrans with obj_name=object.name|capfirst %}Comments for '{{ obj_name }}' project:{% endblocktrans %}</h4>
+<div class="action-stream-wrapper for-object">
 {% show_messages_for object %}
+</div>
+
+{% if request.user.is_authenticated %}
+   {% message_form_for object %}
+{% endif %}
 
 {% endblock %}
 

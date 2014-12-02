@@ -63,13 +63,15 @@
 {% block content %}
 <div class="row">
   <div class="main span7">
-    {% comment %}
-    {% block comment %}
+
+    {% block post_message %}
       {% if request.user.is_authenticated %}
-        {% include "social/message_form.html" %}
-      {% endif %}
+        {% ifequal request.user user %}
+          {% include "social/message_form.html" %}
+        {% endifequal %}     
+      {% endif %}     
     {% endblock %}
-    {% endcomment %}
+
       {% block left_row %}{% endblock %}
   </div>
 
