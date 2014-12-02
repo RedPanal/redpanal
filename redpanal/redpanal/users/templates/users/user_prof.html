@@ -42,6 +42,7 @@
 
     </div>
 
+{% comment %}
     {% ifequal request.user user %}
     <hr>
     <a class="field auth community" href="/" title="{% trans "My activities and the users that I follow" %}">
@@ -51,6 +52,7 @@
         <span><i class="fa fa-comments-o"></i> {% trans "Interactions" %}</span>
     </a>
     {% endifequal %}
+{% endcomment %}
 
     <hr>
     <a class="field icon user-activities" href="{% url 'user-activities' user %}">

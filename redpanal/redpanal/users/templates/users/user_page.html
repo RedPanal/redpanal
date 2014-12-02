@@ -20,6 +20,9 @@
 {% block background %}<div id="user-background"></div>{% endblock %}
 {# ToDo: this background will be customizable #}
 
+{% block post_message %}
+{% endblock %}
+
 {% block left_row %}
 
       <div class="slide_wrapper partial_slider about_me">
@@ -28,7 +31,7 @@
             <h3 class="top-title main_title">{% trans "About me" %}</h3>
       {% else %}
             <h3 class="top-title">{% trans "About" %} {{ user.userprofile.realname|default:user.username }}</h3>
-      {% endifequal %}
+      {% endifequal %}  
 
             <div class="user-page-top">
       {% if user.userprofile.website %}
@@ -44,6 +47,11 @@
          <div class="slider_menu more"></div>
       </div>
 
+      {% if request.user.is_authenticated %}
+        {% ifequal request.user user %}
+          {% include "social/message_form.html" %}
+        {% endifequal %}     
+      {% endif %}  
 
       <h3>{% trans "Last tracks" %}</h3>
       {% for object in user.audio_set.all|slice:":5" %}
