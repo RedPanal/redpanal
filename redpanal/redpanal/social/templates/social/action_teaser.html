@@ -19,14 +19,18 @@
 
 {% block message %}
    <span class="message">
-      <span class="verb {{ action.verb }}">
+      <span class="verb {{ action.verb }} message-context">
       {% block action_text %}
          {{ action.verb }}
       {% endblock action_text %}
       </span>
-   {% block action_body %}
-     {{ action.action_object }}
-   {% endblock action_body %}
+      <span class="content-object message-context">
+      {% block content_object %}
+      {% endblock content_object %}
+      </span>
+      {% block action_body %}
+        {{ action.action_object }}
+      {% endblock action_body %}
    </span>
 {% endblock message %}
 

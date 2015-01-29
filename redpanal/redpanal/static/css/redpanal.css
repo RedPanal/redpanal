@@ -1797,7 +1797,7 @@ p.user-website i {
     margin: 0 2px;
 }
 
-.verb {
+.verb, .message-context {
     color: #A0A0A0;
     font-style: oblique;
 }

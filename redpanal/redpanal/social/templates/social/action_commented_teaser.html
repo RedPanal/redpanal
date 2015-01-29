@@ -2,17 +2,16 @@
 {% load i18n endless %}
 
 {% block action_text %}
-{% trans 'Commented' %}
+  {% if action.action_object.content_object %}
+    {% trans '(Commented' %}
+  {% endif %}
 {% endblock %}
 
-{% block action_body %}
-  {{ action.action_object }}
+{% block content_object %}
   {% if action.action_object.content_object %}
-  <span class="">{% trans 'at' %}
-      <a href="{{ action.action_object.content_object.get_absolute_url }}"
+    {% trans 'at' %} <a href="{{ action.action_object.content_object.get_absolute_url }}"
          title="{{ action.action_object.content_type.name }}">
-          {{ action.action_object.content_object.name }}</a>
-  </span>
+          {{ action.action_object.content_object.name|truncatechars:15 }}</a>)
   {% endif %}
 {% endblock %}
 
