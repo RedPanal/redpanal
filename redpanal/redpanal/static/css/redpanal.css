@@ -604,12 +604,16 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 /* ==================  main  ==================== */
 
 .main > h3,
-h3.main_title {
+h3.main-title {
     border-bottom: 1px solid #DDDDDD;
     font-size: 22px;
     font-weight: normal;
     line-height: 30px;
     margin: 50px 0 10px;
+}
+
+h3.main-title.search-title {
+     display: none;
 }
 
 .main h3.top-title {
@@ -710,7 +714,8 @@ p.expl {
     width: 160px;
 }
 
-.project-teaser.full {
+.project-teaser.full,
+.project-teaser.search-result {
     border-bottom: 1px solid #DDDDDD;
     clear: both;
     display: block;
@@ -749,7 +754,8 @@ p.expl {
     width: auto;
 }
 
-.project-teaser.full:hover {
+.project-teaser.full:hover,
+.project-teaser.search-result:hover {
     border-bottom: 1px solid #263E4E;
 }
 
@@ -790,12 +796,14 @@ p.expl {
 }
 
 .project-teaser.full .project-img,
+.project-teaser.search-result .project-img,
 .project-teaser.in-action-list .project-img,
 .project-teaser.in-project-detail .project-img {
     display: inline;
 }
 
 .project-teaser.full .project-img a,
+.project-teaser.search-result .project-img a,
 .project-teaser.in-action-list .project-img a {
     border: 1px solid #DDDDDD;
     float: left;
@@ -843,7 +851,8 @@ p.expl {
     margin: 0;
 }
 
-.project-teaser.full .name {
+.project-teaser.full .name,
+.project-teaser.search-result .name {
     font-size: 18px;
     margin: 1px 0 0;
     font-weight: bold;
@@ -868,7 +877,8 @@ p.expl {
     margin: 4px 0 0;
 }
 
-.project-teaser.full .description {
+.project-teaser.full .description,
+.project-teaser.search-result .description {
     font-size: 14px;
     line-height: 18px;
     margin: 6px 0 10px;
@@ -881,7 +891,8 @@ p.expl {
     margin: 12px 0;
 }
 
-.project-teaser.full .ago{
+.project-teaser.full .ago,
+.project-teaser.search-result .ago {
     bottom: 22px;
     color: #AAAAAA;
     font-size: 11px;
@@ -898,7 +909,8 @@ p.expl {
 }
 
 .project-teaser.in-project-detail .creator img,
-.project-teaser.full .ago img {
+.project-teaser.full .ago img,
+.project-teaser.search-result .ago img {
    vertical-align: baseline;
 }
 
@@ -917,6 +929,7 @@ p.expl {
 
 .detail-audio .tags,
 .project-teaser.full .tags,
+.project-teaser.search-result .tags,
 .project-teaser.in-project-detail .tags{
     margin: 8px 0;
 }
@@ -1943,6 +1956,77 @@ p.user-website i {
     border-color: red;
     background-color: #28CCEA;
 }
+
+/* search header */
+
+.header_search {
+    float: right;
+    margin: 0 -23px 0 12px;
+    padding: 0;
+    position: relative;
+}
+
+.header_search input {
+    border: 1px solid #263e4e;
+    border-radius: 4px;
+    margin: 0;
+}
+
+.submit_search {
+    background: none repeat scroll 0 0 #263e4e;
+    border: medium none;
+    color: white;
+    padding: 4px 8px;
+    position: relative;
+    right: 34px;
+}
+
+.submit_search span {
+    display: none;
+}
+
+    /* search page main */
+
+
+.search-title {
+    border-bottom: 1px solid #dddddd;
+    font-size: 17px;
+    font-weight: normal;
+    line-height: 25px;
+    margin: 50px 0 10px;
+}
+
+input[type="text"].search_input { /* search input in search page */
+    background-color: #ffffff;
+    border: 2px solid #28ccea;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 17px;
+    height: 1.5em;
+    line-height: 1.5em;
+    margin: 40px 10px 20px 0;
+    padding: 5px 10px;
+    transition: none 0s ease 0s ;
+    vertical-align: baseline;
+
+    width: 75%;
+    margin-bottom: 20px;
+
+}
+
+
+.search_button {
+    margin-top: -4px;
+    padding: 8px 10px;
+}
+
+/* -- */
+
+.result-teaser { 
+    border-bottom: 1px solid #DDDDDD;
+    padding: 30px 0;
+}
+
 
 /* slider */
 

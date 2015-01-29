@@ -83,8 +83,13 @@
           </a>
           <a class="brand" href="/"><img src="{% static 'img/redpanal-50.png' %}" alt="logo"></a>
           <div class="nav-collapse">
+              <form class="header_search" type="get" action="{% url "haystack_search" %}">
+                  <input type="text" name="q">
+                  <button type="submit" class="submit_search"><i class="fa fa-search"></i> <span>{% trans "Search" %}</button>
+              </form>
             <ul class="nav">
-              <li><a href="{% url "haystack_search" %}"><i class="fa fa-search"></i> {% trans "Search" %}</a></li>
+              {% comment %}<li><a href="{% url "haystack_search" %}"><i class="fa fa-search"></i> {% trans "Search" %}</a></li>{% endcomment %}
+             
               {% comment %} <li><a href="/">{% trans "Home" %}</a></li>{% endcomment %}
               {% if request.user.is_authenticated %}
               {% comment %}<li><a href="{{ request.user.get_absolute_url }}">{% trans "profile"|capfirst %}</a></li>{% endcomment %}

@@ -20,7 +20,7 @@
    {% endif %}
     </div>
     <div class="project-data">
-   {% if mode == "full" %} {# ToDo: renombrar mode a "list-style" y cambiarlo todos los with #}
+   {% if mode == "full" or mode == "search-result" %} {# ToDo: renombrar mode a "list-style" y cambiarlo todos los with #}
 
        <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|truncatechars:50|capfirst }}</a></span>
        <span class="description">{{ object.description|truncatechars:100|capfirst }}</span>
@@ -40,7 +40,7 @@
        <span class="tags">{% include 'core/hashtags_block.html' %}</span>
        <span class="tracks"><b class="number">{{ object.audios.all|length }}</b> {% trans "Tracks" %}</span>
 
-   {% elif mode == "in-action-list" %}
+   {% elif mode == "in-action-list"  %}
 
        <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|truncatechars:50|capfirst }}</a></span>
        <span class="description">{{ object.description|truncatechars:150|capfirst }}</span>

@@ -1,42 +1,75 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
+{% block extra_head %}
+{{ block.super }}
+ <script>
+
+    //var sliderHeight = "100px";
+
+    $(function (){
+        $('video,audio').each(function(index, element){
+            // console.log("width" + index + ": " + $(this).parent().width()); //debug
+            $(this).mediaelementplayer({
+               audioWidth: $(this).parent().width(), //old 540 460
+               // height of audio player
+               audioHeight: 30,
+               // initial volume when the player starts
+               startVolume: 0.8});
+        });
+
+    });
+
+ </script>
+{% endblock %}
+
 {% block title %}{% trans "Search" %}{% endblock %}
 
 {% block content %}
-    <h2>Search</h2>
 
-        <form type="get" action=".">
-            <input type="text" name="q">
-            <button type="submit">Search</button>
-        </form>
+<div class="row">
+   <h3 class="main-title search-title">{% trans "Search" %}</h3>
+      <form type="get" action=".">
+         <input class="search_input" type="text" name="q" {% if query %}value="{{ query }}"{% endif %}>
+            <button type="submit" class="btn btn-primary search_button"><i class="fa fa-search"></i> <span>{% trans "Search" %}</button>
+      </form>
+</div>
 
-        {% if query %}
-            <h3>Results</h3>
-            {% for result in page.object_list %}
-                {% if result.object.get_app_label %}
-                {% with result.object.get_app_label|add:"/"|add:result.object.get_model_name|add:"_teaser.html" as template %}
-                    {% include template with object=result.object %}
-                {% endwith %}
-                {% else %}
-                <p>
-                    <a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a>
-                </p>
-                {% endif %}
-
-            {% empty %}
-                <p>No results found.</p>
-            {% endfor %}
-
-            {% if page.has_previous or page.has_next %}
-                <div>
-                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
-                    |
-                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
-                </div>
+<div class="row">
+   <div class="main span7">
+   {% if query %}
+      {% if page.object_list %}<h4 class="search-title">{% trans "Results for " %}"{{ query }}"</h4>{% endif %}
+         {% for result in page.object_list %}
+            {% if result.object.get_app_label %}
+               {% with result.object.get_app_label|add:"/"|add:result.object.get_model_name|add:"_teaser.html" as template %}
+                  {% include template with object=result.object mode="search-result" %}
+               {% endwith %}
+            {% else %}
+               <div class="result-teaser search-result"> 
+               {% comment %} 
+                  ToDo: ¿cómo identificamnos este objeto para mostrarlo correctamente? 
+                  probé con 'result.object.get_verbose_name' como en redpanal/core/templates/core/mixed_list.html
+                  pero para user no devuelve nada
+               {% endcomment %}
+                  <a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a>
+               </div>
             {% endif %}
-        {% else %}
 
-        {% endif %}
-    </form>
+         {% empty %}
+             <h4 class="search-title">{% trans "No results for " %}"{{ query }}"</h4>
+         {% endfor %}
+
+         {% if page.has_previous or page.has_next %}
+            <div>
+               {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; {% trans "Previous" %}{% if page.has_previous %}</a>{% endif %}
+               |
+               {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}{% trans "Next" %} &raquo;{% if page.has_next %}</a>{% endif %}
+            </div>
+         {% endif %}
+      {% else %}
+
+      {% endif %}
+   </div>
+</div>
 {% endblock %}
+
