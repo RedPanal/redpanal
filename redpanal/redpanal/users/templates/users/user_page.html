@@ -35,7 +35,7 @@
 
             <div class="user-page-top">
       {% if user.userprofile.website %}
-                <p class="user-website"><i class="fa fa-link"></i> <a href="user.userprofile.website">{{ user.userprofile.website|truncatechars:30 }}</a></p>
+                <p class="user-website"><i class="fa fa-link"></i> <a target="_blank" href="{{ user.userprofile.website }}">{{ user.userprofile.website|truncatechars:30 }}</a></p>
       {% endif %}
       {% if user.userprofile.location %}
                 <p class="user-location"><i class="fa fa-map-marker"></i> {{ user.userprofile.location }}</p>
