@@ -37,9 +37,9 @@ def followers(request, content_type_id, object_id):
     """
     if request.user.is_authenticated():
         ctype = get_object_or_404(ContentType, pk=content_type_id)
-        actor = get_object_or_404(ctype.model_class(), pk=object_id)
+        user = get_object_or_404(ctype.model_class(), pk=object_id)
         return render_to_response('social/followers.html', {
-            'actor': actor
+            'user': user
         }, context_instance=RequestContext(request))
     else:
         return redirect("/accounts/login/?next=/")
