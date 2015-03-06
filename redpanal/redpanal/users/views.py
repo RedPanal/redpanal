@@ -72,7 +72,11 @@ def user_interactions(request, slug):
     if request.user.is_authenticated():
        user = get_object_or_404(User, username=slug)
        if request.user == user:
-          return render(request, "users/user_interactions.html", {
+          if request.is_ajax():
+             template = "social/messages_list.html"
+          else:
+             template =  "users/user_interactions.html"        
+          return render(request, template, {
               "user": user,
           })
        return redirect(user.get_absolute_url())

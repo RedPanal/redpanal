@@ -32,7 +32,9 @@
   {% if request.user.is_authenticated %}
      <h3 class="main-title">{% trans "My Community" %}</h3>
      <p class="expl">{% trans "My activities and the users that I follow" %}</p>
-     {% include "social/actions_list.html" %}
+     <ul class="action-stream">
+        {% include "social/actions_list.html" %}
+     </ul>
   {% endif %}
 
 {% endblock %}

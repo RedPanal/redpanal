@@ -34,7 +34,9 @@
       {% else %}
       <h3>{{ user.userprofile.realname|default:user.username|capfirst }} Activities</h3>
       {% endifequal %}
-      {% include "social/actions_list.html" %}
+      <ul class="action-stream">
+         {% include "social/actions_list.html" %}
+      </ul>
 {% endblock %}
 
 {% block right_row %}

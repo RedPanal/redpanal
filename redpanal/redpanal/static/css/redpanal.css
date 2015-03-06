@@ -1343,7 +1343,7 @@ p.expl {
 .slide_wrapper.about_me {
    margin: 30px 0 90px;
 /*   background-color:rgba(240,254,192,0.65); */
-    background-color: #F0FEC0;
+    background-color: white; /* #F0FEC0; */
     color: #263E4E;
     opacity: 0.80;
     transition: opacity .25s ease-in-out;

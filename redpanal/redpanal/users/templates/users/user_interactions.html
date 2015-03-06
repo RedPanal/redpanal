@@ -3,13 +3,36 @@
 
 {% block title %}{% trans "My Interactions" %}{% endblock %}
 
+{% block extra_head %}
+{{ block.super }}
+ <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+ <script>
+    $(function (){
+        $.endlessPaginate({
+            paginateOnScroll: true,
+            paginateOnScrollChunkSize: 5,
+            paginateOnScrollMargin: 10,
+            onCompleted: function() {
+             //  http://django-endless-pagination.readthedocs.org/en/latest/javascript.html
+               $('video,audio').each(function(index, element){
+                  $(this).mediaelementplayer({
+                     audioWidth: $(this).parent().width(), //old 540 460
+                     // height of audio player
+                     audioHeight: 30,
+                     // initial volume when the player starts
+                     startVolume: 0.8});
+              });
+            }
+        });
+    });
+ </script>
+{% endblock %}
+
 {% block left_row %}
     <h3 class="main-title">{% trans "My Interactions" %}</h3>
     <p class="expl">{% trans "Mentions and replies from another users" %}</p>
     <ul class="action-stream">
-      {% for object in user.mentioned_messages.all %}
-        {% include "social/message_teaser.html" %}
-      {% endfor%}
+         {% include "social/messages_list.html" %}
     </ul>
 {% endblock %}
 

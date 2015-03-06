@@ -1,7 +1,18 @@
 {% load i18n avatar_tags %}
 
-  <span class="avatar">{% avatar object.user 50 %}</span>
-  <span class="user"><a href="{{ object.user.get_absolute_url }}">{{ object.user }}</a></span>
-  <span class="ago">{% blocktrans with timesince=object.created_at|timesince %}{{ timesince }} ago{% endblocktrans %}</span><br>
+  <span class="avatar">
+  {% avatar object.user 50 %}
+  </span>
+  <span class="user">
+    <a href="{{ object.user.get_absolute_url }}">{{ object.user }}</a>
+  </span>
+  <span class="ago">{% blocktrans with timeago=object.created_at|timesince %}{{ timeago }} ago{% endblocktrans %}</span><br>
   <span class="message">{{ object.as_html|safe }}</span>
+  
+  
+  <ul class="actions">
+   <li><button type="button" class="btn btn-link comment-reply" data-username="{{ action.actor }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
+   <li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>
+ </ul>
+
 
