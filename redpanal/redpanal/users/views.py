@@ -97,8 +97,12 @@ def user_profile(request):
     return render(request, "users/user_profile.html", {"form":form})
 
 
-def user_list(request):
+def all_people(request):
     users = User.objects.all()
-    return render(request, "users/user_list.html", {
+    if request.is_ajax():
+       template = "users/users_list_full.html"
+    else:
+       template =  "users/all_people.html"  
+    return render(request, template, {
         "users": users,
     })

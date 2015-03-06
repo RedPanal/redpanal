@@ -1,7 +1,7 @@
-{% extends "two_rows.html" %}
+{% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% blocktrans %}@{{ user.username }} follows{% endblocktrans %}{% endblock %}
+{% block title %}{% trans "People" %}{% endblock %}
 
 {% block extra_head %}
 {{ block.super }}
@@ -23,22 +23,14 @@
  </script>
 {% endblock %}
 
-{% block left_row %}
-    <h3>{% blocktrans %}Users followed by @{{ user }}{% endblocktrans %}</h3>
-    <div class="users-list-wrapper">
-      <ul class="users-list following">
-         {% with user.following as users %}
-            {% include "users/users_list.html" %}
-         {% endwith %}
-      </ul>
-    </div>
-{% endblock %}
+{% block content %}
 
-{% block right_row %}
-      {% with "show" as stats %}     
-         {% include "users/user_prof.html" %}
-      {% endwith %}
-   <ul class="nav nav-list">
-      {% include "discover-items-menu.html" %}
+ <h3>{% trans "RedPanal people" %}</h3>
+
+ <div class="users-list-wrapper">
+   <ul class="users-list-full">
+      {% include "users/users_list_full.html" %}
    </ul>
+ </div>
+ 
 {% endblock %}

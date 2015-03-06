@@ -1632,6 +1632,12 @@ p.user-website i {
     width: 40px;
 }
 
+.users-list.followers > li img,
+.users-list.following > li img {
+    width: auto;
+}
+
+
 .users-list .followers-link {
    float: right;
    padding: 0;
@@ -1750,7 +1756,7 @@ p.user-website i {
 
 .user-teaser.list {
     border-bottom: 1px solid #DDDDDD;
-    padding: 30px 0;
+    padding: 20px 0 22px;
 }
 
 .user-teaser.list .user {
