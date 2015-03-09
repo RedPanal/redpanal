@@ -1,5 +1,5 @@
 {% load i18n endless model_info %}
-  {% paginate 6,2 mixed_objects %}
+  {% paginate mixed_objects %}
   {% for object in mixed_objects %}
       {% if object|get_verbose_name == 'project' %}
          {% with "full" as mode %}
@@ -10,11 +10,11 @@
          {% include "audio/audio_teaser.html" %}
       {% endif %}
       {% if object|get_verbose_name == 'message' %}
-         {% include "social/message_teaser.html" %}
+         <div class="message-in-mixed-list">{% include "social/message_teaser.html" %}</div>
       {% endif %}
       {% if object|get_verbose_name == 'user' %}
          {% with user=object mode="list" %}
-             {% include "users/user_teaser.html" %}
+             <div class="user-teaser list">{% include "users/user_teaser.html" %}</div>
          {% endwith %}
       {% endif %}
   {% empty %}

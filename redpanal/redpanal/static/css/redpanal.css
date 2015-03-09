@@ -694,6 +694,39 @@ p.expl {
     background-color: #28CCEA;
 }
 
+/* sidebar global stats block */
+
+.sidebar > .block.global-stats {
+    /* margin-top: 10px; */
+    background-color: #28ccea;
+    width: 260px;
+    padding: 10px 20px 15px;
+}
+
+
+.global-stats .description {
+    color: white;
+    display: block;
+    font-size: 11px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.global-stats .value {
+    color: #a2f0fe;
+    display: block;
+    font-size: 51px;
+    font-weight: bold;
+    line-height: 51px;
+}
+
+.block.global-stats > p {
+    border-top: 1px solid #a2f0fe;
+    margin: 7px 0 0;
+    padding: 7px 0 0 7px;
+}
+
 /* project teaser */
 
 .projects-wrapper {
@@ -1592,6 +1625,13 @@ p.user-website i {
     width: 300px; 
 }
 
+.sidebar > .block {
+    float: right;
+    margin-bottom: 30px;
+    /* width: 300px;  */
+}
+
+.sidebar > .block h3,
 .sidebar .users-list-wrapper h3{
     font-size: 18px;
     line-height: 22px;
@@ -1611,6 +1651,7 @@ p.user-website i {
 }
 
 .action-stream > li,
+.action-stream div.message-in-mixed-list,
 .users-list > li {
     border-bottom: 1px solid #DDDDDD;
     margin: 0;
@@ -1620,11 +1661,13 @@ p.user-website i {
 }
 
 .action-stream > li:hover,
+.action-stream div.message-in-mixed-list:hover,
 .users-list > li:hover {
     background-color: #EDFAFD;
 }
 
 .action-stream > li img,
+.action-stream div.message-in-mixed-list img,
 .users-list > li img {
     clear: both;
     float: left;
@@ -1632,8 +1675,8 @@ p.user-website i {
     width: 40px;
 }
 
-.users-list.followers > li img,
-.users-list.following > li img {
+.main .users-list.followers > li img,
+.main .users-list.following > li img {
     width: auto;
 }
 
