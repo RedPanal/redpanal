@@ -68,6 +68,17 @@ i.fa.big-fa-icon {
 */
 /* end css hack*/
 
+/* font awesome alias */
+
+.fa.alias-project:before {
+    content: ""; /* \0000a0 */
+}
+
+.fa.alias-audio:before {
+    content: "";
+}
+
+
 .more {
     display: block;
     margin: 30px 0 0;

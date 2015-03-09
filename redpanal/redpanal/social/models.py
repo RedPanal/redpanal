@@ -11,6 +11,8 @@ from actstream import action
 from taggit.managers import TaggableManager
 from taggit.models import Tag
 
+from redpanal.audio.models import Audio
+from redpanal.project.models import Project
 
 
 class Message(models.Model):
@@ -40,7 +42,10 @@ class Message(models.Model):
         import re
         USER_REGEX = re.compile(r'@(\w+)')
         HASHTAG_REGEX = re.compile(r'#(\w+)')
-
+        # ToDo: deberia obtenerse el dominio del sitio de forma dinamica?
+        OBJECTS_URL_REGEX = re.compile(r'(https?://)(grafiks\.info:8080)/([p|a])/([0-9a-zA-Z_-]+)/?') #beta\.redpanal\.org
+        URL_REGEX = re.compile(r'(https?://)(www\.)?(\S+)')
+        
         def replace_user(match):
             if match:
                 username = match.group(1)
@@ -59,10 +64,37 @@ class Message(models.Model):
                     return match.group()
                 return '<a href="%s">#%s</a>' % (reverse("hashtaged-list", None, (tagobj.slug,)), tag)
 
+        def replace_objects_urls(match):
+            if match:
+                slug = match.group(4)
+                if match.group(3) == 'a':
+                   try:
+                      obj = Audio.objects.get(slug=slug)
+                   except Audio.DoesNotExist:
+                      return match.group()
+                elif match.group(3) == 'p':
+                   try:
+                      obj = Project.objects.get(slug=slug)
+                   except Project.DoesNotExist:
+                      return match.group()
+                else:
+                   return match.group()
+                text = obj.name[:25] + (obj.name[25:] and '..')
+                return '<a href="%s"><i class="fa alias-%s"></i>%s</a>' % (obj.get_absolute_url(), obj._meta.verbose_name, text)
+
+        def replace_urls(match):
+            if match:
+                url = match.group(0)               
+                text = match.group(3)[:25] + (match.group(3)[25:] and '..')
+                return '<a href="%s" target="_blank">%s</a>' % (url, text)
+
+        msg = msg.replace("\n", "<br>")
         html = re.sub(USER_REGEX, replace_user, msg)
         html = re.sub(HASHTAG_REGEX, replace_hashtags, html)
+        html = re.sub(OBJECTS_URL_REGEX, replace_objects_urls, html)
+        html = re.sub(URL_REGEX, replace_urls, html)
         return html
-
+        
     @staticmethod
     def extract_mentioned_users(msg):
         """Returns a list of users that are mentioned with @userfoo @UserBar"""

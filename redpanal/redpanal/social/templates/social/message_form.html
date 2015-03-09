@@ -4,7 +4,7 @@
    <form method="post" action="{% url 'message-create' %}" id="comment-form-small">
     {% csrf_token %}
     {% comment %}<input id="id_msg" maxlength="140" name="msg" type="text" placeholder="{% trans "tell your fans what you're doing!" %}" />{% endcomment %}
-    <textarea id="id_msg" maxlength="200" name="msg" type="text" cols="60" rows="1" placeholder="{% trans "tell your fans what you're doing!" %}" ></textarea>
+    <textarea id="id_msg" maxlength="1000" name="msg" type="text" cols="60" rows="1" placeholder="{% trans "tell your fans what you're doing!" %}" ></textarea>
     <div class="btn-wrapper"><button type="submit" id="submit-id-submit" class="btn btn-primary" value="" name="submit" title="{% trans 'Publish' %}">{% trans 'Publish' %}</button></div>
     {% comment %}<input type="submit" id="submit-id-submit" class="btn btn-primary" value="{% trans "Send message" %}" name="submit">{% endcomment %}
    </form>

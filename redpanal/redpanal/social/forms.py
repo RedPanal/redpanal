@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 
 class MessageForm(forms.Form):
 
-    msg = forms.CharField(max_length=140)
+    msg = forms.CharField(max_length=1000)
 
 
 class MessageWithContentForm(forms.Form):
