@@ -43,7 +43,7 @@ class Message(models.Model):
         USER_REGEX = re.compile(r'@(\w+)')
         HASHTAG_REGEX = re.compile(r'#(\w+)')
         # ToDo: deberia obtenerse el dominio del sitio de forma dinamica?
-        OBJECTS_URL_REGEX = re.compile(r'(https?://)(grafiks\.info:8080)/([p|a])/([0-9a-zA-Z_-]+)/?') #beta\.redpanal\.org
+        OBJECTS_URL_REGEX = re.compile(r'(https?://)(beta\.redpanal\.org)/([p|a])/([0-9a-zA-Z_-]+)/?') #grafiks\.info:8080
         URL_REGEX = re.compile(r'(https?://)(www\.)?(\S+)')
         
         def replace_user(match):
