@@ -30,10 +30,38 @@
  </script>
 {% endblock %}
 
+{% block post_message %}
+{% comment %}
+      {% if request.user.is_authenticated %}
+        {% ifequal request.user user %}
+          {% include "social/message_form.html" %}
+        {% endifequal %}     
+      {% endif %}     
+{% endcomment %}
+{% endblock %}
+
 {% block left_row %}
 
-  {% include "core/mixed_list.html" %}
+{% if filters == "projects" %}
+   <h3>{% trans "Projects tagged with" %} #{{ tag }}</h3>
+   <p class="expl">{% trans "List of projects tagged with" %} "{{ tag }}"</p>
+{% elif filters == "audios" %}
+   <h3>{% trans "Tracks tagged with" %} #{{ tag }}</h3>
+   <p class="expl">{% trans "List of tracks tagged with" %} "{{ tag }}"</p>
+{% elif filters == "messages" %}
+   <h3>{% trans "Messages tagged with" %} #{{ tag }}</h3>
+   <p class="expl">{% trans "List of messages tagged with" %} "{{ tag }}"</p>
+{% elif filters == "users" %}
+   <h3>{% trans "Users tagged with" %} #{{ tag }}</h3>
+   <p class="expl">{% trans "List of users tagged with" %} "{{ tag }}"</p>
+{% else %}
+   <h3>{% trans "Results for " %} #{{ tag }}</h3>
+   <p class="expl">{% trans "List of objects tagged with" %} "{{ tag }}"</p>
+{% endif%}
 
+   <div class="action-stream">
+     {% include "core/mixed_list.html" %}
+   </div>
 {% endblock %}
 
 {% block right_row %}

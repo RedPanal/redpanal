@@ -40,7 +40,7 @@ def hashtaged_list(request, slug, filters='all'):
     messages = Message.objects.filter(tags__slug=slug).order_by('-created_at') if filters == 'all' or filters == 'messages' else []
     users = User.objects.filter(userprofile__tags__slug=slug) if filters == 'all' or filters == 'users' else []
 
-    mixed = sorted(chain(audios, projects, messages, users), key=lambda instance: instance.created_at)
+    mixed = sorted(chain(audios, projects, messages, users), key=lambda instance: instance.created_at, reverse=True)
 
     if request.is_ajax():
         template = "core/mixed_list.html"
@@ -51,6 +51,7 @@ def hashtaged_list(request, slug, filters='all'):
            "list_type": 'mixed',
            "mixed_objects": mixed,
            "tag": tag,
+           "filters": filters,
     })
 
 
