@@ -32,13 +32,6 @@
 {% endblock %}
 
 {% block post_message %}
-{% comment %}
-      {% if request.user.is_authenticated %}
-        {% ifequal request.user user %}
-          {% include "social/message_form.html" %}
-        {% endifequal %}     
-      {% endif %}     
-{% endcomment %}
 {% endblock %}
     
 {% block left_row %}

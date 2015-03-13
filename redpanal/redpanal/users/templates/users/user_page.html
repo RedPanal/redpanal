@@ -47,12 +47,6 @@
          <div class="slider_menu more"></div>
       </div>
 
-      {% if request.user.is_authenticated %}
-        {% ifequal request.user user %}
-          {% include "social/message_form.html" %}
-        {% endifequal %}     
-      {% endif %}  
-
       <h3>{% trans "Last tracks" %}</h3>
       {% for object in user.audio_set.all|slice:":5" %}
          {% include "audio/audio_teaser.html" %}
