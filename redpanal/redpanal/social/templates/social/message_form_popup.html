@@ -1,0 +1,78 @@
+{% extends "modal_popup.html" %}
+{% load i18n %}
+
+{% block modal_id %}modal_create_message{% endblock %}
+
+{% block modal_title %}{% trans "Publish message" %}{% endblock %}
+
+{% block modal_body %}
+   <form method="post" action="{% url 'message-create' %}" class="modal_message_form">
+  {% csrf_token %}
+     <textarea id="id_msg" maxlength="1000" name="msg" type="text" cols="60" rows="3"></textarea>
+   </form>
+   <div class="response"></div>
+{% endblock %}
+
+{% block modal_action %}
+   <button type="button" class="btn btn-primary modal_submit" disabled>{% trans 'Publish' %}</button>
+{% endblock %}
+
+{% block modal_scripts %}
+ <script>
+ $(function() {
+   var mdl = $('#modal_create_message');
+   var frm = mdl.find('.modal_message_form');
+   var submit = mdl.find('.modal_submit');
+   var close = mdl.find('.modal_close');
+   var resp = mdl.find('.response');
+   var txtf = $('#id_msg');
+   var success = false;
+   
+   $("#{{ buttonid }}").on('click', function () {
+      mdl.modal('show');
+   });
+
+   frm.submit(function (e) {
+       $.ajax({
+           type: frm.attr('method'),
+           url: frm.attr('action'),
+           data: frm.serialize(),
+           success: function (r) {
+               //alert(response);
+               success = true;
+               mdl.find('.response').html(r);
+               frm[0].reset();
+           },
+           error: function(r) {
+               //alert("algo salio mal");
+               resp.html("{% trans 'Something went wrong' %}");
+           }
+       });
+       e.preventDefault();
+       return false;
+   });
+   
+   submit.on('click', function () {
+      frm.submit();
+
+   });
+
+   close.on('click', function () {
+    {% ifequal refresh_after_modal "refresh" %}
+      if(success) window.location.reload();
+    {% else %}
+      resp.html("");
+    {% endifequal %}
+   });
+
+   txtf.keyup(function() {
+        if ($(this).val() == '') {
+            submit.attr('disabled', 'disabled');
+        } else {
+            submit.removeAttr('disabled'); 
+        }
+    });
+    
+ });
+ </script>
+{% endblock %}

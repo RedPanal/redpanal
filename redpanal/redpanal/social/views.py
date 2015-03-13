@@ -1,11 +1,11 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-
+from django.utils.translation import ugettext_lazy as _
 
 from actstream import actions, models
 from actstream.views import respond
@@ -65,12 +65,24 @@ def following(request, user_id):
         return redirect("/accounts/login/?next=/")
 
 def message_create(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.is_ajax():        
+        print "creando mensaje desde ajax form"
         form = MessageForm(request.POST)
         if form.is_valid():
             msg = Message(msg=form.cleaned_data["msg"], user=request.user)
             msg.save()
-    return HttpResponseRedirect("/")
+            return render_to_response("social/message_form_popup_response.html", {
+               'response': _("Your message has been successfully posted"),
+               'object': msg,
+            }, context_instance=RequestContext(request))
+        else:
+            return HttpResponse("sonaste")
+    elif request.method == "POST":
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            msg = Message(msg=form.cleaned_data["msg"], user=request.user)
+            msg.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def message_with_content_create(request):
     if request.method == "POST":

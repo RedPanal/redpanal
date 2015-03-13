@@ -491,10 +491,15 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 
 /* === message form === */
 
+.modal_message_form, 
 .message-form-wrapper {
    background-color: #f0fec0;
    padding: 15px;
    margin-top: 30px;
+}
+
+.modal_message_form {
+   margin: 0;
 }
 
 .message-form-wrapper form {
@@ -505,7 +510,29 @@ input:-moz-placeholder, textarea:-moz-placeholder {
    text-align: right;
 }
 
+.modal.fade,
+.modal.fade.in {
+      -webkit-transform: translate(0, 0);
+      -ms-transform: translate(0, 0); 
+          transform: translate(0, 0);
+       transition: none 0s ease 0s  !important;
+       top: 50%;
+}
+
+.modal-header {
+    padding-bottom: 4px;
+    border-bottom: none;
+}
+.modal-footer {
+    border-top: none;
+}
+
+.modal-body{
+    padding: 0 15px;
+}
+
 /* #comment-form-small input[type="text"] { */
+
 .message-form-wrapper textarea {
     background-color: #FFFFFF;
     border: 1px solid #28CCEA;
@@ -522,10 +549,40 @@ input:-moz-placeholder, textarea:-moz-placeholder {
     height: 1.5em ;
 }
 
+
+.modal_message_form textarea {
+   background-color: #FFFFFF;
+   border: 1px solid #28CCEA;
+   box-shadow: none;
+   transition: none 0s ease 0s;
+   border-radius: 0;
+   vertical-align: baseline;
+   width: calc(100% - 20px);
+   margin: 0;
+   padding: 5px 10px;
+    
+   font-size: 18px;
+   line-height: 1.5em;
+
+   height: 6em;
+}
+
+.modal_message_form textarea:active,
 .message-form-wrapper textarea:active {
    border-color: black;
 }
 
+.modal .response-wrapper .response {
+   margin: 20px 0 0;
+}
+
+.modal .response-wrapper .returned-message {
+   border: 1px solid #ccc;
+   font-size: 18px;
+   line-height: 1.5em;
+   margin-left: 0;
+   padding: 7px 10px;
+}
 .message-form-wrapper:hover textarea {
    height: 3em;
 }
@@ -548,7 +605,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 }
 
 
-
+.modal_submit,
 #submit-id-submit {
 /*    margin: 0 0 0 4px;
     padding: 4px 5px 6px;
@@ -571,11 +628,13 @@ input:-moz-placeholder, textarea:-moz-placeholder {
     vertical-align: middle;
 }
 
+.modal_submit:hover,
 #submit-id-submit:hover {
     border: 3px solid black !important;     
     color: black !important;
 }
 
+.modal_submit:before,
 #submit-id-submit:before {
 /*    content: ""; */
 /*    content: ""; */
@@ -1052,7 +1111,7 @@ p.expl {
     vertical-align: super;
 }
 
-
+.modal .btn,
 #content .btn {
     background: none repeat scroll 0 0 white;
     border: 3px solid #CCCCCC; /* #28CCEA; */
@@ -1065,30 +1124,41 @@ p.expl {
     text-shadow: none;
 }
 
+.modal .btn.following,
 #content .btn.following {
     background-color: #26A0A6;
     border-color: #26A0A6;
     color: white;
 }
 
+.modal .btn:hover,
 #content .btn:hover {
     color: #263E4E; border-color: #263E4E;
 }
 
+.modal .btn:disabled:hover,
+#content .btn:disabled:hover {
+    color: #28ccea !important; border-color: #28ccea !important;
+}
+
+.modal .btn.logged,
 #content .btn.logged {
     color: #26A0A6;
     border-color: #26A0A6;
     background-color: #F0FEC0;
 }
 
+.modal .btn.logged:hover,
 #content .btn.logged:hover {
     color: #263E4E; border-color: #263E4E;
 }
 
+.modal .btn.btn-danger:hover,
 #content .btn.btn-danger:hover {
     color: red; border-color: red;
 }
 
+.modal .btn.btn-warning:hover,
 #content .btn.btn-warning:hover {
     color: orange; border-color: orange;
     background-color: white;

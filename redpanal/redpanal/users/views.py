@@ -24,6 +24,7 @@ def user_page(request, slug):
 
     return render(request, "users/user_page.html", {
         "user": user,
+        "refresh_after_modal": 'refresh',
     })
 
 def user_tracks(request, slug):
@@ -66,6 +67,7 @@ def user_activities(request, slug):
     return render(request, template, {
         "user": user,
         "action_list": action_list,
+        "refresh_after_modal": 'refresh',
     })
 
 def user_interactions(request, slug):

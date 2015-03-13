@@ -22,6 +22,7 @@ def index(request):
         'ctype': ContentType.objects.get_for_model(User),
         'actor': request.user,
         'action_list': actstream.models.user_stream(request.user),
+        "refresh_after_modal": 'refresh',
         })
     else:
         return redirect("/accounts/login/?next=/")
@@ -94,4 +95,5 @@ def activity_all(request):
             "count_users": count_users,
             "last_users": users,
             "logged_users": logged_users,
+            "refresh_after_modal": 'refresh',
         })
