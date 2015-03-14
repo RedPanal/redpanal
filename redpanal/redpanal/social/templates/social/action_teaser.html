@@ -1,5 +1,6 @@
 {% load i18n avatar_tags %}
 
+  <!-- action teaser -->
 {% block actor %}
    <span class="avatar">
    {% avatar action.actor 50 %}
@@ -37,8 +38,8 @@
 {% block action_utils %}
 {# if request.user.is_authenticated #}
 <ul class="actions">
-   <li><button type="button" class="btn btn-link comment-reply" data-username="{{ action.actor }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
-   <li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>
+   <li><button type="button" class="btn btn-link modal-reply-message" data-username="{{ action.actor }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
+   {% comment %}<li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>{% endcomment %}
 </ul>
 {# endif #}
 {% endblock action_utils %}

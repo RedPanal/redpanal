@@ -498,6 +498,13 @@ input:-moz-placeholder, textarea:-moz-placeholder {
    margin-top: 30px;
 }
 
+.modal-title {
+    color: #aaa;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: center;
+}
+
 .modal_message_form {
    margin: 0;
 }
@@ -509,6 +516,10 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 .message-form-wrapper .btn-wrapper {
    text-align: right;
 }
+/* lo que sigue hace desaparecermas elegantemente el modal
+   pero genera problemas con los hover de los objetos que quedan abajo
+   cuando desaparece */
+/*
 
 .modal.fade,
 .modal.fade.in {
@@ -518,6 +529,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
        transition: none 0s ease 0s  !important;
        top: 50%;
 }
+*/
 
 .modal-header {
     padding-bottom: 4px;
@@ -531,6 +543,22 @@ input:-moz-placeholder, textarea:-moz-placeholder {
     padding: 0 15px;
 }
 
+.modal .button-example {
+    background-color: #28ccea;
+    border-radius: 3px;
+    color: white;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 14px;
+    padding: 3px 2px 2px 4px;
+}
+
+.modal .help-text {
+    color: #999;
+    font-size: 13px;
+    margin: 5px 0;
+    text-align: center;
+}
 /* #comment-form-small input[type="text"] { */
 
 .message-form-wrapper textarea {
@@ -1952,20 +1980,23 @@ p.user-website i {
     font-size: 12px;
     position: absolute;
     bottom: 0; right: 0;
-    display: none;
+    display: none; 
     text-align: right;
     color: #999;
 }
 
+.action-stream .message-in-mixed-list:hover ul.actions,
 .action-stream li:hover ul.actions {
     display: block;
 }
 
+.action-stream .message-in-mixed-list:hover ul.actions li,
 .action-stream li:hover ul.actions li{
     display: inline;
     margin: 0 3px ;
 }
 
+.action-stream .message-in-mixed-list:hover ul.actions li > i,
 .action-stream li:hover ul.actions li > i{
     font-size: 10px;
 }

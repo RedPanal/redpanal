@@ -134,19 +134,15 @@
            <li class="discover"><a href="/" title="{% trans 'What other users are doing?' %}"><i class="fa fa-user"></i> {% trans "My Community" %}</a></li>
            <li class="discover"><a href="{% url 'user-interactions' request.user %}" title="{% trans 'Interactions with other users' %}"><i class="fa fa-comments-o"></i> {% trans "My Interactions" %}</a></li>
 
-           <li class="popup action"><a href="#" id='open_modal_popup' title="{% trans "Post message in your timeline" %}"><i class="fa fa-edit"></i></a></li>
+           <li class="popup action"><a href="#" class="modal-create-message" title="{% trans "Post message in your timeline" %}"><i class="fa fa-edit"></i></a></li>
            <li class="action"><a href="{% url "project-create" %}" title="{% trans "Create project" %}"><i class="fa fa-folder-open"></i> {% trans "Create Project" %}</a></li>
            <li class="action"><a href="{% url "audio-create" %}" title="{% trans "Upload file" %}"><i class="fa fa-upload"></i> {% trans "Upload audio" %}</a></li>
        </ul>
        </div>
    </div>
-      {% with buttonid="open_modal_popup" %}
-         {% include "social/message_form_popup.html" %}
-      {% endwith %}
    {% endif %}
 {% endblock %}
 
-    
 <div id="content" class="container">         
     {% block content %}
     {% endblock %}
@@ -167,4 +163,10 @@
 {% endblock %}
    </div>
 </div>
+
+{% block modal_popup %}
+   {% if request.user.is_authenticated and not "/accounts" in request.path %}
+      {% include "social/message_form_popup.html" %}
+   {% endif %}
+{% endblock %}
 </body>

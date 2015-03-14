@@ -1,5 +1,6 @@
 {% load i18n avatar_tags %}
 
+  <!-- message teaser -->
   <span class="avatar">
   {% avatar object.user 50 %}
   </span>
@@ -11,8 +12,8 @@
   
   
   <ul class="actions">
-   <li><button type="button" class="btn btn-link comment-reply" data-username="{{ action.actor }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
-   <li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>
+   <li><button type="button" class="btn btn-link modal-reply-message" data-username="{{ object.user }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
+   {% comment %}<li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>{% endcomment %}
  </ul>
 
 
