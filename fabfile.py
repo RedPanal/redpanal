@@ -196,7 +196,7 @@ def deploy():
     install_dependencies()
     backup_database()
     update_database()
-    rebuild_index()
+    #rebuild_index()
     build_static()
 
     webserver_start()
