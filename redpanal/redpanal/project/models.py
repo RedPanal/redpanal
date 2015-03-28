@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
@@ -8,6 +9,8 @@ from actstream import action
 from taggit.managers import TaggableManager
 from autoslug.fields import AutoSlugField
 from ..utils.models import BaseModelMixin
+from redpanal.audio.models import Audio
+
 
 class Project(models.Model, BaseModelMixin):
 
@@ -17,9 +20,10 @@ class Project(models.Model, BaseModelMixin):
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     description = models.TextField(verbose_name=_('description'))
     version_of = models.ForeignKey('self', verbose_name=_('version of'),
-                                   blank=True, null=True, editable=False)
-    audios =  models.ManyToManyField("audio.Audio", verbose_name=_('audios'),
-                                     blank=True, null=True)
+                                   blank=True, null=True, editable=False,
+                                   related_name="versions")
+    audios = models.ManyToManyField("audio.Audio", verbose_name=_('audios'),
+                                    blank=True, null=True)
     image = models.ImageField(verbose_name=_('image'),
                               upload_to="uploads/images/projects/%Y_%m",
                               blank=True, null=True)
@@ -46,13 +50,13 @@ class Project(models.Model, BaseModelMixin):
         return project
 
     def audios_from_versions(self):
-        versions = Project.objects.filter(version_of=self)
-        audios = []
-        # this is really slow, replace when speed needed
-        for project in versions:
-            for audio in project.audios.all():
-                audios.append(audio)
-        return audios
+        return Audio.objects.filter(project__in=self.versions.all())
+
+    def all_audios(self):
+        return Audio.objects.filter(Q(project__in=self.versions.all()) | Q(project=self))
+
+    def collaborators(self):
+        return User.objects.filter(audio__in=self.all_audios()).distinct()
 
 
 def project_created_signal(sender, instance, created, **kwargs):

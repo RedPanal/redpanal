@@ -39,15 +39,19 @@
        <span class="description">{{ object.description|capfirst }}</span>
        <span class="tags">{% include 'core/hashtags_block.html' %}</span>
        <span class="tracks"><b class="number">{{ object.audios.all|length }}</b> {% trans "Tracks" %}</span>
+       {% if object.version_of %}
+       <span class="version">{% trans "This projects contributes tracks to" %} <a href="{{ object.version_of.get_absolute_url }}"> {{ object.version_of }}</a></span>
+       {% endif %}
+       {% if object.versions.all %} <span class="band">{% trans "Working band" %} {% for user in object.collaborators %} <a href="{{user.get_absolute_url}}">@{{user}}</a> {% endfor %}</span> {% endif %}
 
    {% elif mode == "in-action-list"  %}
-
        <span class="name"><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}" title="{% blocktrans with name=object.name|capfirst %}Go to '{{ name }}' project{% endblocktrans %}">{{ object.name|truncatechars:50|capfirst }}</a></span>
        <span class="description">{{ object.description|truncatechars:150|capfirst }}</span>
        <span class="small-tags">
           {% url 'project-detail' object.slug as object_url %}
           {% with mode="short-list" object_url=object_url %}{% include 'core/hashtags_block.html' %}{% endwith %}
        </span>
+        {% if object.versions.all %} <span class="band">{% trans "Working band" %} {% for user in object.collaborators %} <a href="{{user.get_absolute_url}}">@{{user}}</a> {% endfor %}</span> {% endif %}
        <span class="tracks"><b class="number">{{ object.audios.all|length }}</b> {% trans "Tracks" %}</span>
 
    {% else %} {# "icon-style" default #}
