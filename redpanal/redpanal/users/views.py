@@ -70,20 +70,22 @@ def user_activities(request, username):
         "refresh_after_modal": 'refresh',
     })
 
+
 def user_interactions(request, username):
     if request.user.is_authenticated():
-       user = get_object_or_404(User, username=username)
-       if request.user == user:
-          if request.is_ajax():
-             template = "social/messages_list.html"
-          else:
-             template =  "users/user_interactions.html"        
-          return render(request, template, {
-              "user": user,
-          })
-       return redirect(user.get_absolute_url())
+        user = get_object_or_404(User, username=username)
+        if request.user == user:
+            if request.is_ajax():
+                template = "social/messages_list.html"
+            else:
+                template = "users/user_interactions.html"
+            return render(request, template, {
+                "user": user,
+            })
+        return redirect(user.get_absolute_url())
     else:
-       return redirect("/accounts/login/?next=/")
+        return redirect("/accounts/login/?next=/")
+
 
 @login_required
 def user_profile(request):
@@ -96,7 +98,7 @@ def user_profile(request):
             return redirect(request.user.get_absolute_url())
     else:
         form = UserProfileForm(instance=request.user.userprofile)
-    return render(request, "users/user_profile.html", {"form":form})
+    return render(request, "users/user_profile.html", {"form": form})
 
 
 def all_people(request):

@@ -59,7 +59,7 @@ class Audio(models.Model, BaseModelMixin):
                          editable=False, blank=True, unique=True)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     description = models.TextField(_('description'))
-    audio =  models.FileField(_('audio'), max_length=250,
+    audio = models.FileField(_('audio'), max_length=250,
                               upload_to='uploads/audios/%Y_%m')
     license = models.CharField(_('license'), max_length=30, choices=LICENSES_CHOICES,
                                 default=licenses.DEFAULT_LICENSE.code)

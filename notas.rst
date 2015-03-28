@@ -34,7 +34,7 @@ Proyectos
 
 
 Categorizacion y Metadata
-==========================
+=========================
 
 * Todo el contenido subible tiene
   * Categorias predefinidas internacionalizables, por ejemplo, Instrumento, Estilo

@@ -15,7 +15,7 @@ AUDIO_EXTENSIONS = ["mp3", "ogg", "oga", "flac"]
 
 class AudioForm(forms.ModelForm):
 
-    tags =  TagField(required=False)
+    tags = TagField(required=False)
     project = forms.ModelChoiceField(Project)
 
     helper = FormHelper()
