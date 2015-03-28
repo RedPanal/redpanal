@@ -18,8 +18,8 @@ def ensure_profile(user):
     except ObjectDoesNotExist:
         create_profile(user)
 
-def user_page(request, slug):
-    user = get_object_or_404(User, username=slug)
+def user_page(request, username):
+    user = get_object_or_404(User, username=username)
     ensure_profile(user)
 
     return render(request, "users/user_page.html", {
@@ -27,9 +27,9 @@ def user_page(request, slug):
         "refresh_after_modal": 'refresh',
     })
 
-def user_tracks(request, slug):
-    user = get_object_or_404(User, username=slug)
-    audios = Audio.objects.filter(user=user)
+def user_tracks(request, username):
+    user = get_object_or_404(User, username=username)
+    audios = Audio.objects.filter(user=username)
 
     if request.is_ajax():
         template = "audio/audios_list.html"
@@ -41,8 +41,8 @@ def user_tracks(request, slug):
         "audios": audios,
     })
 
-def user_projects(request, slug):
-    user = get_object_or_404(User, username=slug)
+def user_projects(request, username):
+    user = get_object_or_404(User, username=username)
     projects = user.project_set.all
 
     if request.is_ajax():
@@ -55,8 +55,8 @@ def user_projects(request, slug):
         "projects": projects,
     })
 
-def user_activities(request, slug):
-    user = get_object_or_404(User, username=slug)
+def user_activities(request, username):
+    user = get_object_or_404(User, username=username)
     action_list = actstream.models.actor_stream(user)
 
     if request.is_ajax():
@@ -70,9 +70,9 @@ def user_activities(request, slug):
         "refresh_after_modal": 'refresh',
     })
 
-def user_interactions(request, slug):
+def user_interactions(request, username):
     if request.user.is_authenticated():
-       user = get_object_or_404(User, username=slug)
+       user = get_object_or_404(User, username=username)
        if request.user == user:
           if request.is_ajax():
              template = "social/messages_list.html"
