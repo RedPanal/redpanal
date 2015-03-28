@@ -124,6 +124,8 @@ ACTSTREAM_SETTINGS = {
     'USE_JSONFIELD': False,
 }
 
+ACCOUNT_ADAPTER = 'redpanal.users.account_adapter.MyAccountAdapter'
+
 SOCIALACCOUNT_PROVIDERS = {
     'google':
         {'SCOPE': ['https://www.googleapis.com/auth/userinfo.profile'],

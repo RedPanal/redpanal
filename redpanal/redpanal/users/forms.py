@@ -6,6 +6,7 @@ from crispy_forms.layout import Submit
 from models import UserProfile
 from redpanal.core.forms import TagField
 
+
 class UserProfileForm(ModelForm):
     tags =  TagField(label=_('hashtags').capitalize(), required=False, 
                      help_text=_("put tags helps you to contact users who share musical tastes"))
