@@ -2,10 +2,9 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
+from django.core.files.uploadedfile import SimpleUploadedFile
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-
-#from hsaudiotag import auto as audio_feature_detection
 
 from models import Audio
 from redpanal.project.models import Project
@@ -39,13 +38,14 @@ class AudioForm(forms.ModelForm):
 
     def clean_audio(self):
         f = self.cleaned_data.get('audio', False)
+        uploading_new_file = isinstance(f, SimpleUploadedFile)
 
+        if not uploading_new_file:
+            return f
         if not f:
             raise ValidationError(_("Couldn't read uploaded file"))
-        if not "audio" in f.content_type:
+        if "audio" not in f.content_type:
             raise ValidationError(_("Invalid audio file Content-Type '%s'") % f.content_type)
-        if not get_file_extension(f.name)  in AUDIO_EXTENSIONS:
+        if not get_file_extension(f.name) in AUDIO_EXTENSIONS:
             raise ValidationError(_("Invalid audio file extension"))
-        #if not some_lib.is_audio(file.content):
-        #      raise ValidationError(_("Not a valid audio file"))
         return f

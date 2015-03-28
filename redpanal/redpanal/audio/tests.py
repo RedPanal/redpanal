@@ -6,8 +6,9 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
-from models import Audio
+from models import Audio, GENRE_CHOICES, TYPE_CHOICES, INSTRUMENT_CHOICES
 from redpanal.project.models import Project
+from redpanal.core import licenses
 from forms import AudioForm
 from ..utils.test import InstanceTestMixin
 
@@ -40,7 +41,12 @@ class AudioTestCase(TestCase, InstanceTestMixin):
 
     def create_audio_form_data(self, filename, content_type):
         data = {"name": "test audio", "description": "This is a test audio",
-                "project": self.project.pk}
+                "project": self.project.pk,
+                "genre": GENRE_CHOICES[0][0],
+                "use_type": TYPE_CHOICES[0][0],
+                "instrument": INSTRUMENT_CHOICES[0][0],
+                "license": licenses.DEFAULT_LICENSE.code,
+                }
         with open(os.path.join(TEST_DATA_PATH, filename)) as audio_file:
             audiofile = SimpleUploadedFile(filename, audio_file.read(),
                                            content_type=content_type)
@@ -52,11 +58,20 @@ class AudioTestCase(TestCase, InstanceTestMixin):
         self.assertTrue(form.is_valid())
         audio = form.save()
 
+    def test_edit_audio(self):
+        data, audiofile = self.create_audio_form_data("tone.mp3", "audio/mpeg")
+        form = AudioForm(data, {"audio": audiofile}, user=self.user)
+        self.assertTrue(form.is_valid())
+        audio = form.save()
+
+        data['description'] = "new desc"
+        edit_form = AudioForm(data, instance=audio, user=self.user)
+        self.assertTrue(form.is_valid())
+        edit_form.save()
+
     def test_upload_audio_with_wrong_extension(self):
         data, _ = self.create_audio_form_data("tone.mp3", "audio/mpeg")
-        audiofile = SimpleUploadedFile("tone.mpe", "file content",
-                                       content_type="audio/mpeg")
-        form = AudioForm(data, {"audio":audiofile}, user=self.user)
-
+        audiofile = SimpleUploadedFile("tone.mpe", "file content", content_type="audio/mpeg")
+        form = AudioForm(data, {"audio": audiofile}, user=self.user)
         self.assertFalse(form.is_valid())
         self.assertTrue("extension" in form.errors.as_ul())
