@@ -2,8 +2,10 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.template import Template, Context
 
+from taggit.models import Tag
 from models import Message
 from redpanal.project.models import Project
+
 
 class MessageTest(TestCase):
     def setUp(self):
@@ -18,6 +20,8 @@ class MessageTest(TestCase):
         msg = "@owner here this #radioGaGa"
         m = Message.objects.create(user=self.user, msg=msg)
         self.assertEqual(list(m.mentioned_users.all()), [self.user])
+        url = User.objects.get(username="owner").get_absolute_url()
+        self.assertIn('<a href="%s">@owner</a>' % url, m.as_html())
 
     def test_mentioned_but_inexistant_user(self):
         msg = "@InEX here this #radioGaGa"
@@ -28,6 +32,12 @@ class MessageTest(TestCase):
         msg = "@owner here this #radioGaGa #Meith we are"
         m = Message.objects.create(user=self.user, msg=msg)
         self.assertEqual(map(lambda t: t.name, m.tags.all()), ["radioGaGa", "Meith"])
+
+    def test_tag_html(self):
+        msg = "@owner here this #radioGaGa #Meith we are"
+        m = Message.objects.create(user=self.user, msg=msg)
+        tag = Tag.objects.get(name="radioGaGa")
+        self.assertIn('<a href="%s">#radioGaGa</a>' % tag.get_absolute_url(), m.as_html())
 
     def test_extract_tags_with_ended_symbols(self):
         msg = "#foo #bar, #baz, #f1;#f2 #f3."
@@ -52,4 +62,20 @@ class MessageTest(TestCase):
         c = Context({'project': project})
         form_html = t.render(c)
 
+    def test_strip_unwanted_tags(self):
+        msg = "hey <script>$('body').remove()</script>"
+        self.assertNotIn("<script>", Message.to_html(msg))
 
+    def test_replace_project_links(self):
+        from django.contrib.sites.models import Site
+        project = Project.objects.create(name="Project Zero", user=self.user,
+                                         description="The proj 0")
+
+        domain = Site.objects.get_current().domain
+        link = "http://%s%s" % (domain, project.get_absolute_url())
+        msg = "Este es el link %s a mi proyecto" % link
+        self.assertIn("Project Zero", Message.to_html(msg))
+
+    def test_replace_urls(self):
+        msg = "heyyy http://asd.com/wee/"
+        self.assertIn('<a href="http://asd.com/wee/"', Message.to_html(msg))

@@ -1,3 +1,5 @@
+import re
+
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
@@ -6,6 +8,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.db.models.signals import post_save
 from django.core.urlresolvers import reverse
+from django.contrib.sites.models import Site
+from django.utils.html import strip_tags
 
 from actstream import action
 from taggit.managers import TaggableManager
@@ -45,13 +49,19 @@ class Message(models.Model):
 
     @staticmethod
     def to_html(msg):
-        import re
         USER_REGEX = re.compile(r'@([\w-]+)')
         HASHTAG_REGEX = re.compile(r'#(\w+)')
-        # ToDo: deberia obtenerse el dominio del sitio de forma dinamica?
-        OBJECTS_URL_REGEX = re.compile(r'(https?://)(beta\.redpanal\.org)/([p|a])/([0-9a-zA-Z_-]+)/?') #grafiks\.info:8080
+        domain = Site.objects.get_current().domain
+        domain = domain.replace(".", "\.")
+        OBJECTS_URL_REGEX = re.compile(r'(https?://)(%s)/([p|a])/([0-9a-zA-Z_-]+)/?' % domain)
         URL_REGEX = re.compile(r'(https?://)(www\.)?(\S+)')
-        
+
+        html_replaces = []
+        def get_and_store_hash(value):
+            rep_hash = str(hash(value))
+            html_replaces.append((rep_hash, value))
+            return rep_hash
+
         def replace_user(match):
             if match:
                 username = match.group(1)
@@ -59,7 +69,8 @@ class Message(models.Model):
                     user = User.objects.get(username=username)
                 except User.DoesNotExist:
                     return match.group()
-                return '<a href="%s">@%s</a>' % (user.get_absolute_url(), username)
+                new = '<a href="%s">@%s</a>' % (user.get_absolute_url(), username)
+                return get_and_store_hash(new)
 
         def replace_hashtags(match):
             if match:
@@ -68,37 +79,49 @@ class Message(models.Model):
                     tagobj = Tag.objects.get(name=tag)
                 except Tag.DoesNotExist:
                     return match.group()
-                return '<a href="%s">#%s</a>' % (reverse("hashtaged-list", None, (tagobj.slug,)), tag)
+                new = '<a href="%s">#%s</a>' % (tagobj.get_absolute_url(), tag)
+                return get_and_store_hash(new)
 
         def replace_objects_urls(match):
             if match:
                 slug = match.group(4)
                 if match.group(3) == 'a':
-                   try:
-                      obj = Audio.objects.get(slug=slug)
-                   except Audio.DoesNotExist:
-                      return match.group()
+                    try:
+                        obj = Audio.objects.get(slug=slug)
+                    except Audio.DoesNotExist:
+                        return match.group()
                 elif match.group(3) == 'p':
-                   try:
-                      obj = Project.objects.get(slug=slug)
-                   except Project.DoesNotExist:
-                      return match.group()
+                    try:
+                        obj = Project.objects.get(slug=slug)
+                    except Project.DoesNotExist:
+                        return match.group()
                 else:
-                   return match.group()
+                    return match.group()
                 text = obj.name[:25] + (obj.name[25:] and '..')
-                return '<a href="%s"><i class="fa alias-%s"></i>%s</a>' % (obj.get_absolute_url(), obj._meta.verbose_name, text)
+                new = '<a href="%s"><i class="fa alias-%s"></i>%s</a>' % (obj.get_absolute_url(), obj._meta.verbose_name, text)
+                return get_and_store_hash(new)
 
         def replace_urls(match):
             if match:
                 url = match.group(0)               
                 text = match.group(3)[:25] + (match.group(3)[25:] and '..')
-                return '<a href="%s" target="_blank">%s</a>' % (url, text)
+                new = '<a href="%s" target="_blank">%s</a>' % (url, text)
+                return get_and_store_hash(new)
 
-        msg = msg.replace("\n", "<br>")
+        # Replace strings for hashes and save the new html in context
         html = re.sub(USER_REGEX, replace_user, msg)
         html = re.sub(HASHTAG_REGEX, replace_hashtags, html)
         html = re.sub(OBJECTS_URL_REGEX, replace_objects_urls, html)
         html = re.sub(URL_REGEX, replace_urls, html)
+
+        # Remove all html tags
+        html = strip_tags(html)
+
+        # Replace the hashes with our versions of the html
+        for rep_hash, new_html in html_replaces:
+            html = html.replace(rep_hash, new_html)
+
+        html = html.replace("\n", "<br>")
         return html
         
     @staticmethod
