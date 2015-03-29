@@ -5,7 +5,7 @@
     {% csrf_token %}
     {{ form.content_type }}
     {{ form.object_id }}
-      <textarea id="id_msg" maxlength="200" name="msg" type="text" cols="60" rows="1" placeholder="{% trans 'Add Your Comment' %}" ></textarea>    
+    <textarea id="id_msg" maxlength="200" name="msg" type="text" cols="60" rows="1" placeholder="{% trans 'Add Your Comment' %}" >  {{ initial_msg }}</textarea>
       <div class="btn-wrapper"><button type="submit" id="submit-id-submit" class="btn btn-primary" value="" name="submit" title="{% trans 'Publish comment' %}">{% trans 'Publish comment' %}</button></div>
    </form>
 </div>

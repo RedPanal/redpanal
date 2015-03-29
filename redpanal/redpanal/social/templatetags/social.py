@@ -55,3 +55,7 @@ def show_messages_for(context, obj):
                                       content_type=content_type)
     return render_to_string("social/messages_for_object.html",
                             {"messages": messages})
+
+@register.filter
+def render_collaborators(project):
+    return " ".join(["@%s" % user.username for user in project.collaborators()])

@@ -50,9 +50,9 @@
 </div>
 
 {% if request.user.is_authenticated %}
-   {% message_form_for object %}
+    {% with initial_msg=object|render_collaborators %}
+        {% message_form_for object %}
+    {% endwith %}
 {% endif %}
 
 {% endblock %}
-
-

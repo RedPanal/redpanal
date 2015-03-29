@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.template import Template, Context
 
 from models import Message
+from redpanal.project.models import Project
 
 class MessageTest(TestCase):
     def setUp(self):
@@ -42,6 +43,13 @@ class MessageTest(TestCase):
     def test_meessage_form_for(self):
         t = Template('{% load social %}{% message_form_for usr %}')
         c = Context({'usr': self.user})
+        form_html = t.render(c)
+
+    def test_message_form_for_project(self):
+        project = Project.objects.create(name="Project Zero", user=self.user,
+                                         description="The proj 0")
+        t = Template('{% load social %}{% message_form_for project %}')
+        c = Context({'project': project})
         form_html = t.render(c)
 
 
