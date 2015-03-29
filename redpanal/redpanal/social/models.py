@@ -15,6 +15,12 @@ from redpanal.audio.models import Audio
 from redpanal.project.models import Project
 
 
+def tag_get_absolute_url(self):
+    return reverse("hashtaged-list", None, (self.slug,))
+
+Tag.get_absolute_url = tag_get_absolute_url
+
+
 class Message(models.Model):
     msg = models.TextField(verbose_name=_('message'))
     user = models.ForeignKey(User, verbose_name=_('user'), editable=False)
