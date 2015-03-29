@@ -56,7 +56,7 @@ class Project(models.Model, BaseModelMixin):
         return Audio.objects.filter(Q(project__in=self.versions.all()) | Q(project=self))
 
     def collaborators(self):
-        return User.objects.filter(audio__in=self.all_audios()).distinct()
+        return User.objects.filter(Q(audio__in=self.all_audios()) | Q(pk=self.user.pk)).distinct()
 
 
 def project_created_signal(sender, instance, created, **kwargs):
