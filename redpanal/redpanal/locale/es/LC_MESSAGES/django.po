@@ -3,44 +3,164 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-25 00:50-0300\n"
+"POT-Creation-Date: 2015-03-30 00:45-0300\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: audio/forms.py:40
+#: audio/forms.py:21
+#, fuzzy
+msgid "Audio"
+msgstr " Audio"
+
+#: audio/forms.py:21
+#, python-format
+msgid "Allowed extensions: %s"
+msgstr ""
+
+#: audio/forms.py:48
 msgid "Couldn't read uploaded file"
 msgstr "No se puede leer el archivo subido"
 
-#: audio/forms.py:42
+#: audio/forms.py:50
 #, python-format
 msgid "Invalid audio file Content-Type '%s'"
 msgstr "Archivo de audio inválido Tipo de Contenido'%s'"
 
-#: audio/forms.py:44
+#: audio/forms.py:52
 msgid "Invalid audio file extension"
 msgstr "Extensión de audio no permitida"
 
-#: audio/models.py:19 project/models.py:14
+#: audio/models.py:22
+msgid "pop"
+msgstr ""
+
+#: audio/models.py:23
+msgid "rock"
+msgstr ""
+
+#: audio/models.py:24
+msgid "jazz"
+msgstr ""
+
+#: audio/models.py:25
+msgid "blues"
+msgstr ""
+
+#: audio/models.py:26
+msgid "folklore"
+msgstr ""
+
+#: audio/models.py:27 audio/models.py:48
+msgid "electronic"
+msgstr ""
+
+#: audio/models.py:28 audio/models.py:36 audio/models.py:53
+msgid "other"
+msgstr ""
+
+#: audio/models.py:32
+#, fuzzy
+msgid "track"
+msgstr "Pistas"
+
+#: audio/models.py:33
+msgid "loop"
+msgstr ""
+
+#: audio/models.py:34
+msgid "song"
+msgstr ""
+
+#: audio/models.py:35
+#, fuzzy
+msgid "sample"
+msgstr "amplificar"
+
+#: audio/models.py:40
+msgid "voice"
+msgstr ""
+
+#: audio/models.py:41
+msgid "guitar"
+msgstr ""
+
+#: audio/models.py:42
+msgid "electric guitar"
+msgstr ""
+
+#: audio/models.py:43
+msgid "bass"
+msgstr ""
+
+#: audio/models.py:44
+msgid "drums"
+msgstr ""
+
+#: audio/models.py:45
+msgid "saxophone"
+msgstr ""
+
+#: audio/models.py:46
+msgid "piano"
+msgstr ""
+
+#: audio/models.py:47
+msgid "sinthesizer"
+msgstr ""
+
+#: audio/models.py:49
+msgid "other strings"
+msgstr ""
+
+#: audio/models.py:50
+msgid "woodwind"
+msgstr ""
+
+#: audio/models.py:51
+msgid "brass"
+msgstr ""
+
+#: audio/models.py:52
+msgid "multiple"
+msgstr ""
+
+#: audio/models.py:57 project/models.py:17 users/models.py:22
 msgid "name"
 msgstr "nombre"
 
-#: audio/models.py:22 project/models.py:17 social/models.py:19
+#: audio/models.py:60 project/models.py:20 social/models.py:31
 msgid "created at"
 msgstr "creado en"
 
-#: audio/models.py:23 project/models.py:18
+#: audio/models.py:61 project/models.py:21
 msgid "description"
 msgstr "descripción"
 
-#: audio/models.py:24
+#: audio/models.py:62
 msgid "audio"
 msgstr "audio"
 
-#: audio/models.py:34 project/models.py:25 social/models.py:20
-#: social/models.py:21 users/models.py:12
+#: audio/models.py:64
+msgid "license"
+msgstr ""
+
+#: audio/models.py:67
+msgid "genre"
+msgstr ""
+
+#: audio/models.py:68
+msgid "type"
+msgstr ""
+
+#: audio/models.py:69
+msgid "instrument"
+msgstr ""
+
+#: audio/models.py:78 project/models.py:31 social/models.py:32
+#: social/models.py:33 users/forms.py:11
 msgid "hashtags"
 msgstr "hilo"
 
@@ -53,65 +173,86 @@ msgid "Are you sure you want to delete this audio?"
 msgstr "¿Estás seguro de que querés borrar este audio?"
 
 #: audio/templates/audio/audio_confirm_delete.html:16
-#: audio/templates/audio/audio_detail.html:54
+#: audio/templates/audio/audio_detail.html:30
 #: project/templates/project/project_confirm_delete.html:16
-#: project/templates/project/project_detail.html:24
+#: project/templates/project/project_teaser.html:37
 msgid "Delete"
 msgstr "Borrar"
 
-#: audio/templates/audio/audio_detail.html:34
-#: project/templates/project/project_object.html:4
-msgid "Name"
-msgstr "Nombre"
+#: audio/templates/audio/audio_detail.html:30
+msgid "Edit audio track"
+msgstr ""
 
-#: audio/templates/audio/audio_detail.html:35
-#: project/templates/project/project_object.html:5
-msgid "Description"
-msgstr "Descripción"
+#: audio/templates/audio/audio_detail.html:30
+#: audio/templates/audio/audio_form.html:5
+#: project/templates/project/project_form.html:5
+#: project/templates/project/project_teaser.html:37
+msgid "Edit"
+msgstr "Editar"
 
-#: audio/templates/audio/audio_detail.html:36
-#: project/templates/project/project_object.html:6
+#: audio/templates/audio/audio_detail.html:30
+#, fuzzy
+msgid "Delete audio track"
+msgstr "Borrar Audio"
+
+#: audio/templates/audio/audio_detail.html:44
+#: project/templates/project/project_object.html:7
 msgid "File"
 msgstr "Archivo"
 
-#: audio/templates/audio/audio_detail.html:38
-#: audio/templates/audio/audio_teaser.html:9
+#: audio/templates/audio/audio_detail.html:44
+msgid "details"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:45
+msgid "Download"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:48
+#: audio/templates/audio/audio_teaser.html:12
+#: audio/templates/audio/audio_teaser.html:24
+#: audio/templates/audio/audio_teaser.html:36
 msgid "Channels"
 msgstr "Canales"
 
-#: audio/templates/audio/audio_detail.html:39
-msgid "Blocksize"
-msgstr ""
-
-#: audio/templates/audio/audio_detail.html:40
+#: audio/templates/audio/audio_detail.html:48
 msgid "Samplerate"
 msgstr ""
 
-#: audio/templates/audio/audio_detail.html:41
-msgid "Totalframes"
+#: audio/templates/audio/audio_detail.html:48
+#: audio/templates/audio/audio_teaser.html:50
+msgid "Genre"
 msgstr ""
 
-#: audio/templates/audio/audio_detail.html:43
-#: project/templates/project/project_object.html:7
-msgid "Created by"
-msgstr "Creado por"
-
-#: audio/templates/audio/audio_detail.html:44
-#: project/templates/project/project_object.html:8
-msgid "Created at"
-msgstr "Creado el"
-
-#: audio/templates/audio/audio_detail.html:45
-#: project/templates/project/project_object.html:9
-msgid "HashTags"
-msgstr "Hilo"
+#: audio/templates/audio/audio_detail.html:48
+msgid "Instrument"
+msgstr ""
 
 #: audio/templates/audio/audio_detail.html:53
-#: audio/templates/audio/audio_form.html:5
-#: project/templates/project/project_detail.html:23
-#: project/templates/project/project_form.html:5
-msgid "Edit"
-msgstr "Editar"
+#: audio/templates/audio/audio_detail.html:56
+#: project/templates/project/project_teaser.html:32
+msgid "by"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:54
+#, python-format
+msgid ""
+"is licensed under a <a rel=\"license\" href=\"%(license_url)s\">%(license)s</"
+"a>"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:55
+msgid "Published"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:57
+msgid "Permanent link"
+msgstr ""
+
+#: audio/templates/audio/audio_detail.html:63
+#, python-format
+msgid "Comments for '%(obj_name)s' track:"
+msgstr ""
 
 #: audio/templates/audio/audio_form.html:5
 msgid "Upload"
@@ -121,21 +262,115 @@ msgstr "Subir"
 msgid " Audio"
 msgstr " Audio"
 
+#: audio/templates/audio/audio_teaser.html:31
+#, fuzzy, python-format
+msgid "%(timesince)s ago, by"
+msgstr " hace %(timesince)s"
+
+#: audio/templates/audio/audio_teaser.html:31
+msgid "Licencia Creative Commons"
+msgstr ""
+
+#: audio/templates/audio/audios_list.html:6
+#: users/templates/users/user_page.html:54
+msgid "No tracks yet"
+msgstr "Aún no hay pistas"
+
+#: audio/templates/audio/audios_list.html:8
+#: users/templates/users/user_page.html:56
+msgid "Upload track"
+msgstr "Subir pista"
+
 #: core/forms.py:16
 #, python-format
 msgid "Tag '%s' does not start with #"
 msgstr "La etiqueta '%s' no empieza con #"
 
-#: project/models.py:19
+#: core/licenses.py:12
+msgid "Creative Commons Attribution-ShareAlike 4.0 International"
+msgstr ""
+
+#: core/licenses.py:13
+msgid "http://creativecommons.org/licenses/by-sa/4.0/"
+msgstr ""
+
+#: core/templates/core/hashtaged_list.html:46
+#, fuzzy
+msgid "Projects tagged with"
+msgstr "Proyectos"
+
+#: core/templates/core/hashtaged_list.html:47
+msgid "List of projects tagged with"
+msgstr ""
+
+#: core/templates/core/hashtaged_list.html:49
+msgid "Tracks tagged with"
+msgstr ""
+
+#: core/templates/core/hashtaged_list.html:50
+msgid "List of tracks tagged with"
+msgstr ""
+
+#: core/templates/core/hashtaged_list.html:52
+msgid "Messages tagged with"
+msgstr ""
+
+#: core/templates/core/hashtaged_list.html:53
+msgid "List of messages tagged with"
+msgstr ""
+
+#: core/templates/core/hashtaged_list.html:55
+msgid "Users tagged with"
+msgstr ""
+
+#: core/templates/core/hashtaged_list.html:56
+msgid "List of users tagged with"
+msgstr ""
+
+#: core/templates/core/hashtaged_list.html:58 templates/search/search.html:41
+msgid "Results for "
+msgstr ""
+
+#: core/templates/core/hashtaged_list.html:59
+msgid "List of objects tagged with"
+msgstr ""
+
+#: core/templates/core/hashtaged_menu.html:5
+#, fuzzy
+msgid "only projects"
+msgstr "Últimos proyectos"
+
+#: core/templates/core/hashtaged_menu.html:8
+#, fuzzy
+msgid "only tracks"
+msgstr "Aún no hay pistas"
+
+#: core/templates/core/hashtaged_menu.html:11
+msgid "only users"
+msgstr ""
+
+#: core/templates/core/hashtaged_menu.html:14
+#, fuzzy
+msgid "Only messages"
+msgstr "mensaje"
+
+#: core/templates/core/mixed_list.html:21
+msgid "No content found"
+msgstr ""
+
+#: project/models.py:22
 msgid "version of"
 msgstr "versión de"
 
-#: project/models.py:21
+#: project/models.py:25
 msgid "audios"
 msgstr "audios"
 
-#: project/models.py:23 social/models.py:18
-#: users/templates/users/user_interactions.html:4
+#: project/models.py:27
+msgid "image"
+msgstr ""
+
+#: project/models.py:30 social/models.py:30
 msgid "user"
 msgstr "usuario"
 
@@ -156,13 +391,26 @@ msgstr "¿Querés crear una versión de este proyecto?"
 msgid "Create"
 msgstr "Crear"
 
-#: project/templates/project/project_detail.html:14
-msgid "Project versions"
+#: project/templates/project/project_detail.html:31
+msgid ""
+"You can add your own tracks and make the changes you want to the cloned "
+"version of this project"
+msgstr ""
+
+#: project/templates/project/project_detail.html:31
+#, fuzzy
+msgid "Clone Project"
+msgstr "Clonó el proyecto"
+
+#: project/templates/project/project_detail.html:39
+#, fuzzy
+msgid "Tracks from versions"
 msgstr "Versiones del proyecto"
 
-#: project/templates/project/project_detail.html:26
-msgid "Create version"
-msgstr "Crear versión del proyecto"
+#: project/templates/project/project_detail.html:47
+#, python-format
+msgid "Comments for '%(obj_name)s' project:"
+msgstr ""
 
 #: project/templates/project/project_form.html:5
 msgid " Project"
@@ -172,13 +420,100 @@ msgstr " Proyecto"
 msgid "Project list"
 msgstr "Proyectos"
 
-#: project/templates/project/project_teaser.html:9
-msgid "%(object.created_at|timesince)s ago"
-msgstr "hace %(object.created_at|timesince)s"
+#: project/templates/project/project_list.html:7
+#, fuzzy
+msgid "RedPanal Projects"
+msgstr "Borrar Proyecto"
 
-#: social/models.py:17
+#: project/templates/project/project_object.html:5
+msgid "Name"
+msgstr "Nombre"
+
+#: project/templates/project/project_object.html:6
+msgid "Description"
+msgstr "Descripción"
+
+#: project/templates/project/project_object.html:8
+msgid "Created by"
+msgstr "Creado por"
+
+#: project/templates/project/project_object.html:9
+msgid "Created at"
+msgstr "Creado el"
+
+#: project/templates/project/project_object.html:10
+msgid "HashTags"
+msgstr "Hilo"
+
+#: project/templates/project/project_teaser.html:5
+#: project/templates/project/project_teaser.html:25
+#: project/templates/project/project_teaser.html:48
+#: project/templates/project/project_teaser.html:59
+#, python-format
+msgid "Go to '%(name)s' project"
+msgstr ""
+
+#: project/templates/project/project_teaser.html:31
+#: project/templates/project/project_teaser.html:41
+#: project/templates/project/project_teaser.html:55
+#: project/templates/project/project_teaser.html:58
+#: users/templates/users/user_prof.html:64
+#: users/templates/users/user_teaser.html:37
+#: users/templates/users/user_teaser.html:53
+msgid "Tracks"
+msgstr "Pistas"
+
+#: project/templates/project/project_teaser.html:32
+#, fuzzy, python-format
+msgid "%(timesince)s ago"
+msgstr " hace %(timesince)s"
+
+#: project/templates/project/project_teaser.html:37
+#, fuzzy
+msgid "Edit project"
+msgstr "Editar perfil"
+
+#: project/templates/project/project_teaser.html:37
+#, fuzzy
+msgid "Delete project"
+msgstr "Borrar Proyecto"
+
+#: project/templates/project/project_teaser.html:38
+#, fuzzy
+msgid "Project created by"
+msgstr "Creado por"
+
+#: project/templates/project/project_teaser.html:38
+#: social/templates/social/action_commented_teaser.html:12
+msgid "at"
+msgstr ""
+
+#: project/templates/project/project_teaser.html:43
+msgid "This projects contributes tracks to"
+msgstr ""
+
+#: project/templates/project/project_teaser.html:45
+#: project/templates/project/project_teaser.html:54
+msgid "Working band"
+msgstr ""
+
+#: project/templates/project/projects_list.html:6
+#: users/templates/users/user_page.html:77
+msgid "No project yet"
+msgstr "Aún no hay proyectos"
+
+#: project/templates/project/projects_list.html:8
+#: users/templates/users/user_page.html:79
+msgid "Create new project"
+msgstr "Crear proyecto"
+
+#: social/models.py:29
 msgid "message"
 msgstr "mensaje"
+
+#: social/views.py:75
+msgid "Your message has been successfully posted"
+msgstr ""
 
 #: social/templates/activity/actor.html:11
 msgid "UNFOLLOW"
@@ -189,147 +524,250 @@ msgid "FOLLOW"
 msgstr "SEGUIR"
 
 #: social/templates/activity/actor.html:20
-#: social/templates/social/actions_list.html:7
-#: users/templates/users/user_page.html:42
+#: social/templates/social/actions_list.html:9
+#: users/templates/users/user_page.html:67
 msgid "No actions yet"
 msgstr "Aún no hay acciones"
 
-#: social/templates/social/action_teaser.html:8
-msgid "%(action.timestamp|timesince)s ago"
-msgstr "hace %(action.timestamp|timesince)s"
+#: social/templates/social/action_audio_created_teaser.html:5
+#, fuzzy
+msgid "Uploaded audio track:"
+msgstr "Subir pista"
 
-#: social/templates/social/action_teaser.html:12
-msgid "Uploaded"
-msgstr "Subido"
+#: social/templates/social/action_commented_teaser.html:6
+#, fuzzy
+msgid "(Commented"
+msgstr "comentó"
 
-#: social/templates/social/action_teaser.html:13
-msgid "Created the project"
+#: social/templates/social/action_project_created_teaser.html:5
+#, fuzzy
+msgid "Created the project:"
 msgstr "Creo el proyecto"
 
-#: social/templates/social/action_teaser.html:14
+#: social/templates/social/action_teaser.html:18
+#: social/templates/social/message_teaser.html:10
+#, fuzzy, python-format
+msgid "%(timeago)s ago"
+msgstr " hace %(timesince)s"
 
-msgid "Cloned the project"
-msgstr "Clonó el proyecto"
-
-#: social/templates/social/action_teaser.html:20
-msgid "to"
-msgstr "a"
-
-#: social/templates/social/action_teaser.html:37
+#: social/templates/social/action_teaser.html:41
+#: social/templates/social/message_teaser.html:15
 msgid "reply"
 msgstr "responder"
 
-#: social/templates/social/action_teaser.html:38
-msgid "amplify"
-msgstr "amplificar"
-
-#: social/templates/social/followers.html:6
-#, python-format
-msgid "Users following %(actor)s"
-msgstr "Usuarios siguiendo %(actor)s"
-
-#: social/templates/social/following.html:6 templates/index.html:37
-#, python-format
-msgid "@%(user)s follows"
+#: social/templates/social/followers.html:4
+#, fuzzy, python-format
+msgid "@%(user.username)s followers"
 msgstr "A quienes sigue el %(user)s"
 
-#: social/templates/social/message_teaser.html:5
-#, python-format
-msgid " %(timesince)s ago "
-msgstr " hace %(timesince)s"
+#: social/templates/social/followers.html:27
+#, fuzzy, python-format
+msgid "Users followers of @%(user)s"
+msgstr "Usuarios siguiendo %(actor)s"
 
-#: templates/auth-items-menu.html:3
-msgid "Interactions"
-msgstr "Interacciones"
+#: social/templates/social/following.html:4
+#, fuzzy, python-format
+msgid "@%(user.username)s follows"
+msgstr "A quienes sigue el %(user)s"
 
-#: templates/base.html:33
-msgid "Unfollow"
-msgstr "Dejar de seguir"
+#: social/templates/social/following.html:27
+#, fuzzy, python-format
+msgid "Users followed by @%(user)s"
+msgstr "Usuarios siguiendo %(actor)s"
+
+#: social/templates/social/message_form.html:8
+msgid "tell your fans what you're doing!"
+msgstr ""
+
+#: social/templates/social/message_form.html:9
+#: social/templates/social/message_form_popup.html:19
+msgid "Publish"
+msgstr ""
+
+#: social/templates/social/message_form_popup.html:30
+#, fuzzy
+msgid "Something went wrong"
+msgstr "Algunas cosas acerca de ti"
+
+#: social/templates/social/message_form_popup.html:31
+#, fuzzy
+msgid "Post message"
+msgstr "mensaje"
+
+#: social/templates/social/message_form_popup.html:32
+#, fuzzy
+msgid "Reply to"
+msgstr "responder"
+
+#: social/templates/social/message_form_popup.html:33
+msgid ""
+"if you close this window the message you entered did not disappear, if you "
+"use "
+msgstr ""
+
+#: social/templates/social/message_with_content_form.html:8
+msgid "Add Your Comment"
+msgstr ""
+
+#: social/templates/social/message_with_content_form.html:9
+msgid "Publish comment"
+msgstr ""
+
+#: social/templates/social/messages_for_object.html:7
+#, fuzzy
+msgid "No comments yet"
+msgstr "Aún no hay acciones"
+
+#: social/templates/social/messages_list.html:8
+#, fuzzy
+msgid "No interactions yet"
+msgstr "Aún no hay acciones"
+
+#: templates/all_activities.html:4
+msgid "Live"
+msgstr ""
+
+#: templates/all_activities.html:38
+msgid "RedPanal live"
+msgstr ""
+
+#: templates/all_activities.html:39
+#, fuzzy
+msgid "Last activities in RedPanal"
+msgstr "Última Actividad"
+
+#: templates/all_activities.html:53
+msgid "Statistics:"
+msgstr ""
+
+#: templates/all_activities.html:73
+msgid "Users online:"
+msgstr ""
+
+#: templates/all_activities.html:82
+msgid "New users:"
+msgstr ""
+
+#: templates/base.html:33 users/templates/users/user_prof.html:79
+msgid "Following"
+msgstr "Siguiendo"
 
 #: templates/base.html:33
 msgid "Follow"
 msgstr "Seguir"
 
-#: templates/base.html:33
-msgid "login"
-msgstr "iniciar sesión"
+#: templates/base.html:43
+msgid "Unfollow"
+msgstr "Dejar de seguir"
 
-#: templates/base.html:33
-msgid "to follow"
-msgstr "para seguir"
-
-#: templates/base.html:74 templates/index.html:20
-msgid "Home"
-msgstr "Inicio"
-
-#: templates/base.html:75
-msgid "Blog"
-msgstr "Blog"
-
-#: templates/base.html:76
+#: templates/base.html:88 templates/search/search.html:26
+#: templates/search/search.html.py:31 templates/search/search.html:34
 msgid "Search"
 msgstr "Buscar"
 
-#: templates/base.html:95
+#: templates/base.html:112 users/templates/users/user_prof.html:17
+#: users/templates/users/user_prof.html:31
 msgid "Edit profile"
 msgstr "Editar perfil"
 
-#: templates/base.html:96
+#: templates/base.html:113
 msgid "Log out"
 msgstr "Cerrar sesión"
 
-#: templates/base.html:99
+#: templates/base.html:116
 msgid "Log in"
 msgstr "Iniciar sesión"
 
-#: templates/base.html:115
-msgid "My Account"
-msgstr "Mi cuenta"
+#: templates/base.html:139
+#, fuzzy
+msgid "My Profile"
+msgstr "Mi perfil"
 
-#: templates/base.html:116
+#: templates/base.html:140
+msgid "What other users are doing?"
+msgstr ""
+
+#: templates/base.html:140 templates/index.html:4 templates/index.html.py:33
 msgid "My Community"
 msgstr "Mi comunidad"
 
-#: templates/base.html:117
+#: templates/base.html:141
+msgid "Interactions with other users"
+msgstr ""
+
+#: templates/base.html:141 users/templates/users/user_interactions.html:4
+#: users/templates/users/user_interactions.html:24
 msgid "My Interactions"
 msgstr "Mis Interacciones"
 
-#: templates/base.html:118
-msgid "Upload file"
-msgstr "Subir archivo"
+#: templates/base.html:143
+msgid "Post message in your timeline"
+msgstr ""
 
-#: templates/base.html:119
+#: templates/base.html:144
 msgid "Create project"
 msgstr "Crear proyecto"
 
-#: templates/base.html:138
+#: templates/base.html:144
+#, fuzzy
+msgid "Create Project"
+msgstr "Crear proyecto"
+
+#: templates/base.html:145
+msgid "Upload file"
+msgstr "Subir archivo"
+
+#: templates/base.html:145
+#, fuzzy
+msgid "Upload audio"
+msgstr "Subido"
+
+#: templates/base.html:161
+#, python-format
 msgid ""
 "This is Free Software licensed under <a href=\"http://www.gnu.org/licenses/"
-"agpl.txt\" >AGPL</a>"
+"agpl.txt\" >AGPL</a>. Get <a href=\"https://github.com/RedPanal/redpanal"
+"\">the code!</a>. Current version is <a href=\"https://github.com/RedPanal/"
+"redpanal/commit/%(GIT_SHORT_VERSION)s\">%(GIT_SHORT_VERSION)s</a>."
 msgstr ""
-"Esto es Software Libre con licencia <a href=\"http://www.gnu.org/licenses/"
-"agpl.txt\" >AGPL</a>"
 
-#: templates/base.html:139
-msgid "Get the code!"
-msgstr "¡Obtené el código!"
+#: templates/base.html:162
+msgid "Hosted by: <a href=\"http://www.codigosur.org\">Código Sur</a>"
+msgstr ""
 
-#: templates/index.html:20 templates/account/login.html:9
-#: templates/account/signup.html:10
-msgid "Welcome to RedPanal"
-msgstr "Bienvenido a RedPanal"
+#: templates/base.html:165
+msgid "The Official RedPanal Blog!"
+msgstr ""
 
-#: templates/index.html:25
-msgid "Activities of users I follow"
-msgstr "Actividad de los usuarios que sigo"
+#: templates/base.html:165
+msgid "Blog"
+msgstr "Blog"
 
-#: templates/not-auth-items-menu.html:2
+#: templates/base_background_image.html:10
+msgid "Background image:"
+msgstr ""
+
+#: templates/discover-items-menu.html:2
 msgid "Discover more users"
 msgstr "Descubrir mas usuarios"
 
-#: templates/not-auth-items-menu.html:3
+#: templates/discover-items-menu.html:3
 msgid "Discover more projects"
 msgstr "Descubrir mas proyectos"
+
+#: templates/index.html:4 templates/account/login.html:9
+msgid "Welcome!"
+msgstr ""
+
+#: templates/index.html:34
+#, fuzzy
+msgid "My activities and the users that I follow"
+msgstr "Actividad de los usuarios que sigo"
+
+#: templates/index.html:47
+#, fuzzy
+msgid "Last followers:"
+msgstr "Seguidores"
 
 #: templates/account/login.html:7
 msgid "Sign In"
@@ -339,19 +777,19 @@ msgstr "Iniciar sesión"
 msgid "Sign up for RedPanal"
 msgstr "Registrarse en RedPanal"
 
-#: templates/account/login.html:16
+#: templates/account/login.html:17
 msgid "Sign in:"
 msgstr "Iniciar sesión:"
 
-#: templates/account/login.html:24
+#: templates/account/login.html:25
 msgid "Sign in"
 msgstr "Iniciar sesión"
 
-#: templates/account/login.html:25
+#: templates/account/login.html:26
 msgid "Forgot Password?"
 msgstr "¿Olvidaste tu contraseña?"
 
-#: templates/account/login.html:32
+#: templates/account/login.html:33
 msgid "Sign in with:"
 msgstr "Iniciar sesión desde:"
 
@@ -367,6 +805,10 @@ msgstr "¿Estás seguro de que querés cerrar la sesión?"
 #: templates/account/signup.html:6
 msgid "Signup"
 msgstr "Crear cuenta"
+
+#: templates/account/signup.html:10
+msgid "Welcome to RedPanal"
+msgstr "Bienvenido a RedPanal"
 
 #: templates/account/signup.html:14 templates/account/signup.html.py:24
 msgid "Sign Up"
@@ -396,67 +838,148 @@ msgstr "Elegir nuevo Default"
 msgid "Upload New Image"
 msgstr "Subí una imagen nueva"
 
-#: users/models.py:10
+#: templates/search/search.html:60
+msgid "No results for "
+msgstr ""
+
+#: templates/search/search.html:65
+msgid "Previous"
+msgstr ""
+
+#: templates/search/search.html:67
+msgid "Next"
+msgstr ""
+
+#: users/account_adapter.py:15
+msgid "Usernames can only contain letters, digits and ./+/-/_."
+msgstr ""
+
+#: users/account_adapter.py:19
+msgid "Username length must be between 3 and 15 chars"
+msgstr ""
+
+#: users/forms.py:12
+msgid "put tags helps you to contact users who share musical tastes"
+msgstr ""
+
+#: users/models.py:22
+msgid "how you want your name on RedPanal?"
+msgstr ""
+
+#: users/models.py:23
+#, fuzzy
+msgid "about"
+msgstr "Acerca @"
+
+#: users/models.py:23
 msgid "something about you"
 msgstr "Algunas cosas acerca de ti"
 
-#: users/models.py:11
+#: users/models.py:24
+msgid "website"
+msgstr ""
+
+#: users/models.py:24
+msgid "your website"
+msgstr ""
+
+#: users/models.py:25
+msgid "location"
+msgstr ""
+
+#: users/models.py:25
 msgid "where do you live"
 msgstr "¿Dónde vives?"
 
-#: users/templates/users/user_interactions.html:8
-#: users/templates/users/user_stats.html:41
-msgid "interactions"
-msgstr "interacciones"
-
-#: users/templates/users/user_list.html:4
+#: users/templates/users/all_people.html:4
 msgid "People"
 msgstr "Gente"
 
-#: users/templates/users/user_page.html:4
-msgid "profile"
-msgstr "perfil"
+#: users/templates/users/all_people.html:28
+msgid "RedPanal people"
+msgstr ""
 
-#: users/templates/users/user_page.html:29
-msgid "music"
-msgstr "música"
-
-#: users/templates/users/user_page.html:31
-msgid "About @"
-msgstr "Acerca @"
-
-#: users/templates/users/user_page.html:36
-msgid "Last activities"
+#: users/templates/users/user_activities.html:4
+#, fuzzy, python-format
+msgid "@%(user)s Activities"
 msgstr "Última Actividad"
 
-#: users/templates/users/user_page.html:47
-msgid "Last projects"
-msgstr "Últimos proyectos"
+#: users/templates/users/user_activities.html:33
+#, fuzzy
+msgid "My Activities"
+msgstr "Última Actividad"
 
-#: users/templates/users/user_page.html:52
-msgid "No project yet"
-msgstr "Aún no hay proyectos"
+#: users/templates/users/user_interactions.html:25
+msgid "Mentions and replies from another users"
+msgstr ""
 
-#: users/templates/users/user_page.html:54
-msgid "Create new project"
-msgstr "Crear proyecto"
+#: users/templates/users/user_page.html:4
+#, fuzzy, python-format
+msgid "@%(user)s profile"
+msgstr "A quienes sigue el %(user)s"
 
-#: users/templates/users/user_page.html:61
+#: users/templates/users/user_page.html:31
+#, fuzzy
+msgid "About me"
+msgstr "Acerca @"
+
+#: users/templates/users/user_page.html:33
+#, fuzzy
+msgid "About"
+msgstr "Acerca @"
+
+#: users/templates/users/user_page.html:43
+msgid "Sorry, still not put anything in my description"
+msgstr ""
+
+#: users/templates/users/user_page.html:50
 msgid "Last tracks"
 msgstr "Últimas pistas"
 
-#: users/templates/users/user_page.html:65
-msgid "No tracks yet"
-msgstr "Aún no hay pistas"
+#: users/templates/users/user_page.html:59
+#: users/templates/users/user_page.html:70
+#: users/templates/users/user_page.html:83
+msgid "more..."
+msgstr ""
 
-#: users/templates/users/user_page.html:67
-msgid "Upload track"
-msgstr "Subir pista"
+#: users/templates/users/user_page.html:61
+msgid "Last activities"
+msgstr "Última Actividad"
+
+#: users/templates/users/user_page.html:72
+msgid "Last projects"
+msgstr "Últimos proyectos"
+
+#: users/templates/users/user_prof.html:9
+#: users/templates/users/user_prof.html:15
+#: users/templates/users/user_prof.html:29
+#, fuzzy, python-format
+msgid "Go to @%(user)s profile"
+msgstr "A quienes sigue el %(user)s"
+
+#: users/templates/users/user_prof.html:60
+#, fuzzy
+msgid "Activities"
+msgstr "Última Actividad"
+
+#: users/templates/users/user_prof.html:68
+#: users/templates/users/user_teaser.html:38
+msgid "Projects"
+msgstr "Proyectos"
+
+#: users/templates/users/user_prof.html:75
+#: users/templates/users/user_teaser.html:39
+msgid "Followers"
+msgstr "Seguidores"
 
 #: users/templates/users/user_profile.html:4
-#: users/templates/users/user_profile.html:6
 msgid "Profile options"
 msgstr "Opciones del perfil"
+
+#: users/templates/users/user_profile.html:6
+#, fuzzy
+msgid "Edit Profile"
+msgstr "Editar perfil"
 
 #: users/templates/users/user_profile.html:11
 msgid "Username"
@@ -466,31 +989,83 @@ msgstr "Nombre de usuario"
 msgid "Change your avatar"
 msgstr "Cambiar tu avatar"
 
-#: users/templates/users/user_stats.html:15
-msgid "Projects"
-msgstr "Proyectos"
+#: users/templates/users/user_projects.html:4
+#, python-format
+msgid "@%(user.username)s Projects"
+msgstr ""
 
-#: users/templates/users/user_stats.html:19
-msgid "Tracks"
+#: users/templates/users/user_projects.html:22
+#, fuzzy
+msgid "My Projects"
+msgstr " Proyecto"
+
+#: users/templates/users/user_tracks.html:4
+#, fuzzy, python-format
+msgid "@%(user)s Tracks"
+msgstr "A quienes sigue el %(user)s"
+
+#: users/templates/users/user_tracks.html:33
+#, fuzzy
+msgid "My Tracks"
 msgstr "Pistas"
 
-#: users/templates/users/user_stats.html:24
-msgid "Followers"
-msgstr "Seguidores"
+#: users/templates/users/users_list.html:9
+#: users/templates/users/users_list_full.html:9
+#, fuzzy
+msgid "No users yet"
+msgstr "Aún no hay pistas"
 
-#: users/templates/users/user_stats.html:28
-msgid "Following"
-msgstr "Siguiendo"
+#~ msgid "Create version"
+#~ msgstr "Crear versión del proyecto"
 
-#: users/templates/users/user_stats.html:33
-msgid "Messages"
-msgstr "Mensajes"
+#~ msgid "%(object.created_at|timesince)s ago"
+#~ msgstr "hace %(object.created_at|timesince)s"
+
+#~ msgid "%(action.timestamp|timesince)s ago"
+#~ msgstr "hace %(action.timestamp|timesince)s"
+
+#~ msgid "to"
+#~ msgstr "a"
+
+#~ msgid "Interactions"
+#~ msgstr "Interacciones"
+
+#~ msgid "login"
+#~ msgstr "iniciar sesión"
+
+#~ msgid "to follow"
+#~ msgstr "para seguir"
+
+#~ msgid "Home"
+#~ msgstr "Inicio"
+
+#~ msgid "My Account"
+#~ msgstr "Mi cuenta"
+
+#~ msgid ""
+#~ "This is Free Software licensed under <a href=\"http://www.gnu.org/"
+#~ "licenses/agpl.txt\" >AGPL</a>"
+#~ msgstr ""
+#~ "Esto es Software Libre con licencia <a href=\"http://www.gnu.org/licenses/"
+#~ "agpl.txt\" >AGPL</a>"
+
+#~ msgid "Get the code!"
+#~ msgstr "¡Obtené el código!"
+
+#~ msgid "interactions"
+#~ msgstr "interacciones"
+
+#~ msgid "profile"
+#~ msgstr "perfil"
+
+#~ msgid "music"
+#~ msgstr "música"
+
+#~ msgid "Messages"
+#~ msgstr "Mensajes"
 
 #~ msgid "created"
 #~ msgstr "creado"
-
-#~ msgid "commented"
-#~ msgstr "comentó"
 
 #~ msgid "ago"
 #~ msgstr "hace"
@@ -500,9 +1075,6 @@ msgstr "Mensajes"
 
 #~ msgid "mentions"
 #~ msgstr "menciones"
-
-#~ msgid "My profile"
-#~ msgstr "Mi perfil"
 
 #~ msgid "Me"
 #~ msgstr "Cuenta"
