@@ -29,7 +29,7 @@ def user_page(request, username):
 
 def user_tracks(request, username):
     user = get_object_or_404(User, username=username)
-    audios = Audio.objects.filter(user=username)
+    audios = Audio.objects.filter(user=user)
 
     if request.is_ajax():
         template = "audio/audios_list.html"
