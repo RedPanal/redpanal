@@ -7,12 +7,12 @@
 
   {% include "social/follow_button.html" %}
 
-  <span class="user"><a href={{ user.get_absolute_url }}>{{ user.userprofile.realname|default:user.username|capfirst }}</a></span><br />
+  <span class="user"><a href="{{ user.get_absolute_url }}">{{ user.userprofile.realname|default:user.username|capfirst }}</a></span><br />
 
   <span class="user-name">@{{ user.username }}</span><br />
 
   <span class="small-tags">
-   {% with object=user.userprofile %} 
+   {% with object=user.userprofile %}
       {% if object.tags.all %}
          {% include 'core/hashtags_block.html' %}
       {% endif %}
@@ -55,7 +55,7 @@
          </span>
 {% comment %}
          <span class="small-tags">
-         {% with object=user.userprofile %} 
+         {% with object=user.userprofile %}
             {% if object.tags.all %}
                {% include 'core/hashtags_block.html' %}
             {% endif %}
@@ -67,7 +67,7 @@
    {% comment %} </div> {% endcomment %}
 {% else %}
   {% avatar user 50 %}
-  <span class="user"><a href={{ user.get_absolute_url }}>{{ user.username }}</a></span>
+  <span class="user"><a href="{{ user.get_absolute_url }}">{{ user.username }}</a></span>
   {% include "social/follow_button.html" %}
 {% endif %}
 
