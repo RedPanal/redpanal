@@ -62,7 +62,9 @@
        {# include "social/actions_list.html" #}
       <ul class="action-stream">
          {% for action in user.action_list|slice:":5" %}
-            <li>{% include 'social/action_teaser.html' %}</li>
+           {% with template='social/action_'|add:action.verb|add:'_teaser.html' %}
+             <li>{% include template %}</li>
+           {% endwith %}
          {% empty %}
             <span class="no-yet">{% trans "No actions yet" %}</span>
          {% endfor %}
@@ -85,7 +87,7 @@
 {% endblock %}
 
 {% block right_row %}
-      {% with "full" as profmode %}     
+      {% with "full" as profmode %}
          {% include "users/user_prof.html" %}
       {% endwith %}
    <ul class="nav nav-list">
