@@ -80,12 +80,12 @@ def activity_all(request):
 
         # get logged in users
         # http://stackoverflow.com/questions/2723052/how-to-get-the-list-of-the-authenticated-users
-        sessions = Session.objects.filter(expire_date__gte=datetime.now())
-        uid_list = []
-        for session in sessions:
-            data = session.get_decoded()
-            uid_list.append(data.get('_auth_user_id', None))
-        logged_users = users.filter(id__in=uid_list)   
+        # sessions = Session.objects.filter(expire_date__gte=datetime.now())
+        # uid_list = []
+        # for session in sessions:
+        #    data = session.get_decoded()
+        #    uid_list.append(data.get('_auth_user_id', None))
+        # logged_users = users.filter(id__in=uid_list)   
         
         return render(request, "all_activities.html", {
             "mixed_objects": mixed_list,
@@ -94,6 +94,6 @@ def activity_all(request):
             "count_messages": count_messages,
             "count_users": count_users,
             "last_users": users,
-            "logged_users": logged_users,
+             # "logged_users": logged_users,
             "refresh_after_modal": 'refresh',
         })
