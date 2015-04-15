@@ -914,3 +914,25 @@
 .mejs-controls .mejs-playpause-button.big button{
    margin: 17px;
 }
+
+/* mini player without wave */
+
+.without-wave .mejs-img-waveform {
+  display: none !important;
+}
+
+.without-wave .mejs-controls .mejs-time-rail span {
+  height: 2px !important;
+}
+
+.without-wave .mejs-controls .mejs-playpause-button {
+  top: -58px;
+}
+
+.without-wave .mejs-controls div.mejs-time-rail {
+    padding-top: 0;
+    top: -5px;
+}
+.teaser-audio.without-wave .mejs-container {
+    padding-top: 12px;
+}

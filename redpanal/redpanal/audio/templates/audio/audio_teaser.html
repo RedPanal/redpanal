@@ -16,7 +16,7 @@
        </div>
 
    </div>
-{% elif mode == "in-action-list" %}
+{% elif mode == "in-action-list" or mode == "without-wave" %}
     <div class="top">
        <div class="top-title"><h3><a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{{ object.name|truncatechars:30|capfirst }}</a></h3></div>
        <div class="top-data">
@@ -43,7 +43,7 @@
 
 {% include "audio/audio_object.html" %}
 
-{% if mode != "in-action-list" %}
+{% if mode != "in-action-list" and mode != "without-wave" %}
    {% url 'audio-detail' object.slug as object_url %}
     <div class="small-tags">{% with mode="short-list" object_url=object_url %}{% include 'core/hashtags_block.html' %}{% endwith %}</div>  
     <div class="bottom-date">      
