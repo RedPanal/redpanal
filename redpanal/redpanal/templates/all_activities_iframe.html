@@ -26,8 +26,11 @@
             // initial volume when the player starts
             startVolume: 0.8});
      });
+     $('a').attr('target', '_top');
+     $(document).on("click",".modal-reply-message",function(e) {
+        window.open("/accounts/signup/");
+     });
  });
-
  </script>
 </head>
 <body style="background:none repeat scroll 0 0 rgba(0, 0, 0, 0)">
