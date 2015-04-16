@@ -155,7 +155,7 @@ header #login .btn-group {
 h3.sign-up {
     color: #FFFFFF;
     float: right;
-    margin: 0 0 40px;
+    margin: 20px 0 40px;
     text-align: center;
 }
 
@@ -244,6 +244,7 @@ h3.sign-up a:hover {
     position: relative;
     top: -2px;
     vertical-align: middle;
+    width: auto;
 }
 
 .form-block form p.action-grp {
@@ -1769,6 +1770,10 @@ p.user-website i {
     min-height: 34px;
 }
 
+.action-stream div.message-in-mixed-list {
+    padding: 15px 0;
+}
+
 .action-stream > li:hover,
 .action-stream div.message-in-mixed-list:hover,
 .users-list > li:hover {
@@ -1977,12 +1982,17 @@ p.user-website i {
 
 .action-stream ul.actions {
 
-    font-size: 12px;
+    font-size: 11px;
     position: absolute;
+    margin-bottom: 0;
     bottom: 0; right: 0;
     display: none; 
     text-align: right;
     color: #999;
+}
+
+.action-stream ul.actions button {
+    font-size: 11px;
 }
 
 .action-stream .message-in-mixed-list:hover ul.actions,
@@ -2019,6 +2029,7 @@ p.user-website i {
 .action-stream button.btn-link {
     padding-left: 0px;
     padding-right: 0px;
+    text-shadow: 0 0 0 transparent;
 }
 
 
@@ -2199,5 +2210,60 @@ input[type="text"].search_input { /* search input in search page */
 
 /* TODO falta definir follow-unfollow.following cuando aparecen fuera de user-profile */
 
+/* home iframe */
+   /* home */
 
+.login-with-iframe #content {
+   min-height:950px;
+}
+
+#iframe-top, #login-iframe, #iframe-bottom {
+    position: absolute;
+    width: 450px;
+}
+
+#iframe-bottom {
+    top: 992px;
+}
+
+#iframe-top {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 6px;
+    top: 126px;
+}
+
+#iframe-top .expl {
+   margin: 0;
+}
+
+   /* iframe */
+#login-iframe {
+    border: medium none;
+    height: 843px;
+    top: 155px;
+    width: 450px;
+}
+
+html.all-activities-iframe {
+    overflow: hidden ;
+}
+
+.all-activities-iframe body {
+    color: white;
+}
+
+.all-activities-iframe .user a, a.user {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.all-activities-iframe .action-stream > li:hover,
+.all-activities-iframe .action-stream div.message-in-mixed-list:hover,
+.all-activities-iframe .users-list > li:hover {
+    background: rgba(237, 250, 253, 0.3);
+}
+
+.all-activities-iframe .action-stream button.btn-link:hover {
+   color: white;
+}
 

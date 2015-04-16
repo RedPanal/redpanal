@@ -97,3 +97,16 @@ def activity_all(request):
              # "logged_users": logged_users,
             "refresh_after_modal": 'refresh',
         })
+        
+def activity_all_iframe(request):
+
+    audios = Audio.objects.all()
+    #projects = Project.objects.all()
+    messages = Message.objects.all()
+
+    mixed_list = sorted(chain(messages, audios), key=lambda instance: instance.created_at, reverse=True)
+
+    return render(request, "all_activities_iframe.html", {
+        "mixed_objects": mixed_list,
+        "refresh_after_modal": 'refresh',
+    })

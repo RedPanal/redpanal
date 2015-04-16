@@ -1,0 +1,61 @@
+{% load staticfiles avatar_tags i18n model_info %}
+<html class="all-activities-iframe">
+<head>
+ <meta charset="UTF-8" />
+ {# bootstrap #}
+ <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+ <link href="{% static 'css/bootstrap-custom.css' %}" rel="stylesheet">
+ <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+ <link href="{% static 'css/redpanal.css' %}?{{ GIT_SHORT_VERSION }}" rel="stylesheet">
+ {# /bootstrap #}
+
+ <link href="{% static 'mediaelements/mediaelementplayer.css' %}" rel="stylesheet">
+ <link href="{% static 'mediaelements/mejs-skins.css' %}" rel="stylesheet">
+ <script src="{% static 'js/jquery.min.js' %}"></script>
+ <script src="{% static 'js/bootstrap.min.js' %}"></script>
+ <script src="{% static 'js/redpanal.js' %}"></script>
+ <script src="{% static 'mediaelements/mediaelement-and-player.js' %}"></script>
+ <script>
+ $(function (){
+     $('video,audio').each(function(index, element){
+         // console.log("width" + index + ": " + $(this).parent().width()); //debug
+         $(this).mediaelementplayer({
+            audioWidth: $(this).parent().width(), //old 540 460
+            // height of audio player
+            audioHeight: 30,
+            // initial volume when the player starts
+            startVolume: 0.8});
+     });
+ });
+
+ </script>
+</head>
+<body style="background:none repeat scroll 0 0 rgba(0, 0, 0, 0)">
+   <div class="">
+      <div class="action-stream">
+        {% for object in mixed_objects|slice:":20" %}
+            {% if object|get_verbose_name == 'project' %}
+               {% with "full" as mode %}
+                  {% include "project/project_teaser.html" %}
+               {% endwith %}
+            {% endif %}
+            {% if object|get_verbose_name == 'audio' %}
+               {% with mode="without-wave" %}
+                  {% include "audio/audio_teaser.html" %}
+               {% endwith %}
+            {% endif %}
+            {% if object|get_verbose_name == 'message' %}
+               <div class="message-in-mixed-list">{% include "social/message_teaser.html" %}</div>
+            {% endif %}
+            {% if object|get_verbose_name == 'user' %}
+               {% with user=object mode="list" %}
+                   <div class="user-teaser list">{% include "users/user_teaser.html" %}</div>
+               {% endwith %}
+            {% endif %}
+        {% empty %}
+            <span class="no-yet">{% trans "No content found" %}</span>
+        {% endfor%}
+      </div>  
+   </div>
+</body>
+

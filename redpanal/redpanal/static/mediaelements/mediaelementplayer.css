@@ -917,22 +917,38 @@
 
 /* mini player without wave */
 
+.teaser-audio.without-wave:hover {
+    background: rgba(237, 250, 253, 0.3);
+    border-bottom: 1px solid #ddd;
+    /* quiza esta propiedad debiera esrar en redpanal.css! */
+}
+
 .without-wave .mejs-img-waveform {
   display: none !important;
 }
 
+.without-wave .mejs-controls {
+  width: auto;
+}
+
 .without-wave .mejs-controls .mejs-time-rail span {
-  height: 2px !important;
+  height: 0px !important;
+  display: none;
+}
+
+.without-wave .mejs-time.mejs-currenttime-container {
+  margin-left: 50px;
 }
 
 .without-wave .mejs-controls .mejs-playpause-button {
-  top: -58px;
+  top: -17px;
 }
 
 .without-wave .mejs-controls div.mejs-time-rail {
-    padding-top: 0;
-    top: -5px;
+  display: none;
 }
 .teaser-audio.without-wave .mejs-container {
-    padding-top: 12px;
+    margin-top: -14px;
+    margin-bottom: -8px;
+    padding-top: 0;
 }
