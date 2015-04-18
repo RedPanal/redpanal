@@ -35,7 +35,7 @@ Instalación [ES]
 
     pip install -r requirements.txt
 
-6) Entrar y ejecutar:
+6) Entrar a redpanal y ejecutar:
 
     python manage.py syncdb --all
     python manage.py migrate --fake
@@ -66,7 +66,7 @@ Install[EN]
 
     pip install -r requirements.txt
    
-6) Enter inside and run:
+6) Enter inside redpanal dir and run:
 
     python manage.py syncdb --all
     python manage.py migrate --fake

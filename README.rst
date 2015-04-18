@@ -21,7 +21,7 @@ Install
  * pip install timeside==0.4.4 --no-dependencies
 
 * pip install -r requirements.txt
-* enter inside and run:
+* enter inside redpanal dir and run:
 
  * python manage.py syncdb --all
  * python manage.py migrate --fake
