@@ -7,7 +7,6 @@ django-crispy-forms==1.2.8
 django-taggit==0.10
 easy-thumbnails==1.4
 pytz
-timeside==0.4.4
 git+https://github.com/jezdez/django-avatar#egg=django-avatar
 django-endless-pagination==2.0
 django-haystack==2.1.0
