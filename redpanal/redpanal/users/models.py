@@ -6,12 +6,12 @@ from django.utils.translation import ugettext_lazy as _
 from taggit.managers import TaggableManager
 
 import actstream.models
-from actstream import actions
+from actstream import actions, registry
 
 User.add_to_class('following', lambda self: actstream.models.following(self)[::-1])
 User.add_to_class('followers', lambda self: actstream.models.followers(self)[::-1])
 User.add_to_class('action_list', lambda self: actstream.models.actor_stream(self))
-
+registry.register(User)
 @property
 def created_at(self):
     return self.date_joined
