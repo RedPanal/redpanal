@@ -2219,7 +2219,7 @@ input[type="text"].search_input { /* search input in search page */
 
 #iframe-top, #login-iframe, #iframe-bottom {
     position: absolute;
-    width: 450px;
+    width: 470px;
 }
 
 #iframe-bottom {
@@ -2238,9 +2238,11 @@ input[type="text"].search_input { /* search input in search page */
 
    /* iframe */
 #login-iframe {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.4);
     border: medium none;
     height: 843px;
-    top: 155px;
+    padding: 0 10px;
+    top: 153px;
     width: 450px;
 }
 
