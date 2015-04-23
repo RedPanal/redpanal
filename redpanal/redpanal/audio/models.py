@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
 from django.conf import settings
-from actstream import action
+from actstream import action, registry
 
 from taggit.managers import TaggableManager
 from autoslug.fields import AutoSlugField
@@ -130,3 +130,4 @@ def audio_created_signal(sender, instance, created, **kwargs):
         audio_processing(instance)
 
 post_save.connect(audio_created_signal, sender=Audio)
+registry.register(Audio)

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
-from actstream import action
+from actstream import action, registry
 
 from taggit.managers import TaggableManager
 from autoslug.fields import AutoSlugField
@@ -65,4 +65,4 @@ def project_created_signal(sender, instance, created, **kwargs):
 	# TODO: 'created version' when the project is a version
 
 post_save.connect(project_created_signal, sender=Project)
-
+registry.register(Project)

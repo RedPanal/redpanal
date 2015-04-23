@@ -21,7 +21,9 @@ def index(request):
         context.update({
         'ctype': ContentType.objects.get_for_model(User),
         'actor': request.user,
-        'action_list': actstream.models.user_stream(request.user),
+        'action_list': actstream.models.user_stream(request.user,
+                                                    with_user_activity=True),
+
         "refresh_after_modal": 'refresh',
         })
     else:
