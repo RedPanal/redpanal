@@ -28,8 +28,6 @@ Instalación [ES]
 4) Instalar timeside 0.4.4:
 
     sudo apt-get install python-imaging
-    pip install numpy mutagen
-    pip install timeside==0.4.4 --no-dependencies
 
 5) Instalar requerimientos:
 
@@ -59,8 +57,6 @@ Install[EN]
 4)  Install timeside 0.4.4:
 
     sudo apt-get install python-imaging
-    pip install numpy mutagen
-    pip install timeside==0.4.4 --no-dependencies
 
 5) Install requeriments: 
 
