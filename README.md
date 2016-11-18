@@ -2,16 +2,32 @@
 RedPanal
 ========
 
-## [ES] ##
+Somos una comunidad **autogestiva libre, colaborativa, abierta y participativa**. Nuestro principal
+objetivo es promover el uso de herramientas que nos permitan crear, remixar y compartir nuestras producciones.
+Para eso hemos desarrollado una plataforma diseñada para que lxs músicxs puedan interactuar y producir música de
+manera colaborativa. La URL de nuestro sitio es [RedPanal.org](http://redpanal.org)
 
-Somos una comunidad **autogestiva libre, colaborativa, abierta y participativa**. Nuestro principal objetivo es promover el uso de herramientas que nos permitan crear, remixar y compartir nuestras producciones. Para eso hemos desarrollado una plataforma diseñada para que lxs músicxs puedan interactuar y producir música de manera colaborativa. Actualmente tenemos una nueva versión del sitio en fase beta, que podés probar ingresando acá: [Beta.RedPanal.org](http://beta.redpanal.org)
 
-## [EN] ##
+Workflow
+========
 
-We are a community **Free self-management, collaborative, open and participatory**. Our main objective is to promote the use of tools that allow us to create, remix and share our productions. For this we have developed a platform designed for vegan músicxs can interact and produce music collaboratively. Currently we have a new version of the site in beta, you can try entering here:  [Beta.RedPanal.org](http://beta.redpanal.org)
+Para colaborar podés instalarte el sitio en tu computadora, siguiendo los pasos de instalación descriptos mas abajo,
+luego podés hacer las modificaciones y enviarlas para que las integremos en la plataforma on-line.
 
-Instalación [ES]
-================
+Para enviarlas podés hacer un pull-request, el cual será probado y subido on-line en la próxima release del sitio.
+
+Para estar en contacto con nuestra comunidad de usuarios y desarrolladores, podés suscribirte a la siguiente
+lista de correo en la siguiente dirección: redpanal@listas.ulsa.org.ar
+
+
+Instalación
+===========
+
+En una terminal podés seguir los siguientes pasos, para poder tener el sitio de forma local:
+
+0) Es necesario que tengas instalados los siguientes programas:
+
+    sudo apt-get install python-imaging virtualenv git
 
 1) Clonar el repositorio:
 
@@ -25,55 +41,20 @@ Instalación [ES]
 
     source redpanal_venv/bin/activate
 
-4) Instalar timeside 0.4.4:
+4) Instalar los requerimientos:
 
-    sudo apt-get install python-imaging
-
-5) Instalar requerimientos:
-
+    cd redpanal
     pip install -r requirements.txt
 
-6) Entrar a redpanal y ejecutar:
+5) Entrar al directorio redpanal y ejecutar:
 
+    cd redpanal
     python manage.py syncdb --all
     python manage.py migrate --fake
     python manage.py runserver
 
-Install[EN]
-===========
-
-1) Clone this repository: 
-
-    git clone https://github.com/RedPanal/redpanal.git
-
-2) Create virtualenv
-
-    virtualenv --system-site-packages redpanal_venv
-
-3) Enter virtualenv
-
-    source redpanal_venv/bin/activate
-   
-4)  Install timeside 0.4.4:
-
-    sudo apt-get install python-imaging
-
-5) Install requeriments: 
-
-    pip install -r requirements.txt
-   
-6) Enter inside redpanal dir and run:
-
-    python manage.py syncdb --all
-    python manage.py migrate --fake
-    python manage.py runserver
-
-Licencia [ES]
-=============
+Licencia
+========
 
 El software está bajo licencia [GNU Affero General Public License V3.0](https://www.gnu.org/licenses/agpl-3.0.html)
 
-License [EN]
-============
-
-This software is licensed under [GNU Affero General Public License V3.0](https://www.gnu.org/licenses/agpl-3.0.html)
