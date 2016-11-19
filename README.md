@@ -17,7 +17,7 @@ luego podés hacer las modificaciones y enviarlas para que las integremos en la 
 Para enviarlas podés hacer un pull-request, el cual será probado y subido on-line en la próxima release del sitio.
 
 Para estar en contacto con nuestra comunidad de usuarios y desarrolladores, podés suscribirte a la siguiente
-lista de correo en la siguiente dirección: redpanal@listas.ulsa.org.ar
+lista de correo en la siguiente dirección: http://listas.usla.org.ar/cgi-bin/mailman/listinfo/redpanal
 
 
 Instalación
