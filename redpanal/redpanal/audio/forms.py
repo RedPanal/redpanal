@@ -40,14 +40,8 @@ class AudioForm(forms.ModelForm):
 
     def clean_audio(self):
         f = self.cleaned_data.get('audio', False)
-        uploading_new_file = isinstance(f, SimpleUploadedFile)
-
-        if not uploading_new_file:
-            return f
         if not f:
             raise ValidationError(_("Couldn't read uploaded file"))
-        if "audio" not in f.content_type:
-            raise ValidationError(_("Invalid audio file Content-Type '%s'") % f.content_type)
         if not get_file_extension(f.name) in AUDIO_EXTENSIONS:
             raise ValidationError(_("Invalid audio file extension"))
         return f
