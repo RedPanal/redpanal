@@ -1,5 +1,6 @@
 import os
 import time
+import logging
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -11,10 +12,14 @@ from actstream import action, registry
 
 from taggit.managers import TaggableManager
 from autoslug.fields import AutoSlugField
+from pydub import AudioSegment
+from pydub.exceptions import CouldntDecodeError
 
 from ..utils.models import BaseModelMixin
 from redpanal.core import licenses
+from .waveform import Waveform
 
+logger = logging.getLogger(__name__)
 
 LICENSES_CHOICES = [(lic.code, lic.name) for lic in licenses.LICENSES.values()]
 
@@ -97,32 +102,21 @@ class Audio(models.Model, BaseModelMixin):
         verbose_name_plural = "audios"
         ordering = ["-created_at"]
 
+
 def audio_processing(audio):
-    import timeside
-    # http://code.google.com/p/timeside/
-
-    track  =  timeside.decoder.FileDecoder(audio.audio.path)
-
-    img_waveform  =  timeside.grapher.WaveformSimple(width=460, height=100)
-    img_waveform_big  =  timeside.grapher.WaveformSimple(width=940, height=150)
-    img_waveform.set_colors(background=(255,255,255),  scheme='awdio')
-    img_waveform_big.set_colors(background=(255,255,255),  scheme='awdio')
     try:
-        ( track | img_waveform | img_waveform_big ).run()
-    except IOError:
-        # TODO: handle this
-        return
+        sound = AudioSegment.from_file(audio.audio.path)
+        Waveform(sound, width=460, height=100, bar_count=460/8).save(audio.audio.path + '.big.png')
+        Waveform(sound, width=940, height=150, bar_count=940/8).save(audio.audio.path + '.big.png')
 
-    img_waveform.render(output=audio.audio.path + '.png')
-    img_waveform_big.render(output=audio.audio.path + '.big.png')
+        audio.channels = sound.channels
+        audio.blocksize = 0
+        audio.samplerate = sound.frame_rate
+        audio.totalframes = sound.frame_count()
+        audio.save()
+    except CouldntDecodeError:
+        logger.exception('could not decode %r', audio.audio.path)
 
-    # duration = int(totalframes / float(samplerate) * 1000)
-    # print ("samplerate: %s | blocksize: %s | totalframes: %s | channels: %s | duration: %s" % (samplerate, blocksize, totalframes, channels, duration))
-    audio.channels = track.channels()
-    audio.blocksize = track.blocksize()
-    audio.samplerate = track.samplerate()
-    audio.totalframes = track.totalframes()
-    audio.save()
 
 def audio_created_signal(sender, instance, created, **kwargs):
     if created:

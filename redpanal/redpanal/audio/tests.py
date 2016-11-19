@@ -23,9 +23,11 @@ class AudioTestCase(TestCase, InstanceTestMixin):
         self.client.login(username="owner", password="password")
 
     def create_instance(self):
+        with open(os.path.join(TEST_DATA_PATH, 'tone.mp3'), 'rb') as audio_file:
+            audiofile = SimpleUploadedFile("the audio.mp3", audio_file.read(),
+                                           content_type="audio/mpeg")
         audio = Audio(name="Un audio", description="This is an audio",
-                          audio=SimpleUploadedFile("the audio.mp3", "content"),
-                          user=self.user)
+                      audio=audiofile, user=self.user)
         audio.save()
         return audio
 
@@ -52,8 +54,20 @@ class AudioTestCase(TestCase, InstanceTestMixin):
                                            content_type=content_type)
         return data, audiofile
 
-    def test_upload_audio(self):
+    def test_upload_mp3(self):
         data, audiofile = self.create_audio_form_data("tone.mp3", "audio/mpeg")
+        form = AudioForm(data, {"audio":audiofile}, user=self.user)
+        self.assertTrue(form.is_valid())
+        audio = form.save()
+
+    def test_upload_flac(self):
+        data, audiofile = self.create_audio_form_data("tone.flac", "audio/mpeg")
+        form = AudioForm(data, {"audio":audiofile}, user=self.user)
+        self.assertTrue(form.is_valid())
+        audio = form.save()
+
+    def test_upload_ogg(self):
+        data, audiofile = self.create_audio_form_data("tone.ogg", "audio/mpeg")
         form = AudioForm(data, {"audio":audiofile}, user=self.user)
         self.assertTrue(form.is_valid())
         audio = form.save()
@@ -74,4 +88,3 @@ class AudioTestCase(TestCase, InstanceTestMixin):
         audiofile = SimpleUploadedFile("tone.mpe", "file content", content_type="audio/mpeg")
         form = AudioForm(data, {"audio": audiofile}, user=self.user)
         self.assertFalse(form.is_valid())
-        self.assertTrue("extension" in form.errors.as_ul())
