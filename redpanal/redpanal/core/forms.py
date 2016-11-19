@@ -14,7 +14,7 @@ def parse_tags(string):
     for tag in tags:
         if not tag.startswith('#'):
             raise TagParseError(_("Tag '%s' does not start with #" % tag))
-    return [tag[1:] for tag in tags]
+    return [tag[1:] for tag in tags if len(tag) > 1]
 
 class TagWidget(forms.TextInput):
     def render(self, name, value, attrs=None):

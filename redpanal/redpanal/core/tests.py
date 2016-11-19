@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -66,3 +67,6 @@ class TagsTest(unittest.TestCase):
 
     def test_parse_tag_without_numeral(self):
         self.assertRaises(TagParseError, parse_tags, '#foo bar')
+
+    def test_parse_tags_minimum_length(self):
+        self.assertEqual(parse_tags('# #foo #'), ['foo'])
