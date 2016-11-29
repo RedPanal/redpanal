@@ -23,7 +23,7 @@ class Project(models.Model, BaseModelMixin):
                                    blank=True, null=True, editable=False,
                                    related_name="versions")
     audios = models.ManyToManyField("audio.Audio", verbose_name=_('audios'),
-                                    blank=True, null=True)
+                                    blank=True)
     image = models.ImageField(verbose_name=_('image'),
                               upload_to="uploads/images/projects/%Y_%m",
                               blank=True, null=True)

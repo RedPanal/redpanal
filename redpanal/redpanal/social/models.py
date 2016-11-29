@@ -31,8 +31,7 @@ class Message(models.Model):
     created_at = models.DateTimeField(verbose_name=_('created at'), auto_now_add=True)
     tags = TaggableManager(verbose_name=_('hashtags'), blank=True)
     mentioned_users = models.ManyToManyField(User, verbose_name=_('hashtags'), blank=True,
-                                           null=True, editable=False,
-                                           related_name="mentioned_messages")
+                                           editable=False, related_name="mentioned_messages")
     content_type = models.ForeignKey(ContentType, null=True, editable=False)
     object_id = models.PositiveIntegerField(null=True, editable=False)
     content_object = generic.GenericForeignKey('content_type', 'object_id')
