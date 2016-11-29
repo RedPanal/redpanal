@@ -100,7 +100,6 @@ INSTALLED_APPS = (
     'redpanal.utils',
     'taggit',
     'crispy_forms',
-    'south',
     'actstream',
     'allauth',
     'allauth.account',
@@ -108,7 +107,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
     'avatar',
-    'endless_pagination',
+    'el_pagination',
     'easy_thumbnails',
 )
 
