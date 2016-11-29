@@ -1,7 +1,9 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 
-urlpatterns = patterns('redpanal.core.views',
-    url(r'^$', 'index', name='index'),
-    url(r'^live/$', 'activity_all', name="activity-all"),
-    url(r'^live/iframe$', 'activity_all_iframe', name="activity-all-iframe"),
-)
+from . import views
+
+urlpatterns = [
+    url(r'^$', views.index, name='index'),
+    url(r'^live/$', views.activity_all, name="activity-all"),
+    url(r'^live/iframe$', views.activity_all_iframe, name="activity-all-iframe"),
+]
