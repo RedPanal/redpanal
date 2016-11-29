@@ -1,4 +1,4 @@
-{% load i18n endless %}
+{% load i18n el_pagination_tags %}
 {% paginate 9,3 projects %}
 {% for object in projects %}
    {% include "project/project_teaser.html" %}

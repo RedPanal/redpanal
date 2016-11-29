@@ -1,4 +1,4 @@
-{% load i18n endless model_info %}
+{% load i18n el_pagination_tags model_info %}
   {% paginate mixed_objects %}
   {% for object in mixed_objects %}
       {% if object|get_verbose_name == 'project' %}

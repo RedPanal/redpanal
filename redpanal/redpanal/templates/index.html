@@ -1,5 +1,5 @@
 {% extends "two_rows.html" %}
-{% load i18n social %}
+{% load i18n social_tags %}
 
 {% block title %}{% if not request.user.is_authenticated %}{% trans "Welcome!" %}{% else %}{% trans "My Community" %}{% endif %}{% endblock %}
 

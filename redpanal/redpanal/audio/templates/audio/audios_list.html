@@ -1,4 +1,4 @@
-{% load i18n endless %}
+{% load i18n el_pagination_tags %}
 {% paginate 5,2 audios %}
 {% for object in audios %}
    {% include "audio/audio_teaser.html" %}

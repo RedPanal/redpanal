@@ -1,5 +1,4 @@
 {% load i18n staticfiles thumbnail %}
-{% load url from future %}
 <img src="{{ object.image|thumbnail_url:'small' }}" >
 <dl class="dl-horizontal">
     <dt>{% trans "Name" %}</dt><dd><a href="{% url 'project-detail' object.slug %}" name="{{object.slug}}">{{ object.name }}</a></dd>

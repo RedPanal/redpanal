@@ -1,4 +1,4 @@
-{% load i18n endless %}
+{% load i18n el_pagination_tags %}
 
 {% with user.mentioned_messages.all as objects %}
    {% paginate objects %}
