@@ -43,16 +43,16 @@
       <h4>{% if object.use_type != "other" %}{{ object.get_use_type_display|capfirst }}{% else %}{% trans "File" %}{% endif %} {% trans "details" %}:</h4>
       <div class="download"><a href="{{ object.audio.url }}"><i class="fa fa-download"></i> {% trans "Download" %}</a></div>
       <p class="description">{{ object.description|capfirst }}</p>
-      <p class="tags">{% include 'core/hashtags_block.html' %}</p>  
+      <p class="tags">{% include 'core/hashtags_block.html' %}</p>
       <p class="">{% trans "Channels" %}: <b>{{ object.channels }}</b> | {% trans "Samplerate" %}: <b>{{ object.samplerate }}</b> | {% trans "Genre" %}: <b>{{ object.get_genre_display|capfirst }}</b> | {% trans "Instrument" %}: <b>{{ object.get_instrument_display|capfirst }}</b></p>
 
       <div class="license-block">
          <img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon }}" />
-         <p><i>"{{ object.name|capfirst }}"</i> 
+         <p><i>"{{ object.name|capfirst }}"</i>
          {% trans "by" %} <a href="{{ object.user.get_absolute_url }}">{{ object.user.userprofile.realname|default:object.user.username|capfirst }}</a>
-         {% blocktrans with license=object.get_license.name license_url=object.get_license.url %}is licensed under a <a rel="license" href="{{ license_url }}">{{ license }}</a>{% endblocktrans %}. 
-         {% trans "Published" %}: {{ object.created_at }} 
-         {% trans "by" %} {{ object.user.userprofile.realname|default:object.user.username|capfirst }}. 
+         {% blocktrans with license=object.get_license.name license_url=object.get_license.url %}is licensed under a <a rel="license" href="{{ license_url }}">{{ license }}</a>{% endblocktrans %}.
+         {% trans "Published" %}: {{ object.created_at }}
+         {% trans "by" %} {{ object.user.userprofile.realname|default:object.user.username|capfirst }}.
          <a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{% trans "Permanent link" %}</a>.</p>
       </div>
    </div>

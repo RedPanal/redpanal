@@ -38,7 +38,7 @@ def index(request):
 def hashtaged_list(request, slug, filters='all'):
     tag = get_object_or_404(Tag, slug=slug)
 
-    audios = Audio.objects.filter(tags__slug=slug).order_by('-created_at') if filters == 'all' or filters == 'audios' else [] 
+    audios = Audio.objects.filter(tags__slug=slug).order_by('-created_at') if filters == 'all' or filters == 'audios' else []
     projects = Project.objects.filter(tags__slug=slug).order_by('-created_at') if filters == 'all' or filters == 'projects' else []
     messages = Message.objects.filter(tags__slug=slug).order_by('-created_at') if filters == 'all' or filters == 'messages' else []
     users = User.objects.filter(userprofile__tags__slug=slug) if filters == 'all' or filters == 'users' else []
@@ -65,7 +65,7 @@ def activity_all(request):
     messages = Message.objects.all()
 
     mixed_list = sorted(chain(audios, projects, messages), key=lambda instance: instance.created_at, reverse=True)
-   
+
     if request.is_ajax():
         return render(request, "core/mixed_list.html", {
             "mixed_objects": mixed_list,
@@ -87,8 +87,8 @@ def activity_all(request):
         # for session in sessions:
         #    data = session.get_decoded()
         #    uid_list.append(data.get('_auth_user_id', None))
-        # logged_users = users.filter(id__in=uid_list)   
-        
+        # logged_users = users.filter(id__in=uid_list)
+
         return render(request, "all_activities.html", {
             "mixed_objects": mixed_list,
             "count_audios": count_audios,
@@ -99,7 +99,7 @@ def activity_all(request):
              # "logged_users": logged_users,
             "refresh_after_modal": 'refresh',
         })
-        
+
 def activity_all_iframe(request):
 
     audios = Audio.objects.all()

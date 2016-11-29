@@ -102,7 +102,7 @@ class Message(models.Model):
 
         def replace_urls(match):
             if match:
-                url = match.group(0)               
+                url = match.group(0)
                 text = match.group(3)[:25] + (match.group(3)[25:] and '..')
                 new = '<a href="%s" target="_blank">%s</a>' % (url, text)
                 return get_and_store_hash(new)
@@ -122,7 +122,7 @@ class Message(models.Model):
 
         html = html.replace("\n", "<br>")
         return html
-        
+
     @staticmethod
     def extract_mentioned_users(msg):
         """Returns a list of users that are mentioned with @userfoo @UserBar"""

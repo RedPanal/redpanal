@@ -36,7 +36,7 @@
 
         {% if user.userprofile.tags.all %}
             {% with object=user.userprofile %}<p class="tags">{% include 'core/hashtags_block.html' %}</p>{% endwith %}
-        {% endif %}            
+        {% endif %}
 
     {% endifequal %}
 
@@ -56,15 +56,15 @@
 
     <hr>
     <a class="field icon user-activities" href="{% url 'user-activities' user %}">
-        <i class="fa fa-comment"></i> 
+        <i class="fa fa-comment"></i>
         <span>{% trans "Activities" %}</span>
     </a>
     <a class="field icon user-traks" href="{% url 'user-tracks' user %}">
-        <i class="fa fa-music"></i> 
+        <i class="fa fa-music"></i>
         <span>{% trans "Tracks" %}</span>
     </a>
     <a class="field icon user-projects" href="{% url 'user-projects' user %}">
-        <i class="fa fa-folder-open"></i> 
+        <i class="fa fa-folder-open"></i>
         <span>{% trans "Projects" %}</span>
     </a>
     <hr>
