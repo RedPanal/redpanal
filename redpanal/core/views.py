@@ -6,10 +6,10 @@ from django.contrib.sessions.models import Session
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse_lazy
 
-from redpanal.audio.models import Audio
-from redpanal.project.models import Project
-from redpanal.social.models import Message
-from redpanal.users.models import UserProfile
+from audio.models import Audio
+from project.models import Project
+from social.models import Message
+from users.models import UserProfile
 from taggit.models import Tag
 from itertools import chain
 import actstream.models

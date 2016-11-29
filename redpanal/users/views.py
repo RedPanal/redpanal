@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import ListView, UpdateView, DetailView, CreateView, DeleteView
 
 import actstream.models
-from redpanal.audio.models import Audio
+from audio.models import Audio
 from models import create_profile
 from forms import UserProfileForm
 

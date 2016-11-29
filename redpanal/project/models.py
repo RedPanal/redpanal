@@ -8,8 +8,8 @@ from actstream import action, registry
 
 from taggit.managers import TaggableManager
 from autoslug.fields import AutoSlugField
-from ..utils.models import BaseModelMixin
-from redpanal.audio.models import Audio
+from redpanal.utils.models import BaseModelMixin
+from audio.models import Audio
 
 
 class Project(models.Model, BaseModelMixin):

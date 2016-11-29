@@ -5,7 +5,7 @@ from django.core.files import File
 
 from models import Project
 from ..utils.test import InstanceTestMixin
-from redpanal.audio.models import Audio
+from audio.models import Audio
 
 
 class ProjectTestCase(TestCase, InstanceTestMixin):

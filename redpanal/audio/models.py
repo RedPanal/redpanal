@@ -15,8 +15,8 @@ from autoslug.fields import AutoSlugField
 from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
 
-from ..utils.models import BaseModelMixin
-from redpanal.core import licenses
+from redpanal.utils.models import BaseModelMixin
+from core import licenses
 from .waveform import Waveform
 
 logger = logging.getLogger(__name__)

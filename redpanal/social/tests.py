@@ -4,7 +4,7 @@ from django.template import Template, Context
 
 from taggit.models import Tag
 from models import Message
-from redpanal.project.models import Project
+from project.models import Project
 
 
 class MessageTest(TestCase):

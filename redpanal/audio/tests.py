@@ -7,8 +7,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
 from models import Audio, GENRE_CHOICES, TYPE_CHOICES, INSTRUMENT_CHOICES
-from redpanal.project.models import Project
-from redpanal.core import licenses
+from project.models import Project
+from core import licenses
 from forms import AudioForm
 from ..utils.test import InstanceTestMixin
 

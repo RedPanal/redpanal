@@ -4,7 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
 from models import UserProfile
-from redpanal.core.forms import TagField
+from core.forms import TagField
 
 
 class UserProfileForm(ModelForm):

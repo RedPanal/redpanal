@@ -15,8 +15,8 @@ from actstream import action, registry
 from taggit.managers import TaggableManager
 from taggit.models import Tag
 
-from redpanal.audio.models import Audio
-from redpanal.project.models import Project
+from audio.models import Audio
+from project.models import Project
 
 
 def tag_get_absolute_url(self):

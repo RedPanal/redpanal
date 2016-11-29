@@ -79,24 +79,19 @@ ROOT_URLCONF = 'redpanal.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'redpanal.wsgi.application'
 
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_PATH, 'templates'),
-)
-
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-    #'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'haystack',
-    'redpanal.audio',
-    'redpanal.project',
-    'redpanal.core',
-    'redpanal.social',
-    'redpanal.users',
+    'core',
+    'audio.apps.AudioConfig',
+    'project.apps.ProjectConfig',
+    'social.apps.SocialConfig',
+    'users.apps.UsersConfig',
     'redpanal.utils',
     'taggit',
     'crispy_forms',
@@ -123,7 +118,7 @@ ACTSTREAM_SETTINGS = {
     'USE_JSONFIELD': False,
 }
 
-ACCOUNT_ADAPTER = 'redpanal.users.account_adapter.MyAccountAdapter'
+ACCOUNT_ADAPTER = 'users.account_adapter.MyAccountAdapter'
 
 SOCIALACCOUNT_PROVIDERS = {
     'google':
