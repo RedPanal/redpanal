@@ -5,27 +5,11 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
-from django.test.simple import DjangoTestSuiteRunner
 from django.conf import settings
 
-from ..audio.models import Audio
-from ..utils.test import InstanceTestMixin
-from forms import tags_to_editable_string, parse_tags, TagParseError
-
-class RedPanalTestSuiteRunner(DjangoTestSuiteRunner):
-    """
-    This TestSuiteRunner if fed without app labels runs all the redpanal's apps
-    tests. Eg redpanal.core.collection, cyclope.apps.articles, etc.
-    """
-
-    project_name = "redpanal"
-
-    def run_tests(self, test_labels, extra_tests=None, **kwargs):
-        if not test_labels:
-            test_labels = [c.split(".")[-1] for c in settings.INSTALLED_APPS if \
-                           self.project_name + "." in c]
-        super(RedPanalTestSuiteRunner, self).run_tests(test_labels, extra_tests,
-                                                       **kwargs)
+from audio.models import Audio
+from redpanal.utils.test import InstanceTestMixin
+from .forms import tags_to_editable_string, parse_tags, TagParseError
 
 
 class CoreTestCase(TestCase):

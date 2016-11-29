@@ -130,8 +130,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap"
 
 SOUTH_TESTS_MIGRATE = False
 
-TEST_RUNNER = 'redpanal.core.tests.RedPanalTestSuiteRunner'
-
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
