@@ -3,10 +3,6 @@ from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
 from django.template.loader import render_to_string
 
-from redpanal.social.forms import MessageWithContentForm
-from redpanal.social.models import Message
-from actstream.models import actor_stream
-
 register = template.Library()
 
 
@@ -37,6 +33,7 @@ def actual_follow_all_url(actor):
 
 @register.simple_tag(takes_context=True)
 def message_form_for(context, obj):
+    from social.forms import MessageWithContentForm
     content_type = ContentType.objects.get_for_model(obj)
 
     form = MessageWithContentForm({'content_type': content_type,
@@ -49,6 +46,7 @@ def message_form_for(context, obj):
 
 @register.simple_tag(takes_context=True)
 def show_messages_for(context, obj):
+    from social.models import Message
     content_type = ContentType.objects.get_for_model(obj)
 
     messages = Message.objects.filter(object_id=obj.pk,
@@ -59,3 +57,4 @@ def show_messages_for(context, obj):
 @register.filter
 def render_collaborators(project):
     return " ".join(["@%s" % user.username for user in project.collaborators()])
+
