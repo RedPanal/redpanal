@@ -7,8 +7,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
 from models import Audio
-from redpanal.project.models import Project
-from redpanal.core.forms import TagField
+from project.models import Project
+from core.forms import TagField
 from redpanal.utils.helpers import get_file_extension
 
 AUDIO_EXTENSIONS = ["mp3", "ogg", "oga", "flac"]
@@ -28,6 +28,7 @@ class AudioForm(forms.ModelForm):
         widgets = {
             'license': forms.RadioSelect,
         }
+        fields = '__all__'
 
     def __init__(self, data=None, *args, **kwargs):
         user = kwargs.pop('user')
