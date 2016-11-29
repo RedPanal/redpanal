@@ -161,7 +161,3 @@ def message_created_signal(sender, instance, created, **kwargs):
         action.send(instance.user, verb='commented', action_object=instance)
 
 post_save.connect(message_created_signal, sender=Message, dispatch_uid="message_created_signal")
-registry.register(Message)
-
-# FIXME: sites.site was in ACTSTREAM_SETTINGS['MODELS'], I don't know why
-registry.register(Site)

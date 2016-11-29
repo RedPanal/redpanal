@@ -65,4 +65,3 @@ def project_created_signal(sender, instance, created, **kwargs):
 	# TODO: 'created version' when the project is a version
 
 post_save.connect(project_created_signal, sender=Project)
-registry.register(Project)

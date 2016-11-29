@@ -124,4 +124,3 @@ def audio_created_signal(sender, instance, created, **kwargs):
         audio_processing(instance)
 
 post_save.connect(audio_created_signal, sender=Audio)
-registry.register(Audio)
