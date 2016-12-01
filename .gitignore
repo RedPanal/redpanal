@@ -1,5 +1,8 @@
 venv/
 *.pyc
-*.sqlite3
+*.sqlite3*
 uploaded_media/
 **/whoosh_index/
+
+
+.idea/*
