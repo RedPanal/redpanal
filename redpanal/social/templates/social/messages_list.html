@@ -1,0 +1,11 @@
+{% load i18n el_pagination_tags %}
+
+{% with user.mentioned_messages.all as objects %}
+   {% paginate objects %}
+   {% for object in objects %}
+      <li>{% include "social/message_teaser.html" %}</li>
+   {% empty %}
+      {% trans "No interactions yet" %}
+   {% endfor%}
+   {% show_more %}
+{% endwith %}

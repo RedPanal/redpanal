@@ -57,12 +57,12 @@ i.fa.big-fa-icon {
 
 /* css hack for messages link bug */
 /*
-.message a[href=""] {  
+.message a[href=""] {
    color: inherit;
    cursor: text;
 }
 
-.message a[href=""]:hover {  
+.message a[href=""]:hover {
    text-decoration: none;
 }
 */
@@ -492,7 +492,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 
 /* === message form === */
 
-.modal_message_form, 
+.modal_message_form,
 .message-form-wrapper {
    background-color: #f0fec0;
    padding: 15px;
@@ -525,7 +525,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 .modal.fade,
 .modal.fade.in {
       -webkit-transform: translate(0, 0);
-      -ms-transform: translate(0, 0); 
+      -ms-transform: translate(0, 0);
           transform: translate(0, 0);
        transition: none 0s ease 0s  !important;
        top: 50%;
@@ -572,7 +572,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
     width: calc(100% - 20px);
     margin: 0;
     padding: 5px 10px;
-    
+
     font-size: 15px;
     line-height: 1.5em;
     height: 1.5em ;
@@ -589,7 +589,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
    width: calc(100% - 20px);
    margin: 0;
    padding: 5px 10px;
-    
+
    font-size: 18px;
    line-height: 1.5em;
 
@@ -647,7 +647,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 */
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
     box-shadow: none;
-    border: 3px solid #28ccea !important;     
+    border: 3px solid #28ccea !important;
     color: #28CCEA !important;
     /* left: -33px; */
     margin: 0;
@@ -659,7 +659,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 
 .modal_submit:hover,
 #submit-id-submit:hover {
-    border: 3px solid black !important;     
+    border: 3px solid black !important;
     color: black !important;
 }
 
@@ -741,7 +741,7 @@ p.expl {
    margin-top: 30px;
 }
 
-.sidebar .nav.nav-list, 
+.sidebar .nav.nav-list,
 .title-tag {
     float: right;
     margin-bottom: 30px;
@@ -1088,7 +1088,7 @@ p.expl {
 .small-tags a:hover {
     background-color: #263E4E;
     text-decoration: none;
-    color: white; 
+    color: white;
 }
 
 /* project detail */
@@ -1452,14 +1452,14 @@ p.expl {
 .user-profile a.field.icon:hover span,
 .user-profile a.field.stats:hover span{
     /* text-decoration: underline; */
-    color: #A2F0FE; 
+    color: #A2F0FE;
 }
 
 
 .user-profile a.field.icon:hover i,
 .user-profile a.field.stats:hover b{
     /* text-decoration: underline; */
-    color: white; 
+    color: white;
 }
 .user-profile a.field.auth:hover span {
     color: #263E4E; /* #26A0A6; #263E4E; */
@@ -1480,7 +1480,7 @@ p.expl {
 /* user page */
 .slide_wrapper.about_me .slider {
     min-height: 140px;
-    height: 140px; 
+    height: 140px;
 }
 
 .slide_wrapper.about_me {
@@ -1580,8 +1580,8 @@ p.user-website i {
    padding: 0 0 8px 50px;
 }
 
-.teaser-audio .top-user, 
-.teaser-audio .top-title, 
+.teaser-audio .top-user,
+.teaser-audio .top-title,
 .teaser-audio .top-data {
    line-height: 1.1em;
    font-size: 0.9em;
@@ -1732,7 +1732,7 @@ p.user-website i {
 .sidebar .users-list-wrapper {
     float: right;
     margin-bottom: 30px;
-    width: 300px; 
+    width: 300px;
 }
 
 .sidebar > .block {
@@ -1986,7 +1986,7 @@ p.user-website i {
     position: absolute;
     margin-bottom: 0;
     bottom: 0; right: 0;
-    display: none; 
+    display: none;
     text-align: right;
     color: #999;
 }
@@ -2194,7 +2194,7 @@ input[type="text"].search_input { /* search input in search page */
 
 /* -- */
 
-.result-teaser { 
+.result-teaser {
     border-bottom: 1px solid #DDDDDD;
     padding: 30px 0;
 }
@@ -2268,4 +2268,3 @@ html.all-activities-iframe {
 .all-activities-iframe .action-stream button.btn-link:hover {
    color: white;
 }
-

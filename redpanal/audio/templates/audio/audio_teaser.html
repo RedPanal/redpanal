@@ -1,0 +1,61 @@
+{% load i18n %}
+
+<div class="teaser-audio {{ mode|default:'small' }}">
+{% if mode == "in-project-detail" %}
+    <div class="top-date">{{ object.created_at|timesince }}</div>
+    <div class="top">
+       <div class="top-user user"><a href="{{ object.user.get_absolute_url }}">{{ object.user.userprofile.realname|default:object.user.username|capfirst }}</a> <a class="license" rel="license" href="{{object.get_license.url }}"><img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon_small }}" /></a></div>
+       <div class="top-title"><h3><a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{{ object.name|truncatechars:80|capfirst }}</a></h3></div>
+       <div class="top-data">
+         {% if object.use_type != "other" %}{{ object.get_use_type_display|capfirst }} | {% endif %}
+         {% trans "Channels" %}: {{ object.channels }} | 
+         {{ object.samplerate }}
+         {# object.get_duration #}
+         {% if object.instrument != "other" %} | {{ object.get_instrument_display|capfirst }}{% endif %}
+       </div>
+
+   </div>
+{% elif mode == "in-action-list" %}
+    <div class="top">
+       <div class="top-title"><h3><a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{{ object.name|truncatechars:30|capfirst }}</a></h3></div>
+       <div class="top-data">
+         {% if object.use_type != "other" %}{{ object.get_use_type_display|capfirst }} | {% endif %}
+         {% trans "Channels" %}: {{ object.channels }} | 
+         {{ object.samplerate }}
+         {# object.get_duration #}
+         {% if object.instrument != "other" %} | {{ object.get_instrument_display|capfirst }}{% endif %}
+      </div>
+   </div>
+{% elif mode == "without-wave" %}
+    <div class="top">
+        <div class="top-date">{% trans "By" %} <a href="{{ object.user.get_absolute_url }}">@{{ object.user }}</a> <a class="license" rel="license" href="{{object.get_license.url }}"><img alt="{% trans "Licencia Creative Commons" %}" style="border-width:0" src="{{ object.get_license.icon_small }}" /></a></div>
+       <div class="top-title"><h3><a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{{ object.name|truncatechars:30|capfirst }}</a></h3></div>
+   </div>
+{% else %}
+    <div class="top-date">{% blocktrans with timesince=object.created_at|timesince user=object.user %}{{ timesince }} ago, by{% endblocktrans %} <a href="{{ object.user.get_absolute_url }}">@{{ object.user }}</a> <a class="license" rel="license" href="{{object.get_license.url }}"><img alt="{% trans "Licencia Creative Commons" %}" style="border-width:0" src="{{ object.get_license.icon_small }}" /></a></div>
+    <div class="top">
+       <div class="top-title"><h3><a href="{% url 'audio-detail' object.slug %}">{{ object.name|truncatechars:30|capfirst }}</a></h3>{# object.description|truncatechars:50|capfirst #}</div>
+       <div class="top-data">
+         {% if object.use_type != "other" %}{{ object.get_use_type_display|capfirst }} | {% endif %}
+         {% trans "Channels" %}: {{ object.channels }} | 
+         {{ object.samplerate }}
+         {# object.get_duration #}
+         {% if object.instrument != "other" %} | {{ object.get_instrument_display|capfirst }}{% endif %}
+      </div>
+   </div>
+{% endif %}
+
+{% include "audio/audio_object.html" %}
+
+{% if mode != "in-action-list" and mode != "without-wave" %}
+   {% url 'audio-detail' object.slug as object_url %}
+    <div class="small-tags">{% with mode="short-list" object_url=object_url %}{% include 'core/hashtags_block.html' %}{% endwith %}</div>  
+    <div class="bottom-date">      
+      <span>{% trans "Genre" %} : {{ object.get_genre_display|capfirst }}</span>
+    </div>
+{% endif %}
+</div>
+
+
+
+

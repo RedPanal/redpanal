@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load i18n social_tags %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+<script type="text/javascript">
+    $(function (){
+        $('video,audio').mediaelementplayer({
+            audioWidth: 940,
+            // height of audio player
+            audioHeight: 30,
+            // initial volume when the player starts
+            audioWaveHeight: 100,
+            customSize: 'big',
+            startVolume: 0.8});
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="project-detail">
+
+   {% with mode="in-project-detail" %}
+      {% include "project/project_teaser.html" %}
+   {% endwith %}
+
+   <div class="form-actions">
+     <div class="project-btn"><a class="btn btn-warning" title="{% trans "You can add your own tracks and make the changes you want to the cloned version of this project" %}" href="{% url "project-create-version" object.slug %}"><i class="fa fa-copy"></i> {% trans "Clone Project" %}</a></div>
+   </div>
+
+   {% for audio in project.audios.all %}
+     {% include "audio/audio_teaser.html" with object=audio mode="in-project-detail" %}
+   {% endfor %}
+
+   {% if project.audios_from_versions %}
+      <h3>{% trans "Tracks from versions" %}</h3>
+
+      {% for audio in project.audios_from_versions %}
+         {% include "audio/audio_teaser.html" with object=audio mode="in-project-detail" %}
+      {% endfor %}
+   {% endif %}
+</div>
+
+<h4 class="comments-title">{% blocktrans with obj_name=object.name|capfirst %}Comments for '{{ obj_name }}' project:{% endblocktrans %}</h4>
+<div class="action-stream-wrapper for-object">
+{% show_messages_for object %}
+</div>
+
+{% if request.user.is_authenticated %}
+    {% with initial_msg=object|render_collaborators %}
+        {% message_form_for object %}
+    {% endwith %}
+{% endif %}
+
+{% endblock %}

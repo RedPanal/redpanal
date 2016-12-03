@@ -1,0 +1,76 @@
+{% extends "two_rows.html" %}
+{% load i18n avatar_tags %}
+
+{% block title %} #{{ tag }}{% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+ <script src="{{ STATIC_URL }}el-pagination/js/el-pagination.js"></script>
+ <script>
+    $(function (){
+        $.endlessPaginate({
+            paginateOnScroll: true,
+            paginateOnScrollChunkSize: 2,
+            paginateOnScrollMargin: 10,
+            onCompleted: function() {
+             //  http://django-endless-pagination.readthedocs.org/en/latest/javascript.html
+               $('video,audio').each(function(index, element){
+                  $(this).mediaelementplayer({
+                     audioWidth: $(this).parent().width(), //old 540 460
+                     // height of audio player
+                     audioHeight: 30,
+                     // initial volume when the player starts
+                     startVolume: 0.8});
+              });
+            $(".follow-unfollow").each(function(index, element){follow_unfollow_button(element)});
+            }
+        });
+    });
+ </script>
+{% endblock %}
+
+{% block post_message %}
+{% comment %}
+      {% if request.user.is_authenticated %}
+        {% ifequal request.user user %}
+          {% include "social/message_form.html" %}
+        {% endifequal %}     
+      {% endif %}     
+{% endcomment %}
+{% endblock %}
+
+{% block left_row %}
+
+{% if filters == "projects" %}
+   <h3>{% trans "Projects tagged with" %} #{{ tag }}</h3>
+   <p class="expl">{% trans "List of projects tagged with" %} "{{ tag }}"</p>
+{% elif filters == "audios" %}
+   <h3>{% trans "Tracks tagged with" %} #{{ tag }}</h3>
+   <p class="expl">{% trans "List of tracks tagged with" %} "{{ tag }}"</p>
+{% elif filters == "messages" %}
+   <h3>{% trans "Messages tagged with" %} #{{ tag }}</h3>
+   <p class="expl">{% trans "List of messages tagged with" %} "{{ tag }}"</p>
+{% elif filters == "users" %}
+   <h3>{% trans "Users tagged with" %} #{{ tag }}</h3>
+   <p class="expl">{% trans "List of users tagged with" %} "{{ tag }}"</p>
+{% else %}
+   <h3>{% trans "Results for " %} #{{ tag }}</h3>
+   <p class="expl">{% trans "List of objects tagged with" %} "{{ tag }}"</p>
+{% endif%}
+
+   <div class="action-stream">
+     {% include "core/mixed_list.html" %}
+   </div>
+{% endblock %}
+
+{% block right_row %}
+   <div class="title-tag" >
+      <h2><a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.name }}</a></h2>
+   </div>
+
+   {% include 'core/hashtaged_menu.html' with list_type=request.resolver_match.kwargs.filters %}
+
+   <ul class="nav nav-list">
+      {% include "discover-items-menu.html" %}
+   </ul>
+{% endblock %}

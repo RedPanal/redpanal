@@ -49,8 +49,7 @@ En una terminal podés seguir los siguientes pasos, para poder tener el sitio de
 5) Entrar al directorio redpanal y ejecutar:
 
     cd redpanal
-    python manage.py syncdb --all
-    python manage.py migrate --fake
+    python manage.py migrate --fake-initial
     python manage.py runserver
 
 Licencia

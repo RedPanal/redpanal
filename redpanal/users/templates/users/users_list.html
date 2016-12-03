@@ -1,0 +1,12 @@
+{% load i18n el_pagination_tags %}
+
+{% paginate users %}
+{% for user in users %}
+  {% with "list" as mode %}
+     <li class="user-teaser {{ mode }}">{% include "users/user_teaser.html" %}</li>
+  {% endwith %}
+{% empty %}
+  {% trans "No users yet" %}
+{% endfor %}
+{% show_more %}
+

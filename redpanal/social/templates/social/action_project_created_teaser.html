@@ -1,0 +1,12 @@
+{% extends "social/action_teaser.html" %}
+{% load i18n el_pagination_tags %}
+
+{% block action_text %}
+{% trans 'Created the project:' %}
+{% endblock %}
+
+{% block action_body %}
+  {% with mode="in-action-list" %}
+  {% include "project/project_teaser.html" with object=action.action_object %}
+  {% endwith %}
+{% endblock %}
