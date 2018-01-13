@@ -1,10 +1,10 @@
-Django>=1.9,<1.10
-django-activity-stream==0.6.3
+Django>=1.11,<1.12
+django-activity-stream==0.6.4
 django-allauth==0.29
 django-autoslug==1.9.3
 django-crispy-forms==1.6.1
 django-taggit==0.21.3
-easy-thumbnails==2.3
+easy-thumbnails==2.5
 pytz
 django-avatar==3.1.0
 django-el-pagination==3.0.0

@@ -17,7 +17,7 @@ class AudioForm(forms.ModelForm):
 
 
     tags = TagField(required=False)
-    project = forms.ModelChoiceField(Project)
+    project = forms.ModelChoiceField(Project.objects.all())
     audio = forms.FileField(label=_("Audio"), help_text=_("Allowed extensions: %s") % ", ".join(AUDIO_EXTENSIONS))
 
     helper = FormHelper()
