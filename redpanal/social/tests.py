@@ -52,15 +52,13 @@ class MessageTest(TestCase):
 
     def test_meessage_form_for(self):
         t = Template('{% load social_tags %}{% message_form_for usr %}')
-        c = Context({'usr': self.user})
-        form_html = t.render(c)
+        form_html = t.render(Context({'usr': self.user}))
 
     def test_message_form_for_project(self):
         project = Project.objects.create(name="Project Zero", user=self.user,
                                          description="The proj 0")
         t = Template('{% load social_tags %}{% message_form_for project %}')
-        c = Context({'project': project})
-        form_html = t.render(c)
+        form_html = t.render(Context({'project': project}))
 
     def test_strip_unwanted_tags(self):
         msg = "hey <script>$('body').remove()</script>"

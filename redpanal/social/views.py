@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render_to_response, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -41,10 +41,8 @@ def followers(request, content_type_id, object_id):
         if request.is_ajax():
            template = "users/users_list.html"
         else:
-           template =  "social/followers.html"  
-        return render_to_response(template, {
-            'user': user
-        }, context_instance=RequestContext(request))
+           template =  "social/followers.html"
+        return render(request, template, {'user': user})
     else:
         return redirect("/accounts/login/?next=/")
 
@@ -57,24 +55,21 @@ def following(request, user_id):
         if request.is_ajax():
            template = "users/users_list.html"
         else:
-           template =  "social/following.html"  
-        return render_to_response(template, {
-            'user': user
-        }, context_instance=RequestContext(request))
+           template =  "social/following.html"
+        return render(request, template, {'user': user})
     else:
         return redirect("/accounts/login/?next=/")
 
 def message_create(request):
-    if request.method == "POST" and request.is_ajax():        
-        print "creando mensaje desde ajax form"
+    if request.method == "POST" and request.is_ajax():
         form = MessageForm(request.POST)
         if form.is_valid():
             msg = Message(msg=form.cleaned_data["msg"], user=request.user)
             msg.save()
-            return render_to_response("social/message_form_popup_response.html", {
-               'response': _("Your message has been successfully posted"),
-               'object': msg,
-            }, context_instance=RequestContext(request))
+            return render(request, "social/message_form_popup_response.html",
+                     {'response': _("Your message has been successfully posted"),
+                      'object': msg,
+                     })
         else:
             return HttpResponse("sonaste")
     elif request.method == "POST":
