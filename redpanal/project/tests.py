@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 from django.test import TestCase
 from django.contrib.auth.models import User
@@ -26,7 +27,9 @@ class ProjectTestCase(TestCase, InstanceTestMixin):
         return instance
 
     def create_audio(self, user, name="foobar"):
-        audio = Audio(user=user, audio=self.TEST_FILE, name=name)
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        audio_file = SimpleUploadedFile(u'áudio.mp3', 'foobarbaz')
+        audio = Audio(user=user, audio=audio_file, name=name)
         audio.save()
         return audio
 
