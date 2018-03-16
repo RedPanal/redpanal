@@ -39,9 +39,9 @@ def message_form_for(context, obj):
     form = MessageWithContentForm({'content_type': content_type,
                                    'object_id': obj.pk})
 
-    context.update({'form': form})
     return render_to_string("social/message_with_content_form.html",
-                            context)
+                            context={'form': form},
+                            request=context.get('request'))
 
 
 @register.simple_tag(takes_context=True)
@@ -52,7 +52,8 @@ def show_messages_for(context, obj):
     messages = Message.objects.filter(object_id=obj.pk,
                                       content_type=content_type)
     return render_to_string("social/messages_for_object.html",
-                            {"messages": messages})
+                            {"messages": messages},
+                            request=context.get('request'))
 
 @register.filter
 def render_collaborators(project):
