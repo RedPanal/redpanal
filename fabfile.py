@@ -167,10 +167,8 @@ def update_database():
         with cd(MANAGEPY_SUBDIR):
             managepy = "%s manage.py " % PYTHON_BIN
             if getattr(env, 'initial_deploy', False):
-                run_venv(managepy + "syncdb --all --settings=redpanal.production_settings")
-                run_venv(managepy + "migrate --fake --noinput --settings=redpanal.production_settings")
+                run_venv(managepy + "migrate --fake-initial --noinput --settings=redpanal.production_settings")
             else:
-                run_venv(managepy + "syncdb --noinput --settings=redpanal.production_settings")
                 run_venv(managepy + "migrate --noinput --settings=redpanal.production_settings")
 
 @task
