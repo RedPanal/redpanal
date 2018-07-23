@@ -44,12 +44,15 @@ En una terminal podés seguir los siguientes pasos, para poder tener el sitio de
 4) Instalar los requerimientos:
 
     cd redpanal
+    
     pip install -r requirements.txt
 
 5) Entrar al directorio redpanal y ejecutar:
 
     cd redpanal
+    
     python manage.py migrate --fake-initial
+    
     python manage.py runserver
 
 Licencia
