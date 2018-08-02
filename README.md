@@ -54,6 +54,8 @@ En una terminal podés seguir los siguientes pasos, para poder tener el sitio de
     python manage.py migrate --fake-initial
     
     python manage.py runserver
+    
+6)  Ingresar a 127.0.0.1:8000 desde un browser para ver la versión local del sitio 
 
 Licencia
 ========
