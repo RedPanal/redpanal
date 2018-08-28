@@ -5,6 +5,7 @@ from django.contrib import admin
 admin.autodiscover()
 import core
 from users.views import user_profile
+from api import api_router
 
 urlpatterns = [
     url(r'', include('core.urls')),
@@ -22,6 +23,8 @@ urlpatterns = [
     url(r'^activity/', include('actstream.urls')),
     url(r'^avatar/', include('avatar.urls')),
     url(r'^search/', include('haystack.urls')),
+    url(r'^api/', include(api_router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^admin/', include(admin.site.urls)),
 ]
 
