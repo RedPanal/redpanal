@@ -102,7 +102,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
     'avatar',
-    'django_extensions',
+#    'django_extensions',
     'el_pagination',
     'easy_thumbnails',
     'rest_framework',
