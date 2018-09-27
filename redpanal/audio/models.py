@@ -102,6 +102,9 @@ class Audio(models.Model, BaseModelMixin):
     def get_absolute_url(self):
         return reverse('audio-detail', kwargs={'slug': self.slug})
 
+    def get_tags(self):
+        return [str(t) for t in self.tags.all()]
+
     def __unicode__(self):
         return self.name
 

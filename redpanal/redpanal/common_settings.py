@@ -102,8 +102,10 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
     'avatar',
+    'django_extensions',
     'el_pagination',
     'easy_thumbnails',
+    'rest_framework',
 )
 
 
@@ -144,4 +146,10 @@ THUMBNAIL_ALIASES = {
         'small': {'size': (50, 50), 'crop': True},
         'medium': {'size': (300, 300), 'crop': True},
     },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
 }
