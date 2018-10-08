@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 
 from django.test import TestCase
@@ -40,6 +41,11 @@ class AudioTestCase(TestCase, InstanceTestMixin):
         audio.tags.add("rock", "MiProject", "guitarr")
         self.assertTrue(Audio.objects.filter(tags__name__in=["rock"]))
         self.assertFalse(Audio.objects.filter(tags__name__in=["Rock"]))
+
+    def test_add_unicode_tags(self):
+        audio = self.create_instance()
+        audio.tags.add("rock", "MiProject", u"guitarræ")
+        self.assertTrue(u"guitarræ" in audio.get_tags())
 
     def create_audio_form_data(self, filename, content_type):
         data = {"name": "test audio", "description": "This is a test audio",
