@@ -20,4 +20,4 @@ class AudioViewSet(viewsets.ModelViewSet):
     serializer_class = AudioSerializer
 
 api_router = routers.DefaultRouter()
-api_router.register(r'audio', AudioViewSet)
+api_router.register(r'audio', AudioViewSet, base_name='audio-api')
