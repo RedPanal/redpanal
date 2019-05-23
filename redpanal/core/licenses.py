@@ -10,8 +10,8 @@ class License(object):
 
 CC_BY_SA_4_0 = License("CC-BY-SA-4.0",
                         _("Creative Commons Attribution-ShareAlike 4.0 International"),
-                        _("http://creativecommons.org/licenses/by-sa/4.0/"),
-                        "http://i.creativecommons.org/l/by-sa/4.0/88x31.png",
+                        _("https://creativecommons.org/licenses/by-sa/4.0/"),
+                        "https://licensebuttons.net/l/by-sa/4.0/88x31.png",
                         "/static/img/rp-cc-by-sa_45.png",
                         )
 
