@@ -27,7 +27,7 @@ En una terminal podés seguir los siguientes pasos, para poder tener el sitio de
 
 0) Es necesario que tengas instalados los siguientes programas:
 
-    sudo apt-get install python-imaging virtualenv git
+    sudo apt-get install python-pil virtualenv git ffmpeg libavcodec-extra
 
 1) Clonar el repositorio:
 
