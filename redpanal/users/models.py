@@ -1,12 +1,14 @@
 from django.db import models
 from django.db.models.signals import post_save
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group, Permission
 from django.utils.translation import ugettext_lazy as _
 
 from taggit.managers import TaggableManager
 
 import actstream.models
 from actstream import actions, registry
+
+DEFAULT_GROUP = 'users'
 
 User.add_to_class('following', lambda self: actstream.models.following(self)[::-1])
 User.add_to_class('followers', lambda self: actstream.models.followers(self)[::-1])
@@ -34,6 +36,12 @@ class UserProfile(models.Model):
 def create_profile(user):
     profile = UserProfile(user=user)
     profile.save()
+    group, created = Group.objects.get_or_create(name=DEFAULT_GROUP)
+    if created:
+        add_audio = Permission.objects.get(codename='add_audio')
+        group.permissions.add(add_audio)
+        group.save()
+    user.groups.add(group)
     return profile
 
 def _create_profile(sender, **kw):
