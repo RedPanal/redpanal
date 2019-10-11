@@ -1,12 +1,11 @@
 from django.contrib.auth.models import User, Group
 from audio.models import Audio
 from rest_framework import routers, serializers, viewsets
+from taggit_serializer.serializers import (TagListSerializerField,
+                                           TaggitSerializer)
 
-class AudioSerializer(serializers.HyperlinkedModelSerializer):
-    # specifying manualy a list field for tags to access the method get_tags
-    # but maintain the 'tags' name of the field.
-    tags = serializers.ListField(source='get_tags')
-
+class AudioSerializer(TaggitSerializer, serializers.ModelSerializer):
+    tags = TagListSerializerField()
     class Meta:
         model = Audio
         fields = (
@@ -18,6 +17,10 @@ class AudioSerializer(serializers.HyperlinkedModelSerializer):
 class AudioViewSet(viewsets.ModelViewSet):
     queryset = Audio.objects.all().order_by('-created_at')
     serializer_class = AudioSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 api_router = routers.DefaultRouter()
 api_router.register(r'audio', AudioViewSet, base_name='audio-api')
