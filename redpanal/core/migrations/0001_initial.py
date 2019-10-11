@@ -8,6 +8,8 @@ from users.models import DEFAULT_GROUP
 def create_default_group(apps, schema_editor):
     Group = apps.get_model('auth', 'Group')
     User = apps.get_model('auth', 'User')
+    Permission = apps.get_model('auth', 'Permission')
+
     default_group, created = Group.objects.get_or_create(name=DEFAULT_GROUP)
     if created:
         add_audio = Permission.objects.get(codename='add_audio')
