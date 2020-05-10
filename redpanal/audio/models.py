@@ -63,7 +63,7 @@ INSTRUMENT_CHOICES = (
 
 def audio_file_upload_to(instance, filename):
     dirname = datetime.datetime.now().strftime('uploads/audios/%Y_%m')
-    filename = unicodedata.normalize('NFKD', filename).encode('ascii', 'ignore')
+    filename = unicodedata.normalize('NFKD', filename).encode('ascii', 'ignore').decode()
     return posixpath.join(dirname, filename)
 
 class Audio(models.Model, BaseModelMixin):
@@ -117,8 +117,8 @@ class Audio(models.Model, BaseModelMixin):
 def audio_processing(audio):
     try:
         sound = AudioSegment.from_file(audio.audio.path)
-        Waveform(sound, width=460, height=100, bar_count=460/8).save(audio.audio.path + '.png')
-        Waveform(sound, width=940, height=150, bar_count=940/8).save(audio.audio.path + '.big.png')
+        Waveform(sound, width=460, height=100, bar_count=int(460/8)).save(audio.audio.path + '.png')
+        Waveform(sound, width=940, height=150, bar_count=int(940/8)).save(audio.audio.path + '.big.png')
 
         audio.channels = sound.channels
         audio.blocksize = 0
