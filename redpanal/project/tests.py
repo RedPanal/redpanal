@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.files import File
 
-from models import Project
+from .models import Project
 from redpanal.utils.test import InstanceTestMixin
 from audio.models import Audio
 

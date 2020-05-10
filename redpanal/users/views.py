@@ -9,8 +9,8 @@ from django.views.generic import ListView, UpdateView, DetailView, CreateView, D
 
 import actstream.models
 from audio.models import Audio
-from models import create_profile
-from forms import UserProfileForm
+from .models import create_profile
+from .forms import UserProfileForm
 
 def ensure_profile(user):
     try:

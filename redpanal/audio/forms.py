@@ -6,7 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-from models import Audio
+from .models import Audio
 from project.models import Project
 from core.forms import TagField
 from redpanal.utils.helpers import get_file_extension

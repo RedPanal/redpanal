@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.template import Template, Context
 
 from taggit.models import Tag
-from models import Message
+from .models import Message
 from project.models import Project
 
 

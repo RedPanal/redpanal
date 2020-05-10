@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 
-from views import ProjectDetailView, ProjectCreateView, ProjectUpdateView, \
+from .views import ProjectDetailView, ProjectCreateView, ProjectUpdateView, \
                    ProjectDeleteView, ProjectListView, create_version
 
 

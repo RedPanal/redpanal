@@ -5,7 +5,7 @@ from django.contrib import admin
 admin.autodiscover()
 import core
 from users.views import user_profile
-from api import api_router
+from .api import api_router
 
 urlpatterns = [
     url(r'', include('core.urls')),

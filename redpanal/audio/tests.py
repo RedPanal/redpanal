@@ -7,10 +7,10 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
-from models import Audio, GENRE_CHOICES, TYPE_CHOICES, INSTRUMENT_CHOICES
+from .models import Audio, GENRE_CHOICES, TYPE_CHOICES, INSTRUMENT_CHOICES
 from project.models import Project
 from core import licenses
-from forms import AudioForm
+from .forms import AudioForm
 from redpanal.utils.test import InstanceTestMixin
 
 TEST_DATA_PATH = os.path.join(os.path.dirname(__file__), "test_data")

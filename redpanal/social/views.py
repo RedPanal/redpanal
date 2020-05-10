@@ -10,8 +10,8 @@ from django.utils.translation import ugettext_lazy as _
 from actstream import actions, models
 from actstream.views import respond
 
-from forms import MessageForm, MessageWithContentForm
-from models import Message
+from .forms import MessageForm, MessageWithContentForm
+from .models import Message
 
 @login_required
 @csrf_exempt

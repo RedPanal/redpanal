@@ -1,6 +1,6 @@
 import datetime
 from haystack import indexes
-from models import Audio
+from .models import Audio
 
 
 class AudioIndex(indexes.SearchIndex, indexes.Indexable):
