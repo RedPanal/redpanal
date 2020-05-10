@@ -51,6 +51,8 @@ En una terminal podés seguir los siguientes pasos, para poder tener el sitio de
 
     cd redpanal
     
+    python manage.py makemigrations
+
     python manage.py migrate --fake-initial
     
     python manage.py runserver
