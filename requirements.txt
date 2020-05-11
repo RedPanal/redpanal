@@ -7,7 +7,7 @@ django-taggit==0.21.3
 djangorestframework>=3.9.4,<3.10
 easy-thumbnails==2.5
 pytz
-django-avatar==3.1.0
+django-avatar==5.0
 django-el-pagination==3.0.0
 django-haystack==2.8.1
 Whoosh==2.7.3
