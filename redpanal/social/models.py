@@ -37,7 +37,7 @@ class Message(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
     _msg_html_cache = models.TextField(editable=False, blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return mark_safe(self.as_html())
 
     def as_html(self):

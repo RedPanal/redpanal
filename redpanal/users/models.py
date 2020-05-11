@@ -30,8 +30,8 @@ class UserProfile(models.Model):
     def get_absolute_url(self):
         return self.user.get_absolute_url()
 
-    def __unicode__(self):
-        return unicode(self.user)
+    def __str__(self):
+        return str(self.user)
 
 def create_profile(user):
     profile = UserProfile(user=user)

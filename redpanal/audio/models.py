@@ -103,9 +103,9 @@ class Audio(models.Model, BaseModelMixin):
         return reverse('audio-detail', kwargs={'slug': self.slug})
 
     def get_tags(self):
-        return [unicode(t) for t in self.tags.all()]
+        return [str(t) for t in self.tags.all()]
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:

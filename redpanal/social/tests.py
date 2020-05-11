@@ -31,7 +31,7 @@ class MessageTest(TestCase):
     def test_tags(self):
         msg = "@owner here this #radioGaGa #Meith we are"
         m = Message.objects.create(user=self.user, msg=msg)
-        self.assertEqual(map(lambda t: t.name, m.tags.all()), ["radioGaGa", "Meith"])
+        self.assertEqual(list(map(lambda t: t.name, m.tags.all())), ["radioGaGa", "Meith"])
 
     def test_tag_html(self):
         msg = "@owner here this #radioGaGa #Meith we are"

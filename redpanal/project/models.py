@@ -34,7 +34,7 @@ class Project(models.Model, BaseModelMixin):
     def get_absolute_url(self):
         return reverse('project-detail', kwargs={'slug': self.slug})
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
