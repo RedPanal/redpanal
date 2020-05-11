@@ -17,7 +17,7 @@ class AudioForm(forms.ModelForm):
 
 
     tags = TagField(required=False)
-    project = forms.ModelChoiceField(Project.objects.all())
+    project = forms.ModelChoiceField(Project.objects.all(), required=False)
     audio = forms.FileField(label=_("Audio"), help_text=_("Allowed extensions: %s") % ", ".join(AUDIO_EXTENSIONS))
 
     helper = FormHelper()
@@ -37,7 +37,7 @@ class AudioForm(forms.ModelForm):
         initial_project = self.instance.project_set.all()[0] if self.instance.pk and \
                          self.instance.project_set.all() else None
         self.fields['project'] = forms.ModelChoiceField(queryset=Project.objects.filter(user=user),
-                                                        initial=initial_project)
+                                                        initial=initial_project, required=False)
 
     def clean_audio(self):
         f = self.cleaned_data.get('audio', False)

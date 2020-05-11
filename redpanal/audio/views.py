@@ -22,9 +22,11 @@ def audio_create_update(request, slug=None):
                          instance=instance)
         if form.is_valid():
             project = form.cleaned_data.get("project")
-            project = get_object_or_404(Project, pk=project.pk)
+            if project:
+                project = get_object_or_404(Project, pk=project.pk)
             audio = form.save()
-            project.audios.add(audio)
+            if project:
+                project.audios.add(audio)
             return redirect("audio-detail", slug=audio.slug)
     else:
         form = AudioForm(user=request.user, instance=instance)
