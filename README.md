@@ -27,7 +27,7 @@ En una terminal podés seguir los siguientes pasos, para poder tener el sitio de
 
 0) Es necesario que tengas instalados los siguientes programas:
 
-    sudo apt-get install python-pil virtualenv git ffmpeg libavcodec-extra
+    sudo apt-get install virtualenv git ffmpeg libavcodec-extra
 
 1) Clonar el repositorio:
 
@@ -35,7 +35,7 @@ En una terminal podés seguir los siguientes pasos, para poder tener el sitio de
 
 2) Crear virtualenv:
 
-    virtualenv --system-site-packages redpanal_venv
+    virtualenv --python=python3 redpanal_venv
 
 3) Entrar en virtualenv:
 
