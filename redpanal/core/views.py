@@ -17,7 +17,7 @@ from datetime import datetime
 
 def index(request):
     context = {}
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         context.update({
         'ctype': ContentType.objects.get_for_model(User),
         'actor': request.user,

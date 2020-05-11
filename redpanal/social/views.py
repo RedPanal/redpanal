@@ -35,7 +35,7 @@ def followers(request, content_type_id, object_id):
     Creates a listing of ``User``s that follow the actor defined by
     ``content_type_id``, ``object_id``.
     """
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         ctype = get_object_or_404(ContentType, pk=content_type_id)
         user = get_object_or_404(ctype.model_class(), pk=object_id)
         if request.is_ajax():
@@ -50,7 +50,7 @@ def following(request, user_id):
     """
     Returns a list of actors that the user identified by ``user_id`` is following (eg who im following).
     """
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user = get_object_or_404(User, pk=user_id)
         if request.is_ajax():
            template = "users/users_list.html"

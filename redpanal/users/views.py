@@ -72,7 +72,7 @@ def user_activities(request, username):
 
 
 def user_interactions(request, username):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user = get_object_or_404(User, username=username)
         if request.user == user:
             if request.is_ajax():

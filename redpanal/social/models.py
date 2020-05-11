@@ -27,12 +27,12 @@ Tag.get_absolute_url = tag_get_absolute_url
 
 class Message(models.Model):
     msg = models.TextField(verbose_name=_('message'))
-    user = models.ForeignKey(User, verbose_name=_('user'), editable=False)
+    user = models.ForeignKey(User, verbose_name=_('user'), editable=False, on_delete=models.CASCADE)
     created_at = models.DateTimeField(verbose_name=_('created at'), auto_now_add=True)
     tags = TaggableManager(verbose_name=_('hashtags'), blank=True)
     mentioned_users = models.ManyToManyField(User, verbose_name=_('hashtags'), blank=True,
                                            editable=False, related_name="mentioned_messages")
-    content_type = models.ForeignKey(ContentType, null=True, editable=False)
+    content_type = models.ForeignKey(ContentType, null=True, editable=False, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField(null=True, editable=False)
     content_object = GenericForeignKey('content_type', 'object_id')
     _msg_html_cache = models.TextField(editable=False, blank=True, null=True)

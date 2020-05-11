@@ -21,13 +21,13 @@ class Project(models.Model, BaseModelMixin):
     description = models.TextField(verbose_name=_('description'))
     version_of = models.ForeignKey('self', verbose_name=_('version of'),
                                    blank=True, null=True, editable=False,
-                                   related_name="versions")
+                                   related_name="versions", on_delete=models.SET_NULL)
     audios = models.ManyToManyField("audio.Audio", verbose_name=_('audios'),
                                     blank=True)
     image = models.ImageField(verbose_name=_('image'),
                               upload_to="uploads/images/projects/%Y_%m",
                               blank=True, null=True)
-    user = models.ForeignKey(User, editable=False, verbose_name=_('user'))
+    user = models.ForeignKey(User, editable=False, verbose_name=_('user'), on_delete=models.CASCADE)
     tags = TaggableManager(blank=True, verbose_name=_('hashtags'))
 
 

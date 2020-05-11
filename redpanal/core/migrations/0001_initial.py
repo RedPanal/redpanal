@@ -5,14 +5,19 @@ from __future__ import unicode_literals
 from django.db import migrations
 from users.models import DEFAULT_GROUP
 
+
+
 def create_default_group(apps, schema_editor):
     Group = apps.get_model('auth', 'Group')
     User = apps.get_model('auth', 'User')
     Permission = apps.get_model('auth', 'Permission')
+    Audio = apps.get_model('audio', "Audio")
+    ContentType = apps.get_model('contenttypes', "ContentType")
 
     default_group, created = Group.objects.get_or_create(name=DEFAULT_GROUP)
     if created:
-        add_audio = Permission.objects.get(codename='add_audio')
+        audio_content_type = ContentType.objects.get_for_model(Audio)
+        add_audio, created = Permission.objects.get_or_create(codename='add_audio', content_type=audio_content_type)
         default_group.permissions.add(add_audio)
         default_group.save()
 

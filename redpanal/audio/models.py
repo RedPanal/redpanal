@@ -7,7 +7,7 @@ import unicodedata
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
 from django.conf import settings
@@ -86,7 +86,7 @@ class Audio(models.Model, BaseModelMixin):
     samplerate  =  models.IntegerField(null=True, editable=False)
     totalframes  =  models.IntegerField(null=True, editable=False)
 
-    user = models.ForeignKey(User, editable=False)
+    user = models.ForeignKey(User, editable=False, on_delete=models.CASCADE)
 
     tags = TaggableManager(blank=True, verbose_name=_('hashtags'))
 
