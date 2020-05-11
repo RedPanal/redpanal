@@ -15,18 +15,22 @@ from redpanal.utils.test import InstanceTestMixin
 
 TEST_DATA_PATH = os.path.join(os.path.dirname(__file__), "test_data")
 
+def get_test_audiofile():
+    with open(os.path.join(TEST_DATA_PATH, u'tone.mp3'), 'rb') as audio_file:
+        audiofile = SimpleUploadedFile(u"the audio.mp3", audio_file.read(),
+                                       content_type="audio/mpeg")
+    return audiofile
+
 class AudioTestCase(TestCase, InstanceTestMixin):
     def setUp(self):
         self.user = User.objects.create_user("owner", "e@a.com", "password")
-        self.project = Project.objects.create(name="the project", user=self.user)
+        self.project = Project.objects.create(name="My Rock project", user=self.user)
 
     def login(self):
         self.client.login(username="owner", password="password")
 
     def create_instance(self):
-        with open(os.path.join(TEST_DATA_PATH, u'tone.mp3'), 'rb') as audio_file:
-            audiofile = SimpleUploadedFile(u"the audio.mp3", audio_file.read(),
-                                           content_type="audio/mpeg")
+        audiofile = get_test_audiofile()
         audio = Audio(name="Un audio", description="This is an audio",
                       audio=audiofile, user=self.user)
         audio.save()
@@ -48,16 +52,15 @@ class AudioTestCase(TestCase, InstanceTestMixin):
         self.assertTrue(u"guitarræ" in audio.get_tags())
 
     def create_audio_form_data(self, filename, content_type):
-        data = {"name": "test audio", "description": "This is a test audio",
+        data = {"name": u"test audiø", "description": u"This is a test audio with →UTF-8 øæ€ ««",
                 "project": self.project.pk,
                 "genre": GENRE_CHOICES[0][0],
                 "use_type": TYPE_CHOICES[0][0],
                 "instrument": INSTRUMENT_CHOICES[0][0],
                 "license": licenses.DEFAULT_LICENSE.code,
                 }
-        with open(os.path.join(TEST_DATA_PATH, filename)) as audio_file:
-            audiofile = SimpleUploadedFile(filename, audio_file.read(),
-                                           content_type=content_type)
+
+        audiofile = get_test_audiofile()
         return data, audiofile
 
     def test_upload_mp3(self):
@@ -91,6 +94,6 @@ class AudioTestCase(TestCase, InstanceTestMixin):
 
     def test_upload_audio_with_wrong_extension(self):
         data, _ = self.create_audio_form_data(u"tone.mp3", "audio/mpeg")
-        audiofile = SimpleUploadedFile(u"tone.mpe", "file content", content_type="audio/mpeg")
+        audiofile = SimpleUploadedFile(u"tone.mpe", b"file content", content_type="audio/mpeg")
         form = AudioForm(data, {"audio": audiofile}, user=self.user)
         self.assertFalse(form.is_valid())

@@ -7,7 +7,7 @@ from django.core.files import File
 from .models import Project
 from redpanal.utils.test import InstanceTestMixin
 from audio.models import Audio
-
+from audio.tests import get_test_audiofile
 
 class ProjectTestCase(TestCase, InstanceTestMixin):
     TEST_FILE = File(open(__file__))
@@ -27,8 +27,7 @@ class ProjectTestCase(TestCase, InstanceTestMixin):
         return instance
 
     def create_audio(self, user, name="foobar"):
-        from django.core.files.uploadedfile import SimpleUploadedFile
-        audio_file = SimpleUploadedFile(u'áudio.mp3', 'foobarbaz')
+        audio_file = get_test_audiofile()
         audio = Audio(user=user, audio=audio_file, name=name)
         audio.save()
         return audio
