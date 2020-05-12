@@ -1,5 +1,5 @@
 import abc
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 class InstanceTestMixin(object):
     __metaclass__ = abc.ABCMeta

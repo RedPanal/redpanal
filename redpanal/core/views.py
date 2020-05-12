@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 
 from audio.models import Audio
 from project.models import Project

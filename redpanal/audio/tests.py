@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from .models import Audio, GENRE_CHOICES, TYPE_CHOICES, INSTRUMENT_CHOICES
 from project.models import Project
