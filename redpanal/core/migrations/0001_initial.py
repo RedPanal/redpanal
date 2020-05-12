@@ -29,7 +29,7 @@ def create_default_group(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auth', '__latest__'),
+        ('auth', '0007_alter_validators_add_error_messages'),
     ]
 
     operations = [
