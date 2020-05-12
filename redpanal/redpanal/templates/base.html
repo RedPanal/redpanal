@@ -131,6 +131,7 @@
            <li class="discover"><a href="/"><i class="fa fa-music"></i> {% trans "My Community" %}</a></li>
          {% endcomment %}
            <li class="discover profile"><a href="{{ request.user.get_absolute_url }}" title="{% trans "My Profile" %}">{% avatar request.user 16 %}</a></li>
+           <li class="discover"><a href="/live/" title="{% trans 'See everything that is happening at RedPanal.org' %}"><i class="fa fa-music"></i> {% trans "The RedpaWall" %}</a></li>
            <li class="discover"><a href="/" title="{% trans 'What other users are doing?' %}"><i class="fa fa-user"></i> {% trans "My Community" %}</a></li>
            <li class="discover"><a href="{% url 'user-interactions' request.user %}" title="{% trans 'Interactions with other users' %}"><i class="fa fa-comments-o"></i> {% trans "My Interactions" %}</a></li>
 
