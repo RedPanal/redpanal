@@ -5,7 +5,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
 from core.forms import TagField
-from models import Project
+from .models import Project
 
 class ProjectForm(forms.ModelForm):
 

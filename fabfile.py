@@ -160,8 +160,9 @@ def backup_database(c):
 
 def rebuild_index(c):
     managepy = "%s manage.py " % PYTHON_BIN
+    c.sudo("chmod g+w /var/www/redpanal/whoosh_index/")
     run_venv(c, f'cd {MANAGEPY_SUBDIR} && ' + managepy + "rebuild_index --noinput --settings=redpanal.production_settings")
-    c.sudo("chown www-data /var/www/redpanal/whoosh_index/*")
+    c.sudo("chown -R www-data /var/www/redpanal/whoosh_index")
 
 def deploy(c):
     """

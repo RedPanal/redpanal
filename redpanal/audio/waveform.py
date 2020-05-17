@@ -50,8 +50,8 @@ class Waveform(object):
         im = Image.new('RGBA', (self.width, self.height), '#ffffffff')
         for index, value in enumerate(self.peaks, start=0):
             column_space = self.width/self.bar_count
-            column = index * column_space
-            upper_endpoint = self.height/2 - value
+            column = int(index * column_space)
+            upper_endpoint = int(self.height/2 - value)
             value = value or 1
             im.paste(self._get_bar_image((4, value * 2), '#42424250'),
                      (column, upper_endpoint))

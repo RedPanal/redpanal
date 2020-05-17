@@ -5,28 +5,32 @@ from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
-from models import Audio, GENRE_CHOICES, TYPE_CHOICES, INSTRUMENT_CHOICES
+from .models import Audio, GENRE_CHOICES, TYPE_CHOICES, INSTRUMENT_CHOICES
 from project.models import Project
 from core import licenses
-from forms import AudioForm
+from .forms import AudioForm
 from redpanal.utils.test import InstanceTestMixin
 
 TEST_DATA_PATH = os.path.join(os.path.dirname(__file__), "test_data")
 
+def get_test_audiofile():
+    with open(os.path.join(TEST_DATA_PATH, u'tone.mp3'), 'rb') as audio_file:
+        audiofile = SimpleUploadedFile(u"the audio.mp3", audio_file.read(),
+                                       content_type="audio/mpeg")
+    return audiofile
+
 class AudioTestCase(TestCase, InstanceTestMixin):
     def setUp(self):
         self.user = User.objects.create_user("owner", "e@a.com", "password")
-        self.project = Project.objects.create(name="the project", user=self.user)
+        self.project = Project.objects.create(name="My Rock project", user=self.user)
 
     def login(self):
         self.client.login(username="owner", password="password")
 
     def create_instance(self):
-        with open(os.path.join(TEST_DATA_PATH, u'tone.mp3'), 'rb') as audio_file:
-            audiofile = SimpleUploadedFile(u"the audio.mp3", audio_file.read(),
-                                           content_type="audio/mpeg")
+        audiofile = get_test_audiofile()
         audio = Audio(name="Un audio", description="This is an audio",
                       audio=audiofile, user=self.user)
         audio.save()
@@ -48,16 +52,15 @@ class AudioTestCase(TestCase, InstanceTestMixin):
         self.assertTrue(u"guitarræ" in audio.get_tags())
 
     def create_audio_form_data(self, filename, content_type):
-        data = {"name": "test audio", "description": "This is a test audio",
+        data = {"name": u"test audiø", "description": u"This is a test audio with →UTF-8 øæ€ ««",
                 "project": self.project.pk,
                 "genre": GENRE_CHOICES[0][0],
                 "use_type": TYPE_CHOICES[0][0],
                 "instrument": INSTRUMENT_CHOICES[0][0],
                 "license": licenses.DEFAULT_LICENSE.code,
                 }
-        with open(os.path.join(TEST_DATA_PATH, filename)) as audio_file:
-            audiofile = SimpleUploadedFile(filename, audio_file.read(),
-                                           content_type=content_type)
+
+        audiofile = get_test_audiofile()
         return data, audiofile
 
     def test_upload_mp3(self):
@@ -91,6 +94,40 @@ class AudioTestCase(TestCase, InstanceTestMixin):
 
     def test_upload_audio_with_wrong_extension(self):
         data, _ = self.create_audio_form_data(u"tone.mp3", "audio/mpeg")
-        audiofile = SimpleUploadedFile(u"tone.mpe", "file content", content_type="audio/mpeg")
+        audiofile = SimpleUploadedFile(u"tone.mpe", b"file content", content_type="audio/mpeg")
         form = AudioForm(data, {"audio": audiofile}, user=self.user)
         self.assertFalse(form.is_valid())
+
+    def test_create_audio_without_project(self):
+        data, audiofile = self.create_audio_form_data(u"tone.flac", "audio/mpeg")
+        del data["project"]
+        form = AudioForm(data, {"audio":audiofile}, user=self.user)
+        self.assertTrue(form.is_valid())
+        audio = form.save()
+
+    def test_create_audio_view(self):
+        data, _ = self.create_audio_form_data("tone.mp3", "audio/mpeg")
+        self.login()
+        with open(os.path.join(TEST_DATA_PATH, u'tone.mp3'), 'rb') as audio_file:
+            data['audio'] = audio_file
+            resp = self.client.post("/a/upload/", data)
+            self.assertEqual(resp.url, '/a/test-audi/')
+            self.assertEqual(resp.status_code, 302)
+
+            resp = self.client.get(resp.url)
+            self.assertEqual(resp.status_code, 200)
+            self.assertTrue(self.project.name in resp.content.decode())
+
+    def test_create_audio_view_without_project(self):
+        data, _ = self.create_audio_form_data("tone.mp3", "audio/mpeg")
+        del data['project']
+        self.login()
+        with open(os.path.join(TEST_DATA_PATH, u'tone.mp3'), 'rb') as audio_file:
+            data['audio'] = audio_file
+            resp = self.client.post("/a/upload/", data)
+            self.assertEqual(resp.url, '/a/test-audi/')
+            self.assertEqual(resp.status_code, 302)
+
+            resp = self.client.get(resp.url)
+            self.assertEqual(resp.status_code, 200)
+            self.assertFalse(self.project.name in resp.content.decode())

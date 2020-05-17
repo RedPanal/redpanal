@@ -3,11 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DetailView, CreateView, DeleteView
 
-from models import Project
-from forms import ProjectForm
+from .models import Project
+from .forms import ProjectForm
 from redpanal.utils.views import LoginRequiredMixin, UserRequiredMixin
 
 class ProjectDetailView(DetailView):

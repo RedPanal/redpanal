@@ -1,6 +1,6 @@
 import datetime
 from haystack import indexes
-from models import UserProfile
+from .models import UserProfile
 
 
 class UserProfileIndex(indexes.SearchIndex, indexes.Indexable):

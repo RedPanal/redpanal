@@ -23,4 +23,4 @@ class AudioViewSet(viewsets.ModelViewSet):
 
 
 api_router = routers.DefaultRouter()
-api_router.register(r'audio', AudioViewSet, base_name='audio-api')
+api_router.register(r'audio', AudioViewSet, basename='audio-api')

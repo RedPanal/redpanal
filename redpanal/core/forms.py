@@ -17,8 +17,8 @@ def parse_tags(string):
     return [tag[1:] for tag in tags if len(tag) > 1]
 
 class TagWidget(forms.TextInput):
-    def render(self, name, value, attrs=None):
-        if value is not None and not isinstance(value, basestring):
+    def render(self, name, value, attrs=None, renderer=None):
+        if value is not None and not isinstance(value, str):
             value = tags_to_editable_string([o.tag for o in value.select_related("tag")])
         return super(TagWidget, self).render(name, value, attrs)
 
@@ -30,6 +30,6 @@ class TagField(forms.CharField):
         value = super(TagField, self).clean(value)
         try:
             return parse_tags(value)
-        except TagParseError, e:
-            raise forms.ValidationError(e.message)
+        except TagParseError as e:
+            raise forms.ValidationError(e.msg)
 

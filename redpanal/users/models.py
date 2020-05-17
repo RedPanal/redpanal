@@ -20,7 +20,7 @@ def created_at(self):
 User.add_to_class('created_at', created_at)
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     realname = models.CharField(null=True, max_length=20, verbose_name=_("name"), help_text=_("how you want your name on RedPanal?") )
     about = models.TextField(blank=True, null=True, verbose_name=_("about"), help_text=_("something about you"))
     website = models.URLField(blank=True, null=True, verbose_name=_("website"), help_text=_("your website"))
@@ -30,8 +30,8 @@ class UserProfile(models.Model):
     def get_absolute_url(self):
         return self.user.get_absolute_url()
 
-    def __unicode__(self):
-        return unicode(self.user)
+    def __str__(self):
+        return str(self.user)
 
 def create_profile(user):
     profile = UserProfile(user=user)
@@ -54,7 +54,7 @@ post_save.connect(_create_profile, sender=User, dispatch_uid="users-profilecreat
 
 
 class DefaultFollowedUser(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
 def follow_default_users(user):

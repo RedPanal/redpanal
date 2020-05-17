@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import Q
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
 from actstream import action, registry
@@ -21,20 +21,20 @@ class Project(models.Model, BaseModelMixin):
     description = models.TextField(verbose_name=_('description'))
     version_of = models.ForeignKey('self', verbose_name=_('version of'),
                                    blank=True, null=True, editable=False,
-                                   related_name="versions")
+                                   related_name="versions", on_delete=models.SET_NULL)
     audios = models.ManyToManyField("audio.Audio", verbose_name=_('audios'),
                                     blank=True)
     image = models.ImageField(verbose_name=_('image'),
                               upload_to="uploads/images/projects/%Y_%m",
                               blank=True, null=True)
-    user = models.ForeignKey(User, editable=False, verbose_name=_('user'))
+    user = models.ForeignKey(User, editable=False, verbose_name=_('user'), on_delete=models.CASCADE)
     tags = TaggableManager(blank=True, verbose_name=_('hashtags'))
 
 
     def get_absolute_url(self):
         return reverse('project-detail', kwargs={'slug': self.slug})
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:

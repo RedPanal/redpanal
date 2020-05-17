@@ -7,7 +7,7 @@ import unicodedata
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
 from django.conf import settings
@@ -63,7 +63,7 @@ INSTRUMENT_CHOICES = (
 
 def audio_file_upload_to(instance, filename):
     dirname = datetime.datetime.now().strftime('uploads/audios/%Y_%m')
-    filename = unicodedata.normalize('NFKD', filename).encode('ascii', 'ignore')
+    filename = unicodedata.normalize('NFKD', filename).encode('ascii', 'ignore').decode()
     return posixpath.join(dirname, filename)
 
 class Audio(models.Model, BaseModelMixin):
@@ -86,7 +86,7 @@ class Audio(models.Model, BaseModelMixin):
     samplerate  =  models.IntegerField(null=True, editable=False)
     totalframes  =  models.IntegerField(null=True, editable=False)
 
-    user = models.ForeignKey(User, editable=False)
+    user = models.ForeignKey(User, editable=False, on_delete=models.CASCADE)
 
     tags = TaggableManager(blank=True, verbose_name=_('hashtags'))
 
@@ -103,9 +103,9 @@ class Audio(models.Model, BaseModelMixin):
         return reverse('audio-detail', kwargs={'slug': self.slug})
 
     def get_tags(self):
-        return [unicode(t) for t in self.tags.all()]
+        return [str(t) for t in self.tags.all()]
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -117,8 +117,8 @@ class Audio(models.Model, BaseModelMixin):
 def audio_processing(audio):
     try:
         sound = AudioSegment.from_file(audio.audio.path)
-        Waveform(sound, width=460, height=100, bar_count=460/8).save(audio.audio.path + '.png')
-        Waveform(sound, width=940, height=150, bar_count=940/8).save(audio.audio.path + '.big.png')
+        Waveform(sound, width=460, height=100, bar_count=int(460/8)).save(audio.audio.path + '.png')
+        Waveform(sound, width=940, height=150, bar_count=int(940/8)).save(audio.audio.path + '.big.png')
 
         audio.channels = sound.channels
         audio.blocksize = 0

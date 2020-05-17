@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-from models import UserProfile
+from .models import UserProfile
 from core.forms import TagField
 
 

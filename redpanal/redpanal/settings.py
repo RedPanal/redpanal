@@ -1,5 +1,5 @@
 # Django settings for redpanal project.
-from common_settings import *
+from .common_settings import *
 
 DEBUG = True
 

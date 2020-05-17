@@ -3,14 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import ListView, UpdateView, DetailView, CreateView, DeleteView
 
 import actstream.models
 from audio.models import Audio
-from models import create_profile
-from forms import UserProfileForm
+from .models import create_profile
+from .forms import UserProfileForm
 
 def ensure_profile(user):
     try:
@@ -72,7 +72,7 @@ def user_activities(request, username):
 
 
 def user_interactions(request, username):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user = get_object_or_404(User, username=username)
         if request.user == user:
             if request.is_ajax():

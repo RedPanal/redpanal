@@ -1,6 +1,6 @@
 import datetime
 from haystack import indexes
-from models import Project
+from .models import Project
 
 
 class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
