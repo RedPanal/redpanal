@@ -34,10 +34,10 @@ SRC_SUBDIR = 'src'
 MANAGEPY_SUBDIR = '%s/%s/%s' % (DJANGO_APP_ROOT, SRC_SUBDIR, APP_NAME)
 
 # Subdirectory of DJANGO_APP_ROOT in which virtualenv will be stored
-VENV_SUBDIR = 'venv'
+VENV_SUBDIR = 'venv3'
 
 # Python version
-PYTHON_BIN = "python2.7"
+PYTHON_BIN = "python3.7"
 PYTHON_PREFIX = "" # e.g. /usr/local  Use "" for automatic
 
 
@@ -49,7 +49,7 @@ WSGI_MODULE = '%s.wsgi' % APP_NAME
 env = {}
 
 def dir_exists(c, path):
-    return c.run(f"test -d {path}").ok == True
+    return c.run(f"test -d {path}", warn=True).ok == True
 
 def test(c):
     c.run("uname -a")
