@@ -26,7 +26,8 @@ class Project(models.Model, BaseModelMixin):
                                     blank=True)
     image = models.ImageField(verbose_name=_('image'),
                               upload_to="uploads/images/projects/%Y_%m",
-                              blank=True, null=True)
+                              blank=True, null=True,
+                              max_length=150)
     user = models.ForeignKey(User, editable=False, verbose_name=_('user'), on_delete=models.CASCADE)
     tags = TaggableManager(blank=True, verbose_name=_('hashtags'))
 
