@@ -90,6 +90,9 @@ class Audio(models.Model, BaseModelMixin):
 
     tags = TaggableManager(blank=True, verbose_name=_('hashtags'))
 
+    position_lat = models.DecimalField(verbose_name=_('latitude'), max_digits=9, decimal_places=5, blank=True, null=True)
+    position_long = models.DecimalField(verbose_name=_('longitude'), max_digits=9, decimal_places=5, blank=True, null=True)
+
     def get_duration(self):
         duration = None
         if self.samplerate is not None:
