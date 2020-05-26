@@ -104,14 +104,14 @@ def webserver_stop(c):
     """
     Stop the webserver that is running the Django instance
     """
-    c.sudo("systemctl stop uwsgi.service")
+    c.sudo("systemctl stop uwsgi-app@redpanal.service")
 
 
 def webserver_start(c):
     """
     Starts the webserver that is running the Django instance
     """
-    c.sudo("systemctl start uwsgi.service")
+    c.sudo("systemctl start uwsgi-app@redpanal.service")
 
 
 def webserver_restart(c):
@@ -119,7 +119,7 @@ def webserver_restart(c):
     Restarts the webserver that is running the Django instance
     """
     try:
-        c.sudo("systemctl restart uwsgi.service")
+        c.sudo("systemctl restart uwsgi-app@redpanal.service")
     except:
         webserver_start(c)
 
