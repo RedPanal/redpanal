@@ -1,0 +1,252 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 18:19-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: templates/account/login.html:6
+msgid "Sign In"
+msgstr ""
+
+#: templates/account/login.html:8 templates/index.html:4
+msgid "Welcome!"
+msgstr ""
+
+#: templates/account/login.html:14 templates/all_activities.html:39
+msgid "Last activities in RedPanal"
+msgstr ""
+
+#: templates/account/login.html:18
+msgid "more..."
+msgstr ""
+
+#: templates/account/login.html:20
+msgid "Sign up for RedPanal"
+msgstr ""
+
+#: templates/account/login.html:24
+msgid "Sign in:"
+msgstr ""
+
+#: templates/account/login.html:32
+msgid "Sign in"
+msgstr ""
+
+#: templates/account/login.html:33
+msgid "Forgot Password?"
+msgstr ""
+
+#: templates/account/login.html:40
+msgid "Sign in with:"
+msgstr ""
+
+#: templates/account/logout.html:5 templates/account/logout.html:7
+#: templates/account/logout.html:11 templates/account/logout.html:20
+msgid "Sign Out"
+msgstr ""
+
+#: templates/account/logout.html:13
+msgid "Are you sure you want to sign out?"
+msgstr ""
+
+#: templates/account/signup.html:5
+msgid "Signup"
+msgstr ""
+
+#: templates/account/signup.html:9
+msgid "Welcome to RedPanal"
+msgstr ""
+
+#: templates/account/signup.html:13 templates/account/signup.html:23
+msgid "Sign Up"
+msgstr ""
+
+#: templates/account/signup.html:15
+#, python-format
+msgid ""
+"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr ""
+
+#: templates/all_activities.html:4
+msgid "Live"
+msgstr ""
+
+#: templates/all_activities.html:38
+msgid "RedPanal live"
+msgstr ""
+
+#: templates/all_activities.html:53
+msgid "Statistics:"
+msgstr ""
+
+#: templates/all_activities.html:84
+msgid "New users:"
+msgstr ""
+
+#: templates/all_activities_iframe.html:59
+msgid "No content found"
+msgstr ""
+
+#: templates/avatar/change.html:5
+msgid "Your current avatar: "
+msgstr ""
+
+#: templates/avatar/change.html:8
+msgid "You haven't uploaded an avatar yet. Please upload one now."
+msgstr ""
+
+#: templates/avatar/change.html:14
+msgid "Choose new Default"
+msgstr ""
+
+#: templates/avatar/change.html:19
+msgid "Upload New Image"
+msgstr ""
+
+#: templates/base.html:33
+msgid "Following"
+msgstr ""
+
+#: templates/base.html:33
+msgid "Follow"
+msgstr ""
+
+#: templates/base.html:43
+msgid "Unfollow"
+msgstr ""
+
+#: templates/base.html:88 templates/search/search.html:26
+#: templates/search/search.html:31 templates/search/search.html:34
+msgid "Search"
+msgstr ""
+
+#: templates/base.html:112
+msgid "Edit profile"
+msgstr ""
+
+#: templates/base.html:113
+msgid "Log out"
+msgstr ""
+
+#: templates/base.html:116
+msgid "Log in"
+msgstr ""
+
+#: templates/base.html:139
+msgid "My Profile"
+msgstr ""
+
+#: templates/base.html:140
+msgid "See everything that is happening at RedPanal.org"
+msgstr ""
+
+#: templates/base.html:140
+msgid "The RedpaWall"
+msgstr ""
+
+#: templates/base.html:141
+msgid "What other users are doing?"
+msgstr ""
+
+#: templates/base.html:141 templates/index.html:4 templates/index.html:33
+msgid "My Community"
+msgstr ""
+
+#: templates/base.html:142
+msgid "Interactions with other users"
+msgstr ""
+
+#: templates/base.html:142
+msgid "My Interactions"
+msgstr ""
+
+#: templates/base.html:144
+msgid "Post message in your timeline"
+msgstr ""
+
+#: templates/base.html:145
+msgid "Create project"
+msgstr ""
+
+#: templates/base.html:145
+msgid "Create Project"
+msgstr ""
+
+#: templates/base.html:146
+msgid "Upload file"
+msgstr ""
+
+#: templates/base.html:146
+msgid "Upload audio"
+msgstr ""
+
+#: templates/base.html:162
+#, python-format
+msgid ""
+"This is Free Software licensed under <a href=\"http://www.gnu.org/licenses/"
+"agpl.txt\" >AGPL</a>. Get <a href=\"https://github.com/RedPanal/redpanal"
+"\">the code!</a>. Current version is <a href=\"https://github.com/RedPanal/"
+"redpanal/commit/%(GIT_SHORT_VERSION)s\">%(GIT_SHORT_VERSION)s</a>."
+msgstr ""
+
+#: templates/base.html:163
+msgid "Hosted by: <a href=\"http://www.codigosur.org\">Código Sur</a>"
+msgstr ""
+
+#: templates/base.html:166
+msgid "The Official RedPanal Blog!"
+msgstr ""
+
+#: templates/base.html:166
+msgid "Blog"
+msgstr ""
+
+#: templates/base_background_image.html:10
+msgid "Background image:"
+msgstr ""
+
+#: templates/discover-items-menu.html:2
+msgid "Discover more users"
+msgstr ""
+
+#: templates/discover-items-menu.html:3
+msgid "Discover more projects"
+msgstr ""
+
+#: templates/index.html:34
+msgid "My activities and the users that I follow"
+msgstr ""
+
+#: templates/index.html:47
+msgid "Last followers:"
+msgstr ""
+
+#: templates/search/search.html:41
+msgid "Results for "
+msgstr ""
+
+#: templates/search/search.html:60
+msgid "No results for "
+msgstr ""
+
+#: templates/search/search.html:65
+msgid "Previous"
+msgstr ""
+
+#: templates/search/search.html:67
+msgid "Next"
+msgstr ""
