@@ -6,7 +6,8 @@ def get_file_extension(filename):
 def get_git_revision_short_hash():
     import subprocess
     try:
-        out = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip()
+        short_hash = subprocess.run(['git', 'rev-parse', '--short', 'HEAD'],
+                                    capture_output=True).stdout.strip().decode()
     except:
-        out = ""
-    return out
+        short_hash = ""
+    return short_hash
