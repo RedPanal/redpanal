@@ -46,7 +46,7 @@ def user_projects(request, username):
     projects = user.project_set.all
 
     if request.is_ajax():
-        template = "projects/projects_list.html"
+        template = "project/projects_list.html"
     else:
         template =  "users/user_projects.html"
 
