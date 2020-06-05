@@ -36,6 +36,7 @@ STATICFILES_FINDERS = (
 )
 
 MIDDLEWARE = (
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -96,6 +97,7 @@ INSTALLED_APPS = (
     'redpanal.utils',
     'taggit',
     'crispy_forms',
+    'corsheaders',
     'actstream',
     'allauth',
     'allauth.account',
