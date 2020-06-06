@@ -1,11 +1,17 @@
 from django.contrib.auth.models import User, Group
 from django.conf.urls import include, url
 from audio.models import Audio
-from rest_framework import routers, serializers, viewsets, generics
+from rest_framework import routers, serializers, viewsets, generics, pagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from taggit_serializer.serializers import (TagListSerializerField,
                                            TaggitSerializer)
+
+
+class AdjustableResultsSetPagination(pagination.PageNumberPagination):
+    page_size = 100
+    page_size_query_param = 'page_size'
+    max_page_size = 10000
 
 
 class AudioSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -37,6 +43,7 @@ class AudioList(generics.ListAPIView):
     Note that tag can be provided multiple times no narrow more the list (Eg /?tag=foo&tag=bar)
     """
     serializer_class = AudioSerializer
+    pagination_class = AdjustableResultsSetPagination
 
     def get_queryset(self):
         queryset = Audio.objects.all()

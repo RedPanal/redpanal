@@ -62,18 +62,22 @@ RedPanal cuenta con una API HTTP que permite, entre otras cosas, listar y subir 
 
 ### Listar y filtrar audios
 
-* `GET /api/audio/list/`: Lista todos los audios
+* `GET /api/audio/list/`: Lista todos los audios.
 
-Parámetros de la query permitidos: [user, genre, instrument, use_type, tag, positioned]
+Parámetros de la query permitidos: [user, genre, instrument, use_type, tag, positioned, page, page_size]
+El resultado está paginado, por defecto se muestra la primer página, equivalente a `?page=1&page_size=100`.
 
 Ejemplos:
 
 * `GET /api/audio/list/?user=redpanal`: Lista los audios del usuario redpanal
+* `GET /api/audio/list/?user=redpanal&page=2`: Segunda página.
+* `GET /api/audio/list/?page=1&page_size=250`: Primera página, 250 resultados por página.
 * `GET /api/audio/list/?genre=rock`: Lista los audios de rock
 * `GET /api/audio/list/?genre=rock&use_type=loop&tag=awesome`: Lista los audios de `rock`, que son
 de tipo `loop` y que continen en tag `#awesome`.
 * `GET /api/audio/list/?tag=metal&tag=picante`: Lista los audios que tienen los tags `#metal` y `#picante`.
 * `GET /api/audio/list/?positioned`: Lista de audios que están geo-localizados.
+
 
 ### Detalle de audio
 
