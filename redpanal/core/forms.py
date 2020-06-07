@@ -31,5 +31,5 @@ class TagField(forms.CharField):
         try:
             return parse_tags(value)
         except TagParseError as e:
-            raise forms.ValidationError(e.msg)
+            raise forms.ValidationError(str(e))
 
