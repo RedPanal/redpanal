@@ -67,6 +67,9 @@ def audio_file_upload_to(instance, filename):
     return posixpath.join(dirname, filename)
 
 class Audio(models.Model, BaseModelMixin):
+
+    _original_audio_file = None
+
     name = models.CharField(_('name'), max_length=100)
     slug = AutoSlugField(populate_from='name', always_update=False,
                          editable=False, blank=True, unique=True)
@@ -93,6 +96,11 @@ class Audio(models.Model, BaseModelMixin):
     position_lat = models.DecimalField(verbose_name=_('latitude'), max_digits=9, decimal_places=5, blank=True, null=True)
     position_long = models.DecimalField(verbose_name=_('longitude'), max_digits=9, decimal_places=5, blank=True, null=True)
 
+    def __init__(self, *args, **kwargs):
+        super(Audio, self).__init__(*args, **kwargs)
+        if (self.audio):
+            self.original_audio_file = self.audio.path
+
     def get_duration(self):
         duration = None
         if self.samplerate is not None:
@@ -111,6 +119,9 @@ class Audio(models.Model, BaseModelMixin):
     def __str__(self):
         return self.name
 
+    def audio_has_changed(self):
+        return (self._original_audio_file != self.audio.path)
+
     class Meta:
         verbose_name = "audio"
         verbose_name_plural = "audios"
@@ -127,7 +138,9 @@ def audio_processing(audio):
         audio.blocksize = 0
         audio.samplerate = sound.frame_rate
         audio.totalframes = sound.frame_count()
+        audio._original_audio_file = audio.audio.path
         audio.save()
+
     except CouldntDecodeError:
         logger.exception('could not decode %r', audio.audio.path)
 
@@ -135,6 +148,10 @@ def audio_processing(audio):
 def audio_created_signal(sender, instance, created, **kwargs):
     if created:
         action.send(instance.user, verb='audio_created', action_object=instance)
+
+    if instance.audio_has_changed():
         audio_processing(instance)
 
+
 post_save.connect(audio_created_signal, sender=Audio)
+
