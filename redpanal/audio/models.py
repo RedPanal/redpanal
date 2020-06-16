@@ -4,12 +4,14 @@ import logging
 import datetime
 import posixpath
 import unicodedata
+import hashlib
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
+from django.core.files.storage import default_storage
 from django.conf import settings
 from actstream import action, registry
 
@@ -21,6 +23,7 @@ from pydub.exceptions import CouldntDecodeError
 from redpanal.utils.models import BaseModelMixin
 from core import licenses
 from .waveform import Waveform
+
 
 logger = logging.getLogger(__name__)
 
@@ -88,6 +91,7 @@ class Audio(models.Model, BaseModelMixin):
     blocksize  =  models.IntegerField(null=True, editable=False)
     samplerate  =  models.IntegerField(null=True, editable=False)
     totalframes  =  models.IntegerField(null=True, editable=False)
+    hashsum = models.CharField(max_length=40,null=True,blank=True)
 
     user = models.ForeignKey(User, editable=False, on_delete=models.CASCADE)
 
@@ -122,6 +126,17 @@ class Audio(models.Model, BaseModelMixin):
     def audio_has_changed(self):
         return (self._original_audio_file != self.audio.path)
 
+    def calcule_hashsum(self):
+        BUF_SIZE = 65536  # lets read stuff in 64kb chunks!
+        sha1 = hashlib.sha1()
+        with default_storage.open(self.audio.path, 'rb') as f:
+            while True:
+                data = f.read(BUF_SIZE)
+                if not data:
+                    break
+                sha1.update(data)
+        return sha1.hexdigest()
+
     class Meta:
         verbose_name = "audio"
         verbose_name_plural = "audios"
@@ -139,6 +154,7 @@ def audio_processing(audio):
         audio.samplerate = sound.frame_rate
         audio.totalframes = sound.frame_count()
         audio._original_audio_file = audio.audio.path
+        audio.hashsum = audio.calcule_hashsum()
         audio.save()
 
     except CouldntDecodeError:
@@ -154,4 +170,3 @@ def audio_created_signal(sender, instance, created, **kwargs):
 
 
 post_save.connect(audio_created_signal, sender=Audio)
-

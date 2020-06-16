@@ -47,3 +47,19 @@ def create_version(request, slug):
     return render(request, "project/project_create_version.html", {
         'object': project,
     })
+
+
+@login_required
+def download_mix(request, slug=None):
+    project = get_object_or_404(Project, slug=slug)
+    errors = None
+    if request.method == "POST":
+        ids = request.POST.getlist('ids')
+        if len(ids) > 1:
+            filename = project.mix_audios(ids)
+            return redirect("/media/audio_cache/%s" % filename)
+        errors = {'two_tracks': True}
+
+    return render(request, "project/project_download_mix.html", {
+        'object': project, 'errors': errors,
+    })

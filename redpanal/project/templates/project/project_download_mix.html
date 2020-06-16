@@ -1,0 +1,57 @@
+{{% extends "base.html" %}
+{% load i18n social_tags %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+<script type="text/javascript">
+    $(function (){
+        $('video,audio').mediaelementplayer({
+            audioWidth: 940,
+            // height of audio player
+            audioHeight: 30,
+            // initial volume when the player starts
+            audioWaveHeight: 100,
+            customSize: 'big',
+            startVolume: 0.8});
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+
+  <p>{% blocktrans %}Do you want to mix tracks in your proyect?{% endblocktrans %}</p>
+  
+  <div class="project-teaser-wrapper">{% include "project/project_teaser.html" %}</div>
+<p>Just select your tracks and click in download button to get the mixed audio</p>
+{% if errors.two_tracks %}
+<div class="alert alert-block">
+  <h4>{% blocktrans %}Be careful!{% endblocktrans %}</h4>
+  {% blocktrans %}
+  You must select two tracks at least.
+  {% endblocktrans %}
+</div>
+{% endif %}
+<form method="POST" action="." target="_blank">
+  {% csrf_token %}
+  <div class="row">
+    {% for audio in object.audios.all %}
+    <div class="span1">
+      {% if audio.use_type == "track" %}
+      <input type="checkbox" name="ids" value="{{audio.id}}">
+      {% else %}
+      <i class="icon-remove" title="{% trans "Only tracks can be mixed" %}"></i>
+      {% endif %}
+    </div>
+    <div class="span5">
+    {% include "audio/audio_teaser.html" with object=audio mode="without-wave" %}
+    </div>
+    {% endfor %}
+  </div>
+  <input class="btn btn-primary" type="submit" value="{% trans "Download" %}"/>
+</form>
+
+{% endblock%}
+
+

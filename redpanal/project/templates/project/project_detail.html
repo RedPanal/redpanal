@@ -27,9 +27,11 @@
    {% endwith %}
 
    <div class="form-actions">
-     <div class="project-btn"><a class="btn btn-warning" title="{% trans "You can add your own tracks and make the changes you want to the cloned version of this project" %}" href="{% url "project-create-version" object.slug %}"><i class="fa fa-copy"></i> {% trans "Clone Project" %}</a></div>
+     <div class="project-btn">
+      <a class="btn btn-warning" title="{% trans "You can download a mix of proyect audio selecting traks" %}" href="{% url "project-download-mix" object.slug %}"><i class="fa fa-copy"></i> {% trans "Download Mix" %}</a>
+      <a class="btn btn-warning" title="{% trans "You can add your own tracks and make the changes you want to the cloned version of this project" %}" href="{% url "project-create-version" object.slug %}"><i class="fa fa-copy"></i> {% trans "Clone Project" %}</a></div>
    </div>
-
+   
    {% for audio in project.audios.all %}
      {% include "audio/audio_teaser.html" with object=audio mode="in-project-detail" %}
    {% endfor %}
