@@ -21,18 +21,22 @@
 
 {% block content %}
 
-  <p>{% blocktrans %}Do you want to mix tracks in your proyect?{% endblocktrans %}</p>
-  
-  <div class="project-teaser-wrapper">{% include "project/project_teaser.html" %}</div>
-<p>Just select your tracks and click in download button to get the mixed audio</p>
+<h1>{% trans "Do you want to mix tracks in your proyect?" %}</h1>
+
+<div class="project-teaser-wrapper">{% include "project/project_teaser.html" %}</div>
+
+
+<p>{% trans "Just select your tracks and click the download button to get the mix of the audios."  %}</p>
+
 {% if errors.two_tracks %}
 <div class="alert alert-block">
   <h4>{% blocktrans %}Be careful!{% endblocktrans %}</h4>
   {% blocktrans %}
-  You must select two tracks at least.
+  You must select at leat two tracks!
   {% endblocktrans %}
 </div>
 {% endif %}
+
 <form method="POST" action="." target="_blank">
   {% csrf_token %}
   <div class="row">

@@ -1,6 +1,5 @@
 import os
 import hashlib
-from django.conf import settings
 
 from django.db import models
 from django.db.models import Q
@@ -66,26 +65,32 @@ class Project(models.Model, BaseModelMixin):
         return User.objects.filter(Q(audio__in=self.all_audios()) | Q(pk=self.user.pk)).distinct()
 
     def mix_audios(self, ids):
-        audios = self.audios.filter(id__in=ids, use_type='track')
+        audios = self.audios.filter(id__in=ids)
+        if len(audios) < 2:
+            raise ValueError("Need at least 2 audios to mix")
+
         hashsum = hashlib.sha1()
         for audio in audios:
             hashsum.update(audio.hashsum.encode())
 
         hashsum = format(hashsum.hexdigest())
         filename = "%s.ogg" % hashsum
-        path = os.path.join(settings.MEDIA_ROOT, 'audio_cache')
+
+        path = default_storage.path('audio_cache')
         if not default_storage.exists(path):
             os.makedirs(path)
-        path = os.path.join(settings.MEDIA_ROOT, 'audio_cache', filename)
+
+        path = default_storage.path(os.path.join('audio_cache', filename))
         if not default_storage.exists(path):
             mix = AudioSegment.empty()
             for audio in audios:
                 a = AudioSegment.from_file(audio.audio.path)
-                if (a.duration_seconds > mix.duration_seconds):
+                if a.duration_seconds > mix.duration_seconds:
                     mix = a.overlay(mix)
                 else:
                     mix = mix.overlay(a)
             mix.export(path, format="ogg")
+        default_storage.path(os.path.join('audio_cache', filename))
         return filename
 
 

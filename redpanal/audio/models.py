@@ -91,7 +91,7 @@ class Audio(models.Model, BaseModelMixin):
     blocksize  =  models.IntegerField(null=True, editable=False)
     samplerate  =  models.IntegerField(null=True, editable=False)
     totalframes  =  models.IntegerField(null=True, editable=False)
-    hashsum = models.CharField(max_length=40,null=True,blank=True)
+    hashsum = models.CharField(max_length=40, null=True, blank=True, editable=False)
 
     user = models.ForeignKey(User, editable=False, on_delete=models.CASCADE)
 
@@ -126,17 +126,6 @@ class Audio(models.Model, BaseModelMixin):
     def audio_has_changed(self):
         return (self._original_audio_file != self.audio.path)
 
-    def calcule_hashsum(self):
-        BUF_SIZE = 65536  # lets read stuff in 64kb chunks!
-        sha1 = hashlib.sha1()
-        with default_storage.open(self.audio.path, 'rb') as f:
-            while True:
-                data = f.read(BUF_SIZE)
-                if not data:
-                    break
-                sha1.update(data)
-        return sha1.hexdigest()
-
     class Meta:
         verbose_name = "audio"
         verbose_name_plural = "audios"
@@ -154,12 +143,22 @@ def audio_processing(audio):
         audio.samplerate = sound.frame_rate
         audio.totalframes = sound.frame_count()
         audio._original_audio_file = audio.audio.path
-        audio.hashsum = audio.calcule_hashsum()
+        audio.hashsum = calculate_hashsum(audio.audio.path)
         audio.save()
 
     except CouldntDecodeError:
         logger.exception('could not decode %r', audio.audio.path)
 
+def calculate_hashsum(path):
+    BUF_SIZE = 65536  # lets read stuff in 64kb chunks!
+    sha1 = hashlib.sha1()
+    with default_storage.open(path, 'rb') as f:
+        while True:
+            data = f.read(BUF_SIZE)
+            if not data:
+                break
+            sha1.update(data)
+    return sha1.hexdigest()
 
 def audio_created_signal(sender, instance, created, **kwargs):
     if created:
