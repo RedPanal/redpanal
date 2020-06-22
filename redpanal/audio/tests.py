@@ -46,6 +46,14 @@ class AudioTestCase(TestCase, InstanceTestMixin):
         self.assertTrue(Audio.objects.filter(tags__name__in=["rock"]))
         self.assertFalse(Audio.objects.filter(tags__name__in=["Rock"]))
 
+    def test_modify_audio_file_reprocess_file(self):
+        audio = self.create_instance()
+
+        audio.tags.add("rock", "MiProject", "guitarr")
+        self.assertTrue(Audio.objects.filter(tags__name__in=["rock"]))
+        self.assertFalse(Audio.objects.filter(tags__name__in=["Rock"]))
+
+
     def test_add_unicode_tags(self):
         audio = self.create_instance()
         audio.tags.add("rock", "MiProject", u"guitarræ")

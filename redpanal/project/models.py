@@ -1,15 +1,20 @@
+import os
+import hashlib
+
 from django.db import models
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
+from django.core.files.storage import default_storage
 from actstream import action, registry
 
 from taggit.managers import TaggableManager
 from autoslug.fields import AutoSlugField
 from redpanal.utils.models import BaseModelMixin
 from audio.models import Audio
+from pydub import AudioSegment
 
 
 class Project(models.Model, BaseModelMixin):
@@ -58,6 +63,34 @@ class Project(models.Model, BaseModelMixin):
 
     def collaborators(self):
         return User.objects.filter(Q(audio__in=self.all_audios()) | Q(pk=self.user.pk)).distinct()
+
+    def mix_audios(self, ids):
+        audios = self.audios.filter(id__in=ids)
+        if len(audios) < 2:
+            raise ValueError("Need at least 2 audios to mix")
+
+        hashsum = hashlib.sha1()
+        for audio in audios:
+            hashsum.update(audio.hashsum.encode())
+
+        hashsum = format(hashsum.hexdigest())
+        filename = "%s.ogg" % hashsum
+
+        path = default_storage.path('audio_cache')
+        if not default_storage.exists(path):
+            os.makedirs(path)
+
+        path = default_storage.path(os.path.join('audio_cache', filename))
+        if not default_storage.exists(path):
+            mix = AudioSegment.empty()
+            for audio in audios:
+                a = AudioSegment.from_file(audio.audio.path)
+                if a.duration_seconds > mix.duration_seconds:
+                    mix = a.overlay(mix)
+                else:
+                    mix = mix.overlay(a)
+            mix.export(path, format="ogg")
+        return filename
 
 
 def project_created_signal(sender, instance, created, **kwargs):

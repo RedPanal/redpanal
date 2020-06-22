@@ -4,12 +4,14 @@ import logging
 import datetime
 import posixpath
 import unicodedata
+import hashlib
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
+from django.core.files.storage import default_storage
 from django.conf import settings
 from actstream import action, registry
 
@@ -21,6 +23,7 @@ from pydub.exceptions import CouldntDecodeError
 from redpanal.utils.models import BaseModelMixin
 from core import licenses
 from .waveform import Waveform
+
 
 logger = logging.getLogger(__name__)
 
@@ -67,6 +70,9 @@ def audio_file_upload_to(instance, filename):
     return posixpath.join(dirname, filename)
 
 class Audio(models.Model, BaseModelMixin):
+
+    _original_audio_file = None
+
     name = models.CharField(_('name'), max_length=100)
     slug = AutoSlugField(populate_from='name', always_update=False,
                          editable=False, blank=True, unique=True)
@@ -85,6 +91,7 @@ class Audio(models.Model, BaseModelMixin):
     blocksize  =  models.IntegerField(null=True, editable=False)
     samplerate  =  models.IntegerField(null=True, editable=False)
     totalframes  =  models.IntegerField(null=True, editable=False)
+    hashsum = models.CharField(max_length=40, null=True, blank=True, editable=False)
 
     user = models.ForeignKey(User, editable=False, on_delete=models.CASCADE)
 
@@ -92,6 +99,11 @@ class Audio(models.Model, BaseModelMixin):
 
     position_lat = models.DecimalField(verbose_name=_('latitude'), max_digits=9, decimal_places=5, blank=True, null=True)
     position_long = models.DecimalField(verbose_name=_('longitude'), max_digits=9, decimal_places=5, blank=True, null=True)
+
+    def __init__(self, *args, **kwargs):
+        super(Audio, self).__init__(*args, **kwargs)
+        if (self.audio):
+            self.original_audio_file = self.audio.path
 
     def get_duration(self):
         duration = None
@@ -111,6 +123,9 @@ class Audio(models.Model, BaseModelMixin):
     def __str__(self):
         return self.name
 
+    def audio_has_changed(self):
+        return (self._original_audio_file != self.audio.path)
+
     class Meta:
         verbose_name = "audio"
         verbose_name_plural = "audios"
@@ -127,14 +142,30 @@ def audio_processing(audio):
         audio.blocksize = 0
         audio.samplerate = sound.frame_rate
         audio.totalframes = sound.frame_count()
+        audio._original_audio_file = audio.audio.path
+        audio.hashsum = calculate_hashsum(audio.audio.path)
         audio.save()
+
     except CouldntDecodeError:
         logger.exception('could not decode %r', audio.audio.path)
 
+def calculate_hashsum(path):
+    BUF_SIZE = 65536  # lets read stuff in 64kb chunks!
+    sha1 = hashlib.sha1()
+    with default_storage.open(path, 'rb') as f:
+        while True:
+            data = f.read(BUF_SIZE)
+            if not data:
+                break
+            sha1.update(data)
+    return sha1.hexdigest()
 
 def audio_created_signal(sender, instance, created, **kwargs):
     if created:
         action.send(instance.user, verb='audio_created', action_object=instance)
+
+    if instance.audio_has_changed():
         audio_processing(instance)
+
 
 post_save.connect(audio_created_signal, sender=Audio)

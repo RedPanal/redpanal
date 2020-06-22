@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
+import os
+import shutil
+import tempfile
 import unittest
+
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.files import File
+from django.conf import settings
+from django.core.signals import setting_changed
 
 from .models import Project
 from redpanal.utils.test import InstanceTestMixin
@@ -14,6 +20,10 @@ class ProjectTestCase(TestCase, InstanceTestMixin):
 
     def setUp(self):
         self.user = User.objects.create_user("owner", "e@a.com", "password")
+        self._temp_media = tempfile.mkdtemp()
+
+    def tearDown(self):
+        shutil.rmtree(self._temp_media, ignore_errors=True)
 
     def login(self):
         self.client.login(username="owner", password="password")
@@ -76,3 +86,14 @@ class ProjectTestCase(TestCase, InstanceTestMixin):
         self.assertSetEqual({audio_0, audio_version_1, audio_version_2}, set(project.all_audios()))
         self.assertSetEqual({audio_version_1, audio_version_2}, set(project.audios_from_versions()))
 
+    def test_download_audio_mix(self):
+        with self.settings(MEDIA_ROOT=self._temp_media):
+            john = User.objects.create_user('john', '', '')
+            project = self.create_instance(name="project one", user=john)
+            project.audios.add(self.create_audio(user=john))
+            project.audios.add(self.create_audio(user=john))
+            project.save()
+
+            ids = [audio.id for audio in project.audios.all()]
+            filename = project.mix_audios(ids)
+            self.assertTrue(os.path.exists(os.path.join(settings.MEDIA_ROOT, 'audio_cache', filename)))
