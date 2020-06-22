@@ -90,7 +90,6 @@ class Project(models.Model, BaseModelMixin):
                 else:
                     mix = mix.overlay(a)
             mix.export(path, format="ogg")
-        default_storage.path(os.path.join('audio_cache', filename))
         return filename
 
 
