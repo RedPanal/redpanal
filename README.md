@@ -64,7 +64,11 @@ Nos organizamos colectivamente dentro de este repositorio de github a través de
 Cualquier tipo de colaboración es muy muy bienvenida :) 
 Si queres participar pero no sabes por donde empezar podes mirar el lista do de issues abiertos, además hay una etiqueta good-first-issue (https://github.com/RedPanal/redpanal/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) donde están marcados algunos que pueden ser un buen punto de entrada al proyecto.
 
-## API
+## Licencia
+
+El software está bajo licencia [GNU Affero General Public License V3.0](https://www.gnu.org/licenses/agpl-3.0.html)
+
+## API Docs
 
 RedPanal cuenta con una API HTTP que permite, entre otras cosas, listar y subir audios usando JSON.
 
@@ -117,8 +121,3 @@ Ejemplo para subir un audio desde la terminal usando `cURL`:
       -F "description=This is a test" -F "use_type=track" -F "genre=other" -F "instrument=other" \
       -F 'tags=["untag", "otrotag"]' -F "audio=@/path/to/the/audio.mp3" \
        https://redpanal.org/api/audio/
-
-
-## Licencia
-
-El software está bajo licencia [GNU Affero General Public License V3.0](https://www.gnu.org/licenses/agpl-3.0.html)
