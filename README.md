@@ -56,6 +56,12 @@ En una terminal podés seguir los siguientes pasos, para poder tener el sitio de
 
 6)  Ingresar a 127.0.0.1:8000 desde un browser para ver la versión local del sitio
 
+## Cómo colaborar
+
+Nos organizamos colectivamente dentro de este repositorio de github a través de issues y pull requests. 
+Cualquier tipo de colaboración es muy muy bienvenida :) 
+Si queres participar pero no sabes por donde empezar podes mirar el lista do de issues abiertos, además hay una etiqueta good-first-issue (https://github.com/RedPanal/redpanal/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) donde están marcados algunos que pueden ser un buen punto de entrada al proyecto.
+
 ## API
 
 RedPanal cuenta con una API HTTP que permite, entre otras cosas, listar y subir audios usando JSON.
