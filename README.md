@@ -24,28 +24,29 @@ En una terminal podés seguir los siguientes pasos, para poder tener el sitio de
 
 0) Es necesario que tengas instalados los siguientes programas:
 
-    sudo apt-get install virtualenv git ffmpeg libavcodec-extra
+    `sudo apt-get install virtualenv git ffmpeg libavcodec-extra`
 
 1) Clonar el repositorio:
 
-    git clone https://github.com/RedPanal/redpanal.git
+    `git clone https://github.com/RedPanal/redpanal.git`
 
 2) Crear virtualenv:
 
-    virtualenv --python=python3 redpanal_venv
+    `virtualenv --python=python3 redpanal_venv`
 
 3) Entrar en virtualenv:
 
-    source redpanal_venv/bin/activate
+    `source redpanal_venv/bin/activate`
 
 4) Instalar los requerimientos:
-
+    ```
     cd redpanal
 
     pip install -r requirements.txt
+    ```
 
 5) Entrar al directorio redpanal y ejecutar:
-
+    ```
     cd redpanal
 
     python manage.py makemigrations
@@ -53,8 +54,9 @@ En una terminal podés seguir los siguientes pasos, para poder tener el sitio de
     python manage.py migrate --fake-initial
 
     python manage.py runserver
+    ```
 
-6)  Ingresar a 127.0.0.1:8000 desde un browser para ver la versión local del sitio
+6)  Ingresar a 127.0.0.1:8000 desde un navegador web para ver la versión local del sitio
 
 ## Cómo colaborar
 
