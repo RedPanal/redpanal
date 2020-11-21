@@ -13,7 +13,7 @@
 
 <div class="row">
     <div class="col-lg-7">
-        <iframe class="col-lg-12 border-0 background-gray" src="/live/iframe"></iframe> 
+        <iframe class="col-lg-12 p-0 border-0 h-75 background-gray" src="/live/iframe"></iframe> 
         <div class="col-lg-12">
             <a class="btn btn-light float-right"
                href="{% url 'activity-all' %}">{% trans "more..." %}</a>
@@ -25,7 +25,7 @@
         </h3>
         {# TODO: cambiar {{ signup_url }} que imprime /accounts/signup/?next=%2F y no va a edit profile despues de signup #}
 
-        <div class="form-block mb-3">
+        <div class="col-lg-12 form-block mb-3">
            <h3>{% trans 'Sign in:' %}</h3>
            <form class="login" method="POST" action="{% url 'account_login' %}">
              {% csrf_token %}
