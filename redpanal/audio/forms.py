@@ -11,7 +11,7 @@ from project.models import Project
 from core.forms import TagField
 from redpanal.utils.helpers import get_file_extension
 
-AUDIO_EXTENSIONS = ["mp3", "ogg", "oga", "flac"]
+AUDIO_EXTENSIONS = ["mp3", "ogg", "oga", "flac", "wav"]
 
 class AudioForm(forms.ModelForm):
 
