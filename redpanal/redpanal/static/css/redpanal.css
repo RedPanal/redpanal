@@ -33,6 +33,7 @@ body.bkg {
 
 header {
    margin-bottom: 73px; /* HEADER HEIGHT */
+   background: none repeat scroll 0 0 #28ccea;
 }
 
 .logged-user header {
@@ -118,11 +119,6 @@ header .navbar .brand img{
 }
 
 /* main menu */
-
-header .navbar-inner {
-   line-height: 83px; /* HEADER HEIGHT */
-   padding: 0;
-}
 
 header .navbar .nav {
     float: right;

@@ -7,7 +7,7 @@
  <title>RedPanal | {% block title %}{% endblock %}</title>
  {# bootstrap #}
  <link href="{% static 'css/bootstrap-4.5.min.css' %}" rel="stylesheet">
- <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+ <link href="{% static 'fontawesome/css/all.min.css' %}" rel="stylesheet">
  <link href="{% static 'css/redpanal.css' %}?{{ GIT_SHORT_VERSION }}" rel="stylesheet">
  {# /bootstrap #}
 
@@ -74,46 +74,68 @@
  </script>
 </head>
 <body class="{% if request.user.is_authenticated %}logged-user{% endif %} {% block body_class %}{% endblock %}">
-
 <header id="header">
     <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
         <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-          </a>
-          <a class="brand" href="/"><img src="{% static 'img/redpanal-50.png' %}" alt="logo"></a>
-          <div class="nav-collapse">
-              <form class="header_search" type="get" action="{% url "haystack_search" %}">
-                  <input type="text" name="q">
-                  <button type="submit" class="submit_search"><i class="fa fa-search"></i> <span>{% trans "Search" %}</button>
-              </form>
-            <ul class="nav">
-              {% comment %}<li><a href="{% url "haystack_search" %}"><i class="fa fa-search"></i> {% trans "Search" %}</a></li>{% endcomment %}
-             
-              {% comment %} <li><a href="/">{% trans "Home" %}</a></li>{% endcomment %}
-              {% if request.user.is_authenticated %}
-              {% comment %}<li><a href="{{ request.user.get_absolute_url }}">{% trans "profile"|capfirst %}</a></li>{% endcomment %}
-              {% comment %}<li><a href="{% url 'user-interactions' request.user %}">{% trans "interactions"|capfirst %}</a></li>{% endcomment %}
-              {% comment %}<li><a href="{% url 'user-interactions' request.user %}">@{% trans "user"|capfirst %}</a></li>{% endcomment %}
-              {% endif %}
-            </ul>
-          </div>
-          <div id="login" style="float:right;">
-           <div class="btn-group">
-            {% if request.user.is_authenticated %}
-              <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> {{ request.user }}</a>
-              <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="{% url 'user-profile' %}"><i class="icon-wrench"></i> {% trans "Edit profile" %}</a></li>
-                  <li><a href="{% url 'account_logout' %}?next={{ request.path }}"><i class="icon-arrow-left"></i> {% trans "Log out" %}</a></li>
-                </ul>
-            {% else %}
-              <a class="btn btn-primary" href="{% url "account_login" %}?next={{ request.path }}"><i class="icon-user icon-white"></i> {% trans "Log in" %}</a>
-            {% endif %}
-           </div>
-          </div>
+            <!-- Logo RedPanal-->
+            <a class="brand" href="/">
+                <img src="{% static 'img/redpanal-50.png' %}" alt="logo">
+            </a>
+            
+            <div class="row">
+                <!-- Login and user actions -->
+                <div class="btn-group" role="group">
+                    {% if request.user.is_authenticated %}
+                        <a class="btn btn-primary" href="#">
+                            <i class="icon-user icon-white"></i> {{ request.user }}
+                        </a>
+                        <a class="btn btn-primary dropdown-toggle"
+                           data-toggle="dropdown"
+                           href="#">
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{% url 'user-profile' %}">
+                                    <i class="icon-wrench"></i> {% trans "Edit profile" %}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'account_logout' %}?next={{ request.path }}">
+                                    <i class="icon-arrow-left"></i> {% trans "Log out" %}
+                                </a>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <a class="btn btn-primary" 
+                           href="{% url "account_login" %}?next={{ request.path }}">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <button type="button" class="btn btn-primary">
+                            {% trans "Log in" %}
+                        </button>
+                    {% endif %}
+                </div>
+                <!-- Search form -->
+                <form class="form-inline col-lg-8"
+                      type="get"
+                      action="{% url "haystack_search" %}">
+                    <div class="input-group">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Buscá en RedPanal"
+                               aria-label="Buscá en RedPanal"
+                               name="q">
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary"
+                                    type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-      </div>
     </div>
 </header>
 
