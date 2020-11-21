@@ -56,7 +56,7 @@ En una terminal podés seguir los siguientes pasos, para poder tener el sitio de
     python manage.py runserver
     ```
 
-6)  Ingresar a 127.0.0.1:8000 desde un navegador web para ver la versión local del sitio
+6)  Ingresar a http://127.0.0.1:8000 desde un navegador web para ver la versión local del sitio
 
 ## Cómo colaborar
 
