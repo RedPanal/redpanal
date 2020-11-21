@@ -84,8 +84,8 @@
             
             <div class="row">
                 <!-- Login and user actions -->
-                <div class="btn-group" role="group">
-                    {% if request.user.is_authenticated %}
+                {% if request.user.is_authenticated %}
+                    <div class="btn-group" role="group">
                         <a class="btn btn-primary" href="#">
                             <i class="icon-user icon-white"></i> {{ request.user }}
                         </a>
@@ -106,16 +106,13 @@
                                 </a>
                             </li>
                         </ul>
-                    {% else %}
-                        <a class="btn btn-primary" 
-                           href="{% url "account_login" %}?next={{ request.path }}">
-                            <i class="fas fa-user"></i>
-                        </a>
-                        <button type="button" class="btn btn-primary">
-                            {% trans "Log in" %}
-                        </button>
-                    {% endif %}
-                </div>
+                    </div>
+                {% else %}
+                    <a class="btn btn-primary" 
+                       href="{% url "account_login" %}?next={{ request.path }}">
+                        <i class="fas fa-user pr-2"></i> {% trans "Log in" %}
+                    </a>
+                {% endif %}
                 <!-- Search form -->
                 <form class="form-inline col-lg-8"
                       type="get"
