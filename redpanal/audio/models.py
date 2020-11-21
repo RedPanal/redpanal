@@ -60,6 +60,7 @@ INSTRUMENT_CHOICES = (
     ("strings", _("other strings")),
     ("woodwind", _("woodwind")),
     ("brass", _("brass")),
+    ("violin", _("violin")),
     ("multiple", _("multiple")),
     ("other", _("other")),
 )
