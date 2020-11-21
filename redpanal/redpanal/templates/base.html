@@ -130,10 +130,10 @@
            <li class="discover"><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "My Account" %}</a></li>
            <li class="discover"><a href="/"><i class="fa fa-music"></i> {% trans "My Community" %}</a></li>
          {% endcomment %}
-           <li class="discover profile"><a href="{{ request.user.get_absolute_url }}" title="{% trans "My Profile" %}">{% avatar request.user 16 %}</a></li>
-           <li class="discover"><a href="/live/" title="{% trans 'See everything that is happening at RedPanal.org' %}"><i class="fa fa-music"></i> {% trans "The RedpaWall" %}</a></li>
-           <li class="discover"><a href="/" title="{% trans 'What other users are doing?' %}"><i class="fa fa-user"></i> {% trans "My Community" %}</a></li>
-           <li class="discover"><a href="{% url 'user-interactions' request.user %}" title="{% trans 'Interactions with other users' %}"><i class="fa fa-comments-o"></i> {% trans "My Interactions" %}</a></li>
+           <li class="discover"><a href="{{ request.user.get_absolute_url }}" title="{% trans 'Mom look at me' %}"><i class="fa fa-user"></i> {% trans "Profile" %}</a></li>
+           <li class="discover"><a href="/live/" title="{% trans 'RedPanal Party' %}"><i class="fa fa-play"></i> {% trans "RedPanal" %}</a></li>
+           <li class="discover"><a href="/" title="{% trans 'What is my gang doing?' %}"><i class="fa fa-users"></i> {% trans "My Community" %}</a></li>
+           <li class="discover"><a href="{% url 'user-interactions' request.user %}" title="{% trans 'Buzzing around' %}"><i class="fa fa-bullhorn"></i> {% trans "My Activations" %}</a></li>
 
            <li class="popup action"><a href="#" class="modal-create-message" title="{% trans "Post message in your timeline" %}"><i class="fa fa-edit"></i></a></li>
            <li class="action"><a href="{% url "project-create" %}" title="{% trans "Create project" %}"><i class="fa fa-folder-open"></i> {% trans "Create Project" %}</a></li>
@@ -153,7 +153,7 @@
    <div class="wrapper">
 {% block footer %}
       <p class="note">
-         {% blocktrans %}This is Free Software licensed under <a href="http://www.gnu.org/licenses/agpl.txt" >AGPL</a>. Get <a href="https://github.com/RedPanal/redpanal">the code!</a>. Current version is <a href="https://github.com/RedPanal/redpanal/commit/{{ GIT_SHORT_VERSION }}">{{ GIT_SHORT_VERSION }}</a>.{% endblocktrans %}<br />
+         {% blocktrans %}RedPanal fights for a liberating art that helps build a world for everyone. This is Free Software licensed under <a href="http://www.gnu.org/licenses/agpl.txt" >AGPL</a>. Get <a href="https://github.com/RedPanal/redpanal">the code!</a>. Current version is <a href="https://github.com/RedPanal/redpanal/commit/{{ GIT_SHORT_VERSION }}">{{ GIT_SHORT_VERSION }}</a>.{% endblocktrans %}<br />
          {% trans 'Hosted by: <a href="http://www.codigosur.org">Código Sur</a>' %}
       </p>
       <ul class="nav">
