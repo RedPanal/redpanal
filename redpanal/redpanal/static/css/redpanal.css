@@ -1,6 +1,10 @@
-
 html, body {
   height: 100%;
+}
+
+
+.background-gray {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.4);
 }
 
 
@@ -31,8 +35,8 @@ body.bkg {
   /* http://css-tricks.com/perfect-full-page-background-image/ */
 }
 
-header {
-   margin-bottom: 73px; /* HEADER HEIGHT */
+#header {
+   height: 83px; /* HEADER HEIGHT */
    background: none repeat scroll 0 0 #28ccea;
 }
 
@@ -151,16 +155,17 @@ header #login .btn-group {
 h3.sign-up {
     color: #FFFFFF;
     float: right;
-    margin: 20px 0 40px;
+    margin: 0 0 40px 0;
     text-align: center;
+    width: 100%;
 }
 
 h3.sign-up a {
-    color: #FFFFFF;
     display: block;
     padding: 15px 30px;
-    width: 310px;
-
+    color: #FFFFFF;
+    width: 100%;
+    height: 100%;
     background-color: #28CCEA;
     transition: background-color .25s ease-in-out;
 }
@@ -176,10 +181,7 @@ h3.sign-up a:hover {
     clear: both;
     color: #263E4E;
     float: right;
-    margin: 0 0 40px;
-    padding: 16px 30px 30px;
-    width: 310px;
-
+    padding: 2em 4em 4em;
     opacity: 0.80;
     transition: opacity .25s ease-in-out;
 }
@@ -718,7 +720,6 @@ h3.main-title.search-title {
 p.expl {
     color: #BBBBBB;
     font-style: italic;
-    margin: 0 0 30px;
 }
 
 .comments-title {
@@ -2034,8 +2035,6 @@ p.user-website i {
 #footer {
     background-color: #263E4E;
     color: #859CAB; /* #556e7e #9cb7c8 */
-    margin-top: 40px;
-    padding: 10px 0;
     width: 100%;
 }
 
@@ -2238,8 +2237,6 @@ input[type="text"].search_input { /* search input in search page */
     border: medium none;
     height: 843px;
     padding: 0 10px;
-    top: 153px;
-    width: 450px;
 }
 
 html.all-activities-iframe {

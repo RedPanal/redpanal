@@ -73,59 +73,59 @@
  });
  </script>
 </head>
-<body class="{% if request.user.is_authenticated %}logged-user{% endif %} {% block body_class %}{% endblock %}">
-<header id="header">
-    <div class="navbar navbar-fixed-top">
-        <div class="container">
-            <!-- Logo RedPanal-->
-            <a class="brand" href="/">
-                <img src="{% static 'img/redpanal-50.png' %}" alt="logo">
-            </a>
-            
-            <div class="row">
-                <!-- Login and user actions -->
-                {% if request.user.is_authenticated %}
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="icon-user icon-white pr-2"></i> {{ request.user }}
+<body class="d-flex flex-column {% if request.user.is_authenticated %}logged-user{% endif %} {% block body_class %}{% endblock %}">
+
+
+<div id="header" class="navbar navbar-fixed-top">
+    <div class="container">
+        <!-- Logo RedPanal-->
+        <a class="brand" href="/">
+            <img src="{% static 'img/redpanal-50.png' %}" alt="logo">
+        </a>
+        
+        <div class="row">
+            <!-- Login and user actions -->
+            {% if request.user.is_authenticated %}
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon-user icon-white pr-2"></i> {{ request.user }}
+                    </button>
+                    <div class="dropdown-menu"  aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="{% url 'user-profile' %}">
+                            <i class="fas fa-pencil-alt"></i> {% trans "Edit profile" %}
+                        </a>
+                        <a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
+                            <i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <a class="btn btn-primary" 
+                   href="{% url "account_login" %}?next={{ request.path }}">
+                    <i class="fas fa-user pr-2"></i> {% trans "Log in" %}
+                </a>
+            {% endif %}
+            <!-- Search form -->
+            <form class="form-inline col-lg-8"
+                  type="get"
+                  action="{% url "haystack_search" %}">
+                <div class="input-group">
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Buscá en RedPanal"
+                           aria-label="Buscá en RedPanal"
+                           name="q">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary"
+                                type="submit">
+                            <i class="fa fa-search"></i>
                         </button>
-                        <div class="dropdown-menu"  aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="{% url 'user-profile' %}">
-                                <i class="fas fa-pencil-alt"></i> {% trans "Edit profile" %}
-                            </a>
-                            <a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
-                                <i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
-                            </a>
-                        </div>
                     </div>
-                {% else %}
-                    <a class="btn btn-primary" 
-                       href="{% url "account_login" %}?next={{ request.path }}">
-                        <i class="fas fa-user pr-2"></i> {% trans "Log in" %}
-                    </a>
-                {% endif %}
-                <!-- Search form -->
-                <form class="form-inline col-lg-8"
-                      type="get"
-                      action="{% url "haystack_search" %}">
-                    <div class="input-group">
-                        <input type="text"
-                               class="form-control"
-                               placeholder="Buscá en RedPanal"
-                               aria-label="Buscá en RedPanal"
-                               name="q">
-                        <div class="input-group-append">
-                            <button class="btn btn-secondary"
-                                    type="submit">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
-</header>
+</div>
 
 {% block background %}
 {% endblock %}
@@ -155,12 +155,12 @@
    {% endif %}
 {% endblock %}
 
-<div id="content" class="container">         
+<div class="container mt-4">
     {% block content %}
     {% endblock %}
 </div>
 
-<div id="footer" class="navbar">
+<div id="footer" class="navbar mt-auto">
     <div class="container">
         {% block footer %}
             <p class="col-lg-8">
