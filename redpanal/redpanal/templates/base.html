@@ -85,27 +85,18 @@
             <div class="row">
                 <!-- Login and user actions -->
                 {% if request.user.is_authenticated %}
-                    <div class="btn-group" role="group">
-                        <a class="btn btn-primary" href="#">
-                            <i class="icon-user icon-white"></i> {{ request.user }}
-                        </a>
-                        <a class="btn btn-primary dropdown-toggle"
-                           data-toggle="dropdown"
-                           href="#">
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="{% url 'user-profile' %}">
-                                    <i class="icon-wrench"></i> {% trans "Edit profile" %}
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{% url 'account_logout' %}?next={{ request.path }}">
-                                    <i class="icon-arrow-left"></i> {% trans "Log out" %}
-                                </a>
-                            </li>
-                        </ul>
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="icon-user icon-white pr-2"></i> {{ request.user }}
+                        </button>
+                        <div class="dropdown-menu"  aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="{% url 'user-profile' %}">
+                                <i class="fas fa-pencil-alt"></i> {% trans "Edit profile" %}
+                            </a>
+                            <a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
+                                <i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
+                            </a>
+                        </div>
                     </div>
                 {% else %}
                     <a class="btn btn-primary" 
@@ -136,7 +127,8 @@
     </div>
 </header>
 
-{% block background %}{% endblock %}
+{% block background %}
+{% endblock %}
 
 {# TODO controlar de una forma mas elegante la paricion de breadcrumb #}
 {% block breadcrumb %}
@@ -168,20 +160,30 @@
     {% endblock %}
 </div>
 
-<div id="footer" class="container">
-   <div class="wrapper">
-{% block footer %}
-      <p class="note">
-         {% blocktrans %}This is Free Software licensed under <a href="http://www.gnu.org/licenses/agpl.txt" >AGPL</a>. Get <a href="https://github.com/RedPanal/redpanal">the code!</a>. Current version is <a href="https://github.com/RedPanal/redpanal/commit/{{ GIT_SHORT_VERSION }}">{{ GIT_SHORT_VERSION }}</a>.{% endblocktrans %}<br />
-         {% trans 'Hosted by: <a href="http://www.codigosur.org">Código Sur</a>' %}
-      </p>
-      <ul class="nav">
-            <li><a href="http://blog.redpanal.org/" title="{% trans 'The Official RedPanal Blog!' %}">{% trans "Blog" %}</a></li>
-            <li><a href="http://twitter.com/redpanal" ><i class="fa fa-twitter-square big-fa-icon"></i><span class="hide-text">Twitter</span></a></li>
-            <li><a href="https://www.facebook.com/pages/RedPanal/10150092707335128?fref=ts"><i class="fa fa-facebook-square big-fa-icon"></i><span class="hide-text">Facebook</span></a></li>
-      </ul>
-{% endblock %}
-   </div>
+<div id="footer" class="navbar">
+    <div class="container">
+        {% block footer %}
+            <p class="col-lg-8">
+                {% blocktrans %}
+                This is Free Software licensed under <a href="http://www.gnu.org/licenses/agpl.txt" >AGPL</a>.<br /> 
+                  Get <a href="https://github.com/RedPanal/redpanal">the code!</a>.<br />
+                  Current version is <a href="https://github.com/RedPanal/redpanal/commit/{{ GIT_SHORT_VERSION }}">{{ GIT_SHORT_VERSION }}</a>.
+                {% endblocktrans %}
+                {% trans 'Hosted by: <a href="http://www.codigosur.org">Código Sur</a>' %}
+            </p>
+            <div class="col-lg-4">
+                <span class="mr-2">
+                    <a href="http://blog.redpanal.org/" title="{% trans 'The Official RedPanal Blog!' %}">{% trans "Blog" %}</a>
+                </span>
+                <span class="mr-2">
+                    <a href="http://twitter.com/redpanal" ><i class="fab fa-twitter-square pr-1"></i><span class="hide-text">Twitter</span></a>
+                </span>
+                <span class="mr-2">
+                    <a href="https://www.facebook.com/pages/RedPanal/10150092707335128?fref=ts"><i class="fab fa-facebook-square pr-1"></i><span class="hide-text">Facebook</span></a>
+                </span>
+            </div>
+        {% endblock %}
+    </div>
 </div>
 
 {% block modal_popup %}
