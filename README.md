@@ -93,7 +93,12 @@ de tipo `loop` y que continen en tag `#awesome`.
 
 ### Detalle de audio
 
-`GET /api/audio/{id}/`: Información de un audio con un `id` específico.
+Se puede acceder de dos formas al detalle de un audio:
+
+Usando el id: `GET /api/audio/{id}/`: Información de un audio con un `id` específico.
+
+Usando el slug: `GET /api/audio/by-slug/{slug}/`. El slug es el nombre que aparece en la URL,
+por ejemplo en este audio https://redpanal.org/a/guitarras-y-congas/ el slug es `guitarras-y-congas`.
 
 ### Crear audio (subir)
 
