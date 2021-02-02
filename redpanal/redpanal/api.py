@@ -69,9 +69,17 @@ class AudioList(generics.ListAPIView):
 
         return queryset.order_by('-created_at')
 
+
+class AudioBySlugView(generics.RetrieveAPIView):
+    queryset = Audio.objects.all()
+    lookup_field = 'slug'
+    serializer_class = AudioSerializer
+
+
 api_router = routers.DefaultRouter()
 api_router.register(r'audio', AudioViewSet, basename='audio-api')
 
 api_urls = [
     url('^audio/list/$', AudioList.as_view()),
+    url('^audio/by-slug/(?P<slug>[\w-]+)/?$', AudioBySlugView.as_view()),
 ] + api_router.urls
