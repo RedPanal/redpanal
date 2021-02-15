@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-26 18:19-0300\n"
+"POT-Creation-Date: 2021-02-15 16:56-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: forms.py:9
+msgid "Trivia, write the incomplete word: "
+msgstr ""
 
 #: templates/account/login.html:6
 msgid "Sign In"
@@ -147,19 +151,23 @@ msgid "Log in"
 msgstr ""
 
 #: templates/base.html:139
-msgid "My Profile"
+msgid "Mom look at me"
+msgstr ""
+
+#: templates/base.html:139
+msgid "Profile"
 msgstr ""
 
 #: templates/base.html:140
-msgid "See everything that is happening at RedPanal.org"
+msgid "RedPanal Party"
 msgstr ""
 
 #: templates/base.html:140
-msgid "The RedpaWall"
+msgid "RedPanal"
 msgstr ""
 
 #: templates/base.html:141
-msgid "What other users are doing?"
+msgid "What is my gang doing?"
 msgstr ""
 
 #: templates/base.html:141 templates/index.html:4 templates/index.html:33
@@ -167,11 +175,11 @@ msgid "My Community"
 msgstr ""
 
 #: templates/base.html:142
-msgid "Interactions with other users"
+msgid "Buzzing around"
 msgstr ""
 
 #: templates/base.html:142
-msgid "My Interactions"
+msgid "My Activations"
 msgstr ""
 
 #: templates/base.html:144
@@ -197,6 +205,7 @@ msgstr ""
 #: templates/base.html:162
 #, python-format
 msgid ""
+"RedPanal fights for a liberating art that helps build a world for everyone. "
 "This is Free Software licensed under <a href=\"http://www.gnu.org/licenses/"
 "agpl.txt\" >AGPL</a>. Get <a href=\"https://github.com/RedPanal/redpanal"
 "\">the code!</a>. Current version is <a href=\"https://github.com/RedPanal/"
@@ -220,11 +229,11 @@ msgid "Background image:"
 msgstr ""
 
 #: templates/discover-items-menu.html:2
-msgid "Discover more users"
+msgid "New artists to meet"
 msgstr ""
 
 #: templates/discover-items-menu.html:3
-msgid "Discover more projects"
+msgid "Sound art works to collaborate on"
 msgstr ""
 
 #: templates/index.html:34

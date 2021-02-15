@@ -2,24 +2,28 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 # Translators:
 # Santiago Piccinini <spiccinini@codigosur.org>, 2020
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-26 18:19-0300\n"
+"POT-Creation-Date: 2021-02-15 16:56-0300\n"
 "PO-Revision-Date: 2020-05-26 21:20+0000\n"
 "Last-Translator: Santiago Piccinini <spiccinini@codigosur.org>, 2020\n"
 "Language-Team: Spanish (https://www.transifex.com/redpanal/teams/6454/es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: forms.py:9
+msgid "Trivia, write the incomplete word: "
+msgstr "Trivia, escribe la palabra incompleta: "
 
 #: templates/account/login.html:6
 msgid "Sign In"
@@ -152,32 +156,36 @@ msgid "Log in"
 msgstr "Iniciar sesión"
 
 #: templates/base.html:139
-msgid "My Profile"
+msgid "Mom look at me"
+msgstr "Mirá Mamá"
+
+#: templates/base.html:139
+msgid "Profile"
 msgstr "Mi perfil"
 
 #: templates/base.html:140
-msgid "See everything that is happening at RedPanal.org"
-msgstr "Ver todo lo que está pasando en RedPanal.org"
+msgid "RedPanal Party"
+msgstr "RedPanal Party"
 
 #: templates/base.html:140
-msgid "The RedpaWall"
-msgstr "Muro panalero"
+msgid "RedPanal"
+msgstr "RedPanal"
 
 #: templates/base.html:141
-msgid "What other users are doing?"
-msgstr "Qué estan haciendo otres?"
+msgid "What is my gang doing?"
+msgstr "Qué hace mi banda?"
 
 #: templates/base.html:141 templates/index.html:4 templates/index.html:33
 msgid "My Community"
 msgstr "Mi comunidad"
 
 #: templates/base.html:142
-msgid "Interactions with other users"
-msgstr "Interacciones con otres"
+msgid "Buzzing around"
+msgstr ""
 
 #: templates/base.html:142
-msgid "My Interactions"
-msgstr "Mis Interacciones"
+msgid "My Activations"
+msgstr "Mis Activaciones"
 
 #: templates/base.html:144
 msgid "Post message in your timeline"
@@ -200,19 +208,18 @@ msgid "Upload audio"
 msgstr "Subir audio"
 
 #: templates/base.html:162
-#, python-format
 msgid ""
-"This is Free Software licensed under <a "
-"href=\"http://www.gnu.org/licenses/agpl.txt\" >AGPL</a>. Get <a "
-"href=\"https://github.com/RedPanal/redpanal\">the code!</a>. Current version"
-" is <a "
-"href=\"https://github.com/RedPanal/redpanal/commit/%(GIT_SHORT_VERSION)s\">%(GIT_SHORT_VERSION)s</a>."
+"RedPanal fights for a liberating art that helps build a world for everyone. "
+"This is Free Software licensed under <a href=\"http://www.gnu.org/licenses/"
+"agpl.txt\" >AGPL</a>. Get <a href=\"https://github.com/RedPanal/redpanal"
+"\">the code!</a>. Current version is <a href=\"https://github.com/RedPanal/"
+"redpanal/commit/%(GIT_SHORT_VERSION)s\">%(GIT_SHORT_VERSION)s</a>."
 msgstr ""
-"Software Libre bajo licencia <a "
-"href=\"http://www.gnu.org/licenses/agpl.txt\" >AGPL</a>. El código está <a "
-"href=\"https://github.com/RedPanal/redpanal\">acá!</a>. La versión actual es"
-" <a "
-"href=\"https://github.com/RedPanal/redpanal/commit/%(GIT_SHORT_VERSION)s\">%(GIT_SHORT_VERSION)s</a>."
+"RedPanal lucha por un arte liberador que ayude a construir un mundo para todos. "
+"Software Libre bajo licencia <a href=\"http://www.gnu.org/licenses/agpl.txt"
+"\" >AGPL</a>. El código está <a href=\"https://github.com/RedPanal/redpanal"
+"\">acá!</a>. La versión actual es <a href=\"https://github.com/RedPanal/"
+"redpanal/commit/%(GIT_SHORT_VERSION)s\">%(GIT_SHORT_VERSION)s</a>."
 
 #: templates/base.html:163
 msgid "Hosted by: <a href=\"http://www.codigosur.org\">Código Sur</a>"
@@ -231,12 +238,12 @@ msgid "Background image:"
 msgstr "Imágen de fondo:"
 
 #: templates/discover-items-menu.html:2
-msgid "Discover more users"
-msgstr "Descubrir mas usuarios"
+msgid "New artists to meet"
+msgstr ""
 
 #: templates/discover-items-menu.html:3
-msgid "Discover more projects"
-msgstr "Descubrir mas proyectos"
+msgid "Sound art works to collaborate on"
+msgstr ""
 
 #: templates/index.html:34
 msgid "My activities and the users that I follow"
