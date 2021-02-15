@@ -75,6 +75,8 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
+ACCOUNT_FORMS = {'signup': 'redpanal.forms.CustomSignupForm'}
+
 ROOT_URLCONF = 'redpanal.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
