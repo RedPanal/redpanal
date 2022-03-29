@@ -9,7 +9,7 @@ manera colaborativa. La URL de nuestro sitio es [RedPanal.org](http://redpanal.o
 
 ## Workflow
 
-Para colaborar podés instalarte el sitio en tu computadora, siguiendo los pasos de instalación descriptos mas abajo,
+Para colaborar podés instalarte el sitio en tu computadora, siguiendo los pasos de instalación descriptos más abajo,
 luego podés hacer las modificaciones y enviarlas para que las integremos en la plataforma on-line.
 
 Para enviarlas podés hacer un pull-request, el cual será probado y subido on-line en la próxima release del sitio.
@@ -62,7 +62,7 @@ En una terminal podés seguir los siguientes pasos, para poder tener el sitio de
 
 Nos organizamos colectivamente dentro de este repositorio de github a través de issues y pull requests. 
 Cualquier tipo de colaboración es muy muy bienvenida :) 
-Si queres participar pero no sabes por donde empezar podes mirar el lista do de issues abiertos, además hay una etiqueta good-first-issue (https://github.com/RedPanal/redpanal/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) donde están marcados algunos que pueden ser un buen punto de entrada al proyecto.
+Si querés participar pero no sabés por donde empezar podés mirar el listado de issues abiertos, además hay una etiqueta good-first-issue (https://github.com/RedPanal/redpanal/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) donde están marcados algunos que pueden ser un buen punto de entrada al proyecto.
 
 ## Licencia
 
@@ -77,7 +77,7 @@ RedPanal cuenta con una API HTTP que permite, entre otras cosas, listar y subir 
 * `GET /api/audio/list/`: Lista todos los audios.
 
 Parámetros de la query permitidos: [user, genre, instrument, use_type, tag, positioned, page, page_size]
-El resultado está paginado, por defecto se muestra la primer página, equivalente a `?page=1&page_size=100`.
+El resultado está paginado, por defecto se muestra la primera página, equivalente a `?page=1&page_size=100`.
 
 Ejemplos:
 
@@ -86,7 +86,7 @@ Ejemplos:
 * `GET /api/audio/list/?page=1&page_size=250`: Primera página, 250 resultados por página.
 * `GET /api/audio/list/?genre=rock`: Lista los audios de rock
 * `GET /api/audio/list/?genre=rock&use_type=loop&tag=awesome`: Lista los audios de `rock`, que son
-de tipo `loop` y que continen en tag `#awesome`.
+de tipo `loop` y que contienen en tag `#awesome`.
 * `GET /api/audio/list/?tag=metal&tag=picante`: Lista los audios que tienen los tags `#metal` y `#picante`.
 * `GET /api/audio/list/?positioned`: Lista de audios que están geo-localizados.
 
@@ -118,7 +118,7 @@ POST data:
 * position_lat
 * position_long
 
-Para crear un audio se debe estar logeado usando una sesión (con cookies) o usando Basic auth.
+Para crear un audio se debe estar logueado usando una sesión (con cookies) o usando Basic auth.
 
 Ejemplo para subir un audio desde la terminal usando `cURL`:
 
