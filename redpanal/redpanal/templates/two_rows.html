@@ -62,7 +62,7 @@
 
 {% block content %}
 <div class="row">
-  <div class="main span7">
+  <div class="col-lg-7">
 
     {% block post_message %}
       {% if request.user.is_authenticated %}
@@ -75,7 +75,7 @@
       {% block left_row %}{% endblock %}
   </div>
 
-  <div class="sidebar span5">
+  <div class="col-lg-5">
       {% block right_row %}{% endblock %}
   </div>
 </div>

@@ -1,20 +1,20 @@
 {% load staticfiles avatar_tags i18n %}
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
  <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
  <title>RedPanal | {% block title %}{% endblock %}</title>
  {# bootstrap #}
- <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
- <link href="{% static 'css/bootstrap-custom.css' %}" rel="stylesheet">
- <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+ <link href="{% static 'css/bootstrap-4.5.min.css' %}" rel="stylesheet">
+ <link href="{% static 'fontawesome/css/all.min.css' %}" rel="stylesheet">
  <link href="{% static 'css/redpanal.css' %}?{{ GIT_SHORT_VERSION }}" rel="stylesheet">
  {# /bootstrap #}
 
  <link href="{% static 'mediaelements/mediaelementplayer.css' %}" rel="stylesheet">
  <link href="{% static 'mediaelements/mejs-skins.css' %}" rel="stylesheet">
  <script src="{% static 'js/jquery.min.js' %}"></script>
- <script src="{% static 'js/bootstrap.min.js' %}"></script>
+ <script src="{% static 'js/bootstrap-4.5.bundle.min.js' %}"></script>
  <script src="{% static 'js/redpanal.js' %}"></script>
  <script src="{% static 'mediaelements/mediaelement-and-player.js' %}"></script>
 
@@ -73,51 +73,62 @@
  });
  </script>
 </head>
-<body class="{% if request.user.is_authenticated %}logged-user{% endif %} {% block body_class %}{% endblock %}">
+<body class="d-flex flex-column {% if request.user.is_authenticated %}logged-user{% endif %} {% block body_class %}{% endblock %}">
 
-<header id="header">
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-          </a>
-          <a class="brand" href="/"><img src="{% static 'img/redpanal-50.png' %}" alt="logo"></a>
-          <div class="nav-collapse">
-              <form class="header_search" type="get" action="{% url "haystack_search" %}">
-                  <input type="text" name="q">
-                  <button type="submit" class="submit_search"><i class="fa fa-search"></i> <span>{% trans "Search" %}</button>
-              </form>
-            <ul class="nav">
-              {% comment %}<li><a href="{% url "haystack_search" %}"><i class="fa fa-search"></i> {% trans "Search" %}</a></li>{% endcomment %}
-             
-              {% comment %} <li><a href="/">{% trans "Home" %}</a></li>{% endcomment %}
-              {% if request.user.is_authenticated %}
-              {% comment %}<li><a href="{{ request.user.get_absolute_url }}">{% trans "profile"|capfirst %}</a></li>{% endcomment %}
-              {% comment %}<li><a href="{% url 'user-interactions' request.user %}">{% trans "interactions"|capfirst %}</a></li>{% endcomment %}
-              {% comment %}<li><a href="{% url 'user-interactions' request.user %}">@{% trans "user"|capfirst %}</a></li>{% endcomment %}
-              {% endif %}
-            </ul>
-          </div>
-          <div id="login" style="float:right;">
-           <div class="btn-group">
+
+<div id="header" class="navbar navbar-fixed-top">
+    <div class="container">
+        <!-- Logo RedPanal-->
+        <a class="brand" href="/">
+            <img src="{% static 'img/redpanal-50.png' %}" alt="logo">
+        </a>
+        
+        <div class="row">
+            <!-- Login and user actions -->
             {% if request.user.is_authenticated %}
-              <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> {{ request.user }}</a>
-              <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="{% url 'user-profile' %}"><i class="icon-wrench"></i> {% trans "Edit profile" %}</a></li>
-                  <li><a href="{% url 'account_logout' %}?next={{ request.path }}"><i class="icon-arrow-left"></i> {% trans "Log out" %}</a></li>
-                </ul>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon-user icon-white pr-2"></i> {{ request.user }}
+                    </button>
+                    <div class="dropdown-menu"  aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="{% url 'user-profile' %}">
+                            <i class="fas fa-pencil-alt"></i> {% trans "Edit profile" %}
+                        </a>
+                        <a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
+                            <i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
+                        </a>
+                    </div>
+                </div>
             {% else %}
-              <a class="btn btn-primary" href="{% url "account_login" %}?next={{ request.path }}"><i class="icon-user icon-white"></i> {% trans "Log in" %}</a>
+                <a class="btn btn-primary" 
+                   href="{% url "account_login" %}?next={{ request.path }}">
+                    <i class="fas fa-user pr-2"></i> {% trans "Log in" %}
+                </a>
             {% endif %}
-           </div>
-          </div>
+            <!-- Search form -->
+            <form class="form-inline col-lg-8"
+                  type="get"
+                  action="{% url "haystack_search" %}">
+                <div class="input-group">
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Buscá en RedPanal"
+                           aria-label="Buscá en RedPanal"
+                           name="q">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary"
+                                type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-      </div>
     </div>
-</header>
+</div>
 
-{% block background %}{% endblock %}
+{% block background %}
+{% endblock %}
 
 {# TODO controlar de una forma mas elegante la paricion de breadcrumb #}
 {% block breadcrumb %}
@@ -144,25 +155,35 @@
    {% endif %}
 {% endblock %}
 
-<div id="content" class="container">         
+<div class="container mt-4">
     {% block content %}
     {% endblock %}
 </div>
 
-<div id="footer" class="container">
-   <div class="wrapper">
-{% block footer %}
-      <p class="note">
-         {% blocktrans %}RedPanal fights for a liberating art that helps build a world for everyone. This is Free Software licensed under <a href="http://www.gnu.org/licenses/agpl.txt" >AGPL</a>. Get <a href="https://github.com/RedPanal/redpanal">the code!</a>. Current version is <a href="https://github.com/RedPanal/redpanal/commit/{{ GIT_SHORT_VERSION }}">{{ GIT_SHORT_VERSION }}</a>.{% endblocktrans %}<br />
-         {% trans 'Hosted by: <a href="http://www.codigosur.org">Código Sur</a>' %}
-      </p>
-      <ul class="nav">
-            <li><a href="http://blog.redpanal.org/" title="{% trans 'The Official RedPanal Blog!' %}">{% trans "Blog" %}</a></li>
-            <li><a href="http://twitter.com/redpanal" ><i class="fa fa-twitter-square big-fa-icon"></i><span class="hide-text">Twitter</span></a></li>
-            <li><a href="https://www.facebook.com/pages/RedPanal/10150092707335128?fref=ts"><i class="fa fa-facebook-square big-fa-icon"></i><span class="hide-text">Facebook</span></a></li>
-      </ul>
-{% endblock %}
-   </div>
+<div id="footer" class="navbar mt-auto">
+    <div class="container">
+        {% block footer %}
+            <p class="col-lg-8">
+                {% blocktrans %}
+                This is Free Software licensed under <a href="http://www.gnu.org/licenses/agpl.txt" >AGPL</a>.<br /> 
+                  Get <a href="https://github.com/RedPanal/redpanal">the code!</a>.<br />
+                  Current version is <a href="https://github.com/RedPanal/redpanal/commit/{{ GIT_SHORT_VERSION }}">{{ GIT_SHORT_VERSION }}</a>.
+                {% endblocktrans %}
+                {% trans 'Hosted by: <a href="http://www.codigosur.org">Código Sur</a>' %}
+            </p>
+            <div class="col-lg-4">
+                <span class="mr-2">
+                    <a href="http://blog.redpanal.org/" title="{% trans 'The Official RedPanal Blog!' %}">{% trans "Blog" %}</a>
+                </span>
+                <span class="mr-2">
+                    <a href="http://twitter.com/redpanal" ><i class="fab fa-twitter-square pr-1"></i><span class="hide-text">Twitter</span></a>
+                </span>
+                <span class="mr-2">
+                    <a href="https://www.facebook.com/pages/RedPanal/10150092707335128?fref=ts"><i class="fab fa-facebook-square pr-1"></i><span class="hide-text">Facebook</span></a>
+                </span>
+            </div>
+        {% endblock %}
+    </div>
 </div>
 
 {% block modal_popup %}

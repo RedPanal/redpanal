@@ -11,28 +11,35 @@
 
 {% block content %}
 
-<div id="iframe-top"><p class="expl">{% trans "Last activities in RedPanal" %}</p></div>
- 
-<iframe id="login-iframe" class="" src="/live/iframe"></iframe> 
+<div class="row">
+    <div class="col-lg-7">
+        <iframe class="col-lg-12 p-0 border-0 h-75 background-gray" src="/live/iframe"></iframe> 
+        <div class="col-lg-12">
+            <a class="btn btn-light float-right"
+               href="{% url 'activity-all' %}">{% trans "more..." %}</a>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <h3 class="sign-up">
+            <a href="/accounts/signup/">{% trans "Sign up for RedPanal" %}</a>
+        </h3>
+        {# TODO: cambiar {{ signup_url }} que imprime /accounts/signup/?next=%2F y no va a edit profile despues de signup #}
 
-<div id="iframe-bottom"><span class="more"><a href="{% url 'activity-all' %}">{% trans "more..." %}</a></span></div>
-
-<h3 class="sign-up"><a href="/accounts/signup/">{% trans "Sign up for RedPanal" %}</a></h3>
-{# TODO: cambiar {{ signup_url }} que imprime /accounts/signup/?next=%2F y no va a edit profile despues de signup #}
-
-<div class="form-block">
-   <h3>{% trans 'Sign in:' %}</h3>
-   <form class="login" method="POST" action="{% url 'account_login' %}">
-     {% csrf_token %}
-     {{ form.as_p }}
-     {% if redirect_field_value %}
-     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-     {% endif %}
-     <p class="action-grp">
-        <button class="btn btn-primary" type="submit">{% trans "Sign in" %}</button>
-        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-     </p>
-   </form>
+        <div class="col-lg-12 form-block mb-3">
+           <h3>{% trans 'Sign in:' %}</h3>
+           <form class="login" method="POST" action="{% url 'account_login' %}">
+             {% csrf_token %}
+             {{ form.as_p }}
+             {% if redirect_field_value %}
+             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+             {% endif %}
+             <p class="action-grp">
+                <button class="btn btn-primary" type="submit">{% trans "Sign in" %}</button>
+                <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+             </p>
+           </form>
+        </div>
+    </div>
 </div>
 
 {% if socialaccount.providers  %}
