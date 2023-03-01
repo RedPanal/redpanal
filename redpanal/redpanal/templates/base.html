@@ -74,7 +74,7 @@
  </script>
 </head>
 <body class="d-flex flex-column {% if request.user.is_authenticated %}logged-user{% endif %} {% block body_class %}{% endblock %}">
-
+<!-- user agent: {{ request.META.HTTP_USER_AGENT }} -->
 
 <div id="header" class="navbar navbar-fixed-top">
     <div class="container">
@@ -85,10 +85,11 @@
         
         <div class="row">
             <!-- Login and user actions -->
+				{% block top_user_menu %}
             {% if request.user.is_authenticated %}
-                <div class="dropdown">
+                <div class="dropdown top-user-menu">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="icon-user icon-white pr-2"></i> {{ request.user }}
+                        <i class="icon-user icon-white pr-2"></i> <span class="btn-text">{{ request.user }}</span>
                     </button>
                     <div class="dropdown-menu"  aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="{% url 'user-profile' %}">
@@ -100,11 +101,15 @@
                     </div>
                 </div>
             {% else %}
-                <a class="btn btn-primary" 
+					 <div class="top-user-menu">
+                   <a class="btn btn-primary" 
                    href="{% url "account_login" %}?next={{ request.path }}">
-                    <i class="fas fa-user pr-2"></i> {% trans "Log in" %}
-                </a>
+                      <i class="fas fa-user pr-2"></i> <span class="btn-text">{% trans "Log in" %}</span>
+                  </a>
+                </div>
             {% endif %}
+				{% endblock %}
+				{% block top_search_form %}
             <!-- Search form -->
             <form class="form-inline col-lg-8"
                   type="get"
@@ -123,6 +128,7 @@
                     </div>
                 </div>
             </form>
+            {% endblock %}
         </div>
     </div>
 </div>

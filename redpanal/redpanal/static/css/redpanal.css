@@ -181,7 +181,7 @@ h3.sign-up a:hover {
     background-color: #F0FEC0;
     clear: both;
     color: #263E4E;
-    float: right;
+    /* float: right; */
     padding: 2em 4em 4em;
     opacity: 0.80;
     transition: opacity .25s ease-in-out;
@@ -219,20 +219,22 @@ h3.sign-up a:hover {
 .form-block form p {
     clear: both;
     margin: 0 0 16px 0;
-    text-align: right;
+    /* text-align: right; */
 }
 
 
 .form-block form p label {
     font-size: 15px;
     margin: 0;
-    text-align: left;
+    /* text-align: left; */
+    display: block;
 }
 
 .form-block form p input {
     margin: 0;
     padding: 4px;
-    width: 300px;
+    width: 100%;
+    max-width: 600px;
 }
 
 .form-block form p label[for="id_remember"] {
@@ -293,22 +295,22 @@ h3.sign-up a:hover {
 /* -signup-*/
 
 .form-block.sign-form {
-    width: 510px;
+    /* width: 510px; */
 }
 
 .form-block.sign-form  form p input {
-    width: 500px;
+    /* width: 500px; */
 }
 
 .form-block.profile-options {
-    width: 510px;
+    /* width: 510px; */
 }
 
 .form-block.profile-options p {
     border-bottom: 1px solid;
     font-size: 16px;
     line-height: 40px;
-    width: 510px;
+    /* width: 510px; */
     position: relative;
 }
 
@@ -2261,4 +2263,24 @@ html.all-activities-iframe {
 
 .all-activities-iframe .action-stream button.btn-link:hover {
    color: white;
+}
+
+
+@media (max-width: 768px) {
+	.form-block {
+	  padding: 2em 1.5em 1em;
+	  /* margin-left: -15px;
+	  margin-right: -15px; */
+	}
+	/* que los botonoes sean sin texto! */
+	.row.top-user-menu .btn-text {
+		display: none;
+	}
+	.live-iframe {
+		height: 100vh !important;
+	}
+	.sign-up-block {
+	  -ms-flex-order: -1;
+	  order: -1;
+	}
 }
