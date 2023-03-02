@@ -24,7 +24,7 @@ def audio_create_update(request, slug=None):
                         user=request.user, 
                         instance=instance
                          )
-        if form.is_valid() is False:
+        if form.is_valid():
             for item in request.FILES.getlist('audio'):
                 Audio.objects.create(audio=item, user=request.user, name=item.name)
             return redirect("index")

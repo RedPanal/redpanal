@@ -7,7 +7,7 @@
 <h3>{% trans "Upload Files" %}</h3>
   <form method="post" enctype="multipart/form-data">{% csrf_token %}
     {{form|crispy}}
-    <button type="submit">Enviar</button>
+    <button type="submit">{% trans "Upload" %}</button>
   </form>
 {% endblock %}
 

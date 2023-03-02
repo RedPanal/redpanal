@@ -38,11 +38,7 @@ class AudioForm(forms.ModelForm):
         user = kwargs.pop('user')
         super(AudioForm, self).__init__(data, *args, **kwargs)
         self.instance.user = user
-        # initial_project = self.instance.project_set.all()[0] if self.instance.pk and \
-                        #  self.instance.project_set.all() else None
-        # self.fields['project'] = forms.ModelChoiceField(queryset=Project.objects.filter(user=user),
-                                                        # initial=initial_project, required=False)
-
+        
     def clean_audio(self):
         files = self.cleaned_data.get('audio', False)
         for f in files:
@@ -50,4 +46,3 @@ class AudioForm(forms.ModelForm):
                 raise ValidationError(_("Couldn't read uploaded file"))
             if not get_file_extension(f.name) in AUDIO_EXTENSIONS:
                 raise ValidationError(_("Invalid audio file extension"))
-        return files
