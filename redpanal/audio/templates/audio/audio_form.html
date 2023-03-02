@@ -4,7 +4,7 @@
 {% block title %}{% if object %}{% trans "Edit" %}{% else %}{% trans "Upload" %}{% endif %}{% trans " Audio" %}{% endblock %}
 
 {% block content %}
-<h3>{% trans "Upload Files" %}</h3>
+<h3>{{title}}</h3>
   <form method="post" enctype="multipart/form-data">{% csrf_token %}
     {{form|crispy}}
     <button type="submit">{% trans "Upload" %}</button>
