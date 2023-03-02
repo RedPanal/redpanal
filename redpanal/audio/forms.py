@@ -16,8 +16,8 @@ AUDIO_EXTENSIONS = ["mp3", "ogg", "oga", "flac", "wav"]
 class AudioForm(forms.ModelForm):
 
 
-    tags = TagField(required=False)
-    project = forms.ModelChoiceField(Project.objects.all(), required=False)
+    # tags = TagField(required=False)
+    # project = forms.ModelChoiceField(Project.objects.all(), required=False)
     audio = forms.FileField(label=_("Audio"), help_text=_("Allowed extensions: %s") % ", ".join(AUDIO_EXTENSIONS))
 
     helper = FormHelper()
@@ -28,7 +28,8 @@ class AudioForm(forms.ModelForm):
         widgets = {
             'license': forms.RadioSelect,
         }
-        fields = '__all__'
+        fields = ['name']
+        enctype = "multipart/form-data"
 
     def __init__(self, data=None, *args, **kwargs):
         user = kwargs.pop('user')

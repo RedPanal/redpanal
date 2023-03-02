@@ -4,6 +4,12 @@
 {% block title %}{% if object %}{% trans "Edit" %}{% else %}{% trans "Upload" %}{% endif %}{% trans " Audio" %}{% endblock %}
 
 {% block content %}
-  {% crispy form %}
+  <form method="post" enctype="multipart/form-data">{% csrf_token %}
+    {{formset.management_form}}
+    {% for f in formset %}
+      {{f.as_p}}
+    {% endfor %}
+    <button type="submit">Enviar</button>
+  </form>
 {% endblock %}
 
