@@ -1,13 +1,36 @@
 {% extends "base.html" %}
 {% load i18n crispy_forms_tags %}
-
 {% block title %}{% if object %}{% trans "Edit" %}{% else %}{% trans "Upload" %}{% endif %}{% trans " Audio" %}{% endblock %}
 
 {% block content %}
 <h3>{{title}}</h3>
+
+
+<div id="drop-zone" class="drop-zone">
   <form method="post" enctype="multipart/form-data">{% csrf_token %}
     {{form|crispy}}
     <button type="submit">{% trans "Upload" %}</button>
   </form>
+</div>
+<script>
+const dropZone = document.getElementById('drop-zone');
+
+dropZone.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    dropZone.classList.add('drop-zone--over');
+});
+
+dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('drop-zone--over');
+});
+
+dropZone.addEventListener('drop', (event) => {
+    event.preventDefault();
+    dropZone.classList.remove('drop-zone--over');
+    const files = event.dataTransfer.files;
+    const input = document.querySelector('input[type="file"]');
+    input.files = files;
+});
+</script>
 {% endblock %}
 
