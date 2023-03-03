@@ -5,7 +5,7 @@
 {% block content %}
 <h3>{{title}}</h3>
 
-
+{% comment %} TODO: Mejorar el drag and drop porque la zona drop es muy chica {% endcomment %}
 <div id="drop-zone" class="drop-zone">
   <form method="post" enctype="multipart/form-data">{% csrf_token %}
     {{form|crispy}}
@@ -13,6 +13,7 @@
   </form>
 </div>
 <script>
+  // Enable Drag an Drop
 const dropZone = document.getElementById('drop-zone');
 
 dropZone.addEventListener('dragover', (event) => {
