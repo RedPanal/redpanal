@@ -6,3 +6,5 @@ uploaded_media/
 
 
 .idea/*
+.vscode/launch.json
+redpanal/audio/migrations/0008_auto_20230301_1935.py

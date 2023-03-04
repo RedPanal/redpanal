@@ -111,6 +111,7 @@ INSTALLED_APPS = (
     'el_pagination',
     'easy_thumbnails',
     'rest_framework',
+    'multiupload'
 )
 
 
