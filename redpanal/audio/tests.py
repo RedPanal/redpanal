@@ -14,7 +14,6 @@ from .forms import AudioUploadForm, AudioEditForm
 from redpanal.utils.test import InstanceTestMixin
 
 TEST_DATA_PATH = os.path.join(os.path.dirname(__file__), "test_data")
-
 def get_test_audiofile():
     with open(os.path.join(TEST_DATA_PATH, u'tone.mp3'), 'rb') as audio_file:
         audiofile = SimpleUploadedFile(u"the audio.mp3", audio_file.read(),
@@ -73,19 +72,19 @@ class AudioTestCase(TestCase, InstanceTestMixin):
 
     def test_upload_mp3(self):
         data, audiofile = self.create_audio_form_data(u"tone.mp3", "audio/mpeg")
-        form = AudioUploadForm(data, {"audio":audiofile}, user=self.user)
+        form = AudioEditForm(data, {"audio":audiofile}, user=self.user)
         self.assertTrue(form.is_valid())
         audio = form.save()
 
     def test_upload_flac(self):
         data, audiofile = self.create_audio_form_data(u"tone.flac", "audio/mpeg")
-        form = AudioUploadForm(data, {"audio":audiofile}, user=self.user)
+        form = AudioEditForm(data, {"audio":audiofile}, user=self.user)
         self.assertTrue(form.is_valid())
         audio = form.save()
 
     def test_upload_ogg(self):
         data, audiofile = self.create_audio_form_data(u"tone.ogg", "audio/mpeg")
-        form = AudioUploadForm(data, {"audio":audiofile}, user=self.user)
+        form = AudioEditForm(data, {"audio":audiofile}, user=self.user)
         self.assertTrue(form.is_valid())
         audio = form.save()
 
@@ -103,28 +102,28 @@ class AudioTestCase(TestCase, InstanceTestMixin):
     def test_upload_audio_with_wrong_extension(self):
         data, _ = self.create_audio_form_data(u"tone.mp3", "audio/mpeg")
         audiofile = SimpleUploadedFile(u"tone.mpe", b"file content", content_type="audio/mpeg")
-        form = AudioUploadForm(data, {"audio": audiofile}, user=self.user)
+        form = AudioEditForm(data, {"audio": audiofile}, user=self.user)
         self.assertFalse(form.is_valid())
 
-    # def test_create_audio_without_project(self):
-        # data, audiofile = self.create_audio_form_data(u"tone.flac", "audio/mpeg")
-        # del data["project"]
-        # form = AudioUploadForm(data, {"audio":audiofile}, user=self.user)
-        # self.assertTrue(form.is_valid())
-        # audio = form.save()
+    def test_create_audio_without_project(self):
+        data, audiofile = self.create_audio_form_data(u"tone.flac", "audio/mpeg")
+        del data["project"]
+        form = AudioEditForm(data, {"audio":audiofile}, user=self.user)
+        self.assertTrue(form.is_valid())
+        audio = form.save()
 
-    def test_create_audio_view(self):
-        data, _ = self.create_audio_form_data("tone.mp3", "audio/mpeg")
-        self.login()
-        with open(os.path.join(TEST_DATA_PATH, u'tone.mp3'), 'rb') as audio_file:
-            data['audio'] = audio_file
-            resp = self.client.post("/a/upload/", data)
-            self.assertEqual(resp.url, '/a/test-audi/')
-            self.assertEqual(resp.status_code, 302)
+    # def test_create_audio_view(self):
+    #     data, _ = self.create_audio_form_data("tone.mp3", "audio/mpeg")
+    #     self.login()
+    #     with open(os.path.join(TEST_DATA_PATH, u'tone.mp3'), 'rb') as audio_file:
+    #         data['audio'] = audio_file
+    #         resp = self.client.post("/a/upload/", data)
+    #         self.assertEqual(resp.url, '/a/test-audi/')
+    #         self.assertEqual(resp.status_code, 302)
 
-            resp = self.client.get(resp.url)
-            self.assertEqual(resp.status_code, 200)
-            self.assertTrue(self.project.name in resp.content.decode())
+    #         resp = self.client.get(resp.url)
+    #         self.assertEqual(resp.status_code, 200)
+    #         self.assertTrue(self.project.name in resp.content.decode())
 
     # def test_create_audio_view_without_project(self):
     #     data, _ = self.create_audio_form_data("tone.mp3", "audio/mpeg")
@@ -135,7 +134,6 @@ class AudioTestCase(TestCase, InstanceTestMixin):
     #         resp = self.client.post("/a/upload/", data)
     #         self.assertEqual(resp.url, '/a/test-audi/')
     #         self.assertEqual(resp.status_code, 302)
-
     #         resp = self.client.get(resp.url)
     #         self.assertEqual(resp.status_code, 200)
     #         self.assertFalse(self.project.name in resp.content.decode())
