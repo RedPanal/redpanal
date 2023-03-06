@@ -30,7 +30,6 @@
    var WRONG_MESSAGE = "{% trans 'Something went wrong' %}";
    var POST_TEXT = "{% trans 'Post message' %}";
    var REPLYTO_TEXT = "{% trans 'Reply to' %} ";
-   var HELP_TEXT = '{% trans "if you close this window the message you entered did not disappear, if you use " %} <span class="button-example"><i class="fa fa-edit"></i></span>'
 
    var mdl = $('#modal_create_message_html'); // modal message form html structure
    var frm = mdl.find('#modal_message_form'); // form 
@@ -54,6 +53,7 @@
                success = true;
                resp.html(r);
                frm[0].reset();
+               $(".modal_close").click();
            },
            error: function(r) {
                //alert("algo salio mal");
