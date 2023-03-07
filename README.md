@@ -112,7 +112,7 @@ POST data:
 * use_type (required): Opciones `["track", "loop", "song", "sample", "other"]`
 * genre (required): Opciones `["pop", "rock", "jazz", "blues", "folklore", "electronic", "other"]`
 * instrument (required): Opciones `["voice", "guitar", "electric guitar", "bass", "drums", `
-    `"saxophone", "piano", "sinthesizer", "electronic", "strings", "woodwind", "brass", "multiple", "other"]`
+    `"saxophone", "piano", "synthesizer", "electronic", "strings", "woodwind", "brass", "multiple", "other"]`
 * tags (required): Una lista de tags, ejemplo `'["foo", "bar"]'`. Si no se quieren agregar tags usar `'[]'`.
 * license: Opciones `["CC-BY-SA-4.0"]`
 * position_lat
