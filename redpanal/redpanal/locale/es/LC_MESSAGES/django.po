@@ -31,11 +31,11 @@ msgstr "Iniciar sesión"
 
 #: templates/account/login.html:8 templates/index.html:4
 msgid "Welcome!"
-msgstr "Bienvenide!"
+msgstr "¡Bienvenido!"
 
 #: templates/account/login.html:14 templates/all_activities.html:39
 msgid "Last activities in RedPanal"
-msgstr "Última Actividad"
+msgstr "Última actividad en RedPanal"
 
 #: templates/account/login.html:18
 msgid "more..."
@@ -68,7 +68,7 @@ msgstr "Cerrar sesión"
 
 #: templates/account/logout.html:13
 msgid "Are you sure you want to sign out?"
-msgstr "¿Estás seguro de que querés cerrar la sesión?"
+msgstr "¿Estás seguro que deseas cerrar la sesión?"
 
 #: templates/account/signup.html:5
 msgid "Signup"
@@ -87,7 +87,7 @@ msgstr "Crear cuenta"
 msgid ""
 "Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
 msgstr ""
-"¿Ya tenés una cuenta? Entonces por favor <a href=\"%(login_url)s\">iniciá "
+"¿Ya tienes una cuenta? Entonces por favor <a href=\"%(login_url)s\">inicia "
 "sesión</a>."
 
 #: templates/all_activities.html:4
@@ -112,19 +112,19 @@ msgstr "No se encontró contenido"
 
 #: templates/avatar/change.html:5
 msgid "Your current avatar: "
-msgstr "Tu avatar actual:"
+msgstr "Tu avatar actual: "
 
 #: templates/avatar/change.html:8
 msgid "You haven't uploaded an avatar yet. Please upload one now."
-msgstr "Todavía no subiste ningún avatar. Por favor, subí uno ahora."
+msgstr "Todavía no has subido ningún avatar. Por favor, sube uno ahora."
 
 #: templates/avatar/change.html:14
 msgid "Choose new Default"
-msgstr "Elegir nuevo Default"
+msgstr "Elegir nuevo predeterminado"
 
 #: templates/avatar/change.html:19
 msgid "Upload New Image"
-msgstr "Subí una imagen nueva"
+msgstr "Subir una imagen nueva"
 
 #: templates/base.html:33
 msgid "Following"
@@ -157,7 +157,7 @@ msgstr "Iniciar sesión"
 
 #: templates/base.html:139
 msgid "Mom look at me"
-msgstr "Mirá Mamá"
+msgstr "Mirame, Mamá"
 
 #: templates/base.html:139
 msgid "Profile"
@@ -165,7 +165,7 @@ msgstr "Mi perfil"
 
 #: templates/base.html:140
 msgid "RedPanal Party"
-msgstr "RedPanal Party"
+msgstr "Fiesta RedPanal"
 
 #: templates/base.html:140
 msgid "RedPanal"
@@ -173,7 +173,7 @@ msgstr "RedPanal"
 
 #: templates/base.html:141
 msgid "What is my gang doing?"
-msgstr "Qué hace mi banda?"
+msgstr "¿Qué hace mi banda?"
 
 #: templates/base.html:141 templates/index.html:4 templates/index.html:33
 msgid "My Community"
@@ -181,15 +181,15 @@ msgstr "Mi comunidad"
 
 #: templates/base.html:142
 msgid "Buzzing around"
-msgstr ""
+msgstr "Dando vueltas"
 
 #: templates/base.html:142
 msgid "My Activations"
-msgstr "Mis Activaciones"
+msgstr "Mis activaciones"
 
 #: templates/base.html:144
 msgid "Post message in your timeline"
-msgstr "Postear un mensaje en tu muro"
+msgstr "Publicar un mensaje en tu muro"
 
 #: templates/base.html:145
 msgid "Create project"
@@ -223,7 +223,7 @@ msgstr ""
 
 #: templates/base.html:163
 msgid "Hosted by: <a href=\"http://www.codigosur.org\">Código Sur</a>"
-msgstr "Hosteado por <a href=\"http://www.codigosur.org\">Código Sur</a>"
+msgstr "Alojado en <a href=\"http://www.codigosur.org\">Código Sur</a>"
 
 #: templates/base.html:166
 msgid "The Official RedPanal Blog!"
@@ -235,15 +235,15 @@ msgstr "Blog"
 
 #: templates/base_background_image.html:10
 msgid "Background image:"
-msgstr "Imágen de fondo:"
+msgstr "Imagen de fondo:"
 
 #: templates/discover-items-menu.html:2
 msgid "New artists to meet"
-msgstr ""
+msgstr "Los nuevos artistas a encontrar"
 
 #: templates/discover-items-menu.html:3
 msgid "Sound art works to collaborate on"
-msgstr ""
+msgstr "Obras de arte sonoro para colaborar"
 
 #: templates/index.html:34
 msgid "My activities and the users that I follow"
