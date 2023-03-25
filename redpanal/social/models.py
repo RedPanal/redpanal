@@ -1,6 +1,7 @@
 import re
 
 from django.db import models
+from django.core.mail import send_mail
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.auth.models import User
@@ -152,8 +153,45 @@ class Message(models.Model):
         if mentioned_users:
             self.mentioned_users.add(*mentioned_users)
 
+        send_email_to_related_users(self)
+
+
     class Meta:
         ordering = ['-created_at']
+
+def send_email_to_related_users(msg):
+    sender = msg.user
+    recipients = []
+    # main recipient
+    obj = msg.content_object  # an audio or project or empty
+    if hasattr(obj, 'user'):
+        recipients.append(obj.user)
+    # add mentioned users
+    recipients.extend(msg.mentioned_users.all())
+    to_emails = [user.email for user in recipients]
+    # remove duplicates
+    to_emails = set(to_emails)
+    # remove self
+    to_emails.discard(msg.user.email)
+
+    username = (sender.userprofile.realname or "") + " @" + str(sender.username)
+    email_msg = f"""
+        The user {username} sent you the following message:
+
+        {msg.msg}
+
+        You can continue the conversation in https://redpanal.org
+    """
+
+    if to_emails:
+        send_mail(
+            'Hey te escribieron en RedPanal',
+            email_msg,
+            from_email=None,
+            recipient_list=to_emails,
+            fail_silently=False,
+        )
+
 
 def message_created_signal(sender, instance, created, **kwargs):
     if created:
