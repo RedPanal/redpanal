@@ -29,11 +29,11 @@
 {% endblock %}
 
 {% block left_row %}
-      {% ifequal request.user user %}
+      {% if request.user ==  user %}
       <h3>{% trans "My Activities" %}</h3>
       {% else %}
       <h3>{{ user.userprofile.realname|default:user.username|capfirst }} Activities</h3>
-      {% endifequal %}
+      {% endif %}
       <ul class="action-stream">
          {% include "social/actions_list.html" %}
       </ul>

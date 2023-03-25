@@ -11,3 +11,6 @@ def get_git_revision_short_hash():
     except:
         short_hash = ""
     return short_hash
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'

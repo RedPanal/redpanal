@@ -1,9 +1,9 @@
-from django.conf.urls import include, url
+from django.urls import path
 
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^live/$', views.activity_all, name="activity-all"),
-    url(r'^live/iframe$', views.activity_all_iframe, name="activity-all-iframe"),
+    path('', views.index, name='index'),
+    path('live/', views.activity_all, name="activity-all"),
+    path('live/iframe', views.activity_all_iframe, name="activity-all-iframe"),
 ]

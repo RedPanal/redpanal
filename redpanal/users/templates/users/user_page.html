@@ -27,11 +27,11 @@
 
       <div class="slide_wrapper partial_slider about_me">
          <div class="slider">
-      {% ifequal request.user user %}
+      {% if request.user == user %}
             <h3 class="top-title main_title">{% trans "About me" %}</h3>
       {% else %}
             <h3 class="top-title">{% trans "About" %} {{ user.userprofile.realname|default:user.username }}</h3>
-      {% endifequal %}  
+      {% endif %}  
 
             <div class="user-page-top">
       {% if user.userprofile.website %}
@@ -52,9 +52,9 @@
          {% include "audio/audio_teaser.html" %}
       {% empty %}
             <span class="no-yet">{% trans "No tracks yet" %}</span>
-        {% ifequal request.user user %}
+        {% if request.user == user %}
             <span class="new"><a href="{% url "audio-create" %}">{% trans "Upload track" %}</a></span>
-        {% endifequal %}
+        {% endif %}
       {% endfor %}
       <span class="more"><a href="{% url 'user-tracks' user %}">{% trans "more..." %}</a></span>
 
@@ -77,9 +77,9 @@
             {% include "project/project_teaser.html" %}
          {% empty %}
                <span class="no-yet">{% trans "No project yet" %}</span>
-            {% ifequal request.user user %}
+            {% if request.user ==  user %}
                <span class="new"><a href="{% url "project-create" %}">{% trans "Create new project" %}</a></span>
-            {% endifequal %}
+            {% endif %}
          {% endfor %}
       </div>
       <span class="more"><a href="{% url 'user-projects' user %}">{% trans "more..." %}</a></span>

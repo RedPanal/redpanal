@@ -66,9 +66,9 @@
 
     {% block post_message %}
       {% if request.user.is_authenticated %}
-        {% ifequal request.user user %}
+        {% if request.user ==  user %}
           {% include "social/message_form.html" %}
-        {% endifequal %}     
+        {% endif %}     
       {% endif %}     
     {% endblock %}
 

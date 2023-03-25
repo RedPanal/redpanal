@@ -6,6 +6,7 @@ from django.contrib.sessions.models import Session
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse_lazy
 
+from redpanal.utils.helpers import is_ajax
 from audio.models import Audio
 from project.models import Project
 from social.models import Message
@@ -29,7 +30,7 @@ def index(request):
     else:
         return redirect("/accounts/login/?next=/")
 
-    if request.is_ajax():
+    if is_ajax(request):
         template = "social/actions_list.html"
     else:
         template =  "index.html"
@@ -45,7 +46,7 @@ def hashtaged_list(request, slug, filters='all'):
 
     mixed = sorted(chain(audios, projects, messages, users), key=lambda instance: instance.created_at, reverse=True)
 
-    if request.is_ajax():
+    if is_ajax(request):
         template = "core/mixed_list.html"
     else:
         template = "core/hashtaged_list.html"
@@ -66,7 +67,7 @@ def activity_all(request):
 
     mixed_list = sorted(chain(audios, projects, messages), key=lambda instance: instance.created_at, reverse=True)
 
-    if request.is_ajax():
+    if is_ajax(request):
         return render(request, "core/mixed_list.html", {
             "mixed_objects": mixed_list,
         })

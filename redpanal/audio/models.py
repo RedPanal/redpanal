@@ -9,7 +9,7 @@ import hashlib
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.db.models.signals import post_save
 from django.core.files.storage import default_storage
 from django.conf import settings

@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% load activity_tags i18n %}
 
-{% block title %}{% ifequal request.user actor %}Your feed{% else %}{{ actor }}{% endifequal %}{% endblock %}
+{% block title %}{% if request.user ==  actor %}Your feed{% else %}{{ actor }}{% endif %}{% endblock %}
 
 
 {% block content %}
 
-{% ifequal request.user actor %}{% else %}
+{% if request.user ==  actor %}{% else %}
     <li>
         <a href="{% url "actstream_unfollow" content_type_id=ctype.pk  object_id=actor.pk %}" id="unfollow_button" style="display:none">{% trans "UNFOLLOW" %}</a>
         <a href="{% url "actstream_follow" content_type_id=ctype.pk  object_id=actor.pk %}" id="follow_button" >{% trans "FOLLOW" %}</a>
     </li>
-{% endifequal %}
+{% endif %}
 
 <ul>
 {% for action in action_list %}

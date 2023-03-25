@@ -32,9 +32,9 @@
 {% block post_message %}
 {% comment %}
       {% if request.user.is_authenticated %}
-        {% ifequal request.user user %}
+        {% if request.user ==  user %}
           {% include "social/message_form.html" %}
-        {% endifequal %}     
+        {% endif %}     
       {% endif %}     
 {% endcomment %}
 {% endblock %}

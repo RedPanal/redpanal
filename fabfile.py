@@ -156,6 +156,7 @@ def backup_database(c):
     datestr = datetime.datetime.now().isoformat()
     c.run("cp /var/www/redpanal/db/db.sqlite3 ~/redpanal.db.sqlite3_%s" % datestr)
     c.run("gzip ~/redpanal.db.sqlite3_%s" % datestr)
+    #c.run("sudo -u postgres pg_dumpall | gzip - > ~/redpanal.postgresql_%s.sql.gz" % datestr)
 
 
 def rebuild_index(c):

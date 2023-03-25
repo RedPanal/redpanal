@@ -1,15 +1,15 @@
 {% load i18n %}
    <ul class="nav nav-list nav-tags">
       <li><a href="{% url 'hashtaged-list-projects' slug=tag.slug %}" 
-             class="{% ifequal list_type 'projects' %}selected{% endifequal %}">
+             class="{% if list_type == 'projects' %}selected{% endif %}">
             <i class="fa fa-tag"></i> <b>{{ tag.name }}</b> - {% trans "only projects" %}</a>
       <li><a href="{% url 'hashtaged-list-audios' slug=tag.slug %}" 
-             class="{% ifequal list_type 'audios' %}selected{% endifequal %}">
+             class="{% if list_type == 'audios' %}selected{% endif %}">
             <i class="fa fa-tag"></i> <b>{{ tag.name }}</b> - {% trans "only tracks" %}</a>
       <li><a href="{% url 'hashtaged-list-users' slug=tag.slug %}" 
-             class="{% ifequal list_type 'users' %}selected{% endifequal %}">
+             class="{% if list_type == 'users' %}selected{% endif %}">
             <i class="fa fa-tag"></i> <b>{{ tag.name }}</b> - {% trans "only users" %}</a>
       <li><a href="{% url 'hashtaged-list-messages' slug=tag.slug %}" 
-             class="{% ifequal list_type 'messages' %}selected{% endifequal %}">
+             class="{% if list_type == 'messages' %}selected{% endif %}">
             <i class="fa fa-tag"></i> <b>{{ tag.name }}</b> - {% trans "Only messages" %}</a>
    </ul>

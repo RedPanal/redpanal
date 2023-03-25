@@ -1,5 +1,5 @@
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from taggit.utils import parse_tags, edit_string_for_tags
 
@@ -18,7 +18,7 @@ def parse_tags(string):
 
 class TagWidget(forms.TextInput):
     def render(self, name, value, attrs=None, renderer=None):
-        if value is not None and not isinstance(value, str):
+        if value and not isinstance(value, str):
             value = tags_to_editable_string([o.tag for o in value.select_related("tag")])
         return super(TagWidget, self).render(name, value, attrs)
 

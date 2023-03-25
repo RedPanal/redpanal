@@ -24,9 +24,9 @@
  
  $(function() {
    var refresh = false;
-  {% ifequal refresh_after_modal "refresh" %}
+  {% if refresh_after_modal == "refresh" %}
    var refresh = true;
-  {% endifequal %}
+  {% endif %}
    var WRONG_MESSAGE = "{% trans 'Something went wrong' %}";
    var POST_TEXT = "{% trans 'Post message' %}";
    var REPLYTO_TEXT = "{% trans 'Reply to' %} ";

@@ -18,7 +18,6 @@ USE_I18N = True
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
-USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
@@ -26,6 +25,8 @@ USE_TZ = True
 LOCALE_PATHS = (
     os.path.join(PROJECT_PATH, 'locale'),
 )
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -127,6 +128,12 @@ ACTSTREAM_SETTINGS = {
 }
 
 ACCOUNT_ADAPTER = 'users.account_adapter.MyAccountAdapter'
+
+AVATAR_PROVIDERS = (
+    'avatar.providers.PrimaryAvatarProvider',
+    'avatar.providers.GravatarAvatarProvider',
+    'avatar.providers.DefaultAvatarProvider',
+)
 
 SOCIALACCOUNT_PROVIDERS = {
     'google':
