@@ -14,5 +14,6 @@ django-haystack==3.2.1
 Whoosh==2.7.4
 pydub==0.16.6
 Pillow>=3.4.2
+six
 git+https://github.com/adriangzz/dj-taggit-serializer.git@88386daa9c981231de8be12cff032e7711dfdc4e
 django-cors-headers>=3.14<4.0
