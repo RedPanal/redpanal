@@ -4,9 +4,8 @@ from django.conf.urls.static import static
 
 from . import views
 
-
 urlpatterns = [
-    url(r'^upload/$', views.audio_create_update, name='audio-create'),
+    url(r'^upload/$', views.audio_upload, name='audio-create'),
     #url(r'^list/$', "list", name='audio-list',
     url(r'^(?P<slug>[\w-]+)/$', views.AudioDetailView.as_view(), name='audio-detail'),
     url(r'^(?P<slug>[\w-]+)/edit/$', views.audio_create_update, name='audio-edit'),

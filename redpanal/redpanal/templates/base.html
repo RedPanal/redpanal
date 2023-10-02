@@ -230,7 +230,6 @@
          							text-transform: capitalize;
          							transform: translateY(2px);"
          					>{# trans "Profile" #}{{ request.user }}</span></a></li><!-- <i class="fa fa-user"></i> --> 
-
 			</ul>
 		  </div>
 		 </nav>
@@ -297,6 +296,20 @@
 				</div> -->
       {% endif %}
 {% endcomment %}
+
+
+{% comment %}
+{# conflicto en merge, analizar si algo de este html es necesario sino borrarlo #}
+           <li class="popup action"><a href="#" class="modal-create-message" title="{% trans "Post message in your timeline" %}"><i class="fa fa-edit"></i></a></li>
+           <li class="action"><a href="{% url "project-create" %}" title="{% trans "Create project" %}"><i class="fa fa-folder-open"></i> {% trans "Create Project" %}</a></li>
+           <li class="action"><a href="{% url "audio-create" %}" title="{% trans "Upload files" %}"><i class="fa fa-upload"></i> {% trans "Upload audio" %}</a></li>
+       </ul>
+       </div>
+   </div>
+   {% endif %}
+{% endcomment %}
+
+
 {% endblock %}
 
 </div><!-- /header -->

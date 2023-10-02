@@ -71,7 +71,7 @@ def message_create(request):
                       'object': msg,
                      })
         else:
-            return HttpResponse("sonaste")
+            return HttpResponse("Sonaste, no se pudo enviar el mensaje")
     elif request.method == "POST":
         form = MessageForm(request.POST)
         if form.is_valid():
