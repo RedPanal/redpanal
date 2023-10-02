@@ -12,21 +12,27 @@
 {% block top_search_form %}{% endblock %}
 
 {% block content %}
-<div class="form-block sign-form">
-   <h3>{% trans "Sign Up" %}</h3>
+<div class="m-auto" style="max-width: 500px;">
+	<div class="form-block sign-form p-4 rounded-4 border redpanal-form-wrapper">
+	   <h2 class="pb-4 text-light text-center"><b>{% trans "Sign Up" %}</b></h2>
 
-   <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+	   <form class="signup text-light" id="signup_form" method="post" action="{% url 'account_signup' %}">
+	     {% csrf_token %}
+	     {{ form.as_p }}
+	     {% if redirect_field_value %}
+	     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+	     {% endif %}
+	     <div class="nav py-3 action-grp justify-content-between">
+	     	<div class="nav-item"><button class="btn btn-light" type="submit">{% trans "Sign Up" %} &raquo;</button></div>
+	     </div>
+	   </form>
 
-   <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-     {% csrf_token %}
-     {{ form.as_p }}
-     {% if redirect_field_value %}
-     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-     {% endif %}
-     <p><button class="btn btn-primary" type="submit">{% trans "Sign Up" %} &raquo;</button></p>
-   </form>
+	   <p class="text-light pt-4 small">
+	   	{% blocktrans %}Already have an account? Then please <a class="" href="{{ login_url }}"><b>Sign in</b></a>.{% endblocktrans %}
+	   </p>
+
+	</div>
 </div>
-
 
 {% endblock %}
 

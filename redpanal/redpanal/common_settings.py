@@ -75,7 +75,10 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
-ACCOUNT_FORMS = {'signup': 'redpanal.forms.CustomSignupForm'}
+ACCOUNT_FORMS = {
+   'signup': 'redpanal.forms.CustomSignupForm',
+   'login': 'redpanal.forms.CustomLoginForm',
+}
 
 ROOT_URLCONF = 'redpanal.urls'
 
@@ -111,6 +114,7 @@ INSTALLED_APPS = (
     'el_pagination',
     'easy_thumbnails',
     'rest_framework',
+    'widget_tweaks',
 )
 
 

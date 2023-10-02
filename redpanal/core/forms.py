@@ -3,6 +3,11 @@ from django.utils.translation import ugettext as _
 
 from taggit.utils import parse_tags, edit_string_for_tags
 
+from django.contrib.auth.forms import AuthenticationForm, UsernameField
+
+
+
+
 class TagParseError(Exception):
     pass
 
@@ -32,4 +37,23 @@ class TagField(forms.CharField):
             return parse_tags(value)
         except TagParseError as e:
             raise forms.ValidationError(str(e))
+
+# custom login form
+
+class RPLoginForm(AuthenticationForm):
+   def __init__(self, *args, **kwargs):
+      super(RPLoginForm, self).__init__(*args, **kwargs)
+
+   username = UsernameField(widget=forms.TextInput(
+      attrs={
+      'class': 'form-control',
+      'placeholder': _("Username"),
+      'id': 'id_login',
+   }))
+   password = forms.CharField(widget=forms.PasswordInput(
+      attrs={
+      'class': 'form-control',
+      'placeholder': _("Password"),
+      'id': 'id_password',
+   }))
 
