@@ -1,6 +1,10 @@
 {% extends "two_rows.html" %}
 {% load i18n %}
 
+{% load account %}
+{% load staticfiles avatar_tags i18n model_info %}
+
+
 {% block title %}{% trans "Live" %}{% endblock %}
 
 {% block extra_head %}
@@ -38,11 +42,9 @@
  <h3>{% trans "RedPanal live" %}</h3>
  <p class="expl">{% trans "Last activities in RedPanal" %}</p>
  
- <div class="">
-   <div class="action-stream">
+ <ul class="mixed_list list-unstyled d-flex flex-column mt-3">
       {% include "core/mixed_list.html" %}
-   </div>  
- </div>
+ </ul>  
 
 {% endblock %}
 

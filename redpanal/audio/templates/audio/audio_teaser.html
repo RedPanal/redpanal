@@ -1,6 +1,6 @@
 {% load i18n %}
-
-<div class="teaser-audio {{ mode|default:'small' }}">
+<!-- audio/audio_teaaser.html -->
+<div class="teaser-audio teaser-box {{ mode|default:'small' }}{% if mode == 'in-action-list'%} small{% endif%}">
 {% if mode == "in-project-detail" %}
     <div class="top-date">{{ object.created_at|timesince }}</div>
     <div class="top">
@@ -32,7 +32,6 @@
        <div class="top-title">&nbsp;<h3><a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{{ object.name|truncatechars:30|capfirst }}</a></h3></div>
    </div>
 {% else %}
-    <div class="top-date">{% blocktrans with timesince=object.created_at|timesince user=object.user %}{{ timesince }} ago, by{% endblocktrans %} <a href="{{ object.user.get_absolute_url }}">@{{ object.user }}</a> <a class="license" rel="license" href="{{object.get_license.url }}"><img alt="{% trans "Licencia Creative Commons" %}" style="border-width:0" src="{{ object.get_license.icon_small }}" /></a></div>
     <div class="top">
        <div class="top-title"><h3><a href="{% url 'audio-detail' object.slug %}">{{ object.name|truncatechars:30|capfirst }}</a></h3>{# object.description|truncatechars:50|capfirst #}</div>
        <div class="top-data">
@@ -50,8 +49,9 @@
 {% if mode != "in-action-list" and mode != "without-wave" %}
    {% url 'audio-detail' object.slug as object_url %}
     <div class="small-tags">{% with mode="short-list" object_url=object_url %}{% include 'core/hashtags_block.html' %}{% endwith %}</div>  
-    <div class="bottom-date">      
+    <div class="bottom-date d-flex justify-content-between">      
       <span>{% trans "Genre" %} : {{ object.get_genre_display|capfirst }}</span>
+      <span>{% blocktrans with timesince=object.created_at|timesince user=object.user %}{{ timesince }} ago, by{% endblocktrans %} <a href="{{ object.user.get_absolute_url }}">@{{ object.user }}</a> <a class="license" rel="license" href="{{object.get_license.url }}"><img alt="{% trans "Licencia Creative Commons" %}" style="border-width:0" src="{{ object.get_license.icon_small }}" /></a></span>
     </div>
 {% endif %}
 </div>

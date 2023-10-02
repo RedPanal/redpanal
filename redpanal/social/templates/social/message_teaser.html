@@ -1,19 +1,29 @@
 {% load i18n avatar_tags %}
 
   <!-- message teaser -->
-  <span class="avatar">
-  {% avatar object.user 50 %}
-  </span>
-  <span class="user">
-    <a href="{{ object.user.get_absolute_url }}">{{ object.user }}</a>
-  </span>
-  <span class="ago">{% blocktrans with timeago=object.created_at|timesince %}{{ timeago }} ago{% endblocktrans %}</span><br>
-  <span class="message">{{ object.as_html|safe }}</span>
-  
-  
-  <ul class="actions">
-   <li><button type="button" class="btn btn-link modal-reply-message" data-username="{{ object.user }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
-   {% comment %}<li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>{% endcomment %}
- </ul>
+	<span class="avatar float-start me-2">
+	{% avatar object.user 50 %}
+	</span>
+	<div class="d-flex flex-wrap">
+		<div class="user-group">
+			<div class="user fs-5">
+				<a href="{{ object.user.get_absolute_url }}"><b>{{ object.user }}</b></a>
+			</div>
+			<div class="ago small text-secondary"
+		 		>{% blocktrans with timeago=object.created_at|timesince %}{{ timeago }} ago{% endblocktrans %}</div>
+		</div>
+		
+  		<ul class="actions nav ms-auto">
+  		{% if request.user.is_authenticated %}
+		   <li class="nav-item"><button type="button" class="btn btn-outline-secondary btn-sm modal-reply-message" data-username="{{ action.actor }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
+		{% else %}
+			<li class="nav-item"><a class="btn btn-outline-secondary btn-sm" href="{% url 'account_login' %}?next={{ request.path }}" 
+				><i class="fa fa-reply"></i> {% trans 'reply' %}</a></li>
+		{% endif %}
+		   {% comment %}<li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>{% endcomment %}
+		</ul>
+		
+		<span class="message w-100 d-flex flex-wrap mt-3 fs-5 text-secondary">{{ object.as_html|safe }}</span>
+	</div>
 
 

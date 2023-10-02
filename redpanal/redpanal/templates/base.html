@@ -6,7 +6,7 @@
  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
  <title>RedPanal | {% block title %}{% endblock %}</title>
  {# bootstrap #}
- <link href="{% static 'css/bootstrap-4.5.min.css' %}" rel="stylesheet">
+ <link href="{% static 'css/bootstrap-5.3.min.css' %}" rel="stylesheet">
  <link href="{% static 'fontawesome/css/all.min.css' %}" rel="stylesheet">
  <link href="{% static 'css/redpanal.css' %}?{{ GIT_SHORT_VERSION }}" rel="stylesheet">
  {# /bootstrap #}
@@ -14,7 +14,7 @@
  <link href="{% static 'mediaelements/mediaelementplayer.css' %}" rel="stylesheet">
  <link href="{% static 'mediaelements/mejs-skins.css' %}" rel="stylesheet">
  <script src="{% static 'js/jquery.min.js' %}"></script>
- <script src="{% static 'js/bootstrap-4.5.bundle.min.js' %}"></script>
+ <script src="{% static 'js/bootstrap-5.3.bundle.min.js' %}"></script>
  <script src="{% static 'js/redpanal.js' %}"></script>
  <script src="{% static 'mediaelements/mediaelement-and-player.js' %}"></script>
 
@@ -75,121 +75,275 @@
 </head>
 <body class="d-flex flex-column {% if request.user.is_authenticated %}logged-user{% endif %} {% block body_class %}{% endblock %}">
 <!-- user agent: {{ request.META.HTTP_USER_AGENT }} -->
-
-<div id="header" class="navbar navbar-fixed-top">
-    <div class="container">
-        <!-- Logo RedPanal-->
-        <a class="brand" href="/">
-            <img src="{% static 'img/redpanal-50.png' %}" alt="logo">
-        </a>
-        
-        <div class="row">
-            <!-- Login and user actions -->
-				{% block top_user_menu %}
-            {% if request.user.is_authenticated %}
-                <div class="dropdown top-user-menu">
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="icon-user icon-white pr-2"></i> <span class="btn-text">{{ request.user }}</span>
-                    </button>
-                    <div class="dropdown-menu"  aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="{% url 'user-profile' %}">
-                            <i class="fas fa-pencil-alt"></i> {% trans "Edit profile" %}
-                        </a>
-                        <a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
-                            <i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
-                        </a>
-                    </div>
-                </div>
-            {% else %}
-					 <div class="top-user-menu">
-                   <a class="btn btn-primary" 
-                   href="{% url "account_login" %}?next={{ request.path }}">
-                      <i class="fas fa-user pr-2"></i> <span class="btn-text">{% trans "Log in" %}</span>
-                  </a>
-                </div>
-            {% endif %}
-				{% endblock %}
-				{% block top_search_form %}
-            <!-- Search form -->
-            <form class="form-inline col-lg-8"
-                  type="get"
-                  action="{% url "haystack_search" %}">
-                <div class="input-group">
-                    <input type="text"
-                           class="form-control"
-                           placeholder="Buscá en RedPanal"
-                           aria-label="Buscá en RedPanal"
-                           name="q">
-                    <div class="input-group-append">
-                        <button class="btn btn-secondary"
-                                type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
-            {% endblock %}
+<div id="header" class="">
+	<div class="container-fluid bg-primary">
+{% comment %}
+   <!-- Logo RedPanal-->
+	{% if request.META.HTTP_USER_AGENT != "RedpanalWebappAndroid1.0" %}
+	<!-- {{ request.META.HTTP_USER_AGENT }} no es RedpanalWebappAndroid1.0 -->
+		<div class="col-12 bg-primary">
+  			<a class="brand" href="/">
+     			<img src="{% static 'img/redpanal-50.png' %}" alt="logo">
+     		</a>
+     	</div>
+	{% else %}
+	<!-- {{ request.META.HTTP_USER_AGENT }} es RedpanalWebappAndroid1.0 -->		
+	{% endif %}
+{% endcomment %}
+	{% block breadcrumb %}
+		
+   	<!-- request.path = {{ request.path }} -->
+  		<div class="container justify-content-between">
+		 <nav class="navbar navbar-expand navbar-dark bg-primary" id="actions-menu">
+		  <div class="container-fluid">
+		{% if request.META.HTTP_USER_AGENT != "RedpanalWebappAndroid1.0" %}
+			<a class="navbar-brand d-lg-none brand_small" href="#" data-bs-toggle="modal" data-bs-target="#MainMenu" title="RedPanal"></a>
+			<a class="navbar-brand d-none d-lg-block" href="/" title="RedPanal"></a>
+			<ul class="navbar-nav ms-auto justify-content-end">
+		{% else %}
+			<ul class="navbar-nav">
+				<li class="nav-item popup action d-lg-none" id="hamburger"
+					   ><a class="nav-link modal-main-menu" href="#" data-bs-toggle="modal" data-bs-target="#MainMenu"
+					         				title="{% trans "Main menu" %}"
+					   ><i class="fa fa-bars"></i></a></li>
+		{% endif %}
+		{% if request.user.is_authenticated %} {# and not "/accounts" in request.path #}
+         	<li class="nav-item discover"
+         		><a class="nav-link text-dark"
+         			 	href="#search"
+      					title="{% trans 'Search in RedPanal' %}"
+         			><i class="fa fa-search"></i><!-- <span class="d-none d-sm-inline">{% trans "Search" %}</span>--></a></li> 
+         	<li class="nav-item action ms-3 d-show-430">
+					<div class="dropdown">
+	            	<button 	class="btn btn-outline-dark dropdown-toggle" 
+	            				type="button" id="actionsDropdown" 
+	            				data-bs-toggle="dropdown" 
+	            				aria-haspopup="true" aria-expanded="false"
+	            		>{% trans "Actions" %}</button
+	            	>
+	            	<div 	class="dropdown-menu dropdown-menu-end"
+	            			aria-labelledby="actionsDropdown">
+	           			<a class="dropdown-item" 
+	           				href="{% url 'project-create' %}">
+	               		<i class="fa fa-plus"></i> {% trans "New Project" %}
+	            		</a>
+	               	<a class="dropdown-item" 
+	               		href="{% url 'audio-create' %}">
+	                 		<i class="fas fa-upload"></i> {% trans "Upload Audio" %}
+	               	</a>
+	            	</div>
+	         	</div>
+				</li>
+				<li class="nav-item action ms-3 d-none-430"
+         		><a 	class="btn btn-outline-dark reduce-size-in-sm" 
+        					href="{% url 'project-create' %}"
+         				title="{% trans 'Create project' %}"
+         			><i class="fa fa-plus"
+         				></i> {% trans "New Project" %}</a></li>
+         	<li class="nav-item action ms-3 d-none-430"
+         		><a 	class="btn btn-outline-dark reduce-size-in-sm" 
+         				href="{% url 'audio-create' %}"
+         				title="{% trans 'Upload file' %}"
+         			><i class="fa fa-music"
+         				></i> {% trans "Upload Audio" %}</a></li>
+         	<li class="nav-item popup action ms-3" id="create-message"
+         		><a 	class="btn btn-dark bg-publish" 
+         				href="#"
+         				title="{% trans 'Post message in your timeline' %}"
+         			><i class="fa fa-feather"
+         				></i><span class="d-none d-md-inline"
+         					 > {% trans "Publish Message" %}</span></a></li>
+		{% else %}
+				<li class="nav-item form d-none d-lg-block">
+		        	<form class="form-inline"
+		           	   type="get"
+		                 action="{% url "haystack_search" %}">
+		           	<div class="input-group">
+		              	<input type="text"
+		                          class="form-control"
+		                          placeholder="Buscá en RedPanal"
+		                          aria-label="Buscá en RedPanal"
+		                          name="q">
+		                 <div class="input-group-append">
+		                 	<button class="btn btn-secondary"
+		                               type="submit">
+		                    	<i class="fa fa-search"></i>
+		                    </button>
+		                 </div>
+		              </div>
+					</form>
+				</li>
+         	<li class="nav-item action ms-3">
+         		<a 	class="btn btn-outline-dark reduce-size-in-sm" 
+         				href="/accounts/signup/" 
+         				title="{% trans 'Create account' %}">
+         			<i class="fa fa-user-plus"></i
+         				> {% trans "Sign up" %}</a></li>
+         	<li class="nav-item action ms-3">
+         		<a 	class="btn btn-outline-dark reduce-size-in-sm" 
+         				href="{% url 'account_login' %}?next={{ request.path }}" 
+         									title="{% trans "Sign in" %}">
+         			<i class="fa fa-sign-in-alt"
+         				></i> {% trans "Sign in" %}</a></li>
+		{% endif %}
+       	</ul>
         </div>
-    </div>
-</div>
-
-{% block background %}
-{% endblock %}
-
-{# TODO controlar de una forma mas elegante la paricion de breadcrumb #}
-{% block breadcrumb %}
-   {% if request.user.is_authenticated and not "/accounts" in request.path %}
-   <!-- request.path = {{ request.path }} -->
-   <div id="breadcrumb">
-       <div class="wrapper">
-       <ul class="nav">
+		 </nav>
+		</div>
+	</div>
+	<!-- user menu -->
+	{% if request.user.is_authenticated %}
+	<div class="container-fluid bg-logged-menu">
+  		<div class="container justify-content-between">
+		 <nav class="navbar navbar-expand navbar-light bg-light" id="discover-menu">
+		  <div class="container-fluid">
+      	<ul class="navbar-nav w-100">
          {% comment %}
-           <li class="discover"><a href="{{ request.user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "My Account" %}</a></li>
-           <li class="discover"><a href="/"><i class="fa fa-music"></i> {% trans "My Community" %}</a></li>
+         	<li class="nav-item discover"><a class="nav-link" href="{{ request.user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "My Account" %}</a></li>
+         	<li class="nav-item discover"><a class="nav-link" href="/"><i class="fa fa-music"></i> {% trans "My Community" %}</a></li>
          {% endcomment %}
-           <li class="discover"><a href="{{ request.user.get_absolute_url }}" title="{% trans 'Mom look at me' %}"><i class="fa fa-user"></i> {% trans "Profile" %}</a></li>
-           <li class="discover"><a href="/live/" title="{% trans 'RedPanal Party' %}"><i class="fa fa-play"></i> {% trans "RedPanal" %}</a></li>
-           <li class="discover"><a href="/" title="{% trans 'What is my gang doing?' %}"><i class="fa fa-users"></i> {% trans "My Community" %}</a></li>
-           <li class="discover"><a href="{% url 'user-interactions' request.user %}" title="{% trans 'Buzzing around' %}"><i class="fa fa-bullhorn"></i> {% trans "My Activations" %}</a></li>
+         	<li class="nav-item discover mr-2"
+         		><a class="nav-link {% if request.path == '/' %}active{% endif %}" 
+         			 href="/" title="{% trans 'What is my gang doing?' %}"
+         			><i class="fa fa-home"></i> <span class="d-none d-sm-inline">{% trans "Home" %}</span></a></li>
+         	{% url 'user-interactions' request.user as my_interactions_url %}<!-- {{ request.path }} -  {{ my_interactions_url }}  -->
+         	<li class="nav-item discover"
+         		><a class="nav-link {% if request.path == my_interactions_url %}active{% endif %}" 
+         		    href="{{ my_interactions_url }}" title="{% trans 'Buzzing around' %}"
+         			><i class="fa fa-bell"></i> <span class="d-none d-sm-inline">{% trans "My Activations" %}</span></a></li>{# bullhorn #}
+         	<!-- 
+         	<li class="nav-item discover mr-2"
+         		><a class="nav-link {% if request.path == '/live/' %}active{% endif %}" 
+         			 href="/live/" title="{% trans 'RedPanal Party' %}"
+         			><i class="fa fa-globe"></i> <span class="d-none d-sm-inline">{% trans "RedPanal" %}</span></a></li>
+				-->
+         	<li class="nav-item discover ms-auto"
+         		><a 	class="nav-link d-flex {% if request.path == request.user.get_absolute_url %}active{% endif %}" 
+         			 	style="box-sizing:content-box; line-height: 27px;"
+         			 	href="{{ request.user.get_absolute_url }}" 
+         				title="{% trans 'Mom look at me' %}"
+         			><span 	class="border rounded overflow-hidden d-inline-block" 
+         						style="height: 27px;"
+         				>{% avatar user 25 %}</span
+         				><span class="align-self-center ms-1" {# d-none d-sm-inline #}
+         				style="	line-height: 27px;
+         							text-transform: capitalize;
+         							transform: translateY(2px);"
+         					>{# trans "Profile" #}{{ request.user }}</span></a></li><!-- <i class="fa fa-user"></i> --> 
 
-           <li class="popup action"><a href="#" class="modal-create-message" title="{% trans "Post message in your timeline" %}"><i class="fa fa-edit"></i></a></li>
-           <li class="action"><a href="{% url "project-create" %}" title="{% trans "Create project" %}"><i class="fa fa-folder-open"></i> {% trans "Create Project" %}</a></li>
-           <li class="action"><a href="{% url "audio-create" %}" title="{% trans "Upload file" %}"><i class="fa fa-upload"></i> {% trans "Upload audio" %}</a></li>
-       </ul>
-       </div>
-   </div>
-   {% endif %}
+			</ul>
+		  </div>
+		 </nav>
+		</div>
+	</div>
+	{% endif %}
+  	<!-- Full screen modal -->
+  	<!-- button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#MainMenu">test</button> -->
+	<div class="modal fade p-0" id="MainMenu" tabindex="-1" aria-labelledby="mainMenulabel" style="display: none;" aria-hidden="true">
+	  <div class="modal-dialog modal-fullscreen">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h1 class="modal-title fs-4" id="mainMenulabel">RedPanal</h1>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	        ...
+	      </div>
+	      <!-- <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	      </div> -->
+	    </div>
+	  </div>
+	</div>
+	{% endblock %}
+			
+	{% block background %}
+	{% endblock %}
+
+
+	{% comment %}
+			<!-- hamburger menu - por ahora no tenemos nada que poner! -->
+			<!-- <nav class="navbar navbar-expand-lg navbar-light hamburger-menu">
+       		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    				<span class="navbar-toggler-icon"></span>
+  				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+				</div>
+			</nav> -->
+	{% endcomment %}
+      <!-- Login and user actions redpanal/templates/base.html -->
+{% block top_user_menu %}
+{% comment %}
+		{% if request.user.is_authenticated %}
+         	<!-- <div class="dropdown top-user-menu">
+            	<button class="btn btn-primary dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               	<i class="icon-user icon-white pr-2"></i> <span class="btn-text">{{ request.user }}</span>
+            	</button>
+            	<div class="dropdown-menu"  aria-labelledby="userDropdown">
+           			<a class="dropdown-item" href="{% url 'user-profile' %}">
+               		<i class="fas fa-pencil-alt"></i> {% trans "Edit profile" %}
+            		</a>
+               	<a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
+                 		<i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
+               	</a>
+            	</div>
+         	</div> -->
+      {% else %}
+				<!-- <div class="top-user-menu">
+            	<a class="btn btn-primary" 
+               	href="{% url "account_login" %}?next={{ request.path }}">
+               	<i class="fas fa-user pr-2"></i> <span class="btn-text">{% trans "Log in" %}</span>
+            	</a>
+				</div> -->
+      {% endif %}
+{% endcomment %}
 {% endblock %}
 
-<div class="container mt-4">
+</div><!-- /header -->
+
+<div class="{% block main_container_classes %}container mt-4{% endblock %}">
     {% block content %}
     {% endblock %}
 </div>
 
-<div id="footer" class="navbar mt-auto">
-    <div class="container">
-        {% block footer %}
-            <p class="col-lg-8">
-                {% blocktrans %}
-                This is Free Software licensed under <a href="http://www.gnu.org/licenses/agpl.txt" >AGPL</a>.<br /> 
-                  Get <a href="https://github.com/RedPanal/redpanal">the code!</a>.<br />
-                  Current version is <a href="https://github.com/RedPanal/redpanal/commit/{{ GIT_SHORT_VERSION }}">{{ GIT_SHORT_VERSION }}</a>.
-                {% endblocktrans %}
-                {% trans 'Hosted by: <a href="http://www.codigosur.org">Código Sur</a>' %}
-            </p>
-            <div class="col-lg-4">
-                <span class="mr-2">
-                    <a href="http://blog.redpanal.org/" title="{% trans 'The Official RedPanal Blog!' %}">{% trans "Blog" %}</a>
-                </span>
-                <span class="mr-2">
-                    <a href="http://twitter.com/redpanal" ><i class="fab fa-twitter-square pr-1"></i><span class="hide-text">Twitter</span></a>
-                </span>
-                <span class="mr-2">
-                    <a href="https://www.facebook.com/pages/RedPanal/10150092707335128?fref=ts"><i class="fab fa-facebook-square pr-1"></i><span class="hide-text">Facebook</span></a>
-                </span>
-            </div>
-        {% endblock %}
-    </div>
+{% block pre_footer %}{% endblock %}
+
+<div id="footer" class="{% block footer_classes %}bg-dark mt-auto px-3{% endblock %}">
+	<div class="container py-3">
+      {% block footer %}
+		<div class="row" >
+			<div class="col-md-6 ">
+				<p class="text-light small text-center pt-2">
+				{% blocktrans %}
+				This is Free Software licensed under <a href="http://www.gnu.org/licenses/agpl.txt" >AGPL</a>.<br class="d-lg-none"> 
+				<!-- Get <a href="https://github.com/RedPanal/redpanal">the code!</a>.<br> -->
+				Current version is <a href="https://github.com/RedPanal/redpanal/commit/{{ GIT_SHORT_VERSION }}">{{ GIT_SHORT_VERSION }}</a>.<br class="d-lg-none">
+				{% endblocktrans %}
+				{% trans 'Hosted by: <a href="http://www.codigosur.org">Código Sur</a>' %}
+				</p>
+			</div>
+			<div class="col-md-4 mb-3">
+				<div class="nav justify-content-center small a-custom-primary">
+					<span class="nav-item">
+						<a class="nav-link px-2" href="http://blog.redpanal.org/" title="{% trans 'The Official RedPanal Blog!' %}">{% trans "Blog" %}</a>
+					</span>
+					<span class="nav-item">
+						<a class="nav-link px-2" href="http://twitter.com/redpanal" ><i class="fab fa-twitter-square pe-1"></i><span class="hide-text">Twitter</span></a>
+					</span>
+					<span class="nav-item">
+						<a class="nav-link px-2" href="https://www.facebook.com/pages/RedPanal/10150092707335128?fref=ts"><i class="fab fa-facebook-square pe-1"></i><span class="hide-text">Facebook</span></a>
+					</span>
+					<span class="nav-item">
+						<a class="nav-link px-2" href="https://github.com/RedPanal/redpanal" title="Get the code!" ><i class="fab fa-github-square pe-1"></i><span class="hide-text">Github</span></a>
+					</span>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div id="logo_mecenazgo" class="mx-auto"></div>
+			</div>
+		</div>
+   	{% endblock %}
+	</div>
 </div>
 
 {% block modal_popup %}
@@ -197,4 +351,5 @@
       {% include "social/message_form_popup.html" %}
    {% endif %}
 {% endblock %}
+{% block body_end_scripts %}{% endblock %}
 </body>

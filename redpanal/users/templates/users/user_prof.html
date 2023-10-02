@@ -1,84 +1,67 @@
 {% load i18n staticfiles social_tags activity_tags avatar_tags %}
-<div class="user-profile {{ profmode|default:"small" }} block" >
+<div class="user-profile {{ profmode|default:"profmode-default" }} block card" >
 <!-- request.user: {{ request.user }} - user: {{ user }} - user.username: {{ user.username }} -->
-    <div class="top-wrapper">
-        <span class="user-profile-img">
-    {% ifequal profmode "full" %}
-            {% avatar user 299 %}
-    {% else %}
-            <a href="{{ user.get_absolute_url }}" title="{% blocktrans with user=user.username %}Go to @{{ user }} profile{% endblocktrans %}">{% avatar user 72 %}</a>
-    {% endifequal %}
-        </span>
+ <div class="card-header d-flex bg-primary d-flex p-4">
+	<span class="user-profile-img me-3">
+   {% ifequal profmode "full" %}
+		{% avatar user 299 %}
+   {% else %}
+		<a href="{{ user.get_absolute_url }}" title="{% blocktrans with user=user.username %}Go to @{{ user }} profile{% endblocktrans %}">{% avatar user 120 %}</a>
+   {% endifequal %}
+	</span>
 
-    {% ifequal profmode "full" %}
+   	{# ifequal profmode "full" #}
+   <div class="header-info-wrapper flex-grow-1 d-flex flex-column justify-content-between">	
+		<div class="user-name-wrapper">
+	     	<h1 class="real-name m-0 fs-2"
+	     		><a
+	     			href="{{ user.get_absolute_url }}" 
+	     			title="{% blocktrans with user=user.username %}Go to @{{ user }} profile{% endblocktrans %}"
+	     			class="text-dark text-decoration-none"
+	     		><b>{{ user.userprofile.realname|default:user.username|capfirst }}</b></a
+	     	></h1>
+	       	<div class="user-name text-secondary text-decoration-none"
+	       		>@{{ user.username }} 
+	       		{% ifequal request.user user %}
+	       			<span class="edit"><a href="/accounts/profile/">[{% trans "Edit profile" %}]</a></span>
+	       		{% endifequal %}
+	       	</div>
+		</div>
+		
+		<div class="nav w-100 justify-content-end user-action-items">
+	       {% ifnotequal request.user user %}
+	           {% include "social/follow_button.html" %}
+	       {% endifnotequal %}
+		</div>
+	</div>
+ </div>
+ <div class="card-body">
+   	{# if profmode == "full" or stats == "show" #}
+   	
+  	<div class="navbar navbar-expand user-stats-wrapper">
+  	  <div class="navbar-nav">
+	   <a class="nav-link user-followers" href="{% followers_url user %}">
+	      <b class="fs-3">{{ user.followers|length }}</b> {% trans "Followers" %}
+	   </a>
+	   <a class="nav-link user-following" href="{% following_url user %}">
+	   	<b class="fs-3">{{ user.following|length }}</b>	{% trans "Following" %}
+	   </a>
+	  </div>
+   </div>
 
-        <h1 class="real-name"><a href="{{ user.get_absolute_url }}" title="{% blocktrans with user=user.username %}Go to @{{ user }} profile{% endblocktrans %}">{{ user.userprofile.realname|default:user.username|capfirst }}</a></h1>
-
-        <div class="user-name">@{{ user.username }} {% ifequal request.user user %}<span class="edit"><a href="/accounts/profile/">[{% trans "Edit profile" %}]</a></span>{% endifequal %}</div>
-
-        {% if user.userprofile.tags.all %}
-            {% with object=user.userprofile %}<p class="tags">{% include 'core/hashtags_block.html' %}</p>{% endwith %}
-        {% endif %}
-
-        {% ifnotequal request.user user %}
-            {% include "social/follow_button.html" %}
-        {% endifnotequal %}
-
-    {% else %}
-
-        <h2 class="real-name"><a href="{{ user.get_absolute_url }}" title="{% blocktrans with user=user.username %}Go to @{{ user }} profile{% endblocktrans %}">{{ user.userprofile.realname|default:user.username }}</a></h2>
-
-        <div class="user-name">@{{ user.username }} {% ifequal request.user user %}<div class="edit-wrapper"><span class="edit"><a href="/accounts/profile/">[{% trans "Edit profile" %}]</a></span></div>{% endifequal %}</div>
-
-        {% ifnotequal request.user user %}
-            {% include "social/follow_button.html" %}
-        {% endifnotequal %}
-
-        {% if user.userprofile.tags.all %}
-            {% with object=user.userprofile %}<p class="tags">{% include 'core/hashtags_block.html' %}</p>{% endwith %}
-        {% endif %}
-
-    {% endifequal %}
-
-    </div>
+     {% if user.userprofile.tags.all %}
+        {% with object=user.userprofile %}<p class="tags">{% include 'core/hashtags_block.html' %}</p>{% endwith %}
+     {% endif %}
+ </div>     
+</div>
 
 {% comment %}
-    {% ifequal request.user user %}
-    <hr>
-    <a class="field auth community" href="/" title="{% trans "My activities and the users that I follow" %}">
-        <span><i class="fa fa-users"></i> {% trans "Community" %}</span>
-    </a>
-    <a class="field auth interactions" href="{% url 'user-interactions' user %}" title="{% trans "Mentions and replies from another users" %}">
-        <span><i class="fa fa-comments-o"></i> {% trans "Interactions" %}</span>
-    </a>
-    {% endifequal %}
+   {% ifequal request.user user %}
+   <a class="field auth community" href="/" title="{% trans "My activities and the users that I follow" %}">
+       <span><i class="fa fa-users"></i> {% trans "Community" %}</span>
+   </a>
+   <a class="field auth interactions" href="{% url 'user-interactions' user %}" title="{% trans "Mentions and replies from another users" %}">
+       <span><i class="fa fa-comments-o"></i> {% trans "Interactions" %}</span>
+   </a>
+   {% endifequal %}
 {% endcomment %}
-
-    <hr>
-    <a class="field icon user-activities" href="{% url 'user-activities' user %}">
-        <i class="fa fa-comment"></i>
-        <span>{% trans "Activities" %}</span>
-    </a>
-    <a class="field icon user-traks" href="{% url 'user-tracks' user %}">
-        <i class="fa fa-music"></i>
-        <span>{% trans "Tracks" %}</span>
-    </a>
-    <a class="field icon user-projects" href="{% url 'user-projects' user %}">
-        <i class="fa fa-folder-open"></i>
-        <span>{% trans "Projects" %}</span>
-    </a>
-    <hr>
-
-    {% if profmode == "full" or stats == "show" %}
-    <a class="field stats user-followers" href="{% followers_url user %}">
-        <b>{{ user.followers|length }}</b>
-        <span>{% trans "Followers" %}</span>
-    </a>
-    <a class="field stats user-following" href="{% following_url user %}">
-        <b>{{ user.following|length }}</b>
-        <span>{% trans "Following" %}</span>
-    </a>
-    <hr>
-    {% endif %}
-
-</div>

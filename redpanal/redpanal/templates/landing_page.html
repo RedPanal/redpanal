@@ -1,0 +1,192 @@
+{% extends "two_rows.html" %}
+{% load i18n %}
+
+{% load account %}
+{% load background_images staticfiles avatar_tags i18n model_info %}
+
+
+{% block title %}{% trans "Live" %}{% endblock %}
+
+{% block body_class %} bkg bkg-content {% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+ <script src="{{ STATIC_URL }}el-pagination/js/el-pagination.js"></script>
+ <script>
+    $(function (){
+        $.endlessPaginate({
+            paginateOnScroll: true,
+            paginateOnScrollChunkSize: 5,
+            paginateOnScrollMargin: 10,
+            onCompleted: function() {
+             //  http://django-endless-pagination.readthedocs.org/en/latest/javascript.html
+               $(".follow-unfollow").each(function(index, element){
+                  follow_unfollow_button(element);
+               });
+               $('video,audio').each(function(index, element){
+                  $(this).mediaelementplayer({
+                     audioWidth: $(this).parent().width(), //old 540 460
+                     // height of audio player
+                     audioHeight: 30,
+                     // initial volume when the player starts
+                     startVolume: 0.8});
+               });               
+            }
+        });
+    });
+ </script>
+{% endblock %}
+
+{% block post_message %}
+{% endblock %}
+    
+{% block left_row %}
+
+<div class="live-wrapper p-3 text-light transparent-black-background">
+ <h3>{% trans "RedPanal live" %}</h3>
+ <p class="expl">{% trans "Last activities in RedPanal" %}</p>
+
+
+ <ul class="mixed_list list-unstyled d-flex flex-column mt-3">
+    {% include "core/mixed_list.html" %}
+ </ul>  
+
+{% comment %} 
+ <ul class="action-stream list-unstyled d-flex flex-column mt-3">
+    {% include "social/actions_list.html" %}
+ </ul>
+{% endcomment %} 
+
+</div>
+{% endblock %}
+
+
+{% block right_row %}
+<div class="form-block p-4 rounded-4 border" style="background-color: rgba(0,0,0,0.4);">
+   <h2 class="pb-4 text-light text-center"><b>{% trans 'Login to RedPanal:' %}</b></h2>
+	<form 
+      	class="login form-floating mb-3 a-custom-primary " 
+      	method="POST" 
+      	action="{% url 'account_login' %}">
+			{% csrf_token %}
+			{# {{ form.as_p }} #}
+
+			{{ custom_form.non_field_errors }}
+			<div class="form-floating mb-3">
+			<label for="{{ custom_form.username.id_for_label }}">Username:</label>
+				{{ custom_form.username }}
+				{{ custom_form.usernameerrors }}
+			</div>
+		   <div class="form-floating">
+				<label for="{{ custom_form.password.id_for_label }}">Password:</label>
+				{{ custom_form.password }}
+				{{ custom_form.passworderrors }}
+			</div>
+
+<!--             <div class="form-floating mb-3">
+          <input type="text" name="login" class="form-control" placeholder="{% trans 'Username' %}" autofocus="autofocus" id="id_login" >
+          <label for="id_login">{% trans 'Username' %}</label>
+        </div>
+        <div class="form-floating">
+          <input type="password" class="form-control" name="password" placeholder="{% trans 'Password' %}" id="id_password">
+          <label for="id_password">{% trans 'Password' %}</label>
+        </div> -->
+        {% if redirect_field_value %}
+        <input 
+        	type="hidden" 
+        	name="{{ redirect_field_name }}" 
+        	value="{{ redirect_field_value }}" />
+        {% endif %}
+        <div class="nav py-3 action-grp justify-content-between">
+           <div class="nav-item"><a 
+           	class="nav-link ps-0"
+           	style="text-decoration:underline;"
+           	href="{% url 'account_reset_password' %}"
+           	>{% trans "Forgot Password?" %}</a
+           ></div>
+           <div class="nav-item">
+           	<button 
+           		class="btn btn-light" 
+           		type="submit">{% trans "Sign in" %}</button
+           ></div>
+        </div>
+        <p class="">
+     	   {% trans "You do not have an account?" %} <a class="" href="/accounts/signup/"><b>{% trans "Create RedPanal account" %}</b></a>
+        </p>
+     </form>
+</div>
+
+<div class="block global-stats">
+   <h3>{% trans "Statistics:" %}</h3>
+   <p>
+      <span class="description">Total tracks:</span> 
+      <span class="value">{{ count_audios }}</span>
+   </p>
+   <p>
+      <span class="description">Total projects:</span> 
+      <span class="value">{{ count_projects }}</span>
+   </p>
+   <p>
+      <span class="description">Total messages:</span> 
+      <span class="value">{{ count_messages }}</span>
+   </p>
+   <p>
+      <span class="description">Total users:</span> 
+      <span class="value">{{ count_users }}</span>
+   </p>
+</div>
+
+{% comment %}
+<div class="users-list-wrapper">
+   <h3>{% trans "Users online:" %}</h3>
+      <ul class="users-list">
+       {% for user in logged_users|slice:":10" %}
+         <li>{% include "users/user_teaser.html" %}</li>
+       {% endfor %}
+      </ul>
+</div>
+
+
+{# if socialaccount.providers  #}
+<div class="form-block providers">
+   <h3>{% trans 'Sign in with:' %}</h3>
+   <div class="socialaccount_ballot">
+     <ul class="socialaccount_providers">
+       {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+     </ul>
+   </div>
+</div>
+
+{# include "socialaccount/snippets/login_extra.html" #}
+{% endif %}
+
+{% endcomment %}
+
+<div class="users-list-wrapper">
+   <h3>{% trans "New users:" %}</h3>
+      <ul class="users-list">
+       {% for user in last_users|slice:":5" %}
+         <li>{% include "users/user_teaser.html" %}</li>
+       {% endfor %}
+      </ul>
+</div>
+{% endblock %}
+
+
+{% block pre_footer %}
+	{% get_background_image as bkg_img %}
+	<div id="background-image" class="small p-1">
+  		{% trans 'Background image:' %} <a href="{{ bkg_img.url }}">{{ bkg_img.name }}</a>
+  	<span>{{ bkg_img.author }} ({{ bkg_img.license }})</span>
+	</div>
+{% endblock %}
+
+{% block body_end_scripts %}
+	{% get_background_image as bkg_img %}
+	<script>
+		$("body").css(
+			'background-image', "url({{ STATIC_URL }}img/backgrounds/{{ bkg_img.filename }})"
+		);
+	</script>
+{% endblock %}
+

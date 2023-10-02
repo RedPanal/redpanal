@@ -1,14 +1,21 @@
 {% extends "base.html" %}
 {% load background_images i18n %}
 
-{% block body_class %}bkg{% endblock %}
+{% block body_class %}bkg bkg-cover{% endblock %}
 
-{% block footer %}
-{{ block.super }}
+{% block pre_footer %}
 {% get_background_image as bkg_img %}
-<div id="background-image">
+<div id="background-image" class="small p-1">
   {% trans 'Background image:' %} <a href="{{ bkg_img.url }}">{{ bkg_img.name }}</a>
   <span>{{ bkg_img.author }} ({{ bkg_img.license }})</span>
-  <script>$("body").css("background-image", "url({{STATIC_URL}}img/backgrounds/{{ bkg_img.filename}})");</script>
 </div>
+{% endblock %}
+
+{% block body_end_scripts %}
+{% get_background_image as bkg_img %}
+<script>
+	$("body").css(
+		'background-image', "url({{ STATIC_URL }}img/backgrounds/{{ bkg_img.filename }})"
+	);
+</script>
 {% endblock %}

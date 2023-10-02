@@ -9,7 +9,7 @@
 
   <span class="user"><a href="{{ user.get_absolute_url }}">{{ user.userprofile.realname|default:user.username|capfirst }}</a></span><br />
 
-  <span class="user-name">@{{ user.username }}</span><br />
+  <span class="user-name">(user_teaser) @{{ user.username }}</span><br />
 
   <span class="small-tags">
    {% with object=user.userprofile %}

@@ -28,19 +28,29 @@
  </script>
 {% endblock %}
 
+{% block usermenu_row %}
+	{% with useritem="tracks" %}
+	 	{% include "users/user_menu.html" %}
+	{% endwith %}
+{% endblock %}
+
 {% block left_row %}
       {% ifequal request.user user %}
-      <h3>{% trans "My Tracks" %}</h3>
+      <!-- <h3>{% trans "My Tracks" %}</h3> -->
       {% else %}
-      <h3>{{ user.userprofile.realname|default:user.username|capfirst }} Tracks</h3>
+      <!-- <h3>{{ user.userprofile.realname|default:user.username|capfirst }} Tracks</h3> -->
       {% endifequal %}
+      <div class="d-flex flex-column user-track-list">
       {% include "audio/audios_list.html" %}
+      </div>
 {% endblock %}
 
 {% block right_row %}
    {% include "users/user_prof.html" %}
+	{% comment %}
    <ul class="nav nav-list">
       {% include "discover-items-menu.html" %}
    </ul>
+   {% endcomment %}
 {% endblock %}
 

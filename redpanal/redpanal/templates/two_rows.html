@@ -15,13 +15,14 @@
                // height of audio player
                audioHeight: 30,
                // initial volume when the player starts
-               startVolume: 0.8});
+               startVolume: 0.8,
+               enableAutosize: true });
         });
 
-        $('.partial_slider').each(function(){
+        $('.more_block').each(function(){
 
-            var s = $(this).find('.slider');
-            var m = $(this).find('.slider_menu');
+            var s = $(this).find('.more_block_content');
+            var m = $(this).find('.more_block_more');
 
             var minH = s.css('min-height'); // min must be set in css "min-height"
             var truH = s[0].scrollHeight;   // true element height (overflowed)
@@ -62,21 +63,12 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-lg-7">
-
-    {% block post_message %}
-      {% if request.user.is_authenticated %}
-        {% ifequal request.user user %}
-          {% include "social/message_form.html" %}
-        {% endifequal %}     
-      {% endif %}     
-    {% endblock %}
-
-      {% block left_row %}{% endblock %}
+  <div class="col-lg-7 order-lg-1 order-2">     
+	{% block usermenu_row %}{% endblock %}
+	{% block left_row %}{% endblock %}
   </div>
-
-  <div class="col-lg-5">
-      {% block right_row %}{% endblock %}
+  <div class="col-lg-4 ms-auto order-lg-2 order-1">
+   {% block right_row %}{% endblock %}
   </div>
 </div>
 {% endblock %}
