@@ -15,3 +15,4 @@ pydub==0.16.6
 Pillow>=3.4.2
 django-taggit-serializer==0.1.7
 django-cors-headers>=3.3<4.0
+django-widget-tweaks
