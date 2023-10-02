@@ -3074,7 +3074,7 @@ if (typeof jQuery != 'undefined') {
 				t = this,
 				play =
 				$('<div class="mejs-button mejs-playpause-button mejs-play '+player.options.customSize+'" >' +
-					'<button type="button" aria-controls="' + t.id + '" title="' + t.options.playpauseText + '" aria-label="' + t.options.playpauseText + '"></button>' +
+					'<button type="button" aria-controls="' + t.id + '" title="' + t.options.playpauseText + '" aria-label="' + t.options.playpauseText + '"><i class="fas fa-play"></i><i class="fas fa-pause"></i></button>' +
 				'</div>')
 				.appendTo(controls)
 				.click(function(e) {
@@ -3157,7 +3157,7 @@ if (typeof jQuery != 'undefined') {
 						'<span class="mejs-time-float-current">00:00</span>' +
 						'<span class="mejs-time-float-corner"></span>' +
 					'</span>'+
-					'<span class="mejs-img-waveform '+player.options.customSize+'" style="background: url(\''+media.src+((player.options.customSize=='big')?'.big':'')+'.png\') no-repeat scroll center center transparent; background-size: cover;"></span>'+
+					'<span class="mejs-img-waveform '+player.options.customSize+'" style="background: url(\''+media.src+((player.options.customSize=='big')?'.big':'')+'.png\') no-repeat scroll center center transparent; background-size: 100% 100%;"></span>'+
 				'</span>'+
 			'</div>')
 				.appendTo(controls);
