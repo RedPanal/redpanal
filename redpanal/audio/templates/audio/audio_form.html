@@ -3,14 +3,18 @@
 {% block title %}{% if object %}{% trans "Edit" %}{% else %}{% trans "Upload" %}{% endif %}{% trans " Audio" %}{% endblock %}
 
 {% block content %}
-<h3>{{title}}</h3>
+<div class="my-5" style="max-width: 700px;">
+ <div class="p-4 rounded-4 border">
+  <h2 class="pb-4 text-center"><b>{{title}}</b></h2>
 
 {% comment %} TODO: Mejorar el drag and drop porque la zona drop es muy chica {% endcomment %}
-<div id="drop-zone" class="drop-zone">
-  <form method="post" enctype="multipart/form-data">{% csrf_token %}
-    {{form|crispy}}
-    <button type="submit">{% trans "Upload" %}</button>
-  </form>
+  <div id="drop-zone" class="drop-zone">
+    <form method="post" enctype="multipart/form-data" class="p-0">{% csrf_token %}
+      {{form|crispy}}
+      <button type="submit" class="btn btn-primary">{% trans "Upload" %}</button>
+    </form>
+  </div>
+ </div>
 </div>
 <script>
   // Enable Drag an Drop

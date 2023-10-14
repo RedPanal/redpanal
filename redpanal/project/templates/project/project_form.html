@@ -4,6 +4,11 @@
 {% block title %}{% if object %}{% trans "Edit" %}{% else %}{% trans "Create" %}{% endif %}{% trans " Project" %}{% endblock %}
 
 {% block content %}
+<div class="my-5" style="max-width: 700px;">
+ <div class="p-4 rounded-4 border">
+  <h2 class="pb-4 text-center"><b>Upload Project</b></h2>
   {% crispy form %}
+ </div>
+</div>
 {% endblock %}
 

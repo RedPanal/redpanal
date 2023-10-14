@@ -117,6 +117,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'widget_tweaks',
     'multiupload',
+    "crispy_bootstrap5",
 )
 
 
@@ -145,7 +146,9 @@ SOCIALACCOUNT_PROVIDERS = {
          'AUTH_PARAMS': {'access_type': 'online'}}
 }
 
-CRISPY_TEMPLATE_PACK = "bootstrap4"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 SOUTH_TESTS_MIGRATE = False
 
