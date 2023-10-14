@@ -195,7 +195,7 @@
 	{% if request.user.is_authenticated %}
 	<div class="container-fluid bg-logged-menu">
   		<div class="container justify-content-between">
-		 <nav class="navbar navbar-expand navbar-light bg-light" id="discover-menu">
+		 <nav class="navbar navbar-expand navbar-light bg-logged-menu" id="discover-menu">
 		  <div class="container-fluid">
       	<ul class="navbar-nav w-100">
          {% comment %}
@@ -217,19 +217,41 @@
          			 href="/live/" title="{% trans 'RedPanal Party' %}"
          			><i class="fa fa-globe"></i> <span class="d-none d-sm-inline">{% trans "RedPanal" %}</span></a></li>
 				-->
-         	<li class="nav-item discover ms-auto"
-         		><a 	class="nav-link d-flex {% if request.path == request.user.get_absolute_url %}active{% endif %}" 
-         			 	style="box-sizing:content-box; line-height: 27px;"
-         			 	href="{{ request.user.get_absolute_url }}" 
-         				title="{% trans 'Mom look at me' %}"
-         			><span 	class="border rounded overflow-hidden d-inline-block" 
-         						style="height: 27px;"
-         				>{% avatar user 25 %}</span
-         				><span class="align-self-center ms-1" {# d-none d-sm-inline #}
-         				style="	line-height: 27px;
-         							text-transform: capitalize;
-         							transform: translateY(2px);"
-         					>{# trans "Profile" #}{{ request.user }}</span></a></li><!-- <i class="fa fa-user"></i> --> 
+				<!--
+			      <a class="nav-link d-flex {% if request.path == request.user.get_absolute_url %}active{% endif %} dropdown-item" 
+        			 	style="box-sizing:content-box; line-height: 27px;"
+        			 	href="{{ request.user.get_absolute_url }}" 
+        				title="{% trans 'My Account' %}"
+        			></a> 
+
+        			<i class="icon-user icon-white pr-2"></i> <span class="btn-text">{{ request.user }}</span>
+         	-->
+         	<li class="nav-item ms-auto dropdown">
+         		<button class="btn btn-outline-secondary dropdown-toggle" 
+         				  type="button" 
+         				  id="userDropdown" 
+         				  data-bs-toggle="dropdown">
+         			<span   class="border rounded overflow-hidden d-inline-block" 
+           					  style="height: 27px; vertical-align: inherit;"
+        					>{% avatar user 25 %}</span
+           			><span  class="ms-1" {# d-none d-sm-inline #}
+           					  style="line-height: 27px;
+           							text-transform: capitalize;
+           							/*transform: translateY(2px);*/"
+     					>{# trans "Profile" #}{{ request.user }}</span>               	
+         		</button>
+        			<ul class="dropdown-menu"  aria-labelledby="userDropdown">
+        			   <li><a class="dropdown-item" href="{{ request.user.get_absolute_url }}">
+               		<i class="fas fa-user"></i> {% trans "My profile" %}
+            		</a></li>
+           			<li><a class="dropdown-item" href="{% url 'user-profile' %}">
+               		<i class="fas fa-pencil-alt"></i> {% trans "Edit account" %}
+            		</a></li>
+               	<li><a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
+                 		<i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
+               	</a></li>
+        			</ul>
+         	</li>			
 			</ul>
 		  </div>
 		 </nav>
