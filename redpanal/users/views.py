@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import ListView, UpdateView, DetailView, CreateView, DeleteView
 
 import actstream.models
+from redpanal.utils.helpers import is_ajax
 from audio.models import Audio
 from .models import create_profile
 from .forms import UserProfileForm
@@ -31,7 +32,7 @@ def user_tracks(request, username):
     user = get_object_or_404(User, username=username)
     audios = Audio.objects.filter(user=user)
 
-    if request.is_ajax():
+    if is_ajax(request):
         template = "audio/audios_list.html"
     else:
         template =  "users/user_tracks.html"
@@ -45,7 +46,7 @@ def user_projects(request, username):
     user = get_object_or_404(User, username=username)
     projects = user.project_set.all
 
-    if request.is_ajax():
+    if is_ajax(request):
         template = "project/projects_list.html"
     else:
         template =  "users/user_projects.html"
@@ -59,7 +60,7 @@ def user_activities(request, username):
     user = get_object_or_404(User, username=username)
     action_list = actstream.models.actor_stream(user)
 
-    if request.is_ajax():
+    if is_ajax(request):
         template = "social/actions_list.html"
     else:
         template =  "users/user_activities.html"
@@ -75,7 +76,7 @@ def user_interactions(request, username):
     if request.user.is_authenticated:
         user = get_object_or_404(User, username=username)
         if request.user == user:
-            if request.is_ajax():
+            if is_ajax(request):
                 template = "social/messages_list.html"
             else:
                 template = "users/user_interactions.html"
@@ -103,7 +104,7 @@ def user_profile(request):
 
 def all_people(request):
     users = User.objects.all()
-    if request.is_ajax():
+    if is_ajax(request):
        template = "users/users_list_full.html"
     else:
        template =  "users/all_people.html"  

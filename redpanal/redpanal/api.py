@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from django.conf.urls import include, url
+from django.urls import path, re_path
 from audio.models import Audio
 from rest_framework import routers, serializers, viewsets, generics, pagination
 from rest_framework.decorators import action
@@ -80,6 +80,6 @@ api_router = routers.DefaultRouter()
 api_router.register(r'audio', AudioViewSet, basename='audio-api')
 
 api_urls = [
-    url('^audio/list/$', AudioList.as_view()),
-    url('^audio/by-slug/(?P<slug>[\w-]+)/?$', AudioBySlugView.as_view()),
+    path('audio/list/', AudioList.as_view()),
+    re_path('^audio/by-slug/(?P<slug>[\w-]+)/?$', AudioBySlugView.as_view()),
 ] + api_router.urls

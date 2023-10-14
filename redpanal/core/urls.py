@@ -1,10 +1,10 @@
-from django.conf.urls import include, url
+from django.urls import path, re_path
 
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^live/$', views.activity_all, {'page': 'all_activities'}, name="activity-all"),
-    url(r'^live/iframe$', views.activity_all_iframe, name="activity-all-iframe"),
-    url(r'^landing-page/$', views.activity_all, {'page': 'landing_page'}, name="landing-page"),
+    path('', views.index, name='index'),
+    path('live/', views.activity_all, {'page': 'all_activities'}, name="activity-all"),
+    path('live/iframe', views.activity_all_iframe, name="activity-all-iframe"),
+    path('landing-page/', views.activity_all, {'page': 'landing_page'}, name="landing-page"),
 ]

@@ -4,8 +4,8 @@
    {% include "audio/audio_teaser.html" %}
 {% empty %}
       <span class="no-yet">{% trans "No tracks yet" %}</span>
-  {% ifequal request.user user %}
+  {% if request.user == user %}
       <span class="new"><a href="{% url "audio-create" %}">{% trans "Upload track" %}</a></span>
-  {% endifequal %}
+  {% endif %}
 {% endfor %}
 {% show_more %}

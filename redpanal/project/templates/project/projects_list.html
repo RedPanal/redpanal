@@ -4,8 +4,8 @@
    {% include "project/project_teaser.html" %}
 {% empty %}
       <span class="no-yet">{% trans "No project yet" %}</span>
-   {% ifequal request.user user %}
+   {% if request.user == user %}
       <span class="new"><a href="{% url "project-create" %}">{% trans "Create new project" %}</a></span>
-   {% endifequal %}
+   {% endif %}
 {% endfor %}
 {% show_more %}

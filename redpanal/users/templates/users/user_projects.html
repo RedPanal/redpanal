@@ -25,11 +25,11 @@
 
 {% block left_row %}
 {% comment %}
-      {% ifequal request.user user %}
+      {% if request.user == user %}
       <h3>{% trans "My Projects" %}</h3>
       {% else %}
       <h3>{{ user.userprofile.realname|default:user.username|capfirst }} Projects</h3>
-      {% endifequal %}
+      {% endif %}
 {% endcomment %}
       <div class="projects-wrapper full mt-4">
       {% with mode="full" %}

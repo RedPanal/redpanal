@@ -35,11 +35,11 @@
 {% endblock %}
 
 {% block left_row %}
-      {% ifequal request.user user %}
+      {% if request.user == user %}
       <!-- <h3>{% trans "My Tracks" %}</h3> -->
       {% else %}
       <!-- <h3>{{ user.userprofile.realname|default:user.username|capfirst }} Tracks</h3> -->
-      {% endifequal %}
+      {% endif %}
       <div class="d-flex flex-column user-track-list">
       {% include "audio/audios_list.html" %}
       </div>

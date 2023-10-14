@@ -5,11 +5,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from actstream import actions, models
 from actstream.views import respond
 
+from redpanal.utils.helpers import is_ajax
 from .forms import MessageForm, MessageWithContentForm
 from .models import Message
 
@@ -38,7 +39,7 @@ def followers(request, content_type_id, object_id):
     if request.user.is_authenticated:
         ctype = get_object_or_404(ContentType, pk=content_type_id)
         user = get_object_or_404(ctype.model_class(), pk=object_id)
-        if request.is_ajax():
+        if is_ajax(request):
            template = "users/users_list.html"
         else:
            template =  "social/followers.html"
@@ -52,7 +53,7 @@ def following(request, user_id):
     """
     if request.user.is_authenticated:
         user = get_object_or_404(User, pk=user_id)
-        if request.is_ajax():
+        if is_ajax(request):
            template = "users/users_list.html"
         else:
            template =  "social/following.html"
@@ -61,7 +62,7 @@ def following(request, user_id):
         return redirect("/accounts/login/?next=/")
 
 def message_create(request):
-    if request.method == "POST" and request.is_ajax():
+    if request.method == "POST" and is_ajax(request):
         form = MessageForm(request.POST)
         if form.is_valid():
             msg = Message(msg=form.cleaned_data["msg"], user=request.user)

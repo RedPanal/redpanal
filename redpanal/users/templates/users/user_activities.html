@@ -36,11 +36,11 @@
 
 {% block left_row %}
 	{% comment %}
-      {% ifequal request.user user %}
+      {% if request.user == user %}
       <h3>{% trans "My Activities" %}</h3>
       {% else %}
       <h3>{{ user.userprofile.realname|default:user.username|capfirst }} Activities</h3>
-      {% endifequal %}
+      {% endif %}
    {% endcomment %}
       <ul class="action-stream list-unstyled d-flex flex-column mt-3">
          {% include "social/actions_list.html" %}
