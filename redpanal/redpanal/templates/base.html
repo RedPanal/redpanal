@@ -217,16 +217,8 @@
          			 href="/live/" title="{% trans 'RedPanal Party' %}"
          			><i class="fa fa-globe"></i> <span class="d-none d-sm-inline">{% trans "RedPanal" %}</span></a></li>
 				-->
-				<!--
-			      <a class="nav-link d-flex {% if request.path == request.user.get_absolute_url %}active{% endif %} dropdown-item" 
-        			 	style="box-sizing:content-box; line-height: 27px;"
-        			 	href="{{ request.user.get_absolute_url }}" 
-        				title="{% trans 'My Account' %}"
-        			></a> 
-
-        			<i class="icon-user icon-white pr-2"></i> <span class="btn-text">{{ request.user }}</span>
-         	-->
-         	<li class="nav-item ms-auto dropdown">
+         	<!-- drop "down" item -->
+         	<li class="nav-item ms-auto dropdown d-none d-sm-none d-md-block">
          		<button class="btn btn-outline-secondary dropdown-toggle" 
          				  type="button" 
          				  id="userDropdown" 
@@ -251,7 +243,35 @@
                  		<i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
                	</a></li>
         			</ul>
+         	</li>
+         	<!-- drop "up" item -->
+         	<li class="nav-item ms-auto dropup d-sm-block d-md-none">
+         		<button class="btn btn-outline-secondary dropdown-toggle" 
+         				  type="button" 
+         				  id="userDropdown" 
+         				  data-bs-toggle="dropdown">
+         			<span   class="border rounded overflow-hidden d-inline-block" 
+           					  style="height: 27px; vertical-align: inherit;"
+        					>{% avatar user 25 %}</span
+           			><span  class="ms-1" {# d-none d-sm-inline #}
+           					  style="line-height: 27px;
+           							text-transform: capitalize;
+           							/*transform: translateY(2px);*/"
+     					>{# trans "Profile" #}{{ request.user }}</span>               	
+         		</button>
+        			<ul class="dropdown-menu dropdown-menu-end"  aria-labelledby="userDropdown">
+        			   <li><a class="dropdown-item" href="{{ request.user.get_absolute_url }}">
+               		<i class="fas fa-user"></i> {% trans "My profile" %}
+            		</a></li>
+           			<li><a class="dropdown-item" href="{% url 'user-profile' %}">
+               		<i class="fas fa-pencil-alt"></i> {% trans "Edit account" %}
+            		</a></li>
+               	<li><a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
+                 		<i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
+               	</a></li>
+        			</ul>
          	</li>			
+
 			</ul>
 		  </div>
 		 </nav>

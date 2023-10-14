@@ -7,7 +7,7 @@ body {
     color: #263e4e;
 }
 
-.bg-primary,bg-redpanal {
+.bg-primary, .bg-redpanal {
   background-color: #28ccea !important;
 }
 
@@ -16,7 +16,7 @@ body {
 }
 
 .bg-logged-menu {
-  background-color: #e8ffe8;
+  background-color: #f0fec0;
 }
 
 a:not([class]) {
@@ -262,6 +262,10 @@ li.button-like a {
   border-color:rgba(255,255,255,0.4) !important;
 }
 
+.errorlist {
+  color: #ffafaf;
+}
+
 /* modals */
 
 #modal_create_message_html .modal-body{
@@ -271,4 +275,16 @@ li.button-like a {
 #modal_create_message_html .modal-footer{
   flex-grow: 1;
   align-items: start;
+}
+
+/* crispy-forms */
+
+.crispy-form-wrapper > form {
+
+}
+
+/* profile options */
+
+.profile-options .crispy-form-wrapper > form {
+  padding: 0;
 }
