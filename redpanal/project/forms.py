@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
@@ -11,7 +11,7 @@ class ProjectForm(forms.ModelForm):
 
     helper = FormHelper()
     helper.add_input(Submit('submit', 'Submit'))
-    helper.form_class = 'form-horizontal'
+    # helper.form_class = 'form-horizontal'
 
     tags =  TagField()
 

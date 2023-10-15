@@ -9,7 +9,7 @@
 {% block modal_body %}
    <form method="post" action="{% url 'message-create' %}" id="modal_message_form" class="modal_message_form">
   {% csrf_token %}
-     <textarea id="modal_msg" maxlength="1000" name="msg" type="text" cols="60" rows="3"></textarea>
+     <textarea id="modal_msg" class="w-100 p-2 fs-4" maxlength="1000" name="msg" type="text" cols="60" rows="3"></textarea>
    </form>
    <div class="help-text"></div> 
    <div id="response" class="response"></div>
@@ -24,9 +24,9 @@
  
  $(function() {
    var refresh = false;
-  {% ifequal refresh_after_modal "refresh" %}
+  {% if refresh_after_modal == "refresh" %}
    var refresh = true;
-  {% endifequal %}
+  {% endif %}
    var WRONG_MESSAGE = "{% trans 'Something went wrong' %}";
    var POST_TEXT = "{% trans 'Post message' %}";
    var REPLYTO_TEXT = "{% trans 'Reply to' %} ";

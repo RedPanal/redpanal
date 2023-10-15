@@ -3,7 +3,7 @@
 {% with user.mentioned_messages.all as objects %}
    {% paginate objects %}
    {% for object in objects %}
-      <li>{% include "social/message_teaser.html" %}</li>
+      <li class="messages_list">{% include "social/message_teaser.html" %}</li>
    {% empty %}
       {% trans "No interactions yet" %}
    {% endfor%}

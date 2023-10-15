@@ -2,52 +2,119 @@
 
 {% load i18n %}
 {% load account %}
+{# load static avatar_tags i18n model_info #}
 
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block title %}{% trans "Welcome!" %}{% endblock %}
 
-{% block body_class %}bkg login-with-iframe{% endblock %}
+{% block body_class %}bkg login-page{% endblock %}
+
+{% block main_container_classes %}container m-auto{% endblock %}
+
+{% block top_user_menu %}{% endblock %}
+{% block top_search_form %}{% endblock %}
 
 {% block content %}
+<div class="sign-up-block m-auto" style="max-width: 420px;">
+	{# TODO: cambiar {{ signup_url }} que imprime /accounts/signup/?next=%2F y no va a edit profile despues de signup #}
+	<div class="form-block p-4 rounded-4 border redpanal-form-wrapper">
+	   <h2 class="pb-4 text-light text-center"><b>{% trans 'Login to RedPanal:' %}</b></h2>
+	<form 
+      	class="login form-floating mb-3 a-custom-primary " 
+      	method="POST" 
+      	action="{% url 'account_login' %}">
+			{% csrf_token %}
+			{# form.as_p #}
+			{{ form.non_field_errors }}
+			<div class="form-floating mb-3">
+				{{ form.login }}
+				<label for="{{ form.login.id_for_label }}">Username:</label>
+				{{ form.loginerrors }}
+			</div>
+		   <div class="form-floating">
+				{{ form.password }}
+				<label for="{{ form.password.id_for_label }}">Password:</label>
+				{{ form.passworderrors }}
+			</div>
 
-<div id="iframe-top"><p class="expl">{% trans "Last activities in RedPanal" %}</p></div>
- 
-<iframe id="login-iframe" class="" src="/live/iframe"></iframe> 
-
-<div id="iframe-bottom"><span class="more"><a href="{% url 'activity-all' %}">{% trans "more..." %}</a></span></div>
-
-<h3 class="sign-up"><a href="/accounts/signup/">{% trans "Sign up for RedPanal" %}</a></h3>
-{# TODO: cambiar {{ signup_url }} que imprime /accounts/signup/?next=%2F y no va a edit profile despues de signup #}
-
-<div class="form-block">
-   <h3>{% trans 'Sign in:' %}</h3>
-   <form class="login" method="POST" action="{% url 'account_login' %}">
-     {% csrf_token %}
-     {{ form.as_p }}
-     {% if redirect_field_value %}
-     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-     {% endif %}
-     <p class="action-grp">
-        <button class="btn btn-primary" type="submit">{% trans "Sign in" %}</button>
-        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-     </p>
-   </form>
+<!--             <div class="form-floating mb-3">
+          <input type="text" name="login" class="form-control" placeholder="{% trans 'Username' %}" autofocus="autofocus" id="id_login" >
+          <label for="id_login">{% trans 'Username' %}</label>
+        </div>
+        <div class="form-floating">
+          <input type="password" class="form-control" name="password" placeholder="{% trans 'Password' %}" id="id_password">
+          <label for="id_password">{% trans 'Password' %}</label>
+        </div> -->
+        {% if redirect_field_value %}
+        <input 
+        	type="hidden" 
+        	name="{{ redirect_field_name }}" 
+        	value="{{ redirect_field_value }}" />
+        {% endif %}
+        <div class="nav py-3 action-grp justify-content-between">
+           <div class="nav-item"><a 
+           	class="nav-link ps-0"
+           	style="text-decoration:underline;"
+           	href="{% url 'account_reset_password' %}"
+           	>{% trans "Forgot Password?" %}</a
+           ></div>
+           <div class="nav-item">
+           	<button 
+           		class="btn btn-light" 
+           		type="submit">{% trans "Sign in" %}</button
+           ></div>
+        </div>
+        <p class="text-light pt-4 small">
+     	   {% trans "You do not have an account?" %} <a class="" href="/accounts/signup/"><b>{% trans "Create RedPanal account" %}</b></a>
+        </p>
+     </form>
+	</div>
 </div>
-
-{% if socialaccount.providers  %}
-<div class="form-block providers">
-   <h3>{% trans 'Sign in with:' %}</h3>
-   <div class="socialaccount_ballot">
-     <ul class="socialaccount_providers">
-       {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-     </ul>
-   </div>
-</div>
-{% comment %}
-{% include "socialaccount/snippets/login_extra.html" %}
-{% endcomment %}
-{% endif %}
-
 {% endblock %}
 
+{% block footer_classes %}bg-dark p-0{% endblock %}
+
+
+{% comment %}
+{# version "html" del form #}
+	   <form 
+	   	class="login form-floating mb-3 a-custom-primary" 
+	   	method="POST" 
+		   action="{% url 'account_login' %}"
+		 	>
+	     	{% csrf_token %}
+	     	{# form.as_p #}
+	     	<div class="form-floating mb-3">
+	      	<input type="text" name="login" class="form-control" placeholder="{% trans 'Username' %}" autofocus="autofocus" id="id_login" >
+	      	<label for="id_login">{% trans 'Username' %}</label>
+	     	</div>
+	     	<div class="form-floating">
+	      	<input type="password" class="form-control" name="password" placeholder="{% trans 'Password' %}" id="id_password">
+	      	<label for="id_password">{% trans 'Password' %}</label>
+	     	</div>
+	{% if redirect_field_value %}
+	     	<input 
+	     	type="hidden" 
+	     	name="{{ redirect_field_name }}" 
+	     	value="{{ redirect_field_value }}" />
+	{% endif %}
+	     	<div class="nav py-3 mt-3 action-grp justify-content-between">
+				<div class="nav-item text-light"
+		      	><a 
+		        		class="nav-link ps-0"
+		        		style="text-decoration:underline;"
+		        		href="{% url 'account_reset_password' %}"
+		        		>{% trans "Forgot Password?" %}</a
+		      ></div>
+		      <div class="nav-item text-light">
+		        	<button 
+		        		class="btn btn-light" 
+		        		type="submit">{% trans "Sign in" %}</button
+	      	></div>
+	     	</div>
+	     	<p class="text-light text-center">
+	     		{% trans "You do not have an account?" %}<br><a class="" href="/accounts/signup/"><b>{% trans "Create RedPanal account" %}</b></a>
+	     	</p>
+	   </form>
+{% endcomment %}

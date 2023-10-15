@@ -17,13 +17,21 @@
  </script>
 {% endblock %}
 
+{% block usermenu_row %}
+	{% with useritem="projects" %}
+	 	{% include "users/user_menu.html" %}
+	{% endwith %}
+{% endblock %}
+
 {% block left_row %}
-      {% ifequal request.user user %}
+{% comment %}
+      {% if request.user == user %}
       <h3>{% trans "My Projects" %}</h3>
       {% else %}
       <h3>{{ user.userprofile.realname|default:user.username|capfirst }} Projects</h3>
-      {% endifequal %}
-      <div class="projects-wrapper full">
+      {% endif %}
+{% endcomment %}
+      <div class="projects-wrapper full mt-4">
       {% with mode="full" %}
          {% include "project/projects_list.html" %}
       {% endwith %}
@@ -32,8 +40,5 @@
 
 {% block right_row %}
    {% include "users/user_prof.html" %}
-   <ul class="nav nav-list">
-      {% include "discover-items-menu.html" %}
-   </ul>
 {% endblock %}
 

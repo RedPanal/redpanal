@@ -28,21 +28,26 @@
  </script>
 {% endblock %}
 
+{% block usermenu_row %}
+	{% with useritem="activities" %}
+	 	{% include "users/user_menu.html" %}
+	{% endwith %}
+{% endblock %}
+
 {% block left_row %}
-      {% ifequal request.user user %}
+	{% comment %}
+      {% if request.user == user %}
       <h3>{% trans "My Activities" %}</h3>
       {% else %}
       <h3>{{ user.userprofile.realname|default:user.username|capfirst }} Activities</h3>
-      {% endifequal %}
-      <ul class="action-stream">
+      {% endif %}
+   {% endcomment %}
+      <ul class="action-stream list-unstyled d-flex flex-column mt-3">
          {% include "social/actions_list.html" %}
       </ul>
 {% endblock %}
 
 {% block right_row %}
    {% include "users/user_prof.html" %}
-   <ul class="nav nav-list">
-      {% include "discover-items-menu.html" %}
-   </ul>
 {% endblock %}
 

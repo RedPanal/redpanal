@@ -1,11 +1,11 @@
 
 {% if mode == "short-list" %}
    {% for tag in object.tags.all|slice:":5" %}
-   {% if tag.slug %}<a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.slug }}</a>{% endif %}
+   {% if tag.slug %}<a href="{% url 'hashtaged-list' slug=tag.slug %}" class="badge rounded-pill bg-primary text-light text-decoration-none"><i class="fa fa-tag"></i> {{ tag.slug }}</a>{% endif %}
    {% endfor %}
    {% if object.tags.all|length > 5 %}<a href="{{ object_url }}">...</a>{% endif %}
 {% else %}
    {% for tag in object.tags.all %}
-   {% if tag.slug %}<a href="{% url 'hashtaged-list' slug=tag.slug %}"><i class="fa fa-tag"></i> {{ tag.slug }}</a>{% endif %}
+   {% if tag.slug %}<a href="{% url 'hashtaged-list' slug=tag.slug %}" class="badge rounded-pill bg-primary text-light text-decoration-none"><i class="fa fa-tag"></i> {{ tag.slug }}</a>{% endif %}
    {% endfor %}
 {% endif %}

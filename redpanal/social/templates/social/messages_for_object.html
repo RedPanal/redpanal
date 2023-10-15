@@ -2,7 +2,7 @@
 
 <ul class="action-stream">
     {% for object in messages %}
-        <li>{% include "social/message_teaser.html" %}</li>
+        <li class="messages_for_object">{% include "social/message_teaser.html" %}</li>
     {% empty %}
         {% trans "No comments yet" %}
     {% endfor %}

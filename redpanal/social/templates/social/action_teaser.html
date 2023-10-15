@@ -1,45 +1,55 @@
 {% load i18n avatar_tags %}
 
-  <!-- action teaser -->
-{% block actor %}
-   <span class="avatar">
+  <!-- social/action_teaser -->
+{% block avatar %}
+   <span class="avatar float-start me-2">
    {% avatar action.actor 50 %}
-   </span>
-   <span class="user">
-   {% if action.actor.get_absolute_url %}
-      <a href="{{ action.actor.get_absolute_url }}">{{ action.actor.userprofile.realname|default:action.actor|capfirst }}</a>
-   {% else %}
-      <a href="{{ action.actor_url }}">{{ action.actor.userprofile.realname|default:action.actor|capfirst }}</a>
-   {% endif %}
-   </span>
+	</span>
 {% endblock %}
+	<div class="d-flex flex-wrap">
 
-{% block timestamp %}
-<span class="ago">{% blocktrans with timeago=action.timestamp|timesince %}{{ timeago }} ago{% endblocktrans %}</span><br>
+	  <div class="user-group">
+{% block actor %}
+	   <div class="user fs-5">
+	   {% if action.actor.get_absolute_url %}
+	      <a href="{{ action.actor.get_absolute_url }}"><b>{{ action.actor.userprofile.realname|default:action.actor|capfirst }}</b></a>
+	   {% else %}
+	      <a href="{{ action.actor_url }}"><b>{{ action.actor.userprofile.realname|default:action.actor|capfirst }}</b></a>
+	   {% endif %}
+	   </div>
 {% endblock %}
+{% block timestamp %}
+		<div class="ago small text-secondary" style="margin-top: -0.25rem;">{% blocktrans with timeago=action.timestamp|timesince %}{{ timeago }} ago{% endblocktrans %}</div>
+{% endblock %}
+ 	  </div>
+{# if request.user.is_authenticated #}
+		<ul class="actions nav ms-auto">
+		   <li class="nav-item"><button type="button" class="btn btn-outline-secondary btn-sm modal-reply-message" data-username="{{ action.actor }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
+		   {% comment %}<li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>{% endcomment %}
+		</ul>
+{# endif #}
 
 {% block message %}
-   <span class="message">
-      <span class="verb {{ action.verb }} message-context">
-      {% block action_text %}
-         {{ action.verb }}
-      {% endblock action_text %}
-      </span>
-      <span class="content-object message-context">
-      {% block content_object %}
-      {% endblock content_object %}
-      </span>
-      {% block action_body %}
-        {{ action.action_object }}
-      {% endblock action_body %}
-   </span>
+	   <span class="message w-100 d-flex flex-wrap mt-3 {% if action.verb != 'commented' %}justify-content-between{% endif %}">
+			{% if action.verb %}
+	      <span class="verb {{ action.verb }} message-context">
+	      	{% block action_text %}
+	         	{{ action.verb }}
+	      	{% endblock action_text %}
+	      </span>
+	      {% endif %}
+
+	      <span class="content-object message-context">
+	      {% block content_object %}
+	      {% endblock content_object %}
+	      </span>
+
+	      {% block action_body %}
+	        {{ action.action_object }}
+	      {% endblock action_body %}
+	   </span>
 {% endblock message %}
 
 {% block action_utils %}
-{# if request.user.is_authenticated #}
-<ul class="actions">
-   <li><button type="button" class="btn btn-link modal-reply-message" data-username="{{ action.actor }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
-   {% comment %}<li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>{% endcomment %}
-</ul>
-{# endif #}
 {% endblock action_utils %}
+	</div>

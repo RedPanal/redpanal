@@ -6,6 +6,7 @@ from django.contrib.sessions.models import Session
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse_lazy
 
+from redpanal.utils.helpers import is_ajax
 from audio.models import Audio
 from project.models import Project
 from social.models import Message
@@ -14,6 +15,10 @@ from taggit.models import Tag
 from itertools import chain
 import actstream.models
 from datetime import datetime
+
+from django.contrib.auth.forms import AuthenticationForm
+
+from .forms import RPLoginForm
 
 def index(request):
     context = {}
@@ -29,7 +34,7 @@ def index(request):
     else:
         return redirect("/accounts/login/?next=/")
 
-    if request.is_ajax():
+    if is_ajax(request):
         template = "social/actions_list.html"
     else:
         template =  "index.html"
@@ -45,7 +50,7 @@ def hashtaged_list(request, slug, filters='all'):
 
     mixed = sorted(chain(audios, projects, messages, users), key=lambda instance: instance.created_at, reverse=True)
 
-    if request.is_ajax():
+    if is_ajax(request):
         template = "core/mixed_list.html"
     else:
         template = "core/hashtaged_list.html"
@@ -58,15 +63,19 @@ def hashtaged_list(request, slug, filters='all'):
     })
 
 
-def activity_all(request):
+def activity_all(request, page='all_activities'):
 
     audios = Audio.objects.all()
     projects = Project.objects.all()
     messages = Message.objects.all()
 
+    if page == 'landing_page':
+      form = RPLoginForm()
+      #form = AuthenticationForm()
+    
     mixed_list = sorted(chain(audios, projects, messages), key=lambda instance: instance.created_at, reverse=True)
 
-    if request.is_ajax():
+    if is_ajax(request):
         return render(request, "core/mixed_list.html", {
             "mixed_objects": mixed_list,
         })
@@ -88,17 +97,30 @@ def activity_all(request):
         #    data = session.get_decoded()
         #    uid_list.append(data.get('_auth_user_id', None))
         # logged_users = users.filter(id__in=uid_list)
-
-        return render(request, "all_activities.html", {
-            "mixed_objects": mixed_list,
-            "count_audios": count_audios,
-            "count_projects": count_projects,
-            "count_messages": count_messages,
-            "count_users": count_users,
-            "last_users": users,
-             # "logged_users": logged_users,
-            "refresh_after_modal": 'refresh',
-        })
+        if page == 'landing_page':
+           return render(request, "landing_page.html", {
+               "mixed_objects": mixed_list,
+               # "action_list": mixed_list,
+               "count_audios": count_audios,
+               "count_projects": count_projects,
+               "count_messages": count_messages,
+               "count_users": count_users,
+               "last_users": users,
+                # "logged_users": logged_users,
+               "refresh_after_modal": 'refresh',
+               'custom_form': form,
+           })
+        elif page == 'all_activities':
+           return render(request, "all_activities.html", {
+               "mixed_objects": mixed_list,
+               "count_audios": count_audios,
+               "count_projects": count_projects,
+               "count_messages": count_messages,
+               "count_users": count_users,
+               "last_users": users,
+                # "logged_users": logged_users,
+               "refresh_after_modal": 'refresh',
+           })
 
 def activity_all_iframe(request):
 

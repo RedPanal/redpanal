@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 from crispy_forms.helper import FormHelper
@@ -23,7 +23,7 @@ class AudioEditForm(forms.ModelForm):
     audio = forms.FileField(label=_("Audio"), help_text=_("Allowed extensions: %s") % ", ".join(AUDIO_EXTENSIONS))
 
     helper = FormHelper()
-    helper.form_class = 'form-horizontal'
+    # helper.form_class = 'form-horizontal'
     helper.add_input(Submit('submit', 'Submit'))
     class Meta:
         model = Audio

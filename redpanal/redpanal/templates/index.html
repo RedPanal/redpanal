@@ -1,5 +1,5 @@
 {% extends "two_rows.html" %}
-{% load i18n social_tags %}
+{% load i18n social_tags avatar_tags %}
 
 {% block title %}{% if not request.user.is_authenticated %}{% trans "Welcome!" %}{% else %}{% trans "My Community" %}{% endif %}{% endblock %}
 
@@ -30,28 +30,88 @@
 
 {% block left_row %}
   {% if request.user.is_authenticated %}
-     <h3 class="main-title">{% trans "My Community" %}</h3>
-     <p class="expl">{% trans "My activities and the users that I follow" %}</p>
-     <ul class="action-stream">
-        {% include "social/actions_list.html" %}
-     </ul>
-  {% endif %}
+		<div class="d-flex mb-3">
+			<div class="navbar flex-grow-1">
+				<ul class="nav w-100 fs-4 nav-tabs">
+					<li class="nav-item">
+						<span class="nav-link main-title active"><b>{% trans "Home" %}</b></span>
+					</li>
+					<li class="nav-item d-lg-none">
+						<a class="nav-link" href="#offcanvasRight"
+							role="button" 
+							data-bs-toggle="offcanvas"
+							aria-controls="offcanvasRight"
+							><b>+</b></a>
+					</li>
+				</ul>
+			</div>
+			<!-- 
+			<div class="menu-profile">
+				<div class="dropdown top-user-menu">
+            	<button 
+            				class="btn btn-outline-secondary dropdown-toggle" 
+            				type="button" id="userDropdown" 
+            				data-bs-toggle="dropdown" 
+            				aria-haspopup="true" aria-expanded="false">
+               			{% avatar user 40 %} <span class="btn-text">{{ request.user }}</span>
+            	</button>
+            	<div class="dropdown-menu"  aria-labelledby="userDropdown">
+           			<a class="dropdown-item" href="{% url 'user-profile' %}">
+               		<i class="fas fa-profile"></i> {% trans "My Profile" %}
+            		</a>
+               	<a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
+                 		<i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
+               	</a>
+            	</div>
+         	</div> 
+			</div>
+			-->
+ 		</div>
 
+  	{% block post_message %}
+	  {% if request.user.is_authenticated %}
+	    {% if request.user == user %}
+	      {% include "social/message_form.html" %}
+	    {% endif %}
+	  {% endif %}
+	{% endblock %}
+	
+		<ul class="action-stream user-timeline list-unstyled">
+			{% include "social/actions_list.html" %}
+		</ul>
+  {% endif %}
 {% endblock %}
 
 {% block right_row %}
-   {% with stats="show" %}
-      {% include "users/user_prof.html" %}
-   {% endwith %}
-   <div class="users-list-wrapper">
-       <h3>{% trans "Last followers:" %}</h3>
-       <ul class="users-list following">
-       {% for user in user.followers|slice:":5" %}
-         <li>{% include "users/user_teaser.html" %}</li>
-       {% endfor %}
-       </ul>
-   </div>
-   <ul class="nav nav-list">
-      {% include "discover-items-menu.html" %}
-   </ul>
+<div 	class="offcanvas-lg offcanvas-start" tabindex="-1" 
+		id="offcanvasRight"
+		aria-labelledby="offcanvasRightLabel">
+	<div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasRightLabel">{% trans "More..." %}</h5>
+      <button 	type="button" class="btn-close"
+      			data-bs-target="#offcanvasRight" 
+      			data-bs-dismiss="offcanvas" 
+      			aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body"><div class="d-flex flex-wrap">
+
+		{% comment %}
+		   {% with stats="show" %}
+		      {% include "users/user_prof.html" %}
+		   {% endwith %}
+		{% endcomment %}
+	   <div class="users-list-wrapper">
+	       <h3><b>{% trans "Last followers" %}</b></h3>
+	       <ul class="users-list followingunstyled-list">
+	       {% for user in user.followers|slice:":5" %}
+	         <li>{% include "users/user_teaser.html" %}</li>
+	       {% endfor %}
+	       </ul>
+	   </div>
+	   <ul class="list-group">
+	      {% include "discover-items-menu.html" %}
+	   </ul>
+
+   </div></div>
+</div>
 {% endblock %}

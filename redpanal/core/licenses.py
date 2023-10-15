@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 class License(object):
     def __init__(self, code, name, url, icon, icon_small):
