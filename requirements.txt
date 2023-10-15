@@ -1,4 +1,4 @@
-Django>=4.1,<4.2
+Django>=4.1.12,<4.2
 django-activity-stream==1.4.2
 django-allauth==0.43
 django-autoslug==1.9.8
@@ -13,7 +13,7 @@ git+https://github.com/labcodes/django-el-pagination.git@4996234313da94e4c904ad9
 django-haystack==3.2.1
 Whoosh==2.7.4
 pydub==0.16.6
-Pillow>=3.4.2
+Pillow>=10.1.0
 six
 git+https://github.com/adriangzz/dj-taggit-serializer.git@88386daa9c981231de8be12cff032e7711dfdc4e
 django-cors-headers>=3.14<4.0
