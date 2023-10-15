@@ -34,10 +34,10 @@ SRC_SUBDIR = 'src'
 MANAGEPY_SUBDIR = '%s/%s/%s' % (DJANGO_APP_ROOT, SRC_SUBDIR, APP_NAME)
 
 # Subdirectory of DJANGO_APP_ROOT in which virtualenv will be stored
-VENV_SUBDIR = 'venv3'
+VENV_SUBDIR = 'venv'
 
 # Python version
-PYTHON_BIN = "python3.7"
+PYTHON_BIN = "python3.11"
 PYTHON_PREFIX = "" # e.g. /usr/local  Use "" for automatic
 
 
