@@ -6,17 +6,20 @@
 {% block title %}{% trans "Edit Profile" %}{% endblock %}
 
 {% block content %}
-<div class="form-block profile-options">
-   <p>
-      <span class="item">{% trans "Username" %}: </span>
-      <span class="value">{{ request.user.username }}</span>
-   </p>
-   <p>
-      <span class="image">{% avatar request.user 200 %}</span>
-      <span class="action"><a href="{% if request.user|has_avatar %}{% url 'avatar_change' %}{% else %}{% url 'avatar_add' %}{% endif %}">{% trans "Change your avatar" %}</a></span>
-   </p>
-   {% crispy form %}
+<div class="m-auto" style="max-width: 700px;">
+	<div class="profile-options sign-form p-4 rounded-4 border redpanal-form-wrapper">
+		<h2 class="pb-4 text-light text-center">
+		   <span class="item"><b>{% trans "Username" %}:</b> </span>
+		   <span class="value"><b>{{ request.user.username }}</b></span>
+		</h2>
+		<p>
+		   <span class="image">{% avatar request.user 200 %}</span>
+		   <span class="action"><a href="{% if request.user|has_avatar %}{% url 'avatar_change' %}{% else %}{% url 'avatar_add' %}{% endif %}">{% trans "Change your avatar" %}</a></span>
+		</p>
+		<div class="mb-3 text-light crispy-form-wrapper">
+			{% crispy form %}
+		</div>
+	</div>
 </div>
-
 {% endblock %}
 

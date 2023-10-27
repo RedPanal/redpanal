@@ -102,9 +102,9 @@
 		{% endcomment %}
 	   <div class="users-list-wrapper">
 	       <h3><b>{% trans "Last followers" %}</b></h3>
-	       <ul class="users-list followingunstyled-list">
+	       <ul class="users-list followingunstyled-list list-unstyled d-flex flex-column mt-3">
 	       {% for user in user.followers|slice:":5" %}
-	         <li>{% include "users/user_teaser.html" %}</li>
+	         <li class="mb-3">{% include "users/user_teaser.html" %}</li>
 	       {% endfor %}
 	       </ul>
 	   </div>
