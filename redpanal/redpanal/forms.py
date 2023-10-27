@@ -27,8 +27,8 @@ class MusicTriviaField(forms.CharField):
             raise ValidationError("Invalid answer")
 
 class CustomSignupForm(SignupForm):
-    music_trivia = MusicTriviaField(max_length=30)
-    music_trivia.widget.attrs.update({"class": "form-control"}) #https://docs.djangoproject.com/en/4.2/ref/forms/widgets/
+    #music_trivia = MusicTriviaField(max_length=30)
+    #music_trivia.widget.attrs.update({"class": "form-control"}) #https://docs.djangoproject.com/en/4.2/ref/forms/widgets/
     def __init__(self, *args, **kwargs):
         super(CustomSignupForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget = forms.TextInput(attrs={'class': 'form-control'})
