@@ -4,18 +4,19 @@
 {% comment %}  <span class="user-bkg"></span> {% endcomment %}
 
   <span class="avatar float-start me-2">
-  {% avatar user 72 %}
+  {% avatar user 50 %}
   </span>
 
-  <div class="d-flex flex-wrap">
+  <div class="user-list-full-body d-flex flex-wrap">
 
-    {% include "social/follow_button.html" %}
+    <span class="user">
+    	<a href="{{ user.get_absolute_url }}"><b>{{ user.userprofile.realname|default:user.username|capfirst }}</b></a><br>
+    	<span class="user-name">@{{ user.username }}</span>
+    </span>
 
-    <span class="user"><a href="{{ user.get_absolute_url }}">{{ user.userprofile.realname|default:user.username|capfirst }}</a></span><br />
+	 <span class="ms-auto">{% include "social/follow_button.html" %}</span>
 
-    <span class="user-name">(user_teaser) @{{ user.username }}</span><br />
-
-    <span class="small-tags">
+    <span class="small-tags w-100 mt-3">
     {% with object=user.userprofile %}
       {% if object.tags.all %}
          {% include 'core/hashtags_block.html' %}
@@ -37,7 +38,7 @@
   </span><br />
 {% endcomment %}
 
-    <span class="stats">
+    <span class="stats w-100">
       <span title="{% trans "Tracks" %}"><b>{{ user.audio_set.all|length }}</b> {% trans "Tracks" %}</span>
       <span title="{% trans "Projects" %}"><b>{{ user.project_set.all|length }}</b> {% trans "Projects" %}</span>
       <span title="{% trans "Followers" %}"><b>{{ user.followers|length }}</b> {% trans "Followers" %}</span>
@@ -55,7 +56,7 @@
          {{ user.userprofile.realname|default:user.username|capfirst }}
       </a>
     </span>
-    <span class="user-name">@{{ user.username }}</span>
+    <span class="user-name">(list) @{{ user.username }}</span>
     <span class="stats">
       <span title="{% trans "Tracks" %}"><b>{{ user.audio_set.all|length }}</b> {% trans "Tracks" %}</span>
       {# <span title="{% trans "Projects" %}"><b>{{ user.project_set.all|length }}</b> {% trans "Projects" %}</span> #}
@@ -77,9 +78,9 @@
   <span class="avatar float-start me-2">
     {% avatar user 50 %}
   </span>
-  <div class="d-flex flex-wrap">
-    <span class="user"><a href="{{ user.get_absolute_url }}">{{ user.username }}</a></span>
-    {% include "social/follow_button.html" %}
+  <div class="d-flex flex-wrap align-items-center">
+    <span class="user"><a href="{{ user.get_absolute_url }}"><b>{{ user.username }}</b></a></span>
+    <span class="ms-auto">{% include "social/follow_button.html" %}</span>
   </div>
 {% endif %}
 
