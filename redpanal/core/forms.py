@@ -21,7 +21,9 @@ def parse_tags(string):
 class TagWidget(forms.TextInput):
     def render(self, name, value, attrs=None, renderer=None):
         if value and not isinstance(value, str):
-            value = tags_to_editable_string([o.tag for o in value.select_related("tag")])
+            value = tags_to_editable_string([o.name for o in value])
+        else:
+            value = ""
         return super(TagWidget, self).render(name, value, attrs)
 
 class TagField(forms.CharField):
