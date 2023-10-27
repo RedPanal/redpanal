@@ -3,7 +3,7 @@
 {% paginate 6,3 users %}
 {% for user in users %}
   {% with "full" as mode %}
-     <li class="user-teaser {{ mode }}">{% include "users/user_teaser.html" %}</li>
+     <li class="user-teaser {{ mode }} mb-3">{% include "users/user_teaser.html" %}</li>
   {% endwith %}
 {% empty %}
   {% trans "No users yet" %}

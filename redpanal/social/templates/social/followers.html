@@ -26,7 +26,7 @@
 {% block left_row %}
     <h3>{% blocktrans %}Users followers of @{{ user }}{% endblocktrans %}</h3>
     <div class="users-list-wrapper">
-      <ul class="users-list followers">
+      <ul class="users-list followers list-unstyled d-flex flex-column mt-3">
          {% with user.followers as users %}
             {% include "users/users_list.html" %}
          {% endwith %}
@@ -38,7 +38,7 @@
       {% with "show" as stats %}     
          {% include "users/user_prof.html" %}
       {% endwith %}
-   <ul class="nav nav-list">
+   <ul class="nav nav-list list-unstyled d-flex flex-column mt-3">
       {% include "discover-items-menu.html" %}
    </ul>
 {% endblock %}
