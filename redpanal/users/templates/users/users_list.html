@@ -3,7 +3,7 @@
 {% paginate users %}
 {% for user in users %}
   {% with "list" as mode %}
-     <li class="user-teaser {{ mode }}">{% include "users/user_teaser.html" %}</li>
+     <li class="user-teaser {{ mode }} mb-3">{% include "users/user_teaser.html" %}</li>
   {% endwith %}
 {% empty %}
   {% trans "No users yet" %}

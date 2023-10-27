@@ -288,3 +288,17 @@ li.button-like a {
 .profile-options .crispy-form-wrapper > form {
   padding: 0;
 }
+
+/* users list */
+
+
+.users-list-wrapper {
+  min-width: 300px;
+}
+
+.user-teaser.full {
+  max-width: 600px;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+}
