@@ -107,12 +107,23 @@
 					         				title="{% trans "Main menu" %}"
 					   ><i class="fa fa-bars"></i></a></li>
 		{% endif %}
-		{% if request.user.is_authenticated %} {# and not "/accounts" in request.path #}
-         	<li class="nav-item discover"
-         		><a class="nav-link text-dark"
-         			 	href="#search"
-      					title="{% trans 'Search in RedPanal' %}"
-         			><i class="fa fa-search"></i><!-- <span class="d-none d-sm-inline">{% trans "Search" %}</span>--></a></li> 
+ 				<li class="nav-item form d-none d-lg-block">
+		        	<form class="form-inline" type="get" action="{% url 'haystack_search' %}">
+		           	<div class="input-group">
+		              	<input type="text"
+                              class="form-control"
+                              placeholder="{% trans 'Search in RedPanal' %}"
+                              aria-label="{% trans 'Search in RedPanal' %}"
+                              name="q">
+		                 <div class="input-group-append">
+                           <button class="btn btn-secondary" type="submit">
+		                      <i class="fa fa-search"></i>
+		                    </button>
+		                 </div>
+		              </div>
+					</form>
+                </li>
+ 	{% if request.user.is_authenticated %} {# and not "/accounts" in request.path #}
          	<li class="nav-item action ms-3 d-show-430">
 					<div class="dropdown">
 	            	<button 	class="btn btn-outline-dark dropdown-toggle" 
@@ -154,25 +165,6 @@
          				></i><span class="d-none d-md-inline"
          					 > {% trans "Publish Message" %}</span></a></li>
 		{% else %}
-				<li class="nav-item form d-none d-lg-block">
-		        	<form class="form-inline"
-		           	   type="get"
-		                 action="{% url "haystack_search" %}">
-		           	<div class="input-group">
-		              	<input type="text"
-		                          class="form-control"
-		                          placeholder="Buscá en RedPanal"
-		                          aria-label="Buscá en RedPanal"
-		                          name="q">
-		                 <div class="input-group-append">
-		                 	<button class="btn btn-secondary"
-		                               type="submit">
-		                    	<i class="fa fa-search"></i>
-		                    </button>
-		                 </div>
-		              </div>
-					</form>
-				</li>
          	<li class="nav-item action ms-3">
          		<a 	class="btn btn-outline-dark reduce-size-in-sm" 
          				href="/accounts/signup/" 
