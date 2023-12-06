@@ -11,7 +11,7 @@ import actstream.models
 from redpanal.utils.helpers import is_ajax
 from audio.models import Audio
 from .models import create_profile
-from .forms import UserProfileForm
+from .forms import UserProfileForm, DeleteUserForm
 
 def ensure_profile(user):
     try:
@@ -111,3 +111,15 @@ def all_people(request):
     return render(request, template, {
         "users": users,
     })
+
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        form = DeleteUserForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['delete']:
+                request.user.delete()
+        return redirect('index')
+    else:
+        form = DeleteUserForm()
+    return render(request, "users/delete_account.html", {"form": form})

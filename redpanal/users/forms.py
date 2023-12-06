@@ -1,3 +1,4 @@
+from django import forms
 from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 from crispy_forms.helper import FormHelper
@@ -21,3 +22,11 @@ class UserProfileForm(ModelForm):
         fieldsets = (
            (None, {'fields': ('tags',)}),
         )
+
+
+class DeleteUserForm(forms.Form):
+    delete = forms.BooleanField(initial=False)
+
+    helper = FormHelper()
+    helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
+    helper.form_method = 'POST'

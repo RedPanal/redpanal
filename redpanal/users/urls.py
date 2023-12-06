@@ -6,6 +6,7 @@ from . import views
 
 urlpatterns = [
     path('people/', views.all_people, name='all-people'),
+    path('delete/', views.delete_account, name='delete-account'),
     re_path(r'^(?P<username>[\w.@+-]+)/$', views.user_tracks, 
         name="user-tracks"),
     re_path(r'^(?P<username>[\w.@+-]+)/interactions/$', views.user_interactions,
