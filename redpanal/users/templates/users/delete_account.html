@@ -1,0 +1,17 @@
+{% extends "base_background_image.html" %}
+{% load i18n avatar_tags crispy_forms_tags %}
+
+{% block title %}{% trans "Delete account" %}{% endblock %}
+
+{% block content %}
+
+<div class="alert alert-danger">
+{% trans "Are you sure you want to delete your account? This action can not be undone." %}
+
+<form method="post" action=".">
+ {% crispy form %}
+</form>
+
+</div>
+{% endblock %}
+
