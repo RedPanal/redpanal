@@ -19,6 +19,9 @@
 		<div class="mb-3 text-light crispy-form-wrapper">
 			{% crispy form %}
 		</div>
+	<div class="alert alert-danger" role="alert">
+	  {% trans "Delete account" %} <a href="{% url 'delete-account' %}" class="alert-link">{% trans "here" %}</a>.
+	</div>
 	</div>
 </div>
 {% endblock %}

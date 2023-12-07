@@ -5,13 +5,13 @@
 
 {% block content %}
 
-<div class="alert alert-block">
-<h3>{% trans "Are you sure you want to delete your account?" %}</h3>
-</div>
+<div class="alert alert-danger">
+{% trans "Are you sure you want to delete your account? This action can not be undone." %}
 
 <form method="post" action=".">
  {% crispy form %}
 </form>
 
+</div>
 {% endblock %}
 
