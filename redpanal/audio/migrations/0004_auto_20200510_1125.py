@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='audio',
             name='instrument',
-            field=models.CharField(choices=[('voice', 'voice'), ('guitar', 'guitar'), ('electric guitar', 'electric guitar'), ('bass', 'bass'), ('drums', 'drums'), ('saxophone', 'saxophone'), ('piano', 'piano'), ('sinthesizer', 'sinthesizer'), ('electronic', 'electronic'), ('strings', 'other strings'), ('woodwind', 'woodwind'), ('brass', 'brass'), ('multiple', 'multiple'), ('other', 'other')], max_length=30, verbose_name='instrument'),
+            field=models.CharField(choices=[('voice', 'voice'), ('guitar', 'guitar'), ('electric guitar', 'electric guitar'), ('bass', 'bass'), ('drums', 'drums'), ('saxophone', 'saxophone'), ('piano', 'piano'), ('synthesizer', 'synthesizer'), ('electronic', 'electronic'), ('strings', 'other strings'), ('woodwind', 'woodwind'), ('brass', 'brass'), ('multiple', 'multiple'), ('other', 'other')], max_length=30, verbose_name='instrument'),
         ),
         migrations.AlterField(
             model_name='audio',
