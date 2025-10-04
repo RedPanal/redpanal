@@ -16,6 +16,6 @@ pydub==0.16.6
 Pillow>=10.1.0
 six
 git+https://github.com/adriangzz/dj-taggit-serializer.git@88386daa9c981231de8be12cff032e7711dfdc4e
-django-cors-headers>=3.14<4.0
+django-cors-headers>=3.14,<4.0
 django-widget-tweaks
 crispy-bootstrap5>=0.7
