@@ -152,6 +152,12 @@ class Message(models.Model):
         if mentioned_users:
             self.mentioned_users.add(*mentioned_users)
 
+    def get_app_label(self):
+        return 'social'
+    
+    def get_model_name(self):
+        return 'message'
+
     class Meta:
         ordering = ['-created_at']
 
