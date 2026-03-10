@@ -76,8 +76,8 @@ Es necesario que tengas instalados los siguientes programas:
 
 ## Cómo colaborar
 
-Nos organizamos colectivamente dentro de este repositorio de github a través de issues y pull requests. 
-Cualquier tipo de colaboración es muy muy bienvenida :) 
+Nos organizamos colectivamente dentro de este repositorio de github a través de issues y pull requests.
+Cualquier tipo de colaboración es muy muy bienvenida :)
 Si querés participar pero no sabés por donde empezar podés mirar el listado de issues abiertos, además hay una etiqueta good-first-issue (https://github.com/RedPanal/redpanal/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) donde están marcados algunos que pueden ser un buen punto de entrada al proyecto.
 
 ## Licencia
