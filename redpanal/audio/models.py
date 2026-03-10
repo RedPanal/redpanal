@@ -136,8 +136,8 @@ class Audio(models.Model, BaseModelMixin):
 def audio_processing(audio):
     try:
         sound = AudioSegment.from_file(audio.audio.path)
-        Waveform(sound, width=460, height=100, bar_count=int(460/8)).save(audio.audio.path + '.png')
-        Waveform(sound, width=940, height=150, bar_count=int(940/8)).save(audio.audio.path + '.big.png')
+        Waveform(sound, width=460, height=100, bar_count=int(460/8)).save_peaks_to_json(audio.audio.path + '.json')
+        Waveform(sound, width=940, height=150, bar_count=int(940/8)).save_peaks_to_json(audio.audio.path + '.big.json')
 
         audio.channels = sound.channels
         audio.blocksize = 0
