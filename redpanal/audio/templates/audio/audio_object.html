@@ -1,1 +1,15 @@
 {% load i18n static %}
+<div class="rp-player"
+     id="rp-player-{{ object.id }}"
+     data-audio-id="{{ object.id }}"
+     data-audio-url="{{ object.audio.url }}"
+     data-peaks-url="{% url 'audio_peaks_json' object.id %}">
+    <div class="d-flex align-items-center gap-2">
+        <button class="rp-play-btn btn btn-sm btn-primary flex-shrink-0"
+                data-audio-id="{{ object.id }}"
+                title="{% trans "Play / Pause" %}">
+            <i class="fa fa-play"></i>
+        </button>
+        <div id="rp-waveform-{{ object.id }}" class="flex-grow-1" style="height:64px; min-width:0;"></div>
+    </div>
+</div>

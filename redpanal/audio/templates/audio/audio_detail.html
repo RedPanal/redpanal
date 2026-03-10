@@ -5,8 +5,6 @@
 {% block title %}{{ object.name }}{% endblock %}
 
 {% block extra_head %}
-<script src="https://unpkg.com/wavesurfer.js"></script>
-
 <script type="text/javascript">
     // 3. LÓGICA DE INICIALIZACIÓN DE WAVESURFER.JS
     $(function (){
@@ -28,20 +26,19 @@
             barGap: 1,
             barRadius: 2,
             height: 150,
-            backend: 'MediaElement',
         });
 
         // Cargar los picos precalculados y el archivo de audio
         fetch(peaksUrl)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('No se pudieron cargar los datos de picos. ¿Se generó el JSON?');
-                }
+                if (!response.ok) throw new Error('No se pudieron cargar los picos.');
                 return response.json();
             })
-            .then(peaksArray => {
-                // Cargar el audio Y le pasamos el array de picos.
-                wavesurfer.load(audioUrl, peaksArray);
+            .then(data => {
+                const peaks = data.peaks;
+                const maxPeak = Math.max(...peaks);
+                const normalized = maxPeak > 1 ? peaks.map(p => p / maxPeak) : peaks;
+                wavesurfer.load(audioUrl, [normalized], data.duration);
             })
             .catch(error => {
                 console.error('Error en la carga de la onda:', error);
