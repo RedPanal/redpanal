@@ -32,13 +32,28 @@ def index(request):
         "refresh_after_modal": 'refresh',
         })
     else:
-        context['audios'] = Audio.objects.order_by('-created_at')
+        audios = Audio.objects.all()
+        projects = Project.objects.all()
+        messages = Message.objects.all()
+        users = User.objects.all().order_by('-date_joined')
+        context.update({
+            'mixed_objects': sorted(
+                chain(audios, projects, messages),
+                key=lambda o: o.created_at, reverse=True
+            ),
+            'count_audios': audios.count(),
+            'count_projects': projects.count(),
+            'count_messages': messages.count(),
+            'count_users': users.count(),
+            'last_users': users,
+            'refresh_after_modal': 'refresh',
+        })
 
     if is_ajax(request):
         if request.user.is_authenticated:
             template = "social/actions_list.html"
         else:
-            template = "audio/audios_list.html"
+            template = "core/mixed_list.html"
     else:
         template = "index.html"
     return render(request, template, context)

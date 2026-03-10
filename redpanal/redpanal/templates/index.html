@@ -31,23 +31,18 @@
 
 {% block left_row %}
   {% if not request.user.is_authenticated %}
-    <div class="d-flex mb-3">
-      <div class="navbar flex-grow-1">
-        <ul class="nav w-100 fs-4 nav-tabs">
-          <li class="nav-item">
-            <span class="nav-link main-title active"><b>{% trans "Latest tracks" %}</b></span>
-          </li>
-        </ul>
+    <div class="mb-4 p-4 rounded" style="background: linear-gradient(135deg, #28ccea11 0%, #28ccea22 100%); border: 1px solid #28ccea44;">
+      <h2 class="fw-bold mb-2">{% trans "RedPanal" %}</h2>
+      <p class="mb-2">{% blocktrans %}We are a <strong>free, collaborative, open and participatory</strong> community. Our main goal is to promote tools that allow us to create, remix and share our productions.{% endblocktrans %}</p>
+      <p class="mb-3">{% blocktrans %}We've built a platform designed for musicians to interact and produce music collaboratively.{% endblocktrans %}</p>
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="{% url 'account_signup' %}" class="btn btn-primary">{% trans "Join the community" %}</a>
+        <a href="{% url 'account_login' %}" class="btn btn-outline-secondary">{% trans "Sign in" %}</a>
       </div>
     </div>
-    <ul class="list-unstyled">
-      {% paginate 10 audios %}
-      {% for object in audios %}
-        <li>{% include "audio/audio_teaser.html" %}</li>
-      {% empty %}
-        <li><span class="no-yet">{% trans "No tracks yet" %}</span></li>
-      {% endfor %}
-      {% show_more %}
+    <h4 class="mb-3">{% trans "Last activities" %}</h4>
+    <ul class="mixed_list list-unstyled d-flex flex-column">
+      {% include "core/mixed_list.html" %}
     </ul>
   {% elif request.user.is_authenticated %}
 		<div class="d-flex mb-3">
@@ -103,24 +98,35 @@
 {% endblock %}
 
 {% block right_row %}
-<div 	class="offcanvas-lg offcanvas-start" tabindex="-1" 
+{% if not request.user.is_authenticated %}
+  <div class="block global-stats mb-4">
+    <h5><b>{% trans "Statistics" %}</b></h5>
+    <p><span class="text-muted">{% trans "Tracks" %}:</span> <b>{{ count_audios }}</b></p>
+    <p><span class="text-muted">{% trans "Projects" %}:</span> <b>{{ count_projects }}</b></p>
+    <p><span class="text-muted">{% trans "Messages" %}:</span> <b>{{ count_messages }}</b></p>
+    <p><span class="text-muted">{% trans "Users" %}:</span> <b>{{ count_users }}</b></p>
+  </div>
+  <div class="users-list-wrapper">
+    <h5 class="mb-3"><b>{% trans "New users" %}</b></h5>
+    <ul class="users-list list-unstyled">
+      {% for user in last_users|slice:":8" %}
+        <li>{% include "users/user_teaser.html" %}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% else %}
+<div 	class="offcanvas-lg offcanvas-start" tabindex="-1"
 		id="offcanvasRight"
 		aria-labelledby="offcanvasRightLabel">
 	<div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasRightLabel">{% trans "More..." %}</h5>
       <button 	type="button" class="btn-close"
-      			data-bs-target="#offcanvasRight" 
-      			data-bs-dismiss="offcanvas" 
+      			data-bs-target="#offcanvasRight"
+      			data-bs-dismiss="offcanvas"
       			aria-label="Close"></button>
 	</div>
 	<div class="offcanvas-body"><div class="d-flex flex-wrap">
 
-		{% comment %}
-		   {% with stats="show" %}
-		      {% include "users/user_prof.html" %}
-		   {% endwith %}
-		{% endcomment %}
-	   {% if request.user.is_authenticated %}
 	   <div class="users-list-wrapper">
 	       <h3><b>{% trans "Last followers" %}</b></h3>
 	       <ul class="users-list followingunstyled-list list-unstyled d-flex flex-column mt-3">
@@ -129,11 +135,11 @@
 	       {% endfor %}
 	       </ul>
 	   </div>
-	   {% endif %}
 	   <ul class="list-group">
 	      {% include "discover-items-menu.html" %}
 	   </ul>
 
    </div></div>
 </div>
+{% endif %}
 {% endblock %}
