@@ -5,16 +5,67 @@
 {% block title %}{{ object.name }}{% endblock %}
 
 {% block extra_head %}
+<script src="https://unpkg.com/wavesurfer.js"></script>
+
 <script type="text/javascript">
+    // 3. LÓGICA DE INICIALIZACIÓN DE WAVESURFER.JS
     $(function (){
-        $('video,audio').mediaelementplayer({
-            audioWidth: $(".detail-audio").width(),
-            // height of audio player
-            audioHeight: 30,
-            // initial volume when the player starts
-            audioWaveHeight: 100,
-            customSize: 'big',
-            startVolume: 0.8});
+        const audioId = {{ object.id }};
+        const audioUrl = '{{ object.audio.url|escapejs }}';
+        // Usamos la URL que definimos en urls.py (Paso 2)
+        const peaksUrl = "{% url 'audio_peaks_json' object.id %}"; 
+        
+        const containerSelector = '#waveform-container-' + audioId;
+        const buttonSelector = '#play-pause-btn-' + audioId;
+
+        // Inicializar la instancia de Wavesurfer
+        const wavesurfer = WaveSurfer.create({
+            container: containerSelector,
+            waveColor: '#A8A8A8',
+            progressColor: '#FF6600',
+            cursorColor: '#545454',
+            barWidth: 3, 
+            barGap: 1, 
+            height: 150, 
+            backend: 'MediaElement',
+            // El ancho es ahora dinámico o puedes forzarlo: width: 940,
+        });
+
+        // Cargar los picos precalculados y el archivo de audio
+        fetch(peaksUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudieron cargar los datos de picos. ¿Se generó el JSON?');
+                }
+                return response.json();
+            })
+            .then(peaksArray => {
+                // Cargar el audio Y le pasamos el array de picos.
+                wavesurfer.load(audioUrl, peaksArray);
+            })
+            .catch(error => {
+                console.error('Error en la carga de la onda:', error);
+                $(containerSelector).html('<p class="error-msg">Error al cargar el reproductor: ' + error.message + '</p>');
+            });
+
+        // 4. Funcionalidad de control (Play/Pause)
+        const btn = $(buttonSelector);
+        
+        btn.on('click', () => {
+            wavesurfer.playPause();
+        });
+
+        wavesurfer.on('play', () => {
+            btn.text('Pausar');
+        });
+
+        wavesurfer.on('pause', () => {
+            btn.text('Reproducir');
+        });
+
+        // (Opcional) Limpieza: Si quieres que el antiguo mediaelementplayer no se inicialice en otros audios,
+        // elimina la inicialización de mediaelementplayer de tu base.html si aplica.
+        
     });
 </script>
 {% endblock %}
@@ -22,24 +73,27 @@
 {% block content %}
 
 <div class="detail-audio">
-   <div class="top-date">{{ object.created_at|timesince }}</div>
-   <div class="top">
-       <div class="top-user user"><a href="{{ object.user.get_absolute_url }}">{{ object.user.userprofile.realname|default:object.user.username|capfirst }}</a></div>
-       <div class="inline-title"><h1 title="object.name|capfirst" >{{ object.name|capfirst|truncatechars:50 }}</h1>
-       {% if request.user == object.user %}<span class="edit"><a title="{% trans "Edit audio track" %}" href="{% url "audio-edit" object.slug %}">[{% trans "Edit" %}]</a> <a class="danger" title="{% trans "Delete audio track" %}" href="{% url "audio-delete" object.slug %}">[{% trans "Delete" %}]</a></span>{% endif %}
-       </div>
-       <div class="projects">
-           <ul>
-               {% for project in object.project_set.all %}
-                <li><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></li>
-               {% endfor %}
-           </ul>
-       </div>
-   </div>
+    <div class="top-date">{{ object.created_at|timesince }}</div>
+    <div class="top">
+        <div class="top-user user"><a href="{{ object.user.get_absolute_url }}">{{ object.user.userprofile.realname|default:object.user.username|capfirst }}</a></div>
+        <div class="inline-title"><h1 title="object.name|capfirst" >{{ object.name|capfirst|truncatechars:50 }}</h1>
+        {% if request.user == object.user %}<span class="edit"><a title="{% trans "Edit audio track" %}" href="{% url "audio-edit" object.slug %}">[{% trans "Edit" %}]</a> <a class="danger" title="{% trans "Delete audio track" %}" href="{% url "audio-delete" object.slug %}">[{% trans "Delete" %}]</a></span>{% endif %}
+        </div>
+        <div class="projects">
+            <ul>
+                {% for project in object.project_set.all %}
+                 <li><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
-{% include "audio/audio_object.html" %}
-
-   <div class="detail-block">
+    <div class="wavesurfer-player-block">
+        <div id="waveform-container-{{ object.id }}" style="height: 150px; width: 100%;"></div>
+        <button id="play-pause-btn-{{ object.id }}" class="btn btn-primary">Reproducir</button>
+    </div>
+    
+    <div class="detail-block">
       <h4>{% if object.use_type != "other" %}{{ object.get_use_type_display|capfirst }}{% else %}{% trans "File" %}{% endif %} {% trans "details" %}:</h4>
       <div class="download"><a href="{{ object.audio.url }}"><i class="fa fa-download"></i> {% trans "Download" %}</a></div>
       <p class="description">{{ object.description|capfirst }}</p>
@@ -47,15 +101,15 @@
       <p class="">{% trans "Channels" %}: <b>{{ object.channels }}</b> | {% trans "Samplerate" %}: <b>{{ object.samplerate }}</b> | {% trans "Genre" %}: <b>{{ object.get_genre_display|capfirst }}</b> | {% trans "Instrument" %}: <b>{{ object.get_instrument_display|capfirst }}</b></p>
 
       <div class="license-block">
-         <img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon }}" />
-         <p><i>"{{ object.name|capfirst }}"</i>
-         {% trans "by" %} <a href="{{ object.user.get_absolute_url }}">{{ object.user.userprofile.realname|default:object.user.username|capfirst }}</a>
-         {% blocktrans with license=object.get_license.name license_url=object.get_license.url %}is licensed under a <a rel="license" href="{{ license_url }}">{{ license }}</a>{% endblocktrans %}.
-         {% trans "Published" %}: {{ object.created_at }}
-         {% trans "by" %} {{ object.user.userprofile.realname|default:object.user.username|capfirst }}.
-         <a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{% trans "Permanent link" %}</a>.</p>
+           <img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon }}" />
+           <p><i>"{{ object.name|capfirst }}"</i>
+           {% trans "by" %} <a href="{{ object.user.get_absolute_url }}">{{ object.user.userprofile.realname|default:object.user.username|capfirst }}</a>
+           {% blocktrans with license=object.get_license.name license_url=object.get_license.url %}is licensed under a <a rel="license" href="{{ license_url }}">{{ license }}</a>{% endblocktrans %}.
+           {% trans "Published" %}: {{ object.created_at }}
+           {% trans "by" %} {{ object.user.userprofile.realname|default:object.user.username|capfirst }}.
+           <a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{% trans "Permanent link" %}</a>.</p>
       </div>
-   </div>
+    </div>
 
 </div>
 
@@ -71,4 +125,3 @@
 {% endif %}
 
 {% endblock %}
-
