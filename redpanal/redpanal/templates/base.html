@@ -17,6 +17,64 @@
  <script src="{% static 'js/bootstrap-5.3.bundle.min.js' %}"></script>
  <script src="{% static 'js/redpanal.js' %}"></script>
  <script src="{% static 'mediaelements/mediaelement-and-player.js' %}"></script>
+ <script src="https://unpkg.com/wavesurfer.js@7"></script>
+ <script>
+ // Compact WaveSurfer players
+ // Waveform visible on load (from pre-computed peaks), audio loads only on play click.
+ const _rpPlayers = {};
+
+ function initRpPlayers(scope) {
+     (scope || document).querySelectorAll('.rp-player:not([data-rp-init])').forEach(function(wrap) {
+         wrap.setAttribute('data-rp-init', '1');
+         const id = wrap.dataset.audioId;
+         const peaksUrl = wrap.dataset.peaksUrl;
+         const audioUrl = wrap.dataset.audioUrl;
+         const btn = wrap.querySelector('.rp-play-btn');
+
+         fetch(peaksUrl)
+             .then(r => r.json())
+             .then(data => {
+                 const peaks = data.peaks;
+                 const duration = data.duration;
+                 const maxPeak = Math.max(...peaks);
+                 const normalized = maxPeak > 1 ? peaks.map(p => p / maxPeak) : peaks;
+                 const ws = WaveSurfer.create({
+                     container: '#rp-waveform-' + id,
+                     waveColor: '#A8A8A8',
+                     progressColor: '#FF6600',
+                     cursorColor: '#545454',
+                     barWidth: 2,
+                     barGap: 1,
+                     barRadius: 2,
+                     height: 64,
+                     peaks: [normalized],
+                     duration: duration,
+                 });
+                 ws.on('play',   () => btn.innerHTML = '<i class="fa fa-pause"></i>');
+                 ws.on('pause',  () => btn.innerHTML = '<i class="fa fa-play"></i>');
+                 ws.on('finish', () => btn.innerHTML = '<i class="fa fa-play"></i>');
+                 _rpPlayers[id] = { ws, audioUrl, loaded: false };
+             })
+             .catch(() => {});
+     });
+ }
+
+ document.addEventListener('DOMContentLoaded', () => initRpPlayers());
+
+ document.addEventListener('click', function(e) {
+     const btn = e.target.closest('.rp-play-btn');
+     if (!btn) return;
+     const id = btn.dataset.audioId;
+     const player = _rpPlayers[id];
+     if (!player) return;
+     if (!player.loaded) {
+         player.loaded = true;
+         player.ws.load(player.audioUrl).then(() => player.ws.play());
+     } else {
+         player.ws.playPause();
+     }
+ });
+ </script>
 
  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
 

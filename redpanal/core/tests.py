@@ -22,9 +22,6 @@ class CoreTestCase(TestCase):
 
     def test_anonymous_index_view(self):
         response = self.client.get("/")
-        self.assertEqual(302, response.status_code)
-
-        response = self.client.get("/", follow=True)
         self.assertEqual(200, response.status_code)
 
     def test_index_view(self):

@@ -80,7 +80,12 @@ def audio_peaks_json(request, pk):
     for path in (big_json_path, json_path):
         try:
             with open(path) as f:
-                return JsonResponse(json.load(f), safe=False)
+                peaks = json.load(f)
+            duration_ms = audio.get_duration()
+            return JsonResponse({
+                'peaks': peaks,
+                'duration': duration_ms / 1000 if duration_ms else None,
+            })
         except (FileNotFoundError, json.JSONDecodeError):
             continue
-    return JsonResponse([], safe=False)
+    return JsonResponse({'peaks': [], 'duration': 0})

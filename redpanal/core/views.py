@@ -32,12 +32,15 @@ def index(request):
         "refresh_after_modal": 'refresh',
         })
     else:
-        return redirect("/accounts/login/?next=/")
+        context['audios'] = Audio.objects.order_by('-created_at')
 
     if is_ajax(request):
-        template = "social/actions_list.html"
+        if request.user.is_authenticated:
+            template = "social/actions_list.html"
+        else:
+            template = "audio/audios_list.html"
     else:
-        template =  "index.html"
+        template = "index.html"
     return render(request, template, context)
 
 def hashtaged_list(request, slug, filters='all'):
