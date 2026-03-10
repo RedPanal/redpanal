@@ -1,0 +1,26 @@
+{% load i18n %}
+<div class="navbar nav-scroller mt-5 mt-md-4 mt-lg-0">
+	<ul class="nav w-100 fs-4 nav-tabs">
+		<li class="nav-item">
+			<a class="nav-link field icon user-traks {% if useritem == 'tracks' %}active{% else %}text-secondary{% endif %}" 
+				href="{% url 'user-tracks' user %}">
+				<!-- <i class="fa fa-music"></i> -->
+				<b>{% trans "Tracks" %}</b>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link field icon user-activities {% if useritem == 'activities' %}active{% else %}text-secondary{% endif %}" 
+				href="{% url 'user-activities' user %}">
+				<!-- <i class="fa fa-comment"></i> -->
+				<b>{% trans "Activities" %}</b>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link field icon user-projects {% if useritem == 'projects' %}active{% else %}text-secondary{% endif %}" 
+				href="{% url 'user-projects' user %}">
+				<!-- <i class="fa fa-folder-open"></i> -->
+				<b>{% trans "Projects" %}</b>
+			</a>
+		</li>
+	</ul>
+ </div>

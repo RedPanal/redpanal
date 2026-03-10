@@ -1,0 +1,110 @@
+{# este template genera la estructura html del bootstrap modal y a continuacion su javascript #}
+{% extends "modal_popup.html" %}
+{% load i18n %}
+
+{% block modal_id %}modal_create_message_html{% endblock %}
+
+{% block modal_title %}<span class="modal-title-text"></span>{% endblock %}
+
+{% block modal_body %}
+   <form method="post" action="{% url 'message-create' %}" id="modal_message_form" class="modal_message_form">
+  {% csrf_token %}
+     <textarea id="modal_msg" class="w-100 p-2 fs-4" maxlength="1000" name="msg" type="text" cols="60" rows="3"></textarea>
+   </form>
+   <div class="help-text"></div> 
+   <div id="response" class="response"></div>
+{% endblock %}
+
+{% block modal_action %}
+   <button type="button" class="btn btn-primary modal_submit" disabled>{% trans 'Publish' %}</button>
+{% endblock %}
+
+{% block modal_scripts %}
+ <script>
+ 
+ $(function() {
+   var refresh = false;
+  {% if refresh_after_modal == "refresh" %}
+   var refresh = true;
+  {% endif %}
+   var WRONG_MESSAGE = "{% trans 'Something went wrong' %}";
+   var POST_TEXT = "{% trans 'Post message' %}";
+   var REPLYTO_TEXT = "{% trans 'Reply to' %} ";
+
+   var mdl = $('#modal_create_message_html'); // modal message form html structure
+   var frm = mdl.find('#modal_message_form'); // form 
+   var title = mdl.find('.modal-title-text');
+   var submit = mdl.find('.modal_submit');
+   var close = mdl.find('.modal_close');
+   var resp = mdl.find('#response'); // here print ajax data response
+   var help = mdl.find('.help-text');
+   var txtf = mdl.find('#modal_msg'); // textarea
+
+   var success = false;
+
+   
+   frm.submit(function (e) {
+       $.ajax({
+           type: frm.attr('method'),
+           url: frm.attr('action'),
+           data: frm.serialize(),
+           success: function (r) {
+               //alert(response);
+               success = true;
+               resp.html(r);
+               frm[0].reset();
+               $(".modal_close").click();
+           },
+           error: function(r) {
+               //alert("algo salio mal");
+               resp.html(WRONG_MESSAGE);
+           }
+       });
+       e.preventDefault();
+       return false;
+   });
+   
+   submit.on('click', function () {
+      frm.submit();
+
+   });
+
+   close.on('click', function () {
+      if( /^@[\w-]+\s+$/.test( txtf.val() ) ) txtf.val(""); // Borra los '@usuario' (en caso de que estén) si no se escribió nada.
+      if(refresh) {
+         if(success) window.location.reload();
+      } else {
+         resp.html("");
+      }
+   });
+
+   txtf.keyup(function() {
+        if ($(this).val() == '') {
+            submit.attr('disabled', 'disabled');
+            help.html('');
+        } else {
+            submit.removeAttr('disabled');
+            help.html(HELP_TEXT);
+        }
+    });
+
+   $(".modal-create-message").each(function(){
+      $(this).on('click', function () {
+         title.html(POST_TEXT);
+         mdl.modal('show');
+      });
+   });
+
+   $(document).on("click",".modal-reply-message",function(e) {
+       var username = $(this).data("username");
+       title.html(REPLYTO_TEXT + "@" + username);
+       txtf.val("@" + username + " ");
+       mdl.modal('show');
+   });
+    
+   function testfunc (message) {
+      alert('mensaje:' + message);
+   }
+ });
+ </script>
+{% endblock %}

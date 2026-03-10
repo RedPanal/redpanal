@@ -1,0 +1,63 @@
+{% extends "two_rows.html" %}
+{% load i18n %}
+
+{% block title %}{% blocktrans with user=user.username %}@{{ user }} Tracks{% endblocktrans %}{% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+ <script src="{{ STATIC_URL }}el-pagination/js/el-pagination.js"></script>
+ <script>
+    $(function (){
+        $.endlessPaginate({
+            paginateOnScroll: true,
+            paginateOnScrollChunkSize: 2,
+            paginateOnScrollMargin: 10,
+            onCompleted: function() {
+             //  http://django-endless-pagination.readthedocs.org/en/latest/javascript.html
+               $('video,audio').each(function(index, element){
+                  $(this).mediaelementplayer({
+                     audioWidth: $(this).parent().width(), //old 540 460
+                     // height of audio player
+                     audioHeight: 30,
+                     // initial volume when the player starts
+                     startVolume: 0.8});
+              });
+            }
+        });
+    });
+ </script>
+{% endblock %}
+
+{% block usermenu_row %}ssss
+    <a class="field icon user-activities" href="{% url 'user-activities' user %}">
+        <i class="fa fa-comment"></i>
+        <span>{% trans "Activities" %}</span>
+    </a>
+    <a class="field icon user-traks" href="{% url 'user-tracks' user %}">
+        <i class="fa fa-music"></i>
+        <span>{% trans "Tracks" %}</span>
+    </a>
+    <a class="field icon user-projects" href="{% url 'user-projects' user %}">
+        <i class="fa fa-folder-open"></i>
+        <span>{% trans "Projects" %}</span>
+    </a>
+{% endblock %}
+
+{% block left_row %}
+      {% if request.user == user %}
+      <h3>{% trans "My Tracks" %}</h3>
+      {% else %}
+      <h3>{{ user.userprofile.realname|default:user.username|capfirst }} Tracks</h3>
+      {% endif %}
+      {% include "audio/audios_list.html" %}
+{% endblock %}
+
+{% block right_row %}
+   {% include "users/user_prof.html" %}
+{% endblock %}
+
+{% comment %}
+	   <ul class="nav nav-list aaa">
+	      {# include "discover-items-menu.html" #}
+	   </ul>
+{% endcomment %}

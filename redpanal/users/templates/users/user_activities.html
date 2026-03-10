@@ -1,0 +1,53 @@
+{% extends "two_rows.html" %}
+{% load i18n %}
+
+{% block title %}{% blocktrans with user=user.username %}@{{ user }} Activities{% endblocktrans %}{% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+ <script src="{{ STATIC_URL }}el-pagination/js/el-pagination.js"></script>
+ <script>
+    $(function (){
+        $.endlessPaginate({
+            paginateOnScroll: true,
+            paginateOnScrollChunkSize: 5,
+            paginateOnScrollMargin: 10,
+            onCompleted: function() {
+             //  http://django-endless-pagination.readthedocs.org/en/latest/javascript.html
+               $('video,audio').each(function(index, element){
+                  $(this).mediaelementplayer({
+                     audioWidth: $(this).parent().width(), //old 540 460
+                     // height of audio player
+                     audioHeight: 30,
+                     // initial volume when the player starts
+                     startVolume: 0.8});
+              });
+            }
+        });
+    });
+ </script>
+{% endblock %}
+
+{% block usermenu_row %}
+	{% with useritem="activities" %}
+	 	{% include "users/user_menu.html" %}
+	{% endwith %}
+{% endblock %}
+
+{% block left_row %}
+	{% comment %}
+      {% if request.user == user %}
+      <h3>{% trans "My Activities" %}</h3>
+      {% else %}
+      <h3>{{ user.userprofile.realname|default:user.username|capfirst }} Activities</h3>
+      {% endif %}
+   {% endcomment %}
+      <ul class="action-stream list-unstyled d-flex flex-column mt-3">
+         {% include "social/actions_list.html" %}
+      </ul>
+{% endblock %}
+
+{% block right_row %}
+   {% include "users/user_prof.html" %}
+{% endblock %}
+

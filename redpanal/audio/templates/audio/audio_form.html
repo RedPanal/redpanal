@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n crispy_forms_tags %}
+{% block title %}{% if object %}{% trans "Edit" %}{% else %}{% trans "Upload" %}{% endif %}{% trans " Audio" %}{% endblock %}
+
+{% block content %}
+<div class="my-5" style="max-width: 700px;">
+ <div class="p-4 rounded-4 border">
+  <h2 class="pb-4 text-center"><i class="fa fa-music"></i> <b>{{title}}</b></h2>
+
+{% comment %} TODO: Mejorar el drag and drop porque la zona drop es muy chica {% endcomment %}
+  <div id="drop-zone" class="drop-zone">
+    <form method="post" enctype="multipart/form-data" class="p-0">{% csrf_token %}
+      {{form|crispy}}
+      <button type="submit" class="btn btn-primary">{% trans "Upload" %}</button>
+    </form>
+  </div>
+ </div>
+</div>
+<script>
+  // Enable Drag an Drop
+const dropZone = document.getElementById('drop-zone');
+
+dropZone.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    dropZone.classList.add('drop-zone--over');
+});
+
+dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('drop-zone--over');
+});
+
+dropZone.addEventListener('drop', (event) => {
+    event.preventDefault();
+    dropZone.classList.remove('drop-zone--over');
+    const files = event.dataTransfer.files;
+    const input = document.querySelector('input[type="file"]');
+    input.files = files;
+});
+</script>
+{% endblock %}
+

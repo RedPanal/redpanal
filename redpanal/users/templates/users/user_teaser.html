@@ -1,0 +1,86 @@
+{% load i18n static social_tags activity_tags avatar_tags %}
+{% if mode == "full" %}
+	<!-- user_teaser mode full -->
+{% comment %}  <span class="user-bkg"></span> {% endcomment %}
+
+  <span class="avatar float-start me-2">
+  {% avatar user 50 %}
+  </span>
+
+  <div class="user-list-full-body d-flex flex-wrap">
+
+    <span class="user">
+    	<a href="{{ user.get_absolute_url }}"><b>{{ user.userprofile.realname|default:user.username|capfirst }}</b></a><br>
+    	<span class="user-name">@{{ user.username }}</span>
+    </span>
+
+	 <span class="ms-auto">{% include "social/follow_button.html" %}</span>
+
+    <span class="small-tags w-100 mt-3">
+    {% with object=user.userprofile %}
+      {% if object.tags.all %}
+         {% include 'core/hashtags_block.html' %}
+      {% endif %}
+    {% endwith %}
+    </span>
+
+{% comment %}
+  <span class="user-about">
+  {% if user.userprofile.about %}
+  {{ user.userprofile.about|truncatechars:35|capfirst }}
+  {% endif %}
+  </span><br />
+
+  <span class="location">
+  {% if user.userprofile.location %}
+  <i class="fa fa-map-marker"></i> {{ user.userprofile.location }}
+  {% endif %}
+  </span><br />
+{% endcomment %}
+
+    <span class="stats w-100">
+      <span title="{% trans "Tracks" %}"><b>{{ user.audio_set.all|length }}</b> {% trans "Tracks" %}</span>
+      <span title="{% trans "Projects" %}"><b>{{ user.project_set.all|length }}</b> {% trans "Projects" %}</span>
+      <span title="{% trans "Followers" %}"><b>{{ user.followers|length }}</b> {% trans "Followers" %}</span>
+    </span>
+  </div>
+{% elif mode == "list" %}
+	<!-- user_teaser mode list -->
+
+  <span class="avatar float-start me-2">
+    {% avatar user 72 %}
+  </span>
+  <div class="d-flex flex-wrap">
+    <span class="user">
+      <a href="{{ user.get_absolute_url }}">
+         {{ user.userprofile.realname|default:user.username|capfirst }}
+      </a>
+    </span>
+    <span class="user-name">(list) @{{ user.username }}</span>
+    <span class="stats">
+      <span title="{% trans "Tracks" %}"><b>{{ user.audio_set.all|length }}</b> {% trans "Tracks" %}</span>
+      {# <span title="{% trans "Projects" %}"><b>{{ user.project_set.all|length }}</b> {% trans "Projects" %}</span> #}
+      {# <span title="{% trans "Followers" %}"><b>{{ user.followers|length }}</b> {% trans "Followers" %}</span> #}
+    </span>
+{% comment %}
+    <span class="small-tags">
+     {% with object=user.userprofile %}
+        {% if object.tags.all %}
+           {% include 'core/hashtags_block.html' %}
+        {% endif %}
+     {% endwith %}
+    </span>
+{% endcomment %}
+  </div>
+  {% include "social/follow_button.html" %}
+{% else %}
+	<!-- user_teaser mode default -->
+  <span class="avatar float-start me-2">
+    {% avatar user 50 %}
+  </span>
+  <div class="d-flex flex-wrap align-items-center">
+    <span class="user"><a href="{{ user.get_absolute_url }}"><b>{{ user.username }}</b></a></span>
+    <span class="ms-auto">{% include "social/follow_button.html" %}</span>
+  </div>
+{% endif %}
+

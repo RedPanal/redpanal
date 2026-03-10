@@ -1,0 +1,117 @@
+{% extends "two_rows.html" %}
+{% load i18n social_tags avatar_tags %}
+
+{% block title %}{% if not request.user.is_authenticated %}{% trans "Welcome!" %}{% else %}{% trans "My Community" %}{% endif %}{% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+ <script src="{{ STATIC_URL }}el-pagination/js/el-pagination.js"></script>
+ <script>
+    $(function (){
+        $.endlessPaginate({
+            paginateOnScroll: true,
+            paginateOnScrollChunkSize: 5,
+            paginateOnScrollMargin: 10,
+            onCompleted: function() {
+             //  http://django-endless-pagination.readthedocs.org/en/latest/javascript.html
+               $('video,audio').each(function(index, element){
+                  $(this).mediaelementplayer({
+                     audioWidth: $(this).parent().width(),
+                     audioHeight: 30,
+                     startVolume: 0.8});
+              });
+            }
+        });
+    });
+ </script>
+{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block left_row %}
+  {% if request.user.is_authenticated %}
+		<div class="d-flex mb-3">
+			<div class="navbar flex-grow-1">
+				<ul class="nav w-100 fs-4 nav-tabs">
+					<li class="nav-item">
+						<span class="nav-link main-title active"><b>{% trans "Home" %}</b></span>
+					</li>
+					<li class="nav-item d-lg-none">
+						<a class="nav-link" href="#offcanvasRight"
+							role="button" 
+							data-bs-toggle="offcanvas"
+							aria-controls="offcanvasRight"
+							><b>+</b></a>
+					</li>
+				</ul>
+			</div>
+			<!-- 
+			<div class="menu-profile">
+				<div class="dropdown top-user-menu">
+            	<button 
+            				class="btn btn-outline-secondary dropdown-toggle" 
+            				type="button" id="userDropdown" 
+            				data-bs-toggle="dropdown" 
+            				aria-haspopup="true" aria-expanded="false">
+               			{% avatar user 40 %} <span class="btn-text">{{ request.user }}</span>
+            	</button>
+            	<div class="dropdown-menu"  aria-labelledby="userDropdown">
+           			<a class="dropdown-item" href="{% url 'user-profile' %}">
+               		<i class="fas fa-profile"></i> {% trans "My Profile" %}
+            		</a>
+               	<a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
+                 		<i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
+               	</a>
+            	</div>
+         	</div> 
+			</div>
+			-->
+ 		</div>
+
+  	{% block post_message %}
+	  {% if request.user.is_authenticated %}
+	    {% if request.user == user %}
+	      {% include "social/message_form.html" %}
+	    {% endif %}
+	  {% endif %}
+	{% endblock %}
+	
+		<ul class="action-stream user-timeline list-unstyled">
+			{% include "social/actions_list.html" %}
+		</ul>
+  {% endif %}
+{% endblock %}
+
+{% block right_row %}
+<div 	class="offcanvas-lg offcanvas-start" tabindex="-1" 
+		id="offcanvasRight"
+		aria-labelledby="offcanvasRightLabel">
+	<div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasRightLabel">{% trans "More..." %}</h5>
+      <button 	type="button" class="btn-close"
+      			data-bs-target="#offcanvasRight" 
+      			data-bs-dismiss="offcanvas" 
+      			aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body"><div class="d-flex flex-wrap">
+
+		{% comment %}
+		   {% with stats="show" %}
+		      {% include "users/user_prof.html" %}
+		   {% endwith %}
+		{% endcomment %}
+	   <div class="users-list-wrapper">
+	       <h3><b>{% trans "Last followers" %}</b></h3>
+	       <ul class="users-list followingunstyled-list list-unstyled d-flex flex-column mt-3">
+	       {% for user in user.followers|slice:":5" %}
+	         <li class="mb-3">{% include "users/user_teaser.html" %}</li>
+	       {% endfor %}
+	       </ul>
+	   </div>
+	   <ul class="list-group">
+	      {% include "discover-items-menu.html" %}
+	   </ul>
+
+   </div></div>
+</div>
+{% endblock %}

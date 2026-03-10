@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block content %}
+
+  <p>{% blocktrans %}Do you want to create a version for this project?{% endblocktrans %}</p>
+  <div class="project-teaser-wrapper">{% include "project/project_teaser.html" %}</div>
+
+
+<form method="POST" action=".">
+  {% csrf_token %}
+  <input class="btn btn-primary" type="submit" value="{% trans "Create" %}"/>
+</form>
+
+{% endblock%}
+
+

@@ -1,0 +1,44 @@
+{% extends "two_rows.html" %}
+{% load i18n %}
+
+{% block title %}{% blocktrans with user=user.username %}@{{ user.username }} Projects{% endblocktrans %}{% endblock %}
+
+{% block extra_head %}
+{{ block.super }}
+ <script src="{{ STATIC_URL }}el-pagination/js/el-pagination.js"></script>
+ <script>
+    $(function (){
+        $.endlessPaginate({
+            paginateOnScroll: true,
+            paginateOnScrollChunkSize: 3,
+            paginateOnScrollMargin: 9
+        });
+    });
+ </script>
+{% endblock %}
+
+{% block usermenu_row %}
+	{% with useritem="projects" %}
+	 	{% include "users/user_menu.html" %}
+	{% endwith %}
+{% endblock %}
+
+{% block left_row %}
+{% comment %}
+      {% if request.user == user %}
+      <h3>{% trans "My Projects" %}</h3>
+      {% else %}
+      <h3>{{ user.userprofile.realname|default:user.username|capfirst }} Projects</h3>
+      {% endif %}
+{% endcomment %}
+      <div class="projects-wrapper full mt-4">
+      {% with mode="full" %}
+         {% include "project/projects_list.html" %}
+      {% endwith %}
+      </div>
+{% endblock %}
+
+{% block right_row %}
+   {% include "users/user_prof.html" %}
+{% endblock %}
+

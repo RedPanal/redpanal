@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block extra_head %}
+{{ block.super }}
+ <script>
+
+    //var sliderHeight = "100px";
+
+    $(function (){
+        $('video,audio').each(function(index, element){
+            // console.log("width" + index + ": " + $(this).parent().width()); //debug
+            $(this).mediaelementplayer({
+               audioWidth: $(this).parent().width(), //old 540 460
+               // height of audio player
+               audioHeight: 30,
+               // initial volume when the player starts
+               startVolume: 0.8,
+               enableAutosize: true });
+        });
+
+        $('.more_block').each(function(){
+
+            var s = $(this).find('.more_block_content');
+            var m = $(this).find('.more_block_more');
+
+            var minH = s.css('min-height'); // min must be set in css "min-height"
+            var truH = s[0].scrollHeight;   // true element height (overflowed)
+            var eleH = s.height() + "px";   // height from css
+            var maxH = truH + 20; maxH = maxH + "px" // max height to open (plus margin)
+            truH = truH + "px";
+
+            console.log( "minH:" + minH + " eleH:" + eleH  + " truH:" + truH + " maxH:" + maxH ); //debug
+
+            if ( truH > minH ) {
+               // set initial height if not, or slide init open
+               if ( eleH != minH ) s.css("height", minH );
+
+               // create toogle menu
+               var a = $('<a href="#"><i class="fa fa-angle-down"></i> more</a>');
+               m.append(a);
+               m.css("display", "block" );
+
+               // toogle function
+               var open = false;
+               a.click(function(){
+                  if ( open == true ){
+                     s.animate({"height": minH}, {duration: "slow" });
+                     a.html('<i class="fa fa-angle-down"></i> more');
+                     open = false;
+                  } else {
+                     s.animate({"height": maxH}, {duration: "slow" });
+                     a.html('<i class="fa fa-angle-up"></i> close');
+                     open = true;
+                  }
+               })
+            }
+        });
+    });
+
+ </script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-7 order-lg-1 order-2">     
+	{% block usermenu_row %}{% endblock %}
+	{% block left_row %}{% endblock %}
+  </div>
+  <div class="col-lg-4 ms-auto order-lg-2 order-1">
+   {% block right_row %}{% endblock %}
+  </div>
+</div>
+{% endblock %}
+

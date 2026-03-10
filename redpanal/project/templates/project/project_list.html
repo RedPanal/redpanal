@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Project list" %}{% endblock %}
+
+{% block content %}
+<h3>{% trans "RedPanal Projects" %}</h3>
+<div class="projects-wrapper">
+  {% for object in object_list %}
+    {% include "project/project_teaser.html" %}
+  {% endfor %}
+</div>
+{% endblock %}
+
