@@ -44,6 +44,7 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -76,10 +77,7 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
-ACCOUNT_FORMS = {
-   'signup': 'redpanal.forms.CustomSignupForm',
-   'login': 'redpanal.forms.CustomLoginForm',
-}
+ACCOUNT_SIGNUP_FORM_CLASS = 'redpanal.forms.CustomSignupForm'
 
 ROOT_URLCONF = 'redpanal.urls'
 
