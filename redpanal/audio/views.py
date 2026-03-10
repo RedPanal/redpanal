@@ -72,3 +72,15 @@ class AudioDetailView(DetailView):
 class  AudioDeleteView(LoginRequiredMixin, UserRequiredMixin, DeleteView):
     model = Audio
     success_url = reverse_lazy('index')
+
+def audio_peaks_json(request, pk):
+    audio = get_object_or_404(Audio, pk=pk)
+    big_json_path = audio.audio.path + '.big.json'
+    json_path = audio.audio.path + '.json'
+    for path in (big_json_path, json_path):
+        try:
+            with open(path) as f:
+                return JsonResponse(json.load(f), safe=False)
+        except (FileNotFoundError, json.JSONDecodeError):
+            continue
+    return JsonResponse([], safe=False)
