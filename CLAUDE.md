@@ -31,6 +31,18 @@ python manage.py migrate --fake-initial
 python manage.py makemigrations
 ```
 
+### Docker
+```bash
+# Primera vez (o cuando cambien dependencias)
+docker compose up --build
+
+# Las siguientes veces
+docker compose up
+
+# Correr tests en el contenedor
+docker exec redpanal-master-web-1 python manage.py test
+```
+
 ### System dependencies
 `ffmpeg` and `libavcodec-extra` are required for audio processing (pydub uses ffmpeg under the hood).
 
@@ -84,7 +96,7 @@ redpanal-master/
 
 When an `Audio` instance is saved with a new file, the `audio_created_signal` post-save handler calls `audio_processing()`, which:
 1. Decodes the file with `pydub`
-2. Generates two waveform PNGs (460px and 940px wide) alongside the audio file
+2. Generates two waveform JSON peak files (460px and 940px wide) alongside the audio file, served via `GET /a/<pk>/peaks/`
 3. Stores `channels`, `samplerate`, `totalframes`, and `hashsum` on the model
 
 Uploaded media goes to `../uploaded_media/` relative to the project root (configurable via `MEDIA_ROOT`).
