@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
 import re
+import json
 import string
 
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
@@ -72,3 +74,14 @@ class AudioDetailView(DetailView):
 class  AudioDeleteView(LoginRequiredMixin, UserRequiredMixin, DeleteView):
     model = Audio
     success_url = reverse_lazy('index')
+
+
+def audio_peaks_json(request, pk):
+    audio = get_object_or_404(Audio, pk=pk)
+    json_path = audio.audio.path + '.json'
+    try:
+        with open(json_path) as f:
+            peaks = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        peaks = []
+    return JsonResponse(peaks, safe=False)

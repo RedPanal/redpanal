@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
     path('upload/', views.audio_upload, name='audio-create'),
     #url(r'^list/$', "list", name='audio-list',
+    path('<int:pk>/peaks/', views.audio_peaks_json, name='audio_peaks_json'),
     re_path(r'^(?P<slug>[\w-]+)/$', views.AudioDetailView.as_view(), name='audio-detail'),
     re_path(r'^(?P<slug>[\w-]+)/edit/$', views.audio_create_update, name='audio-edit'),
     re_path(r'^(?P<slug>[\w-]+)/delete/$', views.AudioDeleteView.as_view(), name='audio-delete'),
