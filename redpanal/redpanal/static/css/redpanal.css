@@ -293,7 +293,16 @@ li.button-like a {
 
 
 .users-list-wrapper {
-  min-width: 300px;
+  width: 100%;
+}
+
+.users-list li {
+  margin-bottom: 0.75rem;
+}
+
+.mixed-item {
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 .user-teaser.full {
