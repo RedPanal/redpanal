@@ -1,29 +1,110 @@
 {% load i18n avatar_tags %}
 
-  <!-- message teaser -->
-	<span class="avatar float-start me-2">
-	{% avatar object.user 50 %}
-	</span>
-	<div class="d-flex flex-wrap">
-		<div class="user-group">
-			<div class="user fs-5">
-				<a href="{{ object.user.get_absolute_url }}"><b>{{ object.user }}</b></a>
-			</div>
-			<div class="ago small text-secondary"
-		 		>{% blocktrans with timeago=object.created_at|timesince %}{{ timeago }} ago{% endblocktrans %}</div>
-		</div>
-		
-  		<ul class="actions nav ms-auto">
-  		{% if request.user.is_authenticated %}
-		   <li class="nav-item"><button type="button" class="btn btn-outline-secondary btn-sm modal-reply-message" data-username="{{ action.actor }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
-		{% else %}
-			<li class="nav-item"><a class="btn btn-outline-secondary btn-sm" href="{% url 'account_login' %}?next={{ request.path }}" 
-				><i class="fa fa-reply"></i> {% trans 'reply' %}</a></li>
-		{% endif %}
-		   {% comment %}<li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>{% endcomment %}
-		</ul>
-		
-		<span class="message w-100 d-flex flex-wrap mt-3 fs-5 text-secondary">{{ object.as_html|safe }}</span>
-	</div>
+{% if mode == "search-result" %}
+<!-- message teaser for search results -->
+<div class="teaser-message teaser-box search-result mb-4 pb-3" style="border-bottom: 1px solid #ddd;">
+    <div class="d-flex">
+        <!-- Thumbnail: Avatar or related object image -->
+        <div class="flex-shrink-0 me-3">
+            {% if object.content_object %}
+                <!-- If message is related to an Audio or Project, show its image -->
+                {% if object.content_type.model == 'audio' %}
+                    <a href="{{ object.content_object.get_absolute_url }}">
+                        <img src="{{ object.content_object.image.url }}" alt="{{ object.content_object.name }}" 
+                             style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
+                    </a>
+                {% elif object.content_type.model == 'project' %}
+                    <a href="{{ object.content_object.get_absolute_url }}">
+                        <img src="{{ object.content_object.image.url }}" alt="{{ object.content_object.name }}" 
+                             style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
+                    </a>
+                {% else %}
+                    {% avatar object.user 60 %}
+                {% endif %}
+            {% else %}
+                <!-- No related object, show user avatar -->
+                {% avatar object.user 60 %}
+            {% endif %}
+        </div>
 
+        <!-- Message content -->
+        <div class="flex-grow-1">
+            <div class="d-flex flex-wrap align-items-center mb-2">
+                <div class="user-info me-3">
+                    <a href="{{ object.user.get_absolute_url }}" class="fw-bold text-decoration-none">
+                        {{ object.user.userprofile.realname|default:object.user.username }}
+                    </a>
+                    <span class="text-muted small">@{{ object.user }}</span>
+                </div>
+                <div class="text-muted small">
+                    {% blocktrans with timeago=object.created_at|timesince %}{{ timeago }} ago{% endblocktrans %}
+                </div>
+            </div>
 
+            <!-- Message text -->
+            <div class="message-text mb-2">
+                {{ object.as_html|safe }}
+            </div>
+
+            <!-- Related object info if exists -->
+            {% if object.content_object %}
+                <div class="related-object small text-muted mb-2">
+                    <i class="fa fa-comment"></i> 
+                    {% trans "Comment on" %}: 
+                    <a href="{{ object.content_object.get_absolute_url }}" class="text-decoration-none">
+                        {{ object.content_object.name|truncatechars:50 }}
+                    </a>
+                </div>
+            {% endif %}
+
+            <!-- Tags if any -->
+            {% if object.tags.all %}
+                <div class="message-tags small">
+                    {% for tag in object.tags.all %}
+                        <a href="{% url 'hashtaged-list' tag.slug %}" class="badge bg-secondary text-decoration-none me-1">
+                            #{{ tag.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% else %}
+<!-- Original message teaser for other views -->
+<span class="avatar float-start me-2">
+    {% avatar object.user 50 %}
+</span>
+<div class="d-flex flex-wrap">
+    <div class="user-group">
+        <div class="user fs-5">
+            <a href="{{ object.user.get_absolute_url }}"><b>{{ object.user }}</b></a>
+        </div>
+        <div class="ago small text-secondary">
+            {% blocktrans with timeago=object.created_at|timesince %}{{ timeago }} ago{% endblocktrans %}
+        </div>
+    </div>
+
+    <ul class="actions nav ms-auto">
+        {% if request.user.is_authenticated %}
+            <li class="nav-item">
+                <button type="button" class="btn btn-outline-secondary btn-sm modal-reply-message" 
+                        data-username="{{ action.actor }}">
+                    <i class="fa fa-reply"></i> {% trans 'reply' %}
+                </button>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="btn btn-outline-secondary btn-sm" 
+                   href="{% url 'account_login' %}?next={{ request.path }}">
+                    <i class="fa fa-reply"></i> {% trans 'reply' %}
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+
+    <span class="message w-100 d-flex flex-wrap mt-3 fs-5 text-secondary">
+        {{ object.as_html|safe }}
+    </span>
+</div>
+{% endif %}
