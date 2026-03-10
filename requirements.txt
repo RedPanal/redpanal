@@ -19,3 +19,9 @@ dj-taggit-serializer
 django-cors-headers>=4.0
 django-widget-tweaks
 crispy-bootstrap5>=2026.3
+# Security: explicit pins for vulnerable transitive dependencies
+cryptography>=46.0.5
+pyasn1>=0.6.2
+requests>=2.32.4
+sqlparse>=0.5.4
+urllib3>=2.6.3
