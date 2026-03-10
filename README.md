@@ -20,45 +20,63 @@ lista de correo en la siguiente dirección: http://listas.usla.org.ar/cgi-bin/ma
 
 ## Instalación
 
-En una terminal podés seguir los siguientes pasos, para poder tener el sitio de forma local:
+En una terminal podés seguir los siguientes pasos,
+  para poder tener el sitio de forma local:
 
-0) Es necesario que tengas instalados los siguientes programas:
+  ---
+  Opción 1: Con Docker (recomendado)
 
-    `sudo apt-get install virtualenv git ffmpeg libavcodec-extra`
+  Es necesario que tengas instalados Docker y Docker
+  Compose.
 
-1) Clonar el repositorio:
+  Clonar el repositorio:
 
-    `git clone https://github.com/RedPanal/redpanal.git`
+  git clone https://github.com/RedPanal/redpanal.git
 
-2) Crear virtualenv:
+  Entrar al directorio y levantar el contenedor:
 
-    `virtualenv --python=python3 redpanal_venv`
+  cd redpanal
+  docker compose up
 
-3) Entrar en virtualenv:
+  Ingresar a http://127.0.0.1:8000 desde un navegador
+  web para ver la versión local del sitio.
 
-    `source redpanal_venv/bin/activate`
+  ---
+  Opción 2: Con virtualenv
 
-4) Instalar los requerimientos:
-    ```
-    cd redpanal
+  Es necesario que tengas instalados los siguientes
+  programas:
 
-    pip install -r requirements.txt
-    ```
+  sudo apt-get install virtualenv git ffmpeg
+  libavcodec-extra python3.11
 
-5) Entrar al directorio redpanal y ejecutar:
-    ```
-    cd redpanal
+  Clonar el repositorio:
 
-    python manage.py makemigrations
+  git clone https://github.com/RedPanal/redpanal.git
 
-    python manage.py migrate --fake-initial
+  Crear virtualenv con Python 3.11:
 
-    python manage.py runserver
-    ```
+  virtualenv --python=python3.11 redpanal_venv
 
-6)  Ingresar a http://127.0.0.1:8000 desde un navegador web para ver la versión local del sitio
+  Entrar en virtualenv:
 
-## Cómo colaborar
+  source redpanal_venv/bin/activate
+
+  Instalar los requerimientos:
+
+  cd redpanal
+  pip install -r requirements.txt
+
+  Entrar al directorio redpanal y ejecutar:
+
+  cd redpanal
+  python manage.py migrate
+  python manage.py runserver
+
+  Ingresar a http://127.0.0.1:8000 desde un navegador
+  web para ver la versión local del sitio.
+  
+  ## Cómo colaborar
 
 Nos organizamos colectivamente dentro de este repositorio de github a través de issues y pull requests. 
 Cualquier tipo de colaboración es muy muy bienvenida :) 
