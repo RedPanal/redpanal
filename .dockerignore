@@ -1,0 +1,10 @@
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+*.sqlite3
+redpanal/uploaded_media/
+**/whoosh_index/
+venv/
+.venv/
+.git/
+.github/

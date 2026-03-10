@@ -1,0 +1,16 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./redpanal:/app/redpanal
+      - media:/app/uploaded_media
+    environment:
+      - DJANGO_SETTINGS_MODULE=redpanal.settings
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  media:
