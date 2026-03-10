@@ -78,10 +78,12 @@ class  AudioDeleteView(LoginRequiredMixin, UserRequiredMixin, DeleteView):
 
 def audio_peaks_json(request, pk):
     audio = get_object_or_404(Audio, pk=pk)
+    big_json_path = audio.audio.path + '.big.json'
     json_path = audio.audio.path + '.json'
-    try:
-        with open(json_path) as f:
-            peaks = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        peaks = []
-    return JsonResponse(peaks, safe=False)
+    for path in (big_json_path, json_path):
+        try:
+            with open(path) as f:
+                return JsonResponse(json.load(f), safe=False)
+        except (FileNotFoundError, json.JSONDecodeError):
+            continue
+    return JsonResponse([], safe=False)
