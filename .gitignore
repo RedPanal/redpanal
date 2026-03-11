@@ -1,4 +1,5 @@
 venv/
+redpanal_venv/
 *.pyc
 *.sqlite3*
 uploaded_media/
