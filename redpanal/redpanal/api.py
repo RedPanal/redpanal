@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from taggit_serializer.serializers import (TagListSerializerField,
                                            TaggitSerializer)
+from avatar.utils import get_primary_avatar
 
 
 class AdjustableResultsSetPagination(pagination.PageNumberPagination):
@@ -14,12 +15,32 @@ class AdjustableResultsSetPagination(pagination.PageNumberPagination):
     max_page_size = 10000
 
 
+class UserSerializer(serializers.ModelSerializer):
+    avatar_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'avatar_url')
+        read_only_fields = ('id', 'username', 'avatar_url')
+
+    def get_avatar_url(self, obj):
+        avatar = get_primary_avatar(obj)
+        if avatar:
+            return avatar.avatar_url(80)
+        return None
+
+
 class AudioSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField()
+    user = UserSerializer(read_only=True)
+    user_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), source='user', write_only=True
+    )
+
     class Meta:
         model = Audio
         fields = (
-            'id', 'slug', 'name', 'audio', 'user', 'created_at', 'license',
+            'id', 'slug', 'name', 'audio', 'user', 'user_id', 'created_at', 'license',
             'description', 'totalframes', 'samplerate',
             'use_type', 'genre', 'instrument', 'tags',
             'position_lat', 'position_long',
