@@ -1,261 +1,1102 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# RedPanal - English translations
+# Copyright (C) 2026
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-15 16:56-0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2026-03-10 18:22-0300\n"
+"PO-Revision-Date: 2026-03-11 00:00+0000\n"
+"Last-Translator: RedPanal, 2026\n"
+"Language-Team: English\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: forms.py:9
-msgid "Trivia, write the incomplete word: "
-msgstr ""
+#: audio/forms.py:23 audio/forms.py:56
+msgid "Audio"
+msgstr "Audio"
 
-#: templates/account/login.html:6
-msgid "Sign In"
-msgstr ""
-
-#: templates/account/login.html:8 templates/index.html:4
-msgid "Welcome!"
-msgstr ""
-
-#: templates/account/login.html:14 templates/all_activities.html:39
-msgid "Last activities in RedPanal"
-msgstr ""
-
-#: templates/account/login.html:18
-msgid "more..."
-msgstr ""
-
-#: templates/account/login.html:20
-msgid "Sign up for RedPanal"
-msgstr ""
-
-#: templates/account/login.html:24
-msgid "Sign in:"
-msgstr ""
-
-#: templates/account/login.html:32
-msgid "Sign in"
-msgstr ""
-
-#: templates/account/login.html:33
-msgid "Forgot Password?"
-msgstr ""
-
-#: templates/account/login.html:40
-msgid "Sign in with:"
-msgstr ""
-
-#: templates/account/logout.html:5 templates/account/logout.html:7
-#: templates/account/logout.html:11 templates/account/logout.html:20
-msgid "Sign Out"
-msgstr ""
-
-#: templates/account/logout.html:13
-msgid "Are you sure you want to sign out?"
-msgstr ""
-
-#: templates/account/signup.html:5
-msgid "Signup"
-msgstr ""
-
-#: templates/account/signup.html:9
-msgid "Welcome to RedPanal"
-msgstr ""
-
-#: templates/account/signup.html:13 templates/account/signup.html:23
-msgid "Sign Up"
-msgstr ""
-
-#: templates/account/signup.html:15
+#: audio/forms.py:23 audio/forms.py:57
 #, python-format
-msgid ""
-"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
-msgstr ""
+msgid "Allowed extensions: %s"
+msgstr "Allowed extensions: %s"
 
-#: templates/all_activities.html:4
-msgid "Live"
-msgstr ""
+#: audio/forms.py:47 audio/forms.py:79
+msgid "Couldn't read uploaded file"
+msgstr "Couldn't read uploaded file"
 
-#: templates/all_activities.html:38
-msgid "RedPanal live"
-msgstr ""
+#: audio/forms.py:49 audio/forms.py:81
+msgid "Invalid audio file extension"
+msgstr "Invalid audio file extension"
 
-#: templates/all_activities.html:53
-msgid "Statistics:"
-msgstr ""
+#: audio/models.py:33
+msgid "pop"
+msgstr "pop"
 
-#: templates/all_activities.html:84
-msgid "New users:"
-msgstr ""
+#: audio/models.py:34
+msgid "rock"
+msgstr "rock"
 
-#: templates/all_activities_iframe.html:59
-msgid "No content found"
-msgstr ""
+#: audio/models.py:35
+msgid "jazz"
+msgstr "jazz"
 
-#: templates/avatar/change.html:5
-msgid "Your current avatar: "
-msgstr ""
+#: audio/models.py:36
+msgid "blues"
+msgstr "blues"
 
-#: templates/avatar/change.html:8
-msgid "You haven't uploaded an avatar yet. Please upload one now."
-msgstr ""
+#: audio/models.py:37
+msgid "folklore"
+msgstr "folklore"
 
-#: templates/avatar/change.html:14
-msgid "Choose new Default"
-msgstr ""
+#: audio/models.py:38 audio/models.py:59
+msgid "electronic"
+msgstr "electronic"
 
-#: templates/avatar/change.html:19
-msgid "Upload New Image"
-msgstr ""
+#: audio/models.py:39 audio/models.py:47 audio/models.py:65
+msgid "other"
+msgstr "other"
 
-#: templates/base.html:33
-msgid "Following"
-msgstr ""
+#: audio/models.py:43
+msgid "track"
+msgstr "track"
 
-#: templates/base.html:33
-msgid "Follow"
-msgstr ""
+#: audio/models.py:44
+msgid "loop"
+msgstr "loop"
 
-#: templates/base.html:43
-msgid "Unfollow"
-msgstr ""
+#: audio/models.py:45
+msgid "song"
+msgstr "song"
 
-#: templates/base.html:88 templates/search/search.html:26
-#: templates/search/search.html:31 templates/search/search.html:34
-msgid "Search"
-msgstr ""
+#: audio/models.py:46
+msgid "sample"
+msgstr "sample"
 
-#: templates/base.html:112
-msgid "Edit profile"
-msgstr ""
+#: audio/models.py:51
+msgid "voice"
+msgstr "voice"
 
-#: templates/base.html:113
-msgid "Log out"
-msgstr ""
+#: audio/models.py:52
+msgid "guitar"
+msgstr "guitar"
 
-#: templates/base.html:116
-msgid "Log in"
-msgstr ""
+#: audio/models.py:53
+msgid "electric guitar"
+msgstr "electric guitar"
 
-#: templates/base.html:139
-msgid "Mom look at me"
-msgstr ""
+#: audio/models.py:54
+msgid "bass"
+msgstr "bass"
 
-#: templates/base.html:139
-msgid "Profile"
-msgstr ""
+#: audio/models.py:55
+msgid "drums"
+msgstr "drums"
 
-#: templates/base.html:140
-msgid "RedPanal Party"
-msgstr ""
+#: audio/models.py:56
+msgid "saxophone"
+msgstr "saxophone"
 
-#: templates/base.html:140
-msgid "RedPanal"
-msgstr ""
+#: audio/models.py:57
+msgid "piano"
+msgstr "piano"
 
-#: templates/base.html:141
-msgid "What is my gang doing?"
-msgstr ""
+#: audio/models.py:58
+msgid "sinthesizer"
+msgstr "synthesizer"
 
-#: templates/base.html:141 templates/index.html:4 templates/index.html:33
-msgid "My Community"
-msgstr ""
+#: audio/models.py:60
+msgid "other strings"
+msgstr "other strings"
 
-#: templates/base.html:142
-msgid "Buzzing around"
-msgstr ""
+#: audio/models.py:61
+msgid "woodwind"
+msgstr "woodwind"
 
-#: templates/base.html:142
-msgid "My Activations"
-msgstr ""
+#: audio/models.py:62
+msgid "brass"
+msgstr "brass"
 
-#: templates/base.html:144
-msgid "Post message in your timeline"
-msgstr ""
+#: audio/models.py:63
+msgid "violin"
+msgstr "violin"
 
-#: templates/base.html:145
-msgid "Create project"
-msgstr ""
+#: audio/models.py:64
+msgid "multiple"
+msgstr "multiple"
 
-#: templates/base.html:145
-msgid "Create Project"
-msgstr ""
+#: audio/models.py:77 project/models.py:22 users/models.py:24
+msgid "name"
+msgstr "name"
 
-#: templates/base.html:146
-msgid "Upload file"
-msgstr ""
+#: audio/models.py:80 project/models.py:25 social/models.py:31
+msgid "created at"
+msgstr "created at"
 
-#: templates/base.html:146
-msgid "Upload audio"
-msgstr ""
+#: audio/models.py:81 project/models.py:26
+msgid "description"
+msgstr "description"
 
-#: templates/base.html:162
+#: audio/models.py:82
+msgid "audio"
+msgstr "audio"
+
+#: audio/models.py:84
+msgid "license"
+msgstr "license"
+
+#: audio/models.py:87
+msgid "genre"
+msgstr "genre"
+
+#: audio/models.py:88
+msgid "type"
+msgstr "type"
+
+#: audio/models.py:89
+msgid "instrument"
+msgstr "instrument"
+
+#: audio/models.py:99 project/models.py:37 social/models.py:32
+#: social/models.py:33 users/forms.py:12
+msgid "hashtags"
+msgstr "hashtags"
+
+#: audio/models.py:101
+msgid "latitude"
+msgstr "latitude"
+
+#: audio/models.py:102
+msgid "longitude"
+msgstr "longitude"
+
+#: audio/templates/audio/audio_confirm_delete.html:4
+msgid "Delete Audio"
+msgstr "Delete Audio"
+
+#: audio/templates/audio/audio_confirm_delete.html:9
+msgid "Are you sure you want to delete this audio?"
+msgstr "Are you sure you want to delete this audio?"
+
+#: audio/templates/audio/audio_confirm_delete.html:16
+#: audio/templates/audio/audio_detail.html:77
+#: project/templates/project/project_confirm_delete.html:16
+#: project/templates/project/project_teaser.html:37
+msgid "Delete"
+msgstr "Delete"
+
+#: audio/templates/audio/audio_detail.html:77
+msgid "Edit audio track"
+msgstr "Edit audio track"
+
+#: audio/templates/audio/audio_detail.html:77
+#: audio/templates/audio/audio_form.html:3
+#: project/templates/project/project_form.html:4
+#: project/templates/project/project_teaser.html:37
+msgid "Edit"
+msgstr "Edit"
+
+#: audio/templates/audio/audio_detail.html:77
+msgid "Delete audio track"
+msgstr "Delete audio track"
+
+#: audio/templates/audio/audio_detail.html:94
+#: project/templates/project/project_object.html:6
+msgid "File"
+msgstr "File"
+
+#: audio/templates/audio/audio_detail.html:94
+msgid "details"
+msgstr "details"
+
+#: audio/templates/audio/audio_detail.html:95
+#: project/templates/project/project_download_mix.html:56
+msgid "Download"
+msgstr "Download"
+
+#: audio/templates/audio/audio_detail.html:98
+#: audio/templates/audio/audio_teaser.html:11
+#: audio/templates/audio/audio_teaser.html:23
+#: audio/templates/audio/audio_teaser.html:39
+msgid "Channels"
+msgstr "Channels"
+
+#: audio/templates/audio/audio_detail.html:98
+msgid "Samplerate"
+msgstr "Sample rate"
+
+#: audio/templates/audio/audio_detail.html:98
+#: audio/templates/audio/audio_teaser.html:53
+msgid "Genre"
+msgstr "Genre"
+
+#: audio/templates/audio/audio_detail.html:98
+msgid "Instrument"
+msgstr "Instrument"
+
+#: audio/templates/audio/audio_detail.html:103
+#: audio/templates/audio/audio_detail.html:106
+#: project/templates/project/project_teaser.html:32
+msgid "by"
+msgstr "by"
+
+#: audio/templates/audio/audio_detail.html:104
 #, python-format
-msgid ""
-"RedPanal fights for a liberating art that helps build a world for everyone. "
-"This is Free Software licensed under <a href=\"http://www.gnu.org/licenses/"
-"agpl.txt\" >AGPL</a>. Get <a href=\"https://github.com/RedPanal/redpanal"
-"\">the code!</a>. Current version is <a href=\"https://github.com/RedPanal/"
-"redpanal/commit/%(GIT_SHORT_VERSION)s\">%(GIT_SHORT_VERSION)s</a>."
-msgstr ""
+msgid "is licensed under a <a rel=\"license\" href=\"%(license_url)s\">%(license)s</a>"
+msgstr "is licensed under a <a rel=\"license\" href=\"%(license_url)s\">%(license)s</a>"
 
-#: templates/base.html:163
-msgid "Hosted by: <a href=\"http://www.codigosur.org\">Código Sur</a>"
-msgstr ""
+#: audio/templates/audio/audio_detail.html:105
+msgid "Published"
+msgstr "Published"
 
-#: templates/base.html:166
-msgid "The Official RedPanal Blog!"
-msgstr ""
+#: audio/templates/audio/audio_detail.html:107
+msgid "Permanent link"
+msgstr "Permanent link"
 
-#: templates/base.html:166
-msgid "Blog"
-msgstr ""
+#: audio/templates/audio/audio_detail.html:113
+#, python-format
+msgid "Comments for '%(obj_name)s' track:"
+msgstr "Comments for '%(obj_name)s' track:"
 
-#: templates/base_background_image.html:10
-msgid "Background image:"
-msgstr ""
+#: audio/templates/audio/audio_form.html:3
+#: audio/templates/audio/audio_form.html:15
+msgid "Upload"
+msgstr "Upload"
 
-#: templates/discover-items-menu.html:2
-msgid "New artists to meet"
-msgstr ""
+#: audio/templates/audio/audio_form.html:3
+msgid " Audio"
+msgstr " Audio"
 
-#: templates/discover-items-menu.html:3
-msgid "Sound art works to collaborate on"
-msgstr ""
+#: audio/templates/audio/audio_object.html:10
+msgid "Play / Pause"
+msgstr "Play / Pause"
 
-#: templates/index.html:34
-msgid "My activities and the users that I follow"
-msgstr ""
+#: audio/templates/audio/audio_teaser.html:31
+msgid "By"
+msgstr "By"
 
-#: templates/index.html:47
-msgid "Last followers:"
-msgstr ""
+#: audio/templates/audio/audio_teaser.html:31
+#: audio/templates/audio/audio_teaser.html:54
+msgid "Licencia Creative Commons"
+msgstr "Creative Commons License"
 
-#: templates/search/search.html:41
+#: audio/templates/audio/audio_teaser.html:54
+#, python-format
+msgid "%(timesince)s ago, by"
+msgstr "%(timesince)s ago, by"
+
+#: audio/templates/audio/audios_list.html:6
+msgid "No tracks yet"
+msgstr "No tracks yet"
+
+#: audio/templates/audio/audios_list.html:8
+msgid "Upload track"
+msgstr "Upload track"
+
+#: audio/views.py:25
+msgid "Edit Audio"
+msgstr "Edit Audio"
+
+#: audio/views.py:51 redpanal/templates/base.html:201
+#: redpanal/templates/base.html:217
+msgid "Upload Audio"
+msgstr "Upload Audio"
+
+#: core/forms.py:18
+#, python-format
+msgid "Tag '%s' does not start with #"
+msgstr "Tag '%s' does not start with #"
+
+#: core/forms.py:49 redpanal/templates/account/login.html:42
+#: redpanal/templates/account/login.html:43
+#: redpanal/templates/landing_page.html:87
+#: redpanal/templates/landing_page.html:88
+#: users/templates/users/user_profile.html:12
+msgid "Username"
+msgstr "Username"
+
+#: core/forms.py:55 redpanal/templates/account/login.html:46
+#: redpanal/templates/account/login.html:47
+#: redpanal/templates/landing_page.html:91
+#: redpanal/templates/landing_page.html:92
+msgid "Password"
+msgstr "Password"
+
+#: core/licenses.py:12
+msgid "Creative Commons Attribution-ShareAlike 4.0 International"
+msgstr "Creative Commons Attribution-ShareAlike 4.0 International"
+
+#: core/licenses.py:13
+msgid "https://creativecommons.org/licenses/by-sa/4.0/"
+msgstr "https://creativecommons.org/licenses/by-sa/4.0/"
+
+#: core/templates/core/hashtaged_list.html:45
+msgid "Projects tagged with"
+msgstr "Projects tagged with"
+
+#: core/templates/core/hashtaged_list.html:46
+msgid "List of projects tagged with"
+msgstr "List of projects tagged with"
+
+#: core/templates/core/hashtaged_list.html:48
+msgid "Tracks tagged with"
+msgstr "Tracks tagged with"
+
+#: core/templates/core/hashtaged_list.html:49
+msgid "List of tracks tagged with"
+msgstr "List of tracks tagged with"
+
+#: core/templates/core/hashtaged_list.html:51
+msgid "Messages tagged with"
+msgstr "Messages tagged with"
+
+#: core/templates/core/hashtaged_list.html:52
+msgid "List of messages tagged with"
+msgstr "List of messages tagged with"
+
+#: core/templates/core/hashtaged_list.html:54
+msgid "Users tagged with"
+msgstr "Users tagged with"
+
+#: core/templates/core/hashtaged_list.html:55
+msgid "List of users tagged with"
+msgstr "List of users tagged with"
+
+#: core/templates/core/hashtaged_list.html:57
+#: redpanal/templates/search/search.html:41
 msgid "Results for "
-msgstr ""
+msgstr "Results for "
 
-#: templates/search/search.html:60
+#: core/templates/core/hashtaged_list.html:58
+msgid "List of objects tagged with"
+msgstr "List of objects tagged with"
+
+#: core/templates/core/hashtaged_menu.html:5
+msgid "only projects"
+msgstr "only projects"
+
+#: core/templates/core/hashtaged_menu.html:8
+msgid "only tracks"
+msgstr "only tracks"
+
+#: core/templates/core/hashtaged_menu.html:11
+msgid "only users"
+msgstr "only users"
+
+#: core/templates/core/hashtaged_menu.html:14
+msgid "Only messages"
+msgstr "Only messages"
+
+#: core/templates/core/mixed_list.html:27
+#: redpanal/templates/all_activities_iframe.html:59
+msgid "No content found"
+msgstr "No content found"
+
+#: project/models.py:27
+msgid "version of"
+msgstr "version of"
+
+#: project/models.py:30
+msgid "audios"
+msgstr "audios"
+
+#: project/models.py:32
+msgid "image"
+msgstr "image"
+
+#: project/models.py:36 social/models.py:30
+msgid "user"
+msgstr "user"
+
+#: project/templates/project/project_confirm_delete.html:4
+msgid "Delete Project"
+msgstr "Delete Project"
+
+#: project/templates/project/project_confirm_delete.html:9
+msgid "Are you sure you want to delete this project?"
+msgstr "Are you sure you want to delete this project?"
+
+#: project/templates/project/project_create_version.html:8
+msgid "Do you want to create a version for this project?"
+msgstr "Do you want to create a version for this project?"
+
+#: project/templates/project/project_create_version.html:14
+#: project/templates/project/project_form.html:4
+msgid "Create"
+msgstr "Create"
+
+#: project/templates/project/project_detail.html:31
+msgid "You can download a mix of proyect audio selecting traks"
+msgstr "You can download a mix of project audio by selecting tracks"
+
+#: project/templates/project/project_detail.html:31
+msgid "Download Mix"
+msgstr "Download Mix"
+
+#: project/templates/project/project_detail.html:32
+msgid "You can add your own tracks and make the changes you want to the cloned version of this project"
+msgstr "You can add your own tracks and make the changes you want to the cloned version of this project"
+
+#: project/templates/project/project_detail.html:32
+msgid "Clone Project"
+msgstr "Clone Project"
+
+#: project/templates/project/project_detail.html:40
+msgid "Tracks from versions"
+msgstr "Tracks from versions"
+
+#: project/templates/project/project_detail.html:48
+#, python-format
+msgid "Comments for '%(obj_name)s' project:"
+msgstr "Comments for '%(obj_name)s' project:"
+
+#: project/templates/project/project_download_mix.html:24
+msgid "Do you want to mix tracks in your proyect?"
+msgstr "Do you want to mix tracks in your project?"
+
+#: project/templates/project/project_download_mix.html:29
+msgid "Just select your tracks and click the download button to get the mix of the audios."
+msgstr "Just select your tracks and click the download button to get the mix of the audios."
+
+#: project/templates/project/project_download_mix.html:33
+msgid "Be careful!"
+msgstr "Be careful!"
+
+#: project/templates/project/project_download_mix.html:34
+msgid ""
+"\n"
+"  You must select at leat two tracks!\n"
+"  "
+msgstr ""
+"\n"
+"  You must select at least two tracks!\n"
+"  "
+
+#: project/templates/project/project_download_mix.html:48
+msgid "Only tracks can be mixed"
+msgstr "Only tracks can be mixed"
+
+#: project/templates/project/project_form.html:4
+msgid " Project"
+msgstr " Project"
+
+#: project/templates/project/project_form.html:9
+msgid "Create Project"
+msgstr "Create Project"
+
+#: project/templates/project/project_list.html:4
+msgid "Project list"
+msgstr "Project list"
+
+#: project/templates/project/project_list.html:7
+msgid "RedPanal Projects"
+msgstr "RedPanal Projects"
+
+#: project/templates/project/project_object.html:4
+msgid "Name"
+msgstr "Name"
+
+#: project/templates/project/project_object.html:5
+msgid "Description"
+msgstr "Description"
+
+#: project/templates/project/project_object.html:7
+msgid "Created by"
+msgstr "Created by"
+
+#: project/templates/project/project_object.html:8
+msgid "Created at"
+msgstr "Created at"
+
+#: project/templates/project/project_object.html:9
+msgid "HashTags"
+msgstr "Hashtags"
+
+#: project/templates/project/project_teaser.html:5
+#: project/templates/project/project_teaser.html:25
+#: project/templates/project/project_teaser.html:48
+#: project/templates/project/project_teaser.html:59
+#, python-format
+msgid "Go to '%(name)s' project"
+msgstr "Go to '%(name)s' project"
+
+#: project/templates/project/project_teaser.html:31
+#: project/templates/project/project_teaser.html:41
+#: project/templates/project/project_teaser.html:55
+#: project/templates/project/project_teaser.html:58
+#: redpanal/templates/index.html:104 users/templates/users/user_menu.html:8
+#: users/templates/users/user_page.html:38
+#: users/templates/users/user_teaser.html:41
+msgid "Tracks"
+msgstr "Tracks"
+
+#: project/templates/project/project_teaser.html:32
+#, python-format
+msgid "%(timesince)s ago"
+msgstr "%(timesince)s ago"
+
+#: project/templates/project/project_teaser.html:37
+msgid "Edit project"
+msgstr "Edit project"
+
+#: project/templates/project/project_teaser.html:37
+msgid "Delete project"
+msgstr "Delete project"
+
+#: project/templates/project/project_teaser.html:38
+msgid "Project created by"
+msgstr "Project created by"
+
+#: project/templates/project/project_teaser.html:38
+#: social/templates/social/action_commented_teaser.html:12
+msgid "at"
+msgstr "at"
+
+#: project/templates/project/project_teaser.html:43
+msgid "This projects contributes tracks to"
+msgstr "This project contributes tracks to"
+
+#: project/templates/project/project_teaser.html:45
+#: project/templates/project/project_teaser.html:54
+msgid "Working band"
+msgstr "Working band"
+
+#: project/templates/project/projects_list.html:6
+msgid "No project yet"
+msgstr "No projects yet"
+
+#: project/templates/project/projects_list.html:8
+msgid "Create new project"
+msgstr "Create new project"
+
+#: redpanal/forms.py:8
+msgid "Trivia, write the incomplete word: "
+msgstr "Trivia, write the incomplete word: "
+
+#: redpanal/templates/account/login.html:7
+msgid "Sign In"
+msgstr "Sign In"
+
+#: redpanal/templates/account/login.html:9 redpanal/templates/index.html:4
+msgid "Welcome!"
+msgstr "Welcome!"
+
+#: redpanal/templates/account/login.html:22
+#: redpanal/templates/landing_page.html:66
+msgid "Login to RedPanal:"
+msgstr "Login to RedPanal:"
+
+#: redpanal/templates/account/login.html:60
+#: redpanal/templates/landing_page.html:105
+msgid "Forgot Password?"
+msgstr "Forgot Password?"
+
+#: redpanal/templates/account/login.html:65 redpanal/templates/base.html:228
+#: redpanal/templates/base.html:230 redpanal/templates/index.html:40
+#: redpanal/templates/landing_page.html:110
+msgid "Sign in"
+msgstr "Sign in"
+
+#: redpanal/templates/account/login.html:69
+#: redpanal/templates/landing_page.html:114
+msgid "You do not have an account?"
+msgstr "Don't have an account?"
+
+#: redpanal/templates/account/login.html:69
+#: redpanal/templates/landing_page.html:114
+msgid "Create RedPanal account"
+msgstr "Create RedPanal account"
+
+#: redpanal/templates/account/logout.html:5
+#: redpanal/templates/account/logout.html:7
+#: redpanal/templates/account/logout.html:11
+#: redpanal/templates/account/logout.html:20
+msgid "Sign Out"
+msgstr "Sign Out"
+
+#: redpanal/templates/account/logout.html:13
+msgid "Are you sure you want to sign out?"
+msgstr "Are you sure you want to sign out?"
+
+#: redpanal/templates/account/signup.html:5
+msgid "Signup"
+msgstr "Sign Up"
+
+#: redpanal/templates/account/signup.html:9
+msgid "Welcome to RedPanal"
+msgstr "Welcome to RedPanal"
+
+#: redpanal/templates/account/signup.html:17
+#: redpanal/templates/account/signup.html:26
+msgid "Sign Up"
+msgstr "Sign Up"
+
+#: redpanal/templates/account/signup.html:31
+#, python-format
+msgid "Already have an account? Then please <a class=\"\" href=\"%(login_url)s\"><b>Sign in</b></a>."
+msgstr "Already have an account? Then please <a class=\"\" href=\"%(login_url)s\"><b>Sign in</b></a>."
+
+#: redpanal/templates/all_activities.html:8
+#: redpanal/templates/landing_page.html:8
+msgid "Live"
+msgstr "Live"
+
+#: redpanal/templates/all_activities.html:43
+#: redpanal/templates/landing_page.html:46
+msgid "RedPanal live"
+msgstr "RedPanal live"
+
+#: redpanal/templates/all_activities.html:44
+#: redpanal/templates/landing_page.html:47
+msgid "Last activities in RedPanal"
+msgstr "Last activities in RedPanal"
+
+#: redpanal/templates/all_activities.html:56
+#: redpanal/templates/landing_page.html:120
+msgid "Statistics:"
+msgstr "Statistics:"
+
+#: redpanal/templates/all_activities.html:87
+#: redpanal/templates/landing_page.html:166
+msgid "New users:"
+msgstr "New users:"
+
+#: redpanal/templates/avatar/change.html:5
+msgid "Your current avatar: "
+msgstr "Your current avatar: "
+
+#: redpanal/templates/avatar/change.html:8
+msgid "You haven't uploaded an avatar yet. Please upload one now."
+msgstr "You haven't uploaded an avatar yet. Please upload one now."
+
+#: redpanal/templates/avatar/change.html:14
+msgid "Choose new Default"
+msgstr "Choose new Default"
+
+#: redpanal/templates/avatar/change.html:19
+msgid "Upload New Image"
+msgstr "Upload New Image"
+
+#: redpanal/templates/base.html:91 users/templates/users/user_prof.html:47
+msgid "Following"
+msgstr "Following"
+
+#: redpanal/templates/base.html:91
+msgid "Follow"
+msgstr "Follow"
+
+#: redpanal/templates/base.html:101
+msgid "Unfollow"
+msgstr "Unfollow"
+
+#: redpanal/templates/base.html:165
+msgid "Main menu"
+msgstr "Main menu"
+
+#: redpanal/templates/base.html:173 redpanal/templates/base.html:174
+#: redpanal/templates/search/search.html:26
+#: redpanal/templates/search/search.html:31
+#: redpanal/templates/search/search.html:34
+msgid "Search"
+msgstr "Search"
+
+#: redpanal/templates/base.html:191
+msgid "Actions"
+msgstr "Actions"
+
+#: redpanal/templates/base.html:197 redpanal/templates/base.html:211
+msgid "New Project"
+msgstr "New Project"
+
+#: redpanal/templates/base.html:209
+msgid "Create project"
+msgstr "Create project"
+
+#: redpanal/templates/base.html:215
+msgid "Upload file"
+msgstr "Upload file"
+
+#: redpanal/templates/base.html:222
+msgid "Create account"
+msgstr "Create account"
+
+#: redpanal/templates/base.html:224
+msgid "Sign up"
+msgstr "Sign up"
+
+#: redpanal/templates/base.html:251
+msgid "What is my gang doing?"
+msgstr "What is my gang doing?"
+
+#: redpanal/templates/base.html:252 redpanal/templates/index.html:52
+msgid "Home"
+msgstr "Home"
+
+#: redpanal/templates/base.html:256
+msgid "Buzzing around"
+msgstr "Buzzing around"
+
+#: redpanal/templates/base.html:257
+msgid "My Activations"
+msgstr "My Activities"
+
+#: redpanal/templates/base.html:261
+msgid "RedPanal Party"
+msgstr "RedPanal Party"
+
+#: redpanal/templates/base.html:262 redpanal/templates/index.html:35
+msgid "RedPanal"
+msgstr "RedPanal"
+
+#: redpanal/templates/base.html:281 redpanal/templates/base.html:308
+msgid "My profile"
+msgstr "My profile"
+
+#: redpanal/templates/base.html:284 redpanal/templates/base.html:311
+msgid "Edit account"
+msgstr "Edit account"
+
+#: redpanal/templates/base.html:287 redpanal/templates/base.html:314
+#: redpanal/templates/index.html:78
+msgid "Log out"
+msgstr "Log out"
+
+#: redpanal/templates/base.html:417
+#, python-format
+msgid ""
+"\n"
+"\t\t\t\tThis is Free Software licensed under <a href=\"http://www.gnu.org/licenses/agpl.txt\" >AGPL</a>.<br class=\"d-lg-none\"> \n"
+"\t\t\t\t<!-- Get <a href=\"https://github.com/RedPanal/redpanal\">the code!</a>.<br> -->\n"
+"\t\t\t\tCurrent version is <a href=\"https://github.com/RedPanal/redpanal/commit/%(GIT_SHORT_VERSION)s\">%(GIT_SHORT_VERSION)s</a>.<br class=\"d-lg-none\">\n"
+"\t\t\t\t"
+msgstr ""
+"\n"
+"\t\t\t\tThis is Free Software licensed under <a href=\"http://www.gnu.org/licenses/agpl.txt\" >AGPL</a>.<br class=\"d-lg-none\"> \n"
+"\t\t\t\t<!-- Get <a href=\"https://github.com/RedPanal/redpanal\">the code!</a>.<br> -->\n"
+"\t\t\t\tCurrent version is <a href=\"https://github.com/RedPanal/redpanal/commit/%(GIT_SHORT_VERSION)s\">%(GIT_SHORT_VERSION)s</a>.<br class=\"d-lg-none\">\n"
+"\t\t\t\t"
+
+#: redpanal/templates/base.html:422
+msgid "Hosted by: <a href=\"http://www.codigosur.org\">Código Sur</a>"
+msgstr "Hosted by: <a href=\"http://www.codigosur.org\">Código Sur</a>"
+
+#: redpanal/templates/base.html:428
+msgid "The Official RedPanal Blog!"
+msgstr "The Official RedPanal Blog!"
+
+#: redpanal/templates/base.html:428
+msgid "Blog"
+msgstr "Blog"
+
+#: redpanal/templates/base_background_image.html:9
+#: redpanal/templates/landing_page.html:179
+msgid "Background image:"
+msgstr "Background image:"
+
+#: redpanal/templates/discover-items-menu.html:5
+msgid "New artists to meet"
+msgstr "New artists to meet"
+
+#: redpanal/templates/discover-items-menu.html:10
+msgid "Sound art works to collaborate on"
+msgstr "Sound art works to collaborate on"
+
+#: redpanal/templates/index.html:4
+msgid "My Community"
+msgstr "My Community"
+
+#: redpanal/templates/index.html:36
+msgid "We are a <strong>free, collaborative, open and participatory</strong> community. Our main goal is to promote tools that allow us to create, remix and share our productions."
+msgstr "We are a <strong>free, collaborative, open and participatory</strong> community. Our main goal is to promote tools that allow us to create, remix and share our productions."
+
+#: redpanal/templates/index.html:37
+msgid "We've built a platform designed for musicians to interact and produce music collaboratively."
+msgstr "We've built a platform designed for musicians to interact and produce music collaboratively."
+
+#: redpanal/templates/index.html:39
+msgid "Join the community"
+msgstr "Join the community"
+
+#: redpanal/templates/index.html:43
+msgid "Last activities"
+msgstr "Last activities"
+
+#: redpanal/templates/index.html:75
+msgid "My Profile"
+msgstr "My Profile"
+
+#: redpanal/templates/index.html:103
+msgid "Statistics"
+msgstr "Statistics"
+
+#: redpanal/templates/index.html:105 users/templates/users/user_menu.html:22
+#: users/templates/users/user_page.html:42
+#: users/templates/users/user_teaser.html:42
+msgid "Projects"
+msgstr "Projects"
+
+#: redpanal/templates/index.html:106
+msgid "Messages"
+msgstr "Messages"
+
+#: redpanal/templates/index.html:107
+msgid "Users"
+msgstr "Users"
+
+#: redpanal/templates/index.html:110
+msgid "New users"
+msgstr "New users"
+
+#: redpanal/templates/index.html:122
+msgid "More..."
+msgstr "More..."
+
+#: redpanal/templates/index.html:131
+msgid "Last followers"
+msgstr "Last followers"
+
+#: redpanal/templates/search/search.html:60
 msgid "No results for "
-msgstr ""
+msgstr "No results for "
 
-#: templates/search/search.html:65
+#: redpanal/templates/search/search.html:65
 msgid "Previous"
-msgstr ""
+msgstr "Previous"
 
-#: templates/search/search.html:67
+#: redpanal/templates/search/search.html:67
 msgid "Next"
-msgstr ""
+msgstr "Next"
+
+#: social/models.py:29
+msgid "message"
+msgstr "message"
+
+#: social/templates/activity/actor.html:11
+msgid "UNFOLLOW"
+msgstr "UNFOLLOW"
+
+#: social/templates/activity/actor.html:12
+msgid "FOLLOW"
+msgstr "FOLLOW"
+
+#: social/templates/activity/actor.html:20
+#: social/templates/social/actions_list.html:9
+msgid "No actions yet"
+msgstr "No actions yet"
+
+#: social/templates/social/action_audio_created_teaser.html:5
+msgid "Uploaded audio track:"
+msgstr "Uploaded audio track:"
+
+#: social/templates/social/action_commented_teaser.html:6
+msgid "(Commented"
+msgstr "(Commented"
+
+#: social/templates/social/action_project_created_teaser.html:5
+msgid "Created the project:"
+msgstr "Created the project:"
+
+#: social/templates/social/action_teaser.html:22
+#: social/templates/social/message_teaser.html:40
+#: social/templates/social/message_teaser.html:84
+#, python-format
+msgid "%(timeago)s ago"
+msgstr "%(timeago)s ago"
+
+#: social/templates/social/action_teaser.html:27
+#: social/templates/social/message_teaser.html:93
+#: social/templates/social/message_teaser.html:100
+msgid "reply"
+msgstr "reply"
+
+#: social/templates/social/followers.html:4
+#, python-format
+msgid "@%(user.username)s followers"
+msgstr "@%(user.username)s followers"
+
+#: social/templates/social/followers.html:27
+#, python-format
+msgid "Users followers of @%(user)s"
+msgstr "Users following @%(user)s"
+
+#: social/templates/social/following.html:4
+#, python-format
+msgid "@%(user.username)s follows"
+msgstr "@%(user.username)s follows"
+
+#: social/templates/social/following.html:27
+#, python-format
+msgid "Users followed by @%(user)s"
+msgstr "Users followed by @%(user)s"
+
+#: social/templates/social/message_form.html:16
+msgid "tell your fans what you\\"
+msgstr "tell your fans what you're up to..."
+
+#: social/templates/social/message_form.html:25
+#: social/templates/social/message_form_popup.html:19
+msgid "Publish"
+msgstr "Publish"
+
+#: social/templates/social/message_form.html:27
+msgid "Publish Message"
+msgstr "Publish Message"
+
+#: social/templates/social/message_form_popup.html:30
+msgid "Something went wrong"
+msgstr "Something went wrong"
+
+#: social/templates/social/message_form_popup.html:31
+msgid "Post message"
+msgstr "Post message"
+
+#: social/templates/social/message_form_popup.html:32
+msgid "Reply to"
+msgstr "Reply to"
+
+#: social/templates/social/message_teaser.html:53
+msgid "Comment on"
+msgstr "Comment on"
+
+#: social/templates/social/message_with_content_form.html:8
+msgid "Add Your Comment"
+msgstr "Add Your Comment"
+
+#: social/templates/social/message_with_content_form.html:9
+msgid "Publish comment"
+msgstr "Publish comment"
+
+#: social/templates/social/messages_for_object.html:7
+msgid "No comments yet"
+msgstr "No comments yet"
+
+#: social/templates/social/messages_list.html:8
+msgid "No interactions yet"
+msgstr "No interactions yet"
+
+#: social/views.py:71
+msgid "Your message has been successfully posted"
+msgstr "Your message has been successfully posted"
+
+#: users/forms.py:13
+msgid "put tags helps you to contact users who share musical tastes"
+msgstr "Adding tags helps you connect with users who share your musical tastes"
+
+#: users/models.py:24
+msgid "how you want your name on RedPanal?"
+msgstr "How do you want your name on RedPanal?"
+
+#: users/models.py:25
+msgid "about"
+msgstr "about"
+
+#: users/models.py:25
+msgid "something about you"
+msgstr "something about you"
+
+#: users/models.py:26
+msgid "website"
+msgstr "website"
+
+#: users/models.py:26
+msgid "your website"
+msgstr "your website"
+
+#: users/models.py:27
+msgid "location"
+msgstr "location"
+
+#: users/models.py:27
+msgid "where do you live"
+msgstr "where do you live"
+
+#: users/templates/users/all_people.html:4
+msgid "People"
+msgstr "People"
+
+#: users/templates/users/all_people.html:28
+msgid "RedPanal people"
+msgstr "RedPanal community"
+
+#: users/templates/users/delete_account.html:4
+#: users/templates/users/user_profile.html:23
+msgid "Delete account"
+msgstr "Delete account"
+
+#: users/templates/users/delete_account.html:9
+msgid "Are you sure you want to delete your account? This action can not be undone."
+msgstr "Are you sure you want to delete your account? This action cannot be undone."
+
+#: users/templates/users/user_activities.html:4
+#, python-format
+msgid "@%(user)s Activities"
+msgstr "@%(user)s Activities"
+
+#: users/templates/users/user_interactions.html:4
+#: users/templates/users/user_interactions.html:24
+msgid "My Interactions"
+msgstr "My Interactions"
+
+#: users/templates/users/user_interactions.html:25
+msgid "Mentions and replies from another users"
+msgstr "Mentions and replies from other users"
+
+#: users/templates/users/user_menu.html:15
+#: users/templates/users/user_page.html:34
+msgid "Activities"
+msgstr "Activities"
+
+#: users/templates/users/user_page.html:4
+#: users/templates/users/user_tracks.html:4
+#, python-format
+msgid "@%(user)s Tracks"
+msgstr "@%(user)s Tracks"
+
+#: users/templates/users/user_page.html:48
+#: users/templates/users/user_tracks.html:39
+msgid "My Tracks"
+msgstr "My Tracks"
+
+#: users/templates/users/user_prof.html:9
+#: users/templates/users/user_prof.html:19
+#, python-format
+msgid "Go to @%(user)s profile"
+msgstr "Go to @%(user)s profile"
+
+#: users/templates/users/user_prof.html:26
+msgid "Edit profile"
+msgstr "Edit profile"
+
+#: users/templates/users/user_prof.html:44
+#: users/templates/users/user_teaser.html:43
+msgid "Followers"
+msgstr "Followers"
+
+#: users/templates/users/user_profile.html:4
+msgid "Profile options"
+msgstr "Profile options"
+
+#: users/templates/users/user_profile.html:6
+msgid "Edit Profile"
+msgstr "Edit Profile"
+
+#: users/templates/users/user_profile.html:17
+msgid "Change your avatar"
+msgstr "Change your avatar"
+
+#: users/templates/users/user_profile.html:23
+msgid "here"
+msgstr "here"
+
+#: users/templates/users/user_projects.html:4
+#, python-format
+msgid "@%(user.username)s Projects"
+msgstr "@%(user.username)s Projects"
+
+#: users/templates/users/users_list.html:9
+#: users/templates/users/users_list_full.html:9
+msgid "No users yet"
+msgstr "No users yet"
