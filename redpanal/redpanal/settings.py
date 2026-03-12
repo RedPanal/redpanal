@@ -88,4 +88,14 @@ LOGGING = {
     }
 }
 
-CORS_ALLOW_ALL_ORIGINS = True  # renamed from CORS_ORIGIN_ALLOW_ALL in django-cors-headers v3+
+# CORS: allow all origins; token auth is header-based so no cookie credentials needed.
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_HEADERS = [
+    'accept', 'accept-encoding', 'authorization', 'content-type',
+    'dnt', 'origin', 'user-agent', 'x-csrftoken', 'x-requested-with',
+]
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

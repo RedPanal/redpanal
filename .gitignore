@@ -3,9 +3,14 @@ redpanal_venv/
 *.pyc
 *.sqlite3*
 uploaded_media/
+media/
+audio_cache/
 **/whoosh_index/
-
+local_settings.py
+**/local_settings.py
 
 .idea/*
 .vscode/launch.json
+CLAUDE.md
+.claude/
 redpanal/audio/migrations/0008_auto_20230301_1935.py

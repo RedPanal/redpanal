@@ -101,6 +101,13 @@ class Audio(models.Model, BaseModelMixin):
     position_lat = models.DecimalField(verbose_name=_('latitude'), max_digits=9, decimal_places=5, blank=True, null=True)
     position_long = models.DecimalField(verbose_name=_('longitude'), max_digits=9, decimal_places=5, blank=True, null=True)
 
+    source_audio = models.ForeignKey(
+        'self', verbose_name=_('source audio'),
+        null=True, blank=True,
+        related_name='collaborations',
+        on_delete=models.SET_NULL,
+    )
+
     def __init__(self, *args, **kwargs):
         super(Audio, self).__init__(*args, **kwargs)
         if (self.audio):
