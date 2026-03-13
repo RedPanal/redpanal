@@ -8,6 +8,7 @@ from audio.models import Audio
 from social.models import Message
 from actstream.models import actor_stream, user_stream
 from rest_framework import routers, serializers, viewsets, generics, pagination
+from rest_framework.filters import SearchFilter
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.decorators import action, api_view, authentication_classes, permission_classes
 from rest_framework.exceptions import AuthenticationFailed
@@ -79,6 +80,10 @@ class AudioSerializer(TaggitSerializer, serializers.ModelSerializer):
     description = serializers.CharField(required=False, allow_blank=True, default='')
     genre       = serializers.CharField(required=False, allow_blank=True, default='')
     instrument  = serializers.CharField(required=False, allow_blank=True, default='')
+    source_audio_id = serializers.PrimaryKeyRelatedField(
+        queryset=Audio.objects.all(), source='source_audio', write_only=True,
+        required=False, allow_null=True,
+    )
 
     class Meta:
         model = Audio
@@ -86,7 +91,7 @@ class AudioSerializer(TaggitSerializer, serializers.ModelSerializer):
             'id', 'slug', 'name', 'audio', 'user', 'user_id', 'created_at', 'license',
             'description', 'totalframes', 'samplerate',
             'use_type', 'genre', 'instrument', 'tags',
-            'position_lat', 'position_long',
+            'position_lat', 'position_long', 'source_audio_id',
         )
 
 
@@ -105,12 +110,14 @@ class AudioList(generics.ListAPIView):
     List audios. Query parameters can be used to filter the list.
     Eg: audio/list/?user=redpanal&genre=rock&tag=awesome
 
-    Query parameters: [user, genre, instrument, use_type, tag]
+    Query parameters: [user, genre, instrument, use_type, tag, search]
     Note that tag can be provided multiple times no narrow more the list (Eg /?tag=foo&tag=bar)
     """
     serializer_class = AudioSerializer
     pagination_class = AdjustableResultsSetPagination
     authentication_classes = [SignedTokenAuthentication]
+    filter_backends = [SearchFilter]
+    search_fields = ['name', 'description', 'tags__name', 'user__username']
 
     def get_queryset(self):
         queryset = Audio.objects.all()
