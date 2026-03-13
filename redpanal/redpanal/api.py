@@ -370,6 +370,19 @@ def my_following(request):
     return Response([u.username for u in followed_users])
 
 
+@api_view(['GET'])
+@authentication_classes([SignedTokenAuthentication])
+@permission_classes([AllowAny])
+def is_following(request, username):
+    """Return whether the authenticated user follows :username. Unauthenticated → false."""
+    if not request.user or not request.user.is_authenticated:
+        return Response({'following': False})
+    target = get_object_or_404(User, username=username)
+    from actstream.models import following as actstream_following
+    followed = actstream_following(request.user, User)
+    return Response({'following': target in followed})
+
+
 @api_view(['POST', 'DELETE'])
 @authentication_classes([SignedTokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -420,6 +433,7 @@ api_urls = [
     re_path(r'^audio/(?P<slug>[\w-]+)/comments/$', AudioCommentsView.as_view()),
     re_path('^audio/by-slug/(?P<slug>[\w-]+)/?$', AudioBySlugView.as_view()),
     path('users/<str:username>/stats/', user_stats),
+    path('users/<str:username>/is-following/', is_following),
     path('users/following/me/', my_following),
     path('users/<str:username>/follow/', user_follow),
     path('tags/popular/', tags_popular),
