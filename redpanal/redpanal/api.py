@@ -141,6 +141,9 @@ class AudioList(generics.ListAPIView):
         if self.request.query_params.getlist('positioned', None):
             queryset = queryset.exclude(position_long__isnull=True, position_lat__isnull=True)
 
+        if self.request.query_params.get('has_source') == 'true':
+            queryset = queryset.filter(source_audio__isnull=False)
+
         _SAFE_ORDERINGS = {'-created_at', '-id'}
         ordering = self.request.query_params.get('ordering', '-created_at')
         if ordering not in _SAFE_ORDERINGS:
@@ -383,6 +386,42 @@ def is_following(request, username):
     return Response({'following': target in followed})
 
 
+@api_view(['GET'])
+@authentication_classes([SignedTokenAuthentication])
+@permission_classes([AllowAny])
+def user_followers(request, username):
+    """List users who follow :username."""
+    user = get_object_or_404(User, username=username)
+    from actstream.models import followers as actstream_followers
+    from avatar.utils import get_primary_avatar
+    result = []
+    for follower in actstream_followers(user, User):
+        avatar = get_primary_avatar(follower, 80)
+        result.append({
+            'username': follower.username,
+            'avatar_url': avatar.avatar.url if avatar else None,
+        })
+    return Response(result)
+
+
+@api_view(['GET'])
+@authentication_classes([SignedTokenAuthentication])
+@permission_classes([AllowAny])
+def user_following_list(request, username):
+    """List users that :username follows."""
+    user = get_object_or_404(User, username=username)
+    from actstream.models import following as actstream_following
+    from avatar.utils import get_primary_avatar
+    result = []
+    for followed in actstream_following(user, User):
+        avatar = get_primary_avatar(followed, 80)
+        result.append({
+            'username': followed.username,
+            'avatar_url': avatar.avatar.url if avatar else None,
+        })
+    return Response(result)
+
+
 @api_view(['POST', 'DELETE'])
 @authentication_classes([SignedTokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -434,6 +473,8 @@ api_urls = [
     re_path('^audio/by-slug/(?P<slug>[\w-]+)/?$', AudioBySlugView.as_view()),
     path('users/<str:username>/stats/', user_stats),
     path('users/<str:username>/is-following/', is_following),
+    path('users/<str:username>/followers/', user_followers),
+    path('users/<str:username>/following/', user_following_list),
     path('users/following/me/', my_following),
     path('users/<str:username>/follow/', user_follow),
     path('tags/popular/', tags_popular),
