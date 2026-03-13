@@ -294,18 +294,24 @@ class MessageSerializer(serializers.ModelSerializer):
         return obj.as_html()
 
 
-def _build_audio_tree(audio, depth=0, max_depth=5):
+def _build_audio_tree(audio, depth=0, max_depth=5, request=None):
+    if audio.audio:
+        raw_url = audio.audio.url
+        audio_url = request.build_absolute_uri(raw_url) if request else raw_url
+    else:
+        audio_url = None
     node = {
         'id': audio.id,
         'slug': audio.slug,
         'name': audio.name,
+        'audio': audio_url,
         'user': UserSerializer(audio.user).data,
         'use_type': audio.use_type,
         'collaborations': [],
     }
     if depth < max_depth:
         for child in audio.collaborations.select_related('user').order_by('created_at'):
-            node['collaborations'].append(_build_audio_tree(child, depth + 1, max_depth))
+            node['collaborations'].append(_build_audio_tree(child, depth + 1, max_depth, request=request))
     return node
 
 
@@ -323,7 +329,7 @@ class AudioCollabTreeView(APIView):
                 break  # cycle guard
             visited.add(root.pk)
             root = Audio.objects.select_related('source_audio', 'user').get(pk=root.source_audio_id)
-        return Response(_build_audio_tree(root))
+        return Response(_build_audio_tree(root, request=request))
 
 
 class AudioCommentsView(APIView):
