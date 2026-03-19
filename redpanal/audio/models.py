@@ -140,6 +140,50 @@ class Audio(models.Model, BaseModelMixin):
         ordering = ["-created_at"]
 
 
+class Playlist(models.Model):
+    name = models.CharField(max_length=100)
+    slug = AutoSlugField(populate_from='name', unique_with='user_id')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='playlists',
+        on_delete=models.CASCADE
+    )
+    is_public = models.BooleanField(default=True)
+    is_likes = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        unique_together = ('user', 'slug')
+
+    def __str__(self):
+        return f"{self.user.username} — {self.name}"
+
+
+class PlaylistItem(models.Model):
+    playlist = models.ForeignKey(Playlist, related_name='items', on_delete=models.CASCADE)
+    audio = models.ForeignKey('Audio', related_name='playlist_items', on_delete=models.CASCADE)
+    position = models.PositiveIntegerField(default=0)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['position']
+        unique_together = ('playlist', 'audio')
+
+
+class AudioLike(models.Model):
+    audio = models.ForeignKey('Audio', related_name='likes', on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='likes',
+        on_delete=models.CASCADE
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('audio', 'user')
+
+
 def audio_processing(audio):
     try:
         sound = AudioSegment.from_file(audio.audio.path)

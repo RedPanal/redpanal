@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core import signing
 from django.shortcuts import get_object_or_404
 from django.urls import path, re_path
-from audio.models import Audio
+from audio.models import Audio, Playlist, PlaylistItem, AudioLike
 from social.models import Message
 from actstream.models import actor_stream, user_stream
 from rest_framework import routers, serializers, viewsets, generics, pagination
@@ -93,6 +93,32 @@ class AudioSerializer(TaggitSerializer, serializers.ModelSerializer):
             'use_type', 'genre', 'instrument', 'tags',
             'position_lat', 'position_long', 'source_audio_id',
         )
+
+
+class PlaylistItemSerializer(serializers.ModelSerializer):
+    audio = AudioSerializer(read_only=True)
+    audio_id = serializers.PrimaryKeyRelatedField(
+        queryset=Audio.objects.all(), write_only=True, source='audio'
+    )
+
+    class Meta:
+        model = PlaylistItem
+        fields = ['id', 'audio', 'audio_id', 'position', 'added_at']
+
+
+class PlaylistSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    items = PlaylistItemSerializer(many=True, read_only=True)
+    items_count = serializers.SerializerMethodField()
+
+    def get_items_count(self, obj):
+        return obj.items.count()
+
+    class Meta:
+        model = Playlist
+        fields = ['id', 'slug', 'name', 'user', 'is_public', 'is_likes',
+                  'items', 'items_count', 'created_at']
+        read_only_fields = ['slug', 'user', 'is_likes', 'created_at']
 
 
 class AudioViewSet(viewsets.ModelViewSet):
@@ -393,14 +419,16 @@ def user_followers(request, username):
     """List users who follow :username."""
     user = get_object_or_404(User, username=username)
     from actstream.models import followers as actstream_followers
-    from avatar.utils import get_primary_avatar
     result = []
-    for follower in actstream_followers(user, User):
-        avatar = get_primary_avatar(follower, 80)
-        result.append({
-            'username': follower.username,
-            'avatar_url': avatar.avatar.url if avatar else None,
-        })
+    for follower in actstream_followers(user):
+        if not hasattr(follower, 'username'):
+            continue
+        try:
+            avatar = get_primary_avatar(follower, 80)
+            avatar_url = avatar.avatar_url(80) if avatar else None
+        except Exception:
+            avatar_url = None
+        result.append({'username': follower.username, 'avatar_url': avatar_url})
     return Response(result)
 
 
@@ -411,14 +439,16 @@ def user_following_list(request, username):
     """List users that :username follows."""
     user = get_object_or_404(User, username=username)
     from actstream.models import following as actstream_following
-    from avatar.utils import get_primary_avatar
     result = []
     for followed in actstream_following(user, User):
-        avatar = get_primary_avatar(followed, 80)
-        result.append({
-            'username': followed.username,
-            'avatar_url': avatar.avatar.url if avatar else None,
-        })
+        if not hasattr(followed, 'username'):
+            continue
+        try:
+            avatar = get_primary_avatar(followed, 80)
+            avatar_url = avatar.avatar_url(80) if avatar else None
+        except Exception:
+            avatar_url = None
+        result.append({'username': followed.username, 'avatar_url': avatar_url})
     return Response(result)
 
 
@@ -460,6 +490,139 @@ def tags_popular(request):
     return Response([{'name': t.name, 'slug': t.slug, 'count': t.n} for t in tags])
 
 
+class PlaylistListCreateView(APIView):
+    authentication_classes = [SignedTokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        qs = Playlist.objects.filter(user=request.user).prefetch_related('items__audio__user')
+        return Response(PlaylistSerializer(qs, many=True).data)
+
+    def post(self, request):
+        serializer = PlaylistSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+
+
+class PlaylistDetailView(APIView):
+    authentication_classes = [SignedTokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def _get_playlist(self, username, slug):
+        return get_object_or_404(Playlist, user__username=username, slug=slug)
+
+    def get(self, request, username, slug):
+        playlist = self._get_playlist(username, slug)
+        if not playlist.is_public and not (
+            request.user.is_authenticated and request.user == playlist.user
+        ):
+            return Response({'detail': 'Not found.'}, status=404)
+        return Response(PlaylistSerializer(playlist).data)
+
+    def put(self, request, username, slug):
+        playlist = self._get_playlist(username, slug)
+        if request.user != playlist.user:
+            return Response({'detail': 'Forbidden.'}, status=403)
+        serializer = PlaylistSerializer(playlist, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+    def delete(self, request, username, slug):
+        playlist = self._get_playlist(username, slug)
+        if request.user != playlist.user:
+            return Response({'detail': 'Forbidden.'}, status=403)
+        if playlist.is_likes:
+            return Response({'detail': 'No se puede borrar la playlist de likes.'}, status=400)
+        playlist.delete()
+        return Response(status=204)
+
+
+class PlaylistItemsView(APIView):
+    authentication_classes = [SignedTokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, username, slug):
+        playlist = get_object_or_404(Playlist, user__username=username, slug=slug)
+        if request.user != playlist.user:
+            return Response({'detail': 'Forbidden.'}, status=403)
+        audio_id = request.data.get('audio_id')
+        if not audio_id:
+            return Response({'error': 'audio_id is required'}, status=400)
+        audio = get_object_or_404(Audio, pk=audio_id)
+        from django.db.models import Max
+        last_pos = playlist.items.aggregate(Max('position'))['position__max'] or 0
+        item, created = PlaylistItem.objects.get_or_create(
+            playlist=playlist, audio=audio,
+            defaults={'position': last_pos + 1},
+        )
+        return Response(PlaylistItemSerializer(item).data, status=201 if created else 200)
+
+
+class PlaylistItemDetailView(APIView):
+    authentication_classes = [SignedTokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, username, slug, item_id):
+        playlist = get_object_or_404(Playlist, user__username=username, slug=slug)
+        if request.user != playlist.user:
+            return Response({'detail': 'Forbidden.'}, status=403)
+        item = get_object_or_404(PlaylistItem, pk=item_id, playlist=playlist)
+        item.delete()
+        return Response(status=204)
+
+
+class AudioLikeView(APIView):
+    authentication_classes = [SignedTokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request, slug):
+        audio = get_object_or_404(Audio, slug=slug)
+        if not request.user.is_authenticated:
+            return Response({'liked': False})
+        liked = AudioLike.objects.filter(audio=audio, user=request.user).exists()
+        return Response({'liked': liked})
+
+    def post(self, request, slug):
+        audio = get_object_or_404(Audio, slug=slug)
+        AudioLike.objects.get_or_create(audio=audio, user=request.user)
+        likes_pl, _ = Playlist.objects.get_or_create(
+            user=request.user, is_likes=True,
+            defaults={'name': 'Likes', 'is_public': True},
+        )
+        from django.db.models import Max
+        last_pos = likes_pl.items.aggregate(Max('position'))['position__max'] or 0
+        PlaylistItem.objects.get_or_create(
+            playlist=likes_pl, audio=audio,
+            defaults={'position': last_pos + 1},
+        )
+        return Response({'liked': True}, status=201)
+
+    def delete(self, request, slug):
+        audio = get_object_or_404(Audio, slug=slug)
+        AudioLike.objects.filter(audio=audio, user=request.user).delete()
+        try:
+            likes_pl = Playlist.objects.get(user=request.user, is_likes=True)
+            PlaylistItem.objects.filter(playlist=likes_pl, audio=audio).delete()
+        except Playlist.DoesNotExist:
+            pass
+        return Response({'liked': False})
+
+
+@api_view(['GET'])
+@authentication_classes([SignedTokenAuthentication])
+@permission_classes([AllowAny])
+def user_playlists(request, username):
+    user = get_object_or_404(User, username=username)
+    qs = Playlist.objects.filter(user=user).prefetch_related('items__audio__user')
+    if not (request.user.is_authenticated and request.user == user):
+        qs = qs.filter(is_public=True)
+    return Response(PlaylistSerializer(qs, many=True).data)
+
+
 api_router = routers.DefaultRouter()
 api_router.register(r'audio', AudioViewSet, basename='audio-api')
 
@@ -481,4 +644,13 @@ api_urls = [
     path('activity/global/', activity_global),
     path('activity/me/', activity_me),
     path('activity/feed/', activity_feed),
+    # Playlists
+    path('playlists/', PlaylistListCreateView.as_view()),
+    re_path(r'^playlists/(?P<username>[\w.-]+)/(?P<slug>[\w-]+)/$', PlaylistDetailView.as_view()),
+    re_path(r'^playlists/(?P<username>[\w.-]+)/(?P<slug>[\w-]+)/items/$', PlaylistItemsView.as_view()),
+    re_path(r'^playlists/(?P<username>[\w.-]+)/(?P<slug>[\w-]+)/items/(?P<item_id>\d+)/$', PlaylistItemDetailView.as_view()),
+    # AudioLike
+    re_path(r'^audio/(?P<slug>[\w-]+)/like/$', AudioLikeView.as_view()),
+    # User playlists
+    path('users/<str:username>/playlists/', user_playlists),
 ] + api_router.urls
