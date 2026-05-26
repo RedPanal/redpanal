@@ -120,7 +120,7 @@ class AudioList(generics.ListAPIView):
     search_fields = ['name', 'description', 'tags__name', 'user__username']
 
     def get_queryset(self):
-        queryset = Audio.objects.all()
+        queryset = Audio.objects.select_related('user')
 
         filter_data = {}
         username = self.request.query_params.get('user', None)
