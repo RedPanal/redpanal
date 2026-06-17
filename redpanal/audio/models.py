@@ -55,7 +55,7 @@ INSTRUMENT_CHOICES = (
     ("drums", _("drums")),
     ("saxophone", _("saxophone")),
     ("piano", _("piano")),
-    ("sinthesizer", _("sinthesizer")),
+    ("synthesizer", _("synthesizer")),
     ("electronic", _("electronic")),
     ("strings", _("other strings")),
     ("woodwind", _("woodwind")),
