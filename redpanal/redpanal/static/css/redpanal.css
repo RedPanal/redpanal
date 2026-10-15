@@ -57,7 +57,9 @@ a:not([class]):hover {
 
 #logo_mecenazgo {
   width: 150px;
+  max-width: 100%;
   height: 40px;
+  background-position: center;
   background-image: url(../img/mecenazgo.png);
   background-size: contain;
   background-repeat: no-repeat;

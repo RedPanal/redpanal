@@ -1,0 +1,29 @@
+{% load i18n %}{% comment %}Reply, favorite and amplify, under anything in the feed. Icons only; the name shows on hover.
+Amplify only for public things. On a page with its own conversation, `no_reply` leaves replying to it.{% endcomment %}
+<div class="rp-interactions">
+ {% if not no_reply %}
+ <details class="rp-reply-box">
+  <summary class="rp-act" title="{% trans 'Reply' %}"><i class="fa fa-reply" aria-hidden="true"></i><span class="visually-hidden">{% trans "Reply" %}</span></summary>
+  <form method="post" action="{% url 'reply' target target_obj.pk %}" class="d-flex gap-2 mt-2">{% csrf_token %}
+   <input type="hidden" name="next" value="{{ request.get_full_path }}">
+   <label class="visually-hidden" for="reply-{{ target }}-{{ target_obj.pk }}-{{ forloop.counter }}">{% trans "Reply" %}</label>
+   <input class="form-control form-control-sm" type="text" name="msg" maxlength="1000" required
+          id="reply-{{ target }}-{{ target_obj.pk }}-{{ forloop.counter }}" placeholder="{% trans 'Write a reply' %}">
+   <button class="btn btn-outline-dark btn-sm">{% trans "Send" %}</button>
+  </form>
+ </details>
+ {% endif %}
+ <form method="post" action="{% url 'react' 'favorite' target target_obj.pk %}">{% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+  <button class="rp-act{% if is_favorite %} is-on{% endif %}" aria-pressed="{% if is_favorite %}true{% else %}false{% endif %}"
+          title="{% if is_favorite %}{% trans 'In your favorites, in Estudio' %}{% else %}{% trans 'Favorite' %}{% endif %}">
+   <i class="fa{% if is_favorite %}s{% else %}r{% endif %} fa-heart" aria-hidden="true"></i><span class="visually-hidden">{% trans "Favorite" %}</span></button>
+ </form>
+ {# Everything can be amplified; what isn't public reaches only the followers who can see it. #}
+ <form method="post" action="{% url 'react' 'amplify' target target_obj.pk %}">{% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+  <button class="rp-act{% if is_amplified %} is-on{% endif %}" aria-pressed="{% if is_amplified %}true{% else %}false{% endif %}"
+          title="{% if is_amplified %}{% trans 'Amplified' %}{% elif public %}{% trans 'Republish it for the people who follow you' %}{% else %}{% trans 'Republish it for the people who follow you and can see it' %}{% endif %}">
+   <i class="fa fa-retweet" aria-hidden="true"></i><span class="visually-hidden">{% trans "Amplify" %}</span></button>
+ </form>
+</div>

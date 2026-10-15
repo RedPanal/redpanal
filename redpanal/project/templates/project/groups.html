@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n obra_tags %}
+
+{% block title %}{% trans "Groups" %}{% endblock %}
+
+{% block content %}
+<div class="rp-narrow">
+ <h1 class="rp-h1">{% trans "Groups" %}</h1>
+ <p class="rp-muted">{% trans "For classes and workshops: people join with a code, and the works you share with the group are open to everyone in it." %}</p>
+
+ <div class="rp-grid">
+  {% for g in groups %}
+  <a class="rp-card rp-work-card" href="{{ g.get_absolute_url }}">
+   <b class="rp-work-title">{{ g.name }}</b>
+   <span class="rp-muted small">{% blocktrans count n=g.n_members %}{{ n }} member{% plural %}{{ n }} members{% endblocktrans %}{% if g.owner == request.user %} · {% trans "you coordinate it" %}{% endif %}</span>
+  </a>
+  {% endfor %}
+ </div>
+
+ <div class="row g-3 mt-2">
+  <div class="col-md-6">
+   <form method="post" action="{% url 'group-join' %}" class="rp-card">{% csrf_token %}
+    <label class="form-label fw-bold" for="id_code">{% trans "Join with a code" %}</label>
+    <input class="form-control text-uppercase" name="code" id="id_code" maxlength="12" autocomplete="off" required placeholder="ABC123">
+    <button class="btn rp-btn-primary mt-2">{% trans "Join" %}</button>
+   </form>
+  </div>
+  <div class="col-md-6">
+   <form method="post" class="rp-card">{% csrf_token %}
+    <label class="form-label fw-bold" for="id_name">{% trans "Create a group" %}</label>
+    <input class="form-control" name="name" id="id_name" maxlength="100" required placeholder="{% trans 'Music, 3rd B' %}">
+    <label class="form-label small mt-2" for="id_people">{% trans "Invite people (optional)" %}</label>
+    <input class="form-control" name="people" id="id_people" placeholder="{% trans '@lucia @tincho' %}" autocomplete="off">
+    <button class="btn btn-outline-dark mt-2">{% trans "Create" %}</button>
+   </form>
+  </div>
+ </div>
+</div>
+{% endblock %}

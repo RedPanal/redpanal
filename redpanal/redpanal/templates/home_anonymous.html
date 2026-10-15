@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load i18n obra_tags %}
+
+{% block title %}{% trans "Free music, made in layers" %}{% endblock %}
+{% block body_class %}home{% endblock %}
+
+{% block content %}
+<section class="rp-hero rp-hero-split">
+ <div>
+  <p class="rp-eyebrow">{% trans "Free music community · since 2008" %}</p>
+  <h1 class="rp-display">{% trans "Free music, made in layers." %}</h1>
+  <p class="lead">{% trans "Share a track or an idea. Other people add bass, voice or percussion from home. Everything stays open for anyone to pick it up and take it somewhere else." %}</p>
+  <div class="d-flex gap-2 flex-wrap">
+   <a href="{% url 'explore' %}" class="btn rp-btn-primary btn-lg">{% trans "Explore" %}</a>
+   <a href="#como-funciona" class="btn btn-outline-dark btn-lg">{% trans "How it works" %}</a>
+  </div>
+ </div>
+ {% if demo %}
+ <aside class="rp-card rp-layers-demo" aria-labelledby="demo-title">
+  <div class="d-flex justify-content-between align-items-center gap-2">
+   <p class="rp-eyebrow mb-0" id="demo-title"><a href="{{ demo.get_absolute_url }}">{{ demo.name }}</a></p>
+   {% if demo.tempo or demo.musical_key %}<span class="rp-tag rp-tag-quiet">{% if demo.tempo %}{{ demo.tempo }} BPM{% endif %}{% if demo.tempo and demo.musical_key %} · {% endif %}{{ demo.musical_key }}</span>{% endif %}
+  </div>
+  {% for c in demo_layers %}
+  <div class="rp-layer-row"><span class="rp-layer-name">{{ c.audio|part_role|capfirst }}</span>{% audio_player c.audio %}</div>
+  {% endfor %}
+  {% if demo_request %}
+  <a class="rp-layer-wanted" href="{% url 'project-contribute' demo.slug %}?pedido={{ demo_request.pk }}">
+   {% blocktrans with what=demo_request.get_instrument_display %}Wanted: {{ what }} — will you join?{% endblocktrans %}</a>
+  {% endif %}
+ </aside>
+ {% endif %}
+</section>
+
+<section class="mb-5" id="como-funciona" aria-labelledby="how-title">
+ <h2 class="rp-h2" id="how-title">{% trans "How it works" %}</h2>
+ <ol class="rp-steps-3">
+  <li><span class="rp-eyebrow">{% trans "Step 1" %}</span><b>{% trans "Find a project or a sound" %}</b>
+   <span class="rp-muted">{% trans "Listen to how it sounds and download the layers if you need them." %}</span></li>
+  <li><span class="rp-eyebrow">{% trans "Step 2" %}</span><b>{% trans "Record your layer" %}</b>
+   <span class="rp-muted">{% trans "From your phone, while listening, or in the program you use: Ardour, REAPER, GarageBand." %}</span></li>
+  <li><span class="rp-eyebrow">{% trans "Step 3" %}</span><b>{% trans "It stays linked" %}</b>
+   <span class="rp-muted">{% trans "Your layer is connected to where it comes from, with your name in the credits and open for others to continue." %}</span></li>
+ </ol>
+</section>
+
+{% if requests %}
+<section class="mb-5" aria-labelledby="anon-requests">
+ <div class="rp-section-head"><h2 class="rp-h2" id="anon-requests">{% trans "Projects looking for musicians" %}</h2><a class="small" href="{% url 'explore' %}?ver=pedidos">{% trans "See all collaborations" %}</a></div>
+ <div class="rp-grid">{% for r in requests %}{% include "project/_request_card.html" %}{% endfor %}</div>
+</section>
+{% endif %}
+
+{% if recent %}
+<section class="mb-5" aria-labelledby="anon-recent">
+ <div class="rp-section-head"><h2 class="rp-h2" id="anon-recent">{% trans "Recently shared" %}</h2><a class="small" href="{% url 'explore' %}?ver=obras">{% trans "Listen to more" %}</a></div>
+ <div class="rp-grid">{% for work in recent %}{% include "project/_work_card.html" %}{% endfor %}</div>
+</section>
+{% endif %}
+
+{% if loop_instruments %}
+<section class="mb-4 rp-card rp-card-soft" aria-labelledby="anon-loops">
+ <h2 class="rp-h2" id="anon-loops">{% trans "Start from a loop" %}</h2>
+ <p class="rp-muted">{% trans "Loose sounds to pick up, by instrument, tempo and key." %}</p>
+ <div class="rp-chips">{% for code, label in loop_instruments %}<a class="rp-chip-link" href="{% url 'explore' %}?ver=sonidos&amp;instrumento={{ code|urlencode }}">{{ label|capfirst }}</a>{% endfor %}</div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% load i18n obra_tags %}{% with a=c.audio %}
+{% if a.moderation_hidden and request.user != a.user %}
+<div class="rp-track rp-track-missing" id="track-{{ c.pk }}">
+ <div class="rp-track-label"><b>{{ a|part_role }}</b><span>{{ c.contributor|display_name }}</span></div>
+ <div class="rp-track-missing-text rp-muted">{% trans "Part hidden by moderation. Its credit stays." %}</div>
+</div>
+{% else %}
+<div class="rp-track{% if candidate %} is-candidate{% endif %}" id="track-{{ c.pk }}" data-track
+     data-src="{{ a.get_stream_url }}" data-peaks="{% url 'audio_peaks_json' a.pk %}" data-offset="{{ c.offset_ms }}"
+     {% if candidate %}data-candidate data-active="false"{% endif %}>
+ <div class="rp-track-label">
+  <b>{{ a|part_role }}{% if a.moderation_hidden %} <i class="fa fa-eye-slash" title="{% trans 'Hidden by moderation' %}" aria-label="{% trans 'Hidden by moderation' %}"></i>{% endif %}</b>
+  <a href="{{ c.contributor.get_absolute_url }}">{{ c.contributor|display_name }}</a>
+ </div>
+ <div class="rp-track-wave" data-wave></div>
+ <div class="rp-track-ctrls">
+  <button type="button" class="rp-mini" data-mute aria-pressed="false" aria-label="{% blocktrans with role=a|part_role %}Mute {{ role }}{% endblocktrans %}">M</button>
+  <button type="button" class="rp-mini" data-solo aria-pressed="false" aria-label="{% blocktrans with role=a|part_role %}Solo {{ role }}{% endblocktrans %}">S</button>
+  <input type="range" class="rp-volume d-none d-lg-block" data-volume min="0" max="100" value="100" aria-label="{% blocktrans with role=a|part_role %}Volume of {{ role }}{% endblocktrans %}">
+  {# Downloading and reporting a single layer, one click away. #}
+  {% if download or request.user.is_authenticated and request.user != a.user %}
+  <div class="dropdown">
+   <button type="button" class="rp-mini" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{% blocktrans with role=a|part_role %}More options for {{ role }}{% endblocktrans %}"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+   <ul class="dropdown-menu dropdown-menu-end">
+    {% if download %}<li><a class="dropdown-item" href="{% url 'audio-download' a.pk %}"><i class="fa fa-download fa-fw" aria-hidden="true"></i> {% blocktrans with role=a|part_role %}Download {{ role }}{% endblocktrans %}</a></li>{% endif %}
+    {% if request.user.is_authenticated and request.user != a.user %}<li><a class="dropdown-item" href="{% url 'report-create' 'audio' a.pk %}"><i class="fa fa-flag fa-fw" aria-hidden="true"></i> {% trans "Report this part" %}</a></li>{% endif %}
+   </ul>
+  </div>
+  {% endif %}
+ </div>
+</div>
+{% endif %}
+{% endwith %}

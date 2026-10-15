@@ -41,6 +41,9 @@ class Waveform(object):
         # 2. Encontrar el valor RMS máximo para normalizar
         # Se usa * 1.00 para asegurar que sea float
         max_rms = max(loudness_of_chunks) * 1.00
+        if not max_rms:
+            # Total silence (e.g. an empty stem exported from a DAW): a flat waveform.
+            return [0] * self.bar_count
 
         # 3. Normalizar los valores y escalarlos al db_ceiling (60)
         # Esto genera la lista de alturas de picos para el frontend

@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% load i18n avatar_tags obra_tags thumbnail %}
+
+{% block title %}{{ person|display_name }}{% endblock %}
+
+{% block content %}
+{# What someone plays and makes, and who they play with. Only sections with something in them are shown. #}
+{% with p=person.userprofile %}
+<div class="rp-profile-cover{% if not p.cover %} is-empty{% endif %}">{% if p.cover %}<img src="{% thumbnail p.cover 1600x400 crop %}" alt="">{% endif %}</div>
+<header class="rp-profile-head">
+ <span class="rp-profile-avatar">{% avatar person 192 %}</span>
+ <div class="rp-profile-id">
+  <div class="d-flex align-items-center flex-wrap gap-2">
+   <h1 class="rp-h1 mb-0">{{ person|display_name }}</h1>
+   {% if p.open_to_collaborate %}<span class="rp-tag rp-tag-dark">{% trans "Available to collaborate" %}</span>{% endif %}
+  </div>
+  <p class="rp-muted mb-0">@{{ person.username }}{% if p.location %} · {{ p.location }}{% endif %} · {% blocktrans with y=person.date_joined|date:"Y" %}on RedPanal since {{ y }}{% endblocktrans %}</p>
+ </div>
+ <div class="rp-profile-actions">
+  {% if is_me %}
+   <a class="btn btn-outline-dark" href="{% url 'user-profile' %}"><i class="fa fa-pencil-alt" aria-hidden="true"></i> {% trans "Edit profile" %}</a>
+  {% else %}
+   {% include "users/_follow_button.html" %}
+   {% if invite_to %}
+   <div class="dropdown">
+    <button class="btn rp-btn-primary btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">{% trans "Invite to a project" %}</button>
+    <ul class="dropdown-menu dropdown-menu-end">
+     {% for w in invite_to %}<li><form method="post" action="{% url 'project-invite' w.slug %}">{% csrf_token %}<input type="hidden" name="username" value="@{{ person.username }}"><button class="dropdown-item">{{ w.name }}</button></form></li>{% endfor %}
+    </ul>
+   </div>
+   {% endif %}
+  {% endif %}
+ </div>
+</header>
+
+<div class="rp-obra-grid">
+ <div class="rp-obra-main">
+  {% if p.about %}<p class="rp-profile-about">{{ p.about|linebreaksbr }}</p>{% endif %}
+  {% if p.instrument_labels or p.genre_list or p.tool_list %}
+  <div class="rp-profile-facts">
+   {% if p.instrument_labels %}<div><p class="rp-eyebrow mb-1">{% trans "Plays" %}</p><ul class="rp-chips rp-chips-static">{% for label in p.instrument_labels %}<li class="rp-chip"><span>{{ label|capfirst }}</span></li>{% endfor %}</ul></div>{% endif %}
+   {% if p.genre_list %}<div><p class="rp-eyebrow mb-1">{% trans "Genres" %}</p><ul class="rp-chips rp-chips-static">{% for g in p.genre_list %}<li class="rp-chip"><span>{{ g }}</span></li>{% endfor %}</ul></div>{% endif %}
+   {% if p.tool_list %}<div><p class="rp-eyebrow mb-1">{% trans "Records with" %}</p><ul class="rp-chips rp-chips-static">{% for tool in p.tool_list %}<li class="rp-chip"><span>{{ tool }}</span></li>{% endfor %}</ul></div>{% endif %}
+  </div>
+  {% elif is_me %}<p class="small"><a href="{% url 'user-profile' %}">{% trans "Tell us which instruments you play" %}</a></p>{% endif %}
+
+  {% if gallery %}
+  {# Up to ten pictures in a block of fixed height: its shape depends on how many there are. #}
+  <div class="rp-gallery" data-n="{% if gallery|length > 5 %}5{% else %}{{ gallery|length }}{% endif %}" data-gallery>
+   {% for g in gallery|slice:":5" %}
+   <button type="button" class="rp-gallery-item" data-gallery-open="{{ forloop.counter0 }}"
+           aria-label="{% blocktrans with n=forloop.counter total=gallery|length %}Picture {{ n }} of {{ total }}{% endblocktrans %}">
+    <img src="{% if forloop.first %}{% thumbnail g.image 900x600 crop %}{% else %}{% thumbnail g.image 450x300 crop %}{% endif %}" alt="" loading="lazy">
+    {% if forloop.last and gallery|length > 5 %}<span class="rp-gallery-more">+{{ gallery|length|add:"-5" }}</span>{% endif %}
+   </button>
+   {% endfor %}
+  </div>
+  <dialog class="rp-lightbox" data-lightbox aria-label="{% trans 'Pictures' %}">
+   <button type="button" class="rp-lightbox-close" data-lb-close aria-label="{% trans 'Close' %}"><i class="fa fa-times" aria-hidden="true"></i></button>
+   <button type="button" class="rp-lightbox-nav rp-lightbox-prev" data-lb-prev aria-label="{% trans 'Previous' %}"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+   <img data-lb-img alt="">
+   <button type="button" class="rp-lightbox-nav rp-lightbox-next" data-lb-next aria-label="{% trans 'Next' %}"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+   <span class="rp-lightbox-count" data-lb-count></span>
+   {% for g in gallery %}<span hidden data-lb-src="{{ g.image.url }}"></span>{% endfor %}
+  </dialog>
+  {% endif %}
+
+  {% if contributions or reused %}
+  <p class="rp-muted small">{% if contributions %}{% blocktrans count n=contributions|length %}{{ n }} layer in other people's projects{% plural %}{{ n }} layers in other people's projects{% endblocktrans %}{% endif %}{% if contributions and reused %} · {% endif %}{% if reused %}{% blocktrans count n=reused %}picked up once by other projects{% plural %}picked up {{ n }} times by other projects{% endblocktrans %}{% endif %}</p>
+  {% endif %}
+
+  {% if works or contributions or sounds or comments or groups or is_me %}
+  {# Tabs: one section at a time. Without JavaScript they work as links down the page. #}
+  <nav class="rp-profile-jump" aria-label="{% trans 'Sections' %}" data-profile-tabs>
+   {% if works %}<a href="#obras">{% trans "Works" %} <span class="rp-muted">{{ works|length }}</span></a>{% endif %}
+   {% if contributions %}<a href="#aportes">{% trans "Contributions" %} <span class="rp-muted">{{ contributions|length }}</span></a>{% endif %}
+   {% if sounds %}<a href="#sonidos">{% trans "Sounds" %} <span class="rp-muted">{{ sounds|length }}</span></a>{% endif %}
+   {% if comments %}<a href="#comentarios">{% trans "Posts" %} <span class="rp-muted">{{ comments|length }}</span></a>{% endif %}
+   {% if groups or is_me %}<a href="#grupos">{% trans "Groups" %}{% if groups %} <span class="rp-muted">{{ groups|length }}</span>{% endif %}</a>{% endif %}
+  </nav>
+  {% endif %}
+
+  {% if works %}<section id="obras" class="mb-4" aria-labelledby="obras-title">
+   <h2 class="rp-sec" id="obras-title">{% trans "Works" %}</h2>
+   <div class="rp-grid">{% for work in works %}{% include "project/_work_card.html" with hide_author=True %}{% endfor %}</div>
+  </section>{% endif %}
+
+  {% if contributions %}<section id="aportes" class="mb-4" aria-labelledby="aportes-title">
+   <h2 class="rp-sec" id="aportes-title">{% trans "Parts in works by other people" %}</h2>
+   <div class="rp-grid">
+    {% for c in contributions %}
+    <article class="rp-card">
+     <a class="rp-card-title" href="{{ c.project.get_absolute_url }}">{{ c.project.name }}</a>
+     <span class="rp-muted small">{{ c.audio|part_role|capfirst }} · {% blocktrans with who=c.project.user|display_name %}in a work by {{ who }}{% endblocktrans %}</span>
+     {% audio_player c.audio %}
+    </article>
+    {% endfor %}
+   </div>
+  </section>{% endif %}
+
+  {% if sounds %}<section id="sonidos" class="mb-4" aria-labelledby="sonidos-title">
+   <h2 class="rp-sec" id="sonidos-title">{% trans "Sounds to share" %}</h2>
+   <div class="rp-grid">{% for sound in sounds %}{% include "project/_sound_card.html" with hide_author=True %}{% endfor %}</div>
+  </section>{% endif %}
+
+  {% if comments %}<section id="comentarios" class="mb-4" aria-labelledby="comentarios-title">
+   <h2 class="rp-sec" id="comentarios-title">{% trans "Posts and comments" %}</h2>
+   <div class="rp-feed">
+    {% for m in comments %}
+    <article class="rp-feed-item" id="c{{ m.pk }}">
+     <div class="rp-card rp-comment-card">
+      <span>{{ m.as_html|safe }}</span>
+      <span class="rp-muted small">{% if m.content_object.name %}<a class="rp-muted" href="{{ m.content_object.get_absolute_url }}">{% blocktrans with name=m.content_object.name %}on «{{ name }}»{% endblocktrans %}</a> · {% endif %}{% blocktrans with t=m.created_at|timesince %}{{ t }} ago{% endblocktrans %}</span>
+      {% if m.replies.all %}<ul class="rp-replies">{% for r in m.replies.all %}{% if not r.moderation_hidden %}<li><b>{{ r.user|display_name }}</b> <span>{{ r.as_html|safe }}</span></li>{% endif %}{% endfor %}</ul>{% endif %}
+     </div>
+     {% if request.user.is_authenticated %}{% include "social/_interactions.html" with target="comentario" target_obj=m is_favorite=m.is_favorite is_amplified=m.is_amplified public=m.is_public %}{% endif %}
+    </article>
+    {% endfor %}
+   </div>
+  </section>{% endif %}
+
+  {# Groups: a tab of their own. On your own profile it's always there, to create or join one. #}
+  {% if groups or is_me %}<section id="grupos" class="mb-4" aria-labelledby="grupos-title">
+   <h2 class="rp-sec" id="grupos-title">{% trans "Groups" %}</h2>
+   {% for g in groups %}<a class="rp-row rp-row-line" href="{{ g.get_absolute_url }}"><b>{{ g.name }}</b>{% if is_me and g.owner == person %}<span class="rp-muted small">{% blocktrans with code=g.code %}code {{ code }}{% endblocktrans %}</span>{% endif %}</a>
+   {% empty %}<p class="rp-muted">{% trans "To share projects with your band, your class or your workshop without making them public." %}</p>{% endfor %}
+   {% if is_me %}<a class="btn btn-outline-dark btn-sm mt-3" href="{% url 'groups' %}"><i class="fa fa-users" aria-hidden="true"></i> {% trans "Create or join a group" %}</a>{% endif %}
+  </section>{% endif %}
+ </div>
+
+ <aside class="rp-obra-side">
+  {% if played_with %}
+  <section class="rp-card" aria-labelledby="played-title">
+   <h2 class="rp-sec" id="played-title">{% trans "Played with" %}</h2>
+   <div class="rp-played-with">
+    {% for u in played_with %}<a href="{{ u.get_absolute_url }}"><span class="rp-nav-avatar" aria-hidden="true">{% avatar u 96 %}</span><span class="small">{{ u|display_name }}</span></a>{% endfor %}
+   </div>
+  </section>
+  {% endif %}
+
+  {% if p.website or p.other_link %}
+  <section class="rp-card" aria-labelledby="links-title">
+   <h2 class="rp-sec" id="links-title">{% trans "Links" %}</h2>
+   {% if p.website %}<a class="d-block small text-truncate" href="{{ p.website }}" rel="nofollow noopener" target="_blank">{{ p.website }}</a>{% endif %}
+   {% if p.other_link %}<a class="d-block small text-truncate" href="{{ p.other_link }}" rel="nofollow noopener" target="_blank">{{ p.other_link }}</a>{% endif %}
+  </section>
+  {% endif %}
+ </aside>
+</div>
+{% endwith %}
+{% endblock %}
+
+{% block body_end_scripts %}
+<script>
+/* Profile pictures: a floating window to go through all of them (arrows, swipe, Esc). */
+(function () {
+  var box = document.querySelector("[data-lightbox]");
+  if (!box || !box.showModal) return;
+  var srcs = Array.prototype.map.call(box.querySelectorAll("[data-lb-src]"), function (s) { return s.dataset.lbSrc; });
+  var img = box.querySelector("[data-lb-img]"), count = box.querySelector("[data-lb-count]"), at = 0;
+  function show(i) { at = (i + srcs.length) % srcs.length; img.src = srcs[at]; count.textContent = (at + 1) + " / " + srcs.length; }
+  document.querySelectorAll("[data-gallery-open]").forEach(function (b) {
+    b.addEventListener("click", function () { show(parseInt(b.dataset.galleryOpen, 10)); box.showModal(); });
+  });
+  box.querySelector("[data-lb-prev]").addEventListener("click", function () { show(at - 1); });
+  box.querySelector("[data-lb-next]").addEventListener("click", function () { show(at + 1); });
+  box.querySelector("[data-lb-close]").addEventListener("click", function () { box.close(); });
+  box.addEventListener("click", function (e) { if (e.target === box) box.close(); });
+  box.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft") show(at - 1);
+    if (e.key === "ArrowRight") show(at + 1);
+  });
+  var x0 = null;
+  box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  box.addEventListener("touchend", function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 40) show(at + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+  if (srcs.length < 2) box.querySelectorAll(".rp-lightbox-nav").forEach(function (b) { b.hidden = true; });
+})();
+</script>
+<script>
+/* Profile sections as tabs: shows the one asked for (or the first), hides the rest. */
+(function () {
+  var nav = document.querySelector("[data-profile-tabs]");
+  if (!nav) return;
+  var links = Array.prototype.slice.call(nav.querySelectorAll("a[href^='#']"));
+  if (links.length < 2) { nav.hidden = true; return; }  // a single section needs no tabs
+  var sections = links.map(function (a) { return document.getElementById(a.hash.slice(1)); });
+  function show(i) {
+    links.forEach(function (a, j) { a.setAttribute("aria-current", i === j ? "true" : "false"); });
+    sections.forEach(function (s, j) { if (s) s.hidden = i !== j; });
+  }
+  nav.classList.add("is-tabs");  // the tab names the section: its heading would repeat it
+  sections.forEach(function (s) { if (s) s.classList.add("rp-tab-panel"); });
+  links.forEach(function (a, i) {
+    a.addEventListener("click", function (e) { e.preventDefault(); show(i); history.replaceState(null, "", a.hash); });
+  });
+  var start = links.findIndex(function (a) { return a.hash === location.hash; });
+  show(start < 0 ? 0 : start);
+})();
+</script>
+{% endblock %}

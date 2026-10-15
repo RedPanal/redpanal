@@ -1,0 +1,51 @@
+# Entorno de desarrollo endurecido. Tiene prioridad sobre docker-compose.yml
+# (el original del repo, que se deja sin tocar).
+name: redpanal
+
+x-hardening: &hardening
+  build:
+    context: .
+    dockerfile: docker/Dockerfile.dev
+  image: redpanal-dev:latest
+  init: true
+  # Solo se monta la carpeta del proyecto: el contenedor no ve el resto del disco.
+  # La base SQLite, uploaded_media y whoosh_index quedan dentro de ./redpanal.
+  volumes:
+    - ./:/app
+    - home:/home/dev
+  working_dir: /app/redpanal
+  environment:
+    - DJANGO_SETTINGS_MODULE=redpanal.settings
+  # --- Endurecimiento ---
+  read_only: true                 # sistema de archivos raíz de solo lectura
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=512m
+  cap_drop: [ALL]                 # sin capacidades de kernel
+  security_opt:
+    - no-new-privileges:true      # nada puede escalar privilegios (setuid, etc.)
+  privileged: false
+  user: "1000:1000"
+  # Límites de recursos
+  mem_limit: 4g
+  cpus: 2
+  pids_limit: 512
+
+services:
+  # Servidor de desarrollo: http://localhost:8000
+  # Publicado solo en 127.0.0.1: nadie de tu red local puede acceder.
+  web:
+    <<: *hardening
+    ports:
+      - "127.0.0.1:8000:8000"
+
+  # Máximo aislamiento, sin red. Ej.: docker compose run --rm offline python manage.py test
+  offline:
+    <<: *hardening
+    network_mode: none
+    profiles: [offline]
+    command: ["bash"]
+    stdin_open: true
+    tty: true
+
+volumes:
+  home:

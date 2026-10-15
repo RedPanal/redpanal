@@ -1,0 +1,2 @@
+{# Every file of a work, each one with its own play; clicking one plays it and then the others. #}
+{% if rows %}<div class="rp-files" data-queue>{% for row in rows %}{% include "project/_mini_player.html" with tracks=row.tracks mode=row.mode label=row.label caption=row.caption caption_sub=row.caption_sub caption_url=row.caption_url item=row.item %}{% endfor %}</div>{% endif %}

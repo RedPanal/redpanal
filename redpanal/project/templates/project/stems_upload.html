@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Upload a studio folder" %} · {{ object.name }}{% endblock %}
+
+{% block content %}
+<div class="rp-narrow rp-narrow-wide">
+ <p class="rp-muted small mb-1"><a href="{{ object.get_absolute_url }}">{{ object.name }}</a> › {% trans "Upload a studio folder" %}</p>
+ <h1 class="rp-h1">{% trans "Upload a studio folder" %}</h1>
+ <p class="rp-muted">{% blocktrans %}Export the stems from bar 1 (all starting at the same point) and drop the folder here. Each audio file becomes a part, already lined up. Session files, MIDI and presets travel with the work as attachments.{% endblocktrans %}</p>
+
+ {% if result %}
+ <section class="rp-card rp-card-strong" role="status" aria-labelledby="result-title">
+  <h2 class="rp-h2" id="result-title">{% if result.changed or result.replaced %}{% trans "Folder uploaded" %}{% else %}{% trans "Nothing new to upload" %}{% endif %}</h2>
+  <ul class="mb-2">
+   {% if result.added %}<li>{% blocktrans count n=result.added|length %}{{ n }} new part{% plural %}{{ n }} new parts{% endblocktrans %}: {{ result.added|join:", " }}</li>{% endif %}
+   {% if result.replaced %}<li>{% blocktrans count n=result.replaced|length %}{{ n }} part replaced by a new take (the previous one stays as an alternative){% plural %}{{ n }} parts replaced by a new take (the previous ones stay as alternatives){% endblocktrans %}: {{ result.replaced|join:", " }}</li>{% endif %}
+   {% if result.unchanged %}<li class="rp-muted">{% blocktrans count n=result.unchanged|length %}{{ n }} part without changes, not uploaded again{% plural %}{{ n }} parts without changes, not uploaded again{% endblocktrans %}</li>{% endif %}
+   {% if result.attachments %}<li>{% blocktrans count n=result.attachments|length %}{{ n }} session file{% plural %}{{ n }} session files{% endblocktrans %}: {{ result.attachments|join:", " }}</li>{% endif %}
+   {% if result.attachments_unchanged %}<li class="rp-muted">{% blocktrans count n=result.attachments_unchanged|length %}{{ n }} session file without changes{% plural %}{{ n }} session files without changes{% endblocktrans %}</li>{% endif %}
+  </ul>
+  {% for e in result.errors %}<p class="text-danger small mb-1">{{ e }}</p>{% endfor %}
+  {% if is_owner and result.changed or is_owner and result.replaced %}
+  <form method="post" action="{% url 'project-version-create' object.slug %}" class="d-flex gap-2 flex-wrap align-items-end">{% csrf_token %}
+   <div class="flex-grow-1">
+    <label class="form-label small" for="id_message">{% trans "What changed (optional)" %}</label>
+    <input class="form-control" name="message" id="id_message" maxlength="500">
+   </div>
+   <button class="btn rp-btn-primary">{% blocktrans with n=versions_count|add:1 %}Save version {{ n }}{% endblocktrans %}</button>
+  </form>
+  {% endif %}
+  <a class="small d-block mt-2" href="{{ object.get_absolute_url }}">{% trans "Back to the work" %}</a>
+ </section>
+ {% endif %}
+
+ <form method="post" enctype="multipart/form-data" id="stems-form" class="d-grid gap-3" data-offline-queue>{% csrf_token %}
+  <div class="rp-dropzone" data-dropzone tabindex="-1">
+   <p class="mb-2"><b>{% trans "Drop a folder or files here" %}</b></p>
+   <div class="d-flex gap-2 justify-content-center flex-wrap">
+    <label class="btn btn-outline-dark mb-0" for="pick-folder"><i class="fa fa-folder-open" aria-hidden="true"></i> {% trans "Choose a folder" %}</label>
+    <input type="file" id="pick-folder" class="visually-hidden" webkitdirectory multiple>
+    <label class="btn btn-outline-dark mb-0" for="id_stems"><i class="fa fa-file-audio" aria-hidden="true"></i> {% trans "Choose files" %}</label>
+    <input type="file" name="stems" id="id_stems" class="visually-hidden" multiple
+           accept="audio/*,{% for e in audio_extensions %}.{{ e }},{% endfor %}{% for e in attachment_extensions %}.{{ e }}{% if not forloop.last %},{% endif %}{% endfor %}">
+   </div>
+   <details class="rp-muted small mt-2"><summary>{% trans "Which files it takes" %}</summary>{% trans "Audio:" %} {{ audio_extensions|join:", " }} · {% trans "Sessions and other files:" %} {{ attachment_extensions|join:", " }}</details>
+  </div>
+
+  <div data-file-list hidden>
+   <table class="table table-sm align-middle">
+    <thead><tr><th scope="col">{% trans "File" %}</th><th scope="col">{% trans "Becomes" %}</th></tr></thead>
+    <tbody data-rows></tbody>
+   </table>
+  </div>
+  <template data-row-template>
+   <tr>
+    <td><span data-name></span> <span class="rp-muted small" data-size></span></td>
+    <td data-kind-cell>
+     <label class="visually-hidden" data-select-label>{% trans "Instrument" %}</label>
+     <select class="form-select form-select-sm" name="instruments" data-instrument>
+      <option value="">{% trans "Detect from the name" %}</option>
+      {% for value, label in instrument_choices %}<option value="{{ value }}">{{ label|capfirst }}</option>{% endfor %}
+     </select>
+     <span class="rp-muted small" data-attachment-label hidden>{% trans "session file" %}</span>
+    </td>
+   </tr>
+  </template>
+
+  {% if not is_owner %}
+  <div>
+   <label class="form-label fw-bold" for="id_note">{% trans "Note (optional)" %}</label>
+   <textarea class="form-control" name="note" id="id_note" rows="2" maxlength="500"></textarea>
+  </div>
+  <label class="rp-license d-flex gap-2 align-items-start">
+   <input type="checkbox" name="accept_terms" value="1" required class="mt-1">
+   <span>{% trans "I agree that this part is published under the license of the work (today CC BY-SA), also if the work is published later." %}</span>
+  </label>
+  {% endif %}
+
+  <p class="rp-muted small mb-0">{% blocktrans %}Files identical to ones already in the work are skipped. A file with the same name as an included part counts as a new take.{% endblocktrans %}
+   {% blocktrans %}You use {{ usage_mb }} MB of {{ quota_mb }} MB.{% endblocktrans %}</p>
+  <div class="d-flex gap-2">
+   <button class="btn rp-btn-primary" data-submit>{% if is_owner %}{% trans "Upload" %}{% else %}{% trans "Send contribution" %}{% endif %}</button>
+   <a class="btn btn-link" href="{{ object.get_absolute_url }}">{% trans "Cancel" %}</a>
+  </div>
+  <p class="rp-muted small" data-uploading hidden>{% trans "Uploading… don't close this page." %}</p>
+ </form>
+</div>
+{% endblock %}
+
+{% block body_end_scripts %}
+<script>window.RP_AUDIO_EXT = {{ audio_extensions|safe }}; window.RP_ATTACH_EXT = {{ attachment_extensions|safe }};</script>
+<script src="{% static 'js/stems.js' %}"></script>
+{% endblock %}
