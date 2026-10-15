@@ -1,124 +1,111 @@
 {% extends "base.html" %}
-{% load i18n %}
-{% load social_tags %}
+{% load i18n obra_tags social_tags thumbnail %}
 
 {% block title %}{{ object.name }}{% endblock %}
 
-{% block extra_head %}
-<script type="text/javascript">
-    // 3. LÓGICA DE INICIALIZACIÓN DE WAVESURFER.JS
-    $(function (){
-        const audioId = {{ object.id }};
-        const audioUrl = '{{ object.audio.url|escapejs }}';
-        // Usamos la URL que definimos en urls.py (Paso 2)
-        const peaksUrl = "{% url 'audio_peaks_json' object.id %}"; 
-        
-        const containerSelector = '#waveform-container-' + audioId;
-        const buttonSelector = '#play-pause-btn-' + audioId;
+{% block content %}
+{# What people look for in a sound comes first: what it is, tempo, key; technical data on demand. #}
+<div class="rp-narrow rp-narrow-wide">
+ <header class="rp-obra-head">
+  <div class="rp-head-id">
+   {% if object.image %}<img class="rp-cover rp-cover-lg" src="{% thumbnail object.image 240x240 crop %}" alt="">{% elif works.0.image %}<img class="rp-cover rp-cover-lg" src="{% thumbnail works.0.image 240x240 crop %}" alt="">{% endif %}
+   <div>
+   <h1 class="rp-h1 mb-1">{{ object.name }}{% if not works and object.visibility != "public" and request.user == object.user %}
+    <a class="rp-tag rp-tag-quiet rp-tag-link align-middle" href="{% url 'upload-share' %}?ids={{ object.pk }}"><i class="fa fa-lock" aria-hidden="true"></i> {% trans "private" %}</a>{% endif %}</h1>
+   <p class="rp-muted mb-2"><a href="{{ object.user.get_absolute_url }}">{{ object.user|display_name }}</a> · {% blocktrans with t=object.created_at|timesince %}{{ t }} ago{% endblocktrans %}
+    {# A track of a work: the same page as any file, and where it belongs, quietly. #}
+    {% for w in works %}<span class="d-block small"><i class="fa fa-layer-group" aria-hidden="true"></i> {% blocktrans with url=w.get_absolute_url name=w.name %}Track of <a href="{{ url }}">«{{ name }}»</a>{% endblocktrans %}</span>{% endfor %}</p>
+   <p class="rp-labels mb-0" aria-label="{% trans 'About this sound' %}">
+    {% if object.use_type %}<span class="rp-label">{{ object.get_use_type_display|capfirst }}</span>{% endif %}
+    {% if object.tempo %}<span class="rp-label">{{ object.tempo }} BPM</span>{% endif %}
+    {% if object.musical_key %}<span class="rp-label">{{ object.musical_key }}</span>{% endif %}
+    {% if object.instrument %}<span class="rp-label">{{ object.get_instrument_display|capfirst }}</span>{% endif %}
+   </p>
+   </div>
+  </div>
+ </header>
 
-        // Inicializar la instancia de Wavesurfer
-        const wavesurfer = WaveSurfer.create({
-            container: containerSelector,
-            waveColor: '#A8A8A8',
-            progressColor: '#FF6600',
-            cursorColor: '#545454',
-            barWidth: 2,
-            barGap: 1,
-            barRadius: 2,
-            height: 150,
-        });
+ <div class="mb-1">{% audio_player object "large" %}</div>
+ {# Under the waveform: download, favorite and amplify as icons; the rest in the ⋯ menu. #}
+ <div class="rp-file-actions mb-4">
+  {% if can_download %}<a class="rp-act" href="{% url 'audio-download' object.pk %}" draggable="true" data-download-link data-filename="{{ object.name }}"
+     title="{% trans 'Download original' %}"><i class="fa fa-download" aria-hidden="true"></i><span class="visually-hidden">{% trans "Download original" %}</span></a>{% endif %}
+  {% if request.user.is_authenticated and request.user != object.user %}{% include "social/_interactions.html" with target="sonido" target_obj=object is_favorite=reactions.0 is_amplified=reactions.1 public=is_public no_reply=True %}{% endif %}
+  {% if request.user.is_authenticated %}
+  <div class="dropdown">
+   <button class="rp-act" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{% trans 'More options' %}" title="{% trans 'More options' %}"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
+   <ul class="dropdown-menu">
+    {% if request.user != object.user and is_public %}
+    {# Using it: a new project first, then the person's own projects. #}
+    <li><a class="dropdown-item" href="{% url 'create' %}?sonido={{ object.pk }}"><i class="fa fa-plus fa-fw" aria-hidden="true"></i> {% trans "New project with this sound" %}</a></li>
+    {% if my_projects %}<li><h3 class="dropdown-header">{% trans "Add to one of yours" %}</h3></li>
+    {% for p in my_projects %}<li><form method="post" action="{% url 'sound-add-to-project' object.pk %}">{% csrf_token %}<input type="hidden" name="project" value="{{ p.pk }}"><button class="dropdown-item">{{ p.name }}</button></form></li>{% endfor %}{% endif %}
+    <li><hr class="dropdown-divider"></li>
+    {% endif %}
+    {% if request.user == object.user %}
+    {% if not works %}<li><a class="dropdown-item" href="{% url 'upload-share' %}?ids={{ object.pk }}"><i class="fa fa-share-square fa-fw" aria-hidden="true"></i> {% trans "Share" %}</a></li>{% endif %}
+    <li><a class="dropdown-item" href="{% url 'audio-edit' object.slug %}"><i class="fa fa-pencil-alt fa-fw" aria-hidden="true"></i> {% trans "Edit details" %}</a></li>
+    <li><a class="dropdown-item text-danger" href="{% url 'audio-delete' object.slug %}"><i class="fa fa-trash fa-fw" aria-hidden="true"></i> {% trans "Delete" %}</a></li>
+    {% else %}
+    <li><a class="dropdown-item" href="{% url 'report-create' 'audio' object.pk %}"><i class="fa fa-flag fa-fw" aria-hidden="true"></i> {% trans "Report" %}</a></li>
+    {% endif %}
+   </ul>
+  </div>
+  {% endif %}
+ </div>
 
-        // Cargar los picos precalculados y el archivo de audio
-        fetch(peaksUrl)
-            .then(response => {
-                if (!response.ok) throw new Error('No se pudieron cargar los picos.');
-                return response.json();
-            })
-            .then(data => {
-                const peaks = data.peaks;
-                const maxPeak = Math.max(...peaks);
-                const normalized = maxPeak > 1 ? peaks.map(p => p / maxPeak) : peaks;
-                wavesurfer.load(audioUrl, [normalized], data.duration);
-            })
-            .catch(error => {
-                console.error('Error en la carga de la onda:', error);
-                $(containerSelector).html('<p class="error-msg">Error al cargar el reproductor: ' + error.message + '</p>');
-            });
+ <div class="rp-obra-grid">
+  <div class="rp-obra-main">
+   {# Type, tempo, key and instrument are already in the header chips. #}
+   {% if object.description or object.tags.all %}
+   <section class="mb-4" aria-labelledby="about-title">
+    <h2 class="rp-sec" id="about-title">{% trans "About this sound" %}</h2>
+    {% if object.description %}<p>{{ object.description|linebreaksbr }}</p>{% endif %}
+    {% if object.tags.all %}<p class="tags">{% include 'core/hashtags_block.html' %}</p>{% endif %}
+   </section>
+   {% endif %}
 
-        // 4. Funcionalidad de control (Play/Pause)
-        const btn = $(buttonSelector);
-        
-        btn.on('click', () => {
-            wavesurfer.playPause();
-        });
-
-        wavesurfer.on('play', () => {
-            btn.text('Pausar');
-        });
-
-        wavesurfer.on('pause', () => {
-            btn.text('Reproducir');
-        });
-
-        // (Opcional) Limpieza: Si quieres que el antiguo mediaelementplayer no se inicialice en otros audios,
-        // elimina la inicialización de mediaelementplayer de tu base.html si aplica.
-        
-    });
-</script>
+   {% if used_in %}
+   <section class="mb-4" aria-labelledby="used-title">
+    <h2 class="rp-sec" id="used-title">{% trans "Appears in" %}</h2>
+    <div class="rp-grid">{% for work in used_in %}{% include "project/_work_card.html" %}{% endfor %}</div>
+   </section>
+   {% endif %}
+   <section aria-labelledby="comments-title">
+    <h2 class="rp-sec" id="comments-title">{% trans "Conversation" %}</h2>
+    <div class="action-stream-wrapper for-object">{% show_messages_for object %}</div>
+    {% if request.user.is_authenticated %}
+     {% with initial_msg=" @"|add:object.user.username %}{% message_form_for object %}{% endwith %}
+    {% endif %}
+   </section>
+  </div>
+  <aside class="rp-obra-side">
+   {% include "project/_genealogy.html" with above=None below=genealogy_below here=object.name %}
+   <details class="rp-card">
+    <summary class="rp-sec mb-0">{% trans "Technical data" %}</summary>
+    <dl class="rp-techdata mt-2 mb-0">
+     {% if object.genre %}<dt>{% trans "Genre" %}</dt><dd>{{ object.get_genre_display|capfirst }}</dd>{% endif %}
+     {% if duration %}<dt>{% trans "Duration" %}</dt><dd>{{ duration|mmss }}</dd>{% endif %}
+     {% if object.samplerate %}<dt>{% trans "Sample rate" %}</dt><dd>{{ object.samplerate }} Hz</dd>{% endif %}
+     {% if object.channels %}<dt>{% trans "Channels" %}</dt><dd>{{ object.channels }}</dd>{% endif %}
+     {% if object.size %}<dt>{% trans "Size" %}</dt><dd>{{ object.size|filesizeformat }}</dd>{% endif %}
+     {% if file_format %}<dt>{% trans "Format" %}</dt><dd>{{ file_format }}</dd>{% endif %}
+     <dt>{% trans "Published" %}</dt><dd>{{ object.created_at|date:"j F Y" }}</dd>
+     <dt>{% trans "License" %}</dt><dd><a href="{{ object.get_license.url }}" rel="license" target="_blank">{{ object.get_license.name }}</a></dd>
+    </dl>
+   </details>
+  </aside>
+ </div>
+</div>
 {% endblock %}
 
-{% block content %}
-
-<div class="detail-audio">
-    <div class="top-date">{{ object.created_at|timesince }}</div>
-    <div class="top">
-        <div class="top-user user"><a href="{{ object.user.get_absolute_url }}">{{ object.user.userprofile.realname|default:object.user.username|capfirst }}</a></div>
-        <div class="inline-title"><h1 title="object.name|capfirst" >{{ object.name|capfirst|truncatechars:50 }}</h1>
-        {% if request.user == object.user %}<span class="edit"><a title="{% trans "Edit audio track" %}" href="{% url "audio-edit" object.slug %}">[{% trans "Edit" %}]</a> <a class="danger" title="{% trans "Delete audio track" %}" href="{% url "audio-delete" object.slug %}">[{% trans "Delete" %}]</a></span>{% endif %}
-        </div>
-        <div class="projects">
-            <ul>
-                {% for project in object.project_set.all %}
-                 <li><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-
-    <div class="wavesurfer-player-block">
-        <div id="waveform-container-{{ object.id }}" style="height: 150px; width: 100%;"></div>
-        <button id="play-pause-btn-{{ object.id }}" class="btn btn-primary">Reproducir</button>
-    </div>
-    
-    <div class="detail-block">
-      <h4>{% if object.use_type != "other" %}{{ object.get_use_type_display|capfirst }}{% else %}{% trans "File" %}{% endif %} {% trans "details" %}:</h4>
-      <div class="download"><a href="{{ object.audio.url }}"><i class="fa fa-download"></i> {% trans "Download" %}</a></div>
-      <p class="description">{{ object.description|capfirst }}</p>
-      <p class="tags">{% include 'core/hashtags_block.html' %}</p>
-      <p class="">{% trans "Channels" %}: <b>{{ object.channels }}</b> | {% trans "Samplerate" %}: <b>{{ object.samplerate }}</b> | {% trans "Genre" %}: <b>{{ object.get_genre_display|capfirst }}</b> | {% trans "Instrument" %}: <b>{{ object.get_instrument_display|capfirst }}</b></p>
-
-      <div class="license-block">
-           <img alt="Licencia Creative Commons" style="border-width:0" src="{{ object.get_license.icon }}" />
-           <p><i>"{{ object.name|capfirst }}"</i>
-           {% trans "by" %} <a href="{{ object.user.get_absolute_url }}">{{ object.user.userprofile.realname|default:object.user.username|capfirst }}</a>
-           {% blocktrans with license=object.get_license.name license_url=object.get_license.url %}is licensed under a <a rel="license" href="{{ license_url }}">{{ license }}</a>{% endblocktrans %}.
-           {% trans "Published" %}: {{ object.created_at }}
-           {% trans "by" %} {{ object.user.userprofile.realname|default:object.user.username|capfirst }}.
-           <a href="{% url 'audio-detail' object.slug %}" name="{{object.slug}}">{% trans "Permanent link" %}</a>.</p>
-      </div>
-    </div>
-
-</div>
-
-<h4 class="comments-title">{% blocktrans with obj_name=object.name|capfirst %}Comments for '{{ obj_name }}' track:{% endblocktrans %}</h4>
-<div class="action-stream-wrapper for-object">
-{% show_messages_for object %}
-</div>
-
-{% if request.user.is_authenticated %}
-    {% with initial_msg=" @"|add:object.user.username %}
-        {% message_form_for object %}
-    {% endwith %}
-{% endif %}
-
+{% block body_end_scripts %}
+<script>
+/* Dragging the download button onto a folder or a DAW drops the file (Chromium browsers). */
+document.querySelectorAll("[data-download-link]").forEach(function (link) {
+  link.addEventListener("dragstart", function (e) {
+    e.dataTransfer.setData("DownloadURL", "audio/*:" + link.dataset.filename + ":" + new URL(link.href, location.href).href);
+  });
+});
+</script>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% load i18n static social_tags activity_tags avatar_tags %}
+{% load i18n static social_tags activity_tags avatar_tags obra_tags %}
 {% if mode == "full" %}
 	<!-- user_teaser mode full -->
   <div class="d-flex align-items-center gap-2">
@@ -38,8 +38,8 @@
 {% endcomment %}
 
     <span class="stats w-100">
-      <span title="{% trans "Tracks" %}"><b>{{ user.audio_set.all|length }}</b> {% trans "Tracks" %}</span>
-      <span title="{% trans "Projects" %}"><b>{{ user.project_set.all|length }}</b> {% trans "Projects" %}</span>
+      <span title="{% trans "Tracks" %}"><b>{% visible_count user "audios" %}</b> {% trans "Tracks" %}</span>
+      <span title="{% trans "Projects" %}"><b>{% visible_count user "works" %}</b> {% trans "Projects" %}</span>
       <span title="{% trans "Followers" %}"><b>{{ user.followers|length }}</b> {% trans "Followers" %}</span>
     </span>
   </div>

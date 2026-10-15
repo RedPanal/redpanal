@@ -1,85 +1,54 @@
-{% load static avatar_tags i18n %}
+{% load static avatar_tags i18n obra_tags %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ LANGUAGE_CODE|default:'es' }}" data-palette="{{ palette }}"{% if palette_is_dark %} data-bs-theme="dark"{% endif %}>
 <head>
  <meta charset="UTF-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
  <title>RedPanal | {% block title %}{% endblock %}</title>
- {# bootstrap #}
  <link href="{% static 'css/bootstrap-5.3.min.css' %}" rel="stylesheet">
  <link href="{% static 'fontawesome/css/all.min.css' %}" rel="stylesheet">
  <link href="{% static 'css/redpanal.css' %}?{{ GIT_SHORT_VERSION }}" rel="stylesheet">
- {# /bootstrap #}
+ <link href="{% static 'css/rp-collab.css' %}?{{ GIT_SHORT_VERSION }}" rel="stylesheet">
+ <link href="{% static 'css/rp-palettes.css' %}?{{ GIT_SHORT_VERSION }}" rel="stylesheet">
 
- <link href="{% static 'mediaelements/mediaelementplayer.css' %}" rel="stylesheet">
- <link href="{% static 'mediaelements/mejs-skins.css' %}" rel="stylesheet">
+ <script>
+  /* Page scripts start with rpPage(fn): fn runs when the page is ready, also after moving to it
+     without reloading (rp-nav.js). It may return a function that undoes what it set up outside the page. */
+  window.rpPage = function (fn) {
+   function run() { var undo = fn(); if (typeof undo === "function") window.rpPage.undo.push(undo); }
+   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run); else run();
+  };
+  window.rpPage.undo = [];
+  window.rpPage.leave = function () { window.rpPage.undo.splice(0).forEach(function (f) { try { f(); } catch (e) {} }); };
+ </script>
  <script src="{% static 'js/jquery.min.js' %}"></script>
+ {# Older pages still call the MediaElement player, no longer loaded: their audios use our player. #}
+ <script>if (window.jQuery && !jQuery.fn.mediaelementplayer) jQuery.fn.mediaelementplayer = function () { return this; };</script>
  <script src="{% static 'js/bootstrap-5.3.bundle.min.js' %}"></script>
  <script src="{% static 'js/redpanal.js' %}"></script>
- <script src="{% static 'mediaelements/mediaelement-and-player.js' %}"></script>
- <script src="https://unpkg.com/wavesurfer.js@7"></script>
- <script>
- // Compact WaveSurfer players
- // Waveform visible on load (from pre-computed peaks), audio loads only on play click.
- const _rpPlayers = {};
-
- function initRpPlayers(scope) {
-     (scope || document).querySelectorAll('.rp-player:not([data-rp-init])').forEach(function(wrap) {
-         wrap.setAttribute('data-rp-init', '1');
-         const id = wrap.dataset.audioId;
-         const peaksUrl = wrap.dataset.peaksUrl;
-         const audioUrl = wrap.dataset.audioUrl;
-         const btn = wrap.querySelector('.rp-play-btn');
-
-         fetch(peaksUrl)
-             .then(r => r.json())
-             .then(data => {
-                 const peaks = data.peaks;
-                 const duration = data.duration;
-                 const maxPeak = Math.max(...peaks);
-                 const normalized = maxPeak > 1 ? peaks.map(p => p / maxPeak) : peaks;
-                 const ws = WaveSurfer.create({
-                     container: '#rp-waveform-' + id,
-                     waveColor: '#A8A8A8',
-                     progressColor: '#FF6600',
-                     cursorColor: '#545454',
-                     barWidth: 2,
-                     barGap: 1,
-                     barRadius: 2,
-                     height: 64,
-                     peaks: [normalized],
-                     duration: duration,
-                 });
-                 ws.on('play',   () => btn.innerHTML = '<i class="fa fa-pause"></i>');
-                 ws.on('pause',  () => btn.innerHTML = '<i class="fa fa-play"></i>');
-                 ws.on('finish', () => btn.innerHTML = '<i class="fa fa-play"></i>');
-                 _rpPlayers[id] = { ws, audioUrl, loaded: false };
-             })
-             .catch(() => {});
-     });
- }
-
- document.addEventListener('DOMContentLoaded', () => initRpPlayers());
-
- document.addEventListener('click', function(e) {
-     const btn = e.target.closest('.rp-play-btn');
-     if (!btn) return;
-     const id = btn.dataset.audioId;
-     const player = _rpPlayers[id];
-     if (!player) return;
-     if (!player.loaded) {
-         player.loaded = true;
-         player.ws.load(player.audioUrl).then(() => player.ws.play());
-     } else {
-         player.ws.playPause();
-     }
- });
- </script>
+ {# One player for everything: works (parts in sync) on the page, single files in the persistent player. #}
+ <script src="{% static 'js/obra-player.js' %}?{{ GIT_SHORT_VERSION }}"></script>
+ <script src="{% static 'js/rp-dock.js' %}?{{ GIT_SHORT_VERSION }}"></script>
+ <script src="{% static 'js/rp-nav.js' %}?{{ GIT_SHORT_VERSION }}"></script>
+<script src="{% static 'js/image-preview.js' %}"></script>
+ <script>window.initRpPlayers = function (scope) { window.rpInitPlayers(scope); };  // older pages call this after loading more items</script>
 
  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+ <link rel="manifest" href="{% static 'manifest.webmanifest' %}">
+ <link rel="apple-touch-icon" href="{% static 'img/icon-192.png' %}">
+ <meta name="theme-color" content="{{ palette_theme_color }}">
 
  {% block extra_head %}{% endblock %}
  <script>
+  // Every jQuery POST carries the CSRF token (the old follow buttons post with $.post).
+  if (window.jQuery) {
+   $.ajaxSetup({ beforeSend: function (xhr, settings) {
+    if (!/^(GET|HEAD|OPTIONS)$/i.test(settings.type) && !this.crossDomain) {
+     var m = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
+     if (m) xhr.setRequestHeader("X-CSRFToken", decodeURIComponent(m[1]));
+    }
+   }});
+  }
 
   function follow_unfollow_button(el){
     el.ffobject = {
@@ -121,8 +90,6 @@
         $(el).addClass("btn-info");
     }
     $(el).click(function(){el.ffobject.click()});
-
-    //$(el).hover(function(){$(el).html('<i>hover!</i>');});
     $(el).hover(function(){el.ffobject.hoverin()},function(){el.ffobject.hoverout()});
     el.ffobject.render();
   }
@@ -131,323 +98,124 @@
  });
  </script>
 </head>
-<body class="d-flex flex-column {% if request.user.is_authenticated %}logged-user{% endif %} {% block body_class %}{% endblock %}">
-<!-- user agent: {{ request.META.HTTP_USER_AGENT }} -->
-<div id="header" class="">
-	<div class="container-fluid bg-primary">
-{% comment %}
-   <!-- Logo RedPanal-->
-	{% if request.META.HTTP_USER_AGENT != "RedpanalWebappAndroid1.0" %}
-	<!-- {{ request.META.HTTP_USER_AGENT }} no es RedpanalWebappAndroid1.0 -->
-		<div class="col-12 bg-primary">
-  			<a class="brand" href="/">
-     			<img src="{% static 'img/redpanal-50.png' %}" alt="logo">
-     		</a>
-     	</div>
-	{% else %}
-	<!-- {{ request.META.HTTP_USER_AGENT }} es RedpanalWebappAndroid1.0 -->		
-	{% endif %}
-{% endcomment %}
-	{% block breadcrumb %}
-		
-   	<!-- request.path = {{ request.path }} -->
-  		<div class="container justify-content-between">
-		 <nav class="navbar navbar-expand navbar-dark bg-primary" id="actions-menu">
-		  <div class="container-fluid">
-		{% if request.META.HTTP_USER_AGENT != "RedpanalWebappAndroid1.0" %}
-			<a class="navbar-brand d-lg-none brand_small" href="#" data-bs-toggle="modal" data-bs-target="#MainMenu" title="RedPanal"></a>
-			<a class="navbar-brand d-none d-lg-block" href="/" title="RedPanal"></a>
-			<ul class="navbar-nav ms-auto justify-content-end">
-		{% else %}
-			<ul class="navbar-nav">
-				<li class="nav-item popup action d-lg-none" id="hamburger"
-					   ><a class="nav-link modal-main-menu" href="#" data-bs-toggle="modal" data-bs-target="#MainMenu"
-					         				title="{% trans "Main menu" %}"
-					   ><i class="fa fa-bars"></i></a></li>
-		{% endif %}
- 				<li class="nav-item form d-lg-block">
-		        	<form class="form-inline" type="get" action="{% url 'haystack_search' %}">
-		           	<div class="input-group">
-		              	<input type="text"
-                              class="form-control"
-                              placeholder="{% trans 'Search' %}"
-                              aria-label="{% trans 'Search' %}"
-                              name="q">
-		                 <div class="input-group-append">
-                           <button class="btn btn-secondary" type="submit">
-		                      <i class="fa fa-search"></i>
-		                    </button>
-		                 </div>
-		              </div>
-					</form>
-                </li>
- 	{% if request.user.is_authenticated %} {# and not "/accounts" in request.path #}
-         	<li class="nav-item action ms-3 d-show-430">
-					<div class="dropdown">
-	            	<button 	class="btn btn-outline-dark dropdown-toggle" 
-	            				type="button" id="actionsDropdown" 
-	            				data-bs-toggle="dropdown" 
-	            				aria-haspopup="true" aria-expanded="false"
-	            		>{% trans "Actions" %}</button
-	            	>
-	            	<div 	class="dropdown-menu dropdown-menu-end"
-	            			aria-labelledby="actionsDropdown">
-	           			<a class="dropdown-item" 
-	           				href="{% url 'project-create' %}">
-	               		<i class="fa fa-plus"></i> {% trans "New Project" %}
-	            		</a>
-	               	<a class="dropdown-item" 
-	               		href="{% url 'audio-create' %}">
-	                 		<i class="fas fa-upload"></i> {% trans "Upload Audio" %}
-	               	</a>
-	            	</div>
-	         	</div>
-				</li>
-				<li class="nav-item action ms-3 d-none-430"
-         		><a 	class="btn btn-outline-dark reduce-size-in-sm" 
-        					href="{% url 'project-create' %}"
-         				title="{% trans 'Create project' %}"
-         			><i class="fa fa-plus"
-         				></i> {% trans "New Project" %}</a></li>
-         	<li class="nav-item action ms-3 d-none-430"
-         		><a 	class="btn btn-outline-dark reduce-size-in-sm" 
-         				href="{% url 'audio-create' %}"
-         				title="{% trans 'Upload file' %}"
-         			><i class="fa fa-music"
-         				></i> {% trans "Upload Audio" %}</a></li>
-		{% else %}
-         	<li class="nav-item action ms-3">
-         		<a 	class="btn btn-outline-dark reduce-size-in-sm" 
-         				href="/accounts/signup/" 
-         				title="{% trans 'Create account' %}">
-         			<i class="fa fa-user-plus"></i
-         				> {% trans "Sign up" %}</a></li>
-         	<li class="nav-item action ms-3">
-         		<a 	class="btn btn-outline-dark reduce-size-in-sm" 
-         				href="{% url 'account_login' %}?next={{ request.path }}" 
-         									title="{% trans "Sign in" %}">
-         			<i class="fa fa-sign-in-alt"
-         				></i> {% trans "Sign in" %}</a></li>
-		{% endif %}
-       	</ul>
-        </div>
-		 </nav>
-		</div>
-	</div>
-	<!-- user menu -->
-	{% if request.user.is_authenticated %}
-	<div class="container-fluid bg-logged-menu">
-  		<div class="container justify-content-between">
-		 <nav class="navbar navbar-expand navbar-light bg-logged-menu" id="discover-menu">
-		  <div class="container-fluid">
-      	<ul class="navbar-nav w-100">
-         {% comment %}
-         	<li class="nav-item discover"><a class="nav-link" href="{{ request.user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "My Account" %}</a></li>
-         	<li class="nav-item discover"><a class="nav-link" href="/"><i class="fa fa-music"></i> {% trans "My Community" %}</a></li>
-         {% endcomment %}
-         	<li class="nav-item discover mr-2"
-         		><a class="nav-link {% if request.path == '/' %}active{% endif %}" 
-         			 href="/" title="{% trans 'What is my gang doing?' %}"
-         			><i class="fa fa-home"></i> <span class="d-none d-sm-inline">{% trans "Home" %}</span></a></li>
-         	{% url 'user-interactions' request.user as my_interactions_url %}<!-- {{ request.path }} -  {{ my_interactions_url }}  -->
-         	<li class="nav-item discover"
-         		><a class="nav-link {% if request.path == my_interactions_url %}active{% endif %}" 
-         		    href="{{ my_interactions_url }}" title="{% trans 'Buzzing around' %}"
-         			><i class="fa fa-bell"></i> <span class="d-none d-sm-inline">{% trans "My Activations" %}</span></a></li>{# bullhorn #}
-         	<!-- 
-         	<li class="nav-item discover mr-2"
-         		><a class="nav-link {% if request.path == '/live/' %}active{% endif %}" 
-         			 href="/live/" title="{% trans 'RedPanal Party' %}"
-         			><i class="fa fa-globe"></i> <span class="d-none d-sm-inline">{% trans "RedPanal" %}</span></a></li>
-				-->
-         	<!-- drop "down" item -->
-         	<li class="nav-item ms-auto dropdown d-none d-sm-none d-md-block">
-         		<button class="btn btn-outline-secondary dropdown-toggle" 
-         				  type="button" 
-         				  id="userDropdown" 
-         				  data-bs-toggle="dropdown">
-         			<span   class="border rounded overflow-hidden d-inline-block" 
-           					  style="height: 27px; vertical-align: inherit;"
-        					>{% avatar user 25 %}</span
-           			><span  class="ms-1" {# d-none d-sm-inline #}
-           					  style="line-height: 27px;
-           							text-transform: capitalize;
-           							/*transform: translateY(2px);*/"
-     					>{# trans "Profile" #}{{ request.user }}</span>               	
-         		</button>
-        			<ul class="dropdown-menu"  aria-labelledby="userDropdown">
-        			   <li><a class="dropdown-item" href="{{ request.user.get_absolute_url }}">
-               		<i class="fas fa-user"></i> {% trans "My profile" %}
-            		</a></li>
-           			<li><a class="dropdown-item" href="{% url 'user-profile' %}">
-               		<i class="fas fa-pencil-alt"></i> {% trans "Edit account" %}
-            		</a></li>
-               	<li><a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
-                 		<i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
-               	</a></li>
-        			</ul>
-         	</li>
-         	<!-- drop "up" item -->
-         	<li class="nav-item ms-auto dropup d-sm-block d-md-none">
-         		<button class="btn btn-outline-secondary dropdown-toggle" 
-         				  type="button" 
-         				  id="userDropdown" 
-         				  data-bs-toggle="dropdown">
-         			<span   class="border rounded overflow-hidden d-inline-block" 
-           					  style="height: 27px; vertical-align: inherit;"
-        					>{% avatar user 25 %}</span
-           			><span  class="ms-1" {# d-none d-sm-inline #}
-           					  style="line-height: 27px;
-           							text-transform: capitalize;
-           							/*transform: translateY(2px);*/"
-     					>{# trans "Profile" #}{{ request.user }}</span>               	
-         		</button>
-        			<ul class="dropdown-menu dropdown-menu-end"  aria-labelledby="userDropdown">
-        			   <li><a class="dropdown-item" href="{{ request.user.get_absolute_url }}">
-               		<i class="fas fa-user"></i> {% trans "My profile" %}
-            		</a></li>
-           			<li><a class="dropdown-item" href="{% url 'user-profile' %}">
-               		<i class="fas fa-pencil-alt"></i> {% trans "Edit account" %}
-            		</a></li>
-               	<li><a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
-                 		<i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
-               	</a></li>
-        			</ul>
-         	</li>			
-
-			</ul>
-		  </div>
-		 </nav>
-		</div>
-	</div>
-	{% endif %}
-  	<!-- Full screen modal -->
-  	<!-- button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#MainMenu">test</button> -->
-	<div class="modal fade p-0" id="MainMenu" tabindex="-1" aria-labelledby="mainMenulabel" style="display: none;" aria-hidden="true">
-	  <div class="modal-dialog modal-fullscreen">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h1 class="modal-title fs-4" id="mainMenulabel">RedPanal</h1>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <div class="modal-body">
-	        ...
-	      </div>
-	      <!-- <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	      </div> -->
-	    </div>
-	  </div>
-	</div>
-	{% endblock %}
-			
-	{% block background %}
-	{% endblock %}
-
-
-	{% comment %}
-			<!-- hamburger menu - por ahora no tenemos nada que poner! -->
-			<!-- <nav class="navbar navbar-expand-lg navbar-light hamburger-menu">
-       		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    				<span class="navbar-toggler-icon"></span>
-  				</button>
-				<div class="collapse navbar-collapse" id="navbarNav">
-				</div>
-			</nav> -->
-	{% endcomment %}
-      <!-- Login and user actions redpanal/templates/base.html -->
-{% block top_user_menu %}
-{% comment %}
-		{% if request.user.is_authenticated %}
-         	<!-- <div class="dropdown top-user-menu">
-            	<button class="btn btn-primary dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-               	<i class="icon-user icon-white pr-2"></i> <span class="btn-text">{{ request.user }}</span>
-            	</button>
-            	<div class="dropdown-menu"  aria-labelledby="userDropdown">
-           			<a class="dropdown-item" href="{% url 'user-profile' %}">
-               		<i class="fas fa-pencil-alt"></i> {% trans "Edit profile" %}
-            		</a>
-               	<a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
-                 		<i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
-               	</a>
-            	</div>
-         	</div> -->
-      {% else %}
-				<!-- <div class="top-user-menu">
-            	<a class="btn btn-primary" 
-               	href="{% url "account_login" %}?next={{ request.path }}">
-               	<i class="fas fa-user pr-2"></i> <span class="btn-text">{% trans "Log in" %}</span>
-            	</a>
-				</div> -->
-      {% endif %}
-{% endcomment %}
-
-
-{% comment %}
-{# conflicto en merge, analizar si algo de este html es necesario sino borrarlo #}
-           <li class="popup action"><a href="#" class="modal-create-message" title="{% trans "Post message in your timeline" %}"><i class="fa fa-edit"></i></a></li>
-           <li class="action"><a href="{% url "project-create" %}" title="{% trans "Create project" %}"><i class="fa fa-folder-open"></i> {% trans "Create Project" %}</a></li>
-           <li class="action"><a href="{% url "audio-create" %}" title="{% trans "Upload files" %}"><i class="fa fa-upload"></i> {% trans "Upload audio" %}</a></li>
-       </ul>
-       </div>
-   </div>
+<body class="d-flex flex-column has-tabbar{% if request.user.is_authenticated %} logged-user{% endif %} {% block body_class %}{% endblock %}">
+<a class="visually-hidden-focusable rp-skip" href="#main">{% trans "Skip to content" %}</a>
+{% url 'index' as home_url %}{% url 'explore' as explore_url %}{% url 'my-stuff' as mine_url %}{% url 'create' as create_url %}
+<div id="header">
+{% block breadcrumb %}
+ <header class="rp-top">
+  <div class="container rp-top-inner">
+   {% include "_logo.html" %}
+   <nav class="rp-nav rp-mainnav d-none d-md-flex" aria-label="{% trans 'Main' %}">{% include "_nav.html" %}</nav>
+   <form class="rp-search d-none d-lg-flex" role="search" method="get" action="{{ explore_url }}">
+    <label class="visually-hidden" for="rp-q">{% trans "Search" %}</label>
+    <input id="rp-q" type="search" class="form-control" placeholder="{% trans 'Search works, sounds or people' %}" name="q">
+   </form>
+   <div class="rp-top-actions">
+   {% if request.user.is_authenticated %}
+    <a class="rp-more-btn rp-bell{% if unread_notifications %} has-unread{% endif %}" href="{% url 'notifications' %}"
+       aria-label="{% if unread_notifications %}{% blocktrans count n=unread_notifications %}{{ n }} new notification{% plural %}{{ n }} new notifications{% endblocktrans %}{% else %}{% trans 'Notifications' %}{% endif %}">
+     <i class="fa fa-bell" aria-hidden="true"></i>{% if unread_notifications %}<span class="rp-bell-count" aria-hidden="true">{{ unread_notifications|stringformat:"d" }}</span>{% endif %}</a>
+    {# Secondary options: the same menu, in the same corner, on desktop and phones. #}
+    <div class="dropdown">
+     <button class="rp-more-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{% trans 'More options' %}"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
+     <ul class="dropdown-menu dropdown-menu-end">
+      <li><span class="dropdown-item-text small text-secondary">@{{ request.user }}</span></li>
+      <li><a class="dropdown-item" href="{% url 'user-profile' %}"><i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i> {% trans "Edit profile" %}</a></li>
+      {% if request.user|is_moderator %}<li><a class="dropdown-item" href="{% url 'moderation-panel' %}"><i class="fas fa-shield-alt fa-fw" aria-hidden="true"></i> {% trans "Moderation" %}</a></li>{% endif %}
+      <li><hr class="dropdown-divider"></li>
+      <li><form method="post" action="{% url 'account_logout' %}">{% csrf_token %}<input type="hidden" name="next" value="/">
+       <button class="dropdown-item" type="submit"><i class="fas fa-sign-out-alt fa-fw" aria-hidden="true"></i> {% trans "Log out" %}</button></form></li>
+     </ul>
+    </div>
+   {% else %}
+    <a class="btn rp-btn-primary btn-sm" href="{% url 'account_signup' %}">{% trans "Sign up" %}</a>
    {% endif %}
-{% endcomment %}
-
-
+   </div>
+  </div>
+ </header>
 {% endblock %}
-
+{% block background %}{% endblock %}
+{% block top_user_menu %}{% endblock %}
 </div><!-- /header -->
 
-<div class="{% block main_container_classes %}container mt-4{% endblock %}">
+<div id="rp-toasts-slot">{% if messages %}
+{# Floating over the page, not pushing it down. They go away by themselves; errors stay until closed. #}
+<div class="rp-toasts" aria-live="polite">
+ {% for message in messages %}
+  <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %} alert-dismissible fade show"
+       {% if message.tags == 'error' %}role="alert"{% else %}role="status" data-transient{% endif %}>
+   {{ message }}
+   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{% trans 'Close' %}"></button>
+  </div>
+ {% endfor %}
+</div>
+<script>
+ setTimeout(function () {
+  document.querySelectorAll(".rp-toasts [data-transient]").forEach(function (el) {
+   el.classList.remove("show");
+   setTimeout(function () { el.remove(); }, 300);
+  });
+ }, 4000);
+</script>
+{% endif %}</div>
+
+<main id="main" class="{% block main_container_classes %}container mt-4{% endblock %}">
     {% block content %}
     {% endblock %}
-</div>
+</main>
 
 {% block pre_footer %}{% endblock %}
 
-<div id="footer" class="{% block footer_classes %}bg-dark mt-auto px-3{% endblock %}">
-	<div class="container py-3">
-      {% block footer %}
-		<div class="row" >
-			<div class="col-md-6 ">
-				<p class="text-light small text-center pt-2">
-				{% blocktrans %}
-				This is Free Software licensed under <a href="http://www.gnu.org/licenses/agpl.txt" >AGPL</a>.<br class="d-lg-none"> 
-				<!-- Get <a href="https://github.com/RedPanal/redpanal">the code!</a>.<br> -->
-				Current version is <a href="https://github.com/RedPanal/redpanal/commit/{{ GIT_SHORT_VERSION }}">{{ GIT_SHORT_VERSION }}</a>.<br class="d-lg-none">
-				{% endblocktrans %}
-				{% trans 'Hosted by: <a href="http://www.codigosur.org">Código Sur</a>' %}
-				</p>
-			</div>
-			<div class="col-md-4 mb-3">
-				<div class="nav justify-content-center small a-custom-primary">
-					<span class="nav-item">
-						<a class="nav-link px-2" href="http://blog.redpanal.org/" title="{% trans 'The Official RedPanal Blog!' %}">{% trans "Blog" %}</a>
-					</span>
-					<span class="nav-item">
-						<a class="nav-link px-2" href="http://twitter.com/redpanal" ><i class="fab fa-twitter-square pe-1"></i><span class="hide-text">Twitter</span></a>
-					</span>
-					<span class="nav-item">
-						<a class="nav-link px-2" href="https://www.facebook.com/pages/RedPanal/10150092707335128?fref=ts"><i class="fab fa-facebook-square pe-1"></i><span class="hide-text">Facebook</span></a>
-					</span>
-					<span class="nav-item">
-						<a class="nav-link px-2" href="https://github.com/RedPanal/redpanal" title="Get the code!" ><i class="fab fa-github-square pe-1"></i><span class="hide-text">Github</span></a>
-					</span>
-				</div>
-			</div>
-			<div class="col-md-2">
-				<div id="logo_mecenazgo" class="mx-auto"></div>
-			</div>
-		</div>
-   	{% endblock %}
-	</div>
-</div>
+<footer id="footer" class="{% block footer_classes %}rp-footer mt-auto{% endblock %}">
+ <div class="container rp-footer-inner">
+  {% block footer %}
+  <p class="mb-0">{% blocktrans %}Free Software under <a href="http://www.gnu.org/licenses/agpl.txt">AGPL</a>{% endblocktrans %}{% if GIT_SHORT_VERSION %} · <a href="https://github.com/RedPanal/redpanal/commit/{{ GIT_SHORT_VERSION }}">{{ GIT_SHORT_VERSION }}</a>{% endif %} · {% trans 'Hosted by <a href="http://www.codigosur.org">Código Sur</a>' %}</p>
+  <nav class="rp-footer-links" aria-label="{% trans 'RedPanal elsewhere' %}">
+   <a href="http://blog.redpanal.org/">{% trans "Blog" %}</a>
+   <a href="https://github.com/RedPanal/redpanal"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a>
+   <a href="http://twitter.com/redpanal" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+   <a href="https://www.facebook.com/pages/RedPanal/10150092707335128" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+  </nav>
+  {% endblock %}
+  {# The footer isn't swapped when moving softly: "next" is read when choosing. #}
+  {% get_current_language as current_language %}{% get_available_languages as site_languages %}
+  <form method="post" action="{% url 'set-language' %}" class="rp-lang" data-full-load>{% csrf_token %}
+   <input type="hidden" name="next" value="{{ request.get_full_path }}">
+   <i class="fa fa-globe" aria-hidden="true"></i>
+   <label class="visually-hidden" for="rp-lang">{% trans "Language" %}</label>
+   <select id="rp-lang" name="language" onchange="this.form.next.value = location.pathname + location.search; this.form.submit()">
+    {% for code, name in site_languages %}{% get_language_info for code as info %}<option value="{{ code }}" lang="{{ code }}" {% if code == current_language %}selected{% endif %}>{{ info.name_local|capfirst }}</option>{% endfor %}
+   </select>
+   <noscript><button class="btn btn-sm btn-link">OK</button></noscript>
+  </form>
+ </div>
+</footer>
+
+<nav class="rp-nav rp-tabbar d-md-none" id="rp-tabbar" aria-label="{% trans 'Main' %}">{% include "_nav.html" %}</nav>
+
+{% include "_dock.html" %}
 
 {% block modal_popup %}
    {% if request.user.is_authenticated and not "/accounts" in request.path %}
-      {% include "social/message_form_popup.html" %}
+      {% include "_post_fab.html" %}
    {% endif %}
 {% endblock %}
-{% block body_end_scripts %}{% endblock %}
+{% if request.user.is_authenticated %}
+<script>
+ window.RP_QUEUE_TEXT = {
+  queued: "{% trans 'No connection: it will upload by itself when the signal comes back.' %}",
+  progress: "{% trans 'Uploading… %s' %}",
+  sent: "{% trans 'Uploaded «%s».' %}",
+  failed: "{% trans 'Could not upload «%s».' %}",
+  see: "{% trans 'See' %}"
+ };
+</script>
+<script src="{% static 'js/upload-queue.js' %}"></script>
+{% endif %}
+<script>
+ if ("serviceWorker" in navigator) { window.addEventListener("load", function () { navigator.serviceWorker.register("/sw.js").catch(function () {}); }); }
+</script>
+<div id="rp-page-scripts">{% block body_end_scripts %}{% endblock %}</div>
 </body>
+</html>

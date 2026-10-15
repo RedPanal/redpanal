@@ -1,0 +1,9 @@
+{% extends "social/action_teaser.html" %}
+{% load i18n obra_tags %}
+
+{% block action_text %}{% trans "contributed to" %}{% endblock action_text %}
+
+{% block action_body %}
+  {% if action.target %}<a href="{{ action.target.get_absolute_url }}">«{{ action.target.name }}»</a>{% endif %}
+  {% if action.action_object %}<span class="rp-muted small">· {{ action.action_object.audio|part_role }}</span>{% endif %}
+{% endblock action_body %}

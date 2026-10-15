@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load i18n obra_tags %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block content %}
+<div class="rp-narrow">
+ <header class="mb-3">
+  <div class="d-flex align-items-center flex-wrap gap-2">
+   <h1 class="rp-h1 mb-0">{{ object.name }}</h1>
+   <span class="rp-tag rp-tag-quiet"><i class="fa fa-bullhorn" aria-hidden="true"></i> {% trans "open call" %}</span>
+  </div>
+  <p class="rp-muted mb-0">{{ object.user|display_name }}{% if object.tempo %} · {{ object.tempo }} BPM{% endif %}{% if object.musical_key %} · {{ object.musical_key }}{% endif %}</p>
+ </header>
+
+ <section class="rp-card" aria-labelledby="preview-title">
+  <h2 class="rp-sec" id="preview-title">{% trans "Preview" %}</h2>
+  {% if object.preview %}
+   {% preview_player object "large" %}
+   <p class="rp-muted small mb-0">{% blocktrans %}A short excerpt in low quality. The author shares the whole work with the people who join.{% endblocktrans %}</p>
+  {% else %}
+   <p class="rp-muted small mb-0">{% trans "There is no preview yet." %}</p>
+  {% endif %}
+ </section>
+
+ {% if open_requests %}<section class="rp-card" aria-labelledby="needs-title">
+  <h2 class="rp-sec" id="needs-title">{% trans "What it needs" %}</h2>
+  {% for r in open_requests %}
+   <div><b>{{ r.get_instrument_display|capfirst }}</b>{% if r.description %} <span class="rp-muted">· «{{ r.description }}»</span>{% endif %}</div>
+  {% endfor %}
+ </section>{% endif %}
+
+ <section class="rp-card rp-card-strong" aria-labelledby="join-title">
+  <h2 class="rp-h2" id="join-title">{% trans "Do you want to take part?" %}</h2>
+  {% if not request.user.is_authenticated %}
+   <p class="mb-2">{% trans "Sign in to ask to join. If they accept you, you'll hear the whole work and can contribute." %}</p>
+   <a class="btn rp-btn-primary align-self-start" href="{% url 'account_login' %}?next={{ object.get_absolute_url }}">{% trans "Sign in" %}</a>
+  {% elif membership and membership.status == "requested" %}
+   <p class="mb-0" role="status">{% blocktrans with who=object.user|display_name %}You asked to join. {{ who }} will decide.{% endblocktrans %}</p>
+  {% else %}
+   <form method="post" action="{% url 'project-access-request' object.slug %}" class="d-grid gap-2">{% csrf_token %}
+    <label class="form-label" for="id_message">{{ form.message.label }}</label>
+    <textarea class="form-control" name="message" id="id_message" rows="2" maxlength="300"></textarea>
+    <button class="btn rp-btn-primary">{% trans "Ask to join" %}</button>
+   </form>
+  {% endif %}
+ </section>
+</div>
+{% endblock %}

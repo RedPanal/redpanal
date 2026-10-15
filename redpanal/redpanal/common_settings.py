@@ -44,6 +44,7 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'users.middleware.PersonLanguageMiddleware',
     'allauth.account.middleware.AccountMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -64,7 +65,9 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
-                "redpanal.utils.context_processors.git_hash"
+                "redpanal.utils.context_processors.git_hash",
+                "social.context_processors.notifications",
+                "users.context_processors.palette",
             ],
         },
     },
@@ -78,6 +81,9 @@ AUTHENTICATION_BACKENDS = (
 )
 
 ACCOUNT_SIGNUP_FORM_CLASS = 'redpanal.forms.CustomSignupForm'
+# After signing in, Home: what happened in your works. After signing up, the profile: say what you play.
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_SIGNUP_REDIRECT_URL = '/ajustes/'
 
 ROOT_URLCONF = 'redpanal.urls'
 
@@ -98,6 +104,7 @@ INSTALLED_APPS = (
     'project.apps.ProjectConfig',
     'social.apps.SocialConfig',
     'users.apps.UsersConfig',
+    'moderation.apps.ModerationConfig',
     'redpanal.utils',
     'taggit',
     'crispy_forms',
@@ -120,7 +127,8 @@ INSTALLED_APPS = (
 
 
 ABSOLUTE_URL_OVERRIDES = {
-    'auth.user': lambda o: "/u/%s/" % o.username,
+    # People live at the root: redpanal.org/<username>/
+    'auth.user': lambda o: __import__("django.urls", fromlist=["reverse"]).reverse("user-tracks", args=[o.username]),
 }
 
 ACTSTREAM_SETTINGS = {
@@ -165,6 +173,11 @@ THUMBNAIL_ALIASES = {
         'medium': {'size': (300, 300), 'crop': True},
     },
 }
+
+# Storage each person can use for audio and session files (MB). Identical files count once.
+RP_USER_QUOTA_MB = 2000
+# Largest single session/attachment file (MB).
+RP_ATTACHMENT_MAX_MB = 500
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

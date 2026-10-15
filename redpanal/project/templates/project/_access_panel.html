@@ -1,0 +1,72 @@
+{% load i18n obra_tags %}{# Who can listen, download and join. Lives in the work's settings. #}
+<section class="rp-card rp-access" id="acceso" aria-labelledby="acceso-title">
+ <h2 class="rp-sec" id="acceso-title">{% trans "Access" %}</h2>
+
+ <form method="post" action="{% url 'project-visibility' object.slug %}" class="d-grid gap-2" data-visibility-form>{% csrf_token %}
+  {% include "project/_visibility_choices.html" with field=visibility_form.visibility %}
+  <div data-show-for="open_call">
+   <label class="form-label small" for="id_preview_start_s">{{ visibility_form.preview_start_s.label }}</label>
+   <input class="form-control form-control-sm" type="number" min="0" name="preview_start_s" id="id_preview_start_s" value="{{ visibility_form.preview_start_s.value|default:0 }}">
+   <label class="small d-block mt-1"><input type="checkbox" name="preview_watermark" value="1" {% if object.preview_watermark %}checked{% endif %}> {{ visibility_form.preview_watermark.label }}</label>
+   {% if object.preview %}<p class="small mb-0 mt-2">{% trans "This is what people outside the work hear:" %}</p>{% preview_player object %}{% endif %}
+  </div>
+  {% if object.visibility != "public" %}
+  <div class="rp-publish-warning" data-show-for="public">
+   <p class="small mb-1">{% blocktrans %}When you publish, anyone can listen, download and create new works based on it, under the free license. That can't be undone for the copies people already have.{% endblocktrans %}</p>
+   {% if without_consent %}<p class="small mb-1"><b>{% trans "Ask first." %}</b> {% trans "These people contributed before the license agreement existed and haven't accepted that their parts become public:" %} {% for u in without_consent %}{{ u|display_name }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+   {% elif credits|length > 1 %}<p class="small mb-1">{% trans "Everyone who contributed accepted the license when they sent their parts." %}</p>{% endif %}
+   <label class="small"><input type="checkbox" name="confirm_public" value="1"> {% trans "I understand and want to publish it" %}</label>
+  </div>
+  {% endif %}
+  <label class="small"><input type="checkbox" name="allow_downloads" value="1" {% if object.allow_downloads %}checked{% endif %}> {{ visibility_form.allow_downloads.label }}</label>
+  <p class="rp-muted small mb-0">{% trans "Turning downloads off removes the buttons; whoever can listen can still record what plays." %}</p>
+  <button class="btn btn-outline-dark btn-sm">{% trans "Save" %}</button>
+ </form>
+
+ {% if object.visibility != "public" %}
+ <div class="mt-3">
+  <label class="form-label small fw-bold" for="share-url">{% trans "Secret link" %}</label>
+  <div class="d-flex gap-1">
+   <input class="form-control form-control-sm" id="share-url" value="{{ share_url }}" readonly>
+   <button type="button" class="btn btn-outline-dark btn-sm" data-copy="#share-url" data-copied="{% trans 'Copied' %}">{% trans "Copy" %}</button>
+  </div>
+  <p class="rp-muted small mb-0 mt-1">{% if object.visibility == "link" %}{% trans "Whoever opens it can listen and join." %}{% else %}{% trans "It only works while the work is set to «Whoever has the link»." %}{% endif %}</p>
+ </div>
+
+ <div class="mt-3">
+  <b class="small">{% trans "People with access" %}</b>
+  {% for m in members %}
+  <div class="rp-row">
+   <a href="{{ m.user.get_absolute_url }}">{{ m.user|display_name }}</a>
+   <form method="post" action="{% url 'project-member-decide' object.slug m.pk %}">{% csrf_token %}
+    <input type="hidden" name="decision" value="remove"><button class="btn btn-link btn-sm p-0">{% trans "Remove" %}</button></form>
+  </div>
+  {% endfor %}
+  {% if shared_groups or my_groups %}
+  <div class="mt-2">
+   <b class="small">{% trans "Groups" %}</b>
+   {% for g in shared_groups %}
+   <div class="rp-row">
+    <a href="{{ g.get_absolute_url }}">{{ g.name }}</a>
+    <form method="post" action="{% url 'project-share-group' object.slug %}">{% csrf_token %}
+     <input type="hidden" name="group" value="{{ g.pk }}"><input type="hidden" name="remove" value="1">
+     <button class="btn btn-link btn-sm p-0">{% trans "Stop sharing" %}</button></form>
+   </div>
+   {% endfor %}
+   {% if my_groups %}
+   <form method="post" action="{% url 'project-share-group' object.slug %}" class="d-flex gap-1 mt-1">{% csrf_token %}
+    <label class="visually-hidden" for="id_group">{% trans "Group" %}</label>
+    <select class="form-select form-select-sm" name="group" id="id_group">{% for g in my_groups %}<option value="{{ g.pk }}">{{ g.name }}</option>{% endfor %}</select>
+    <button class="btn btn-outline-dark btn-sm text-nowrap">{% trans "Share with group" %}</button>
+   </form>
+   {% endif %}
+  </div>
+  {% endif %}
+  <form method="post" action="{% url 'project-invite' object.slug %}" class="d-flex gap-1 mt-2">{% csrf_token %}
+   <label class="visually-hidden" for="id_username">{% trans "Username" %}</label>
+   <input class="form-control form-control-sm" name="username" id="id_username" placeholder="{% trans '@username' %}" required>
+   <button class="btn btn-outline-dark btn-sm">{% trans "Invite" %}</button>
+  </form>
+ </div>
+ {% endif %}
+</section>

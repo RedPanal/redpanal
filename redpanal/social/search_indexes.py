@@ -1,9 +1,10 @@
 import datetime
 from haystack import indexes
-from .models import Message
+from redpanal.utils.search import PublicOnlyIndexMixin
+from .models import Message, visible_messages
 
 
-class MessageIndex(indexes.SearchIndex, indexes.Indexable):
+class MessageIndex(PublicOnlyIndexMixin, indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     author = indexes.CharField(model_attr='user')
     created_at = indexes.DateTimeField(model_attr='created_at')
@@ -15,6 +16,9 @@ class MessageIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Message
 
+    def is_public(self, obj):
+        return visible_messages(Message.objects.filter(pk=obj.pk), None).exists()
+
     def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
-        return self.get_model().objects.all()
+        return visible_messages(self.get_model().objects.all(), None)

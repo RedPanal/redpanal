@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load i18n static obra_tags %}
+
+{% block title %}{% trans "Add a layer" %} · {{ object.name }}{% endblock %}
+
+{% block content %}
+{# Two ways: record while listening to the work, or choose a file. Everything else is guessed. #}
+<div class="rp-narrow">
+ <p class="rp-muted small mb-1"><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></p>
+ <h1 class="rp-h1">{% if initial_request %}{% blocktrans with r=initial_request.get_instrument_display|capfirst %}Contribute: {{ r }}{% endblocktrans %}{% else %}{% trans "Add a layer" %}{% endif %}</h1>
+ {% if initial_request.description %}<p class="rp-muted">«{{ initial_request.description }}» — {{ object.user|display_name }}</p>{% endif %}
+
+ <form method="post" enctype="multipart/form-data" id="contribute-form" class="d-grid gap-3" data-mixer>
+  {% csrf_token %}
+  {% if parent %}<input type="hidden" name="version" value="{{ parent.number }}">{% endif %}
+  {% if initial_request %}<input type="hidden" name="request" value="{{ initial_request.pk }}">{% endif %}
+  <input type="hidden" name="instrument" value="{{ form.instrument.value|default:'' }}">
+  <input type="hidden" name="offset_ms" value="0" data-offset>
+  <input type="hidden" name="aligned_by_ear" value="" data-aligned-by-ear>
+  {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+
+  <div data-recorder data-target-input="id_audio" data-countdown="3"
+       data-error-text="{% trans 'The microphone could not be used. Check the browser permissions or upload a file.' %}">
+   <button type="button" class="rp-bigoption" data-rec-start>
+    <span class="rp-bigoption-icon"><i class="fa fa-microphone" aria-hidden="true"></i></span>
+    <span><b>{% trans "Record while listening" %}</b><span class="rp-muted d-block">{% trans "The work plays while you record: use headphones." %}</span></span>
+   </button>
+   <div class="rp-recording" aria-live="polite">
+    <div class="rp-countdown" data-rec-countdown></div>
+    <div class="rp-rec-now"><span class="rp-rec-dot" aria-hidden="true"></span> <b>{% trans "Recording" %}</b></div>
+    <div class="rp-rec-time" data-rec-time>0:00</div>
+    <div class="rp-level" data-rec-level aria-hidden="true"><span></span></div>
+    <div class="d-flex justify-content-center gap-4 align-items-center">
+     <button type="button" class="rp-round rp-round-lg" data-rec-stop><i class="fa fa-stop" aria-hidden="true"></i><span>{% trans "Done" %}</span></button>
+    </div>
+   </div>
+   <p class="text-danger small" data-rec-error role="alert"></p>
+  </div>
+
+  <label class="rp-bigoption" for="id_audio">
+   <span class="rp-bigoption-icon"><i class="fa fa-upload" aria-hidden="true"></i></span>
+   <span><b>{% trans "Choose a file" %}</b><span class="rp-muted d-block">{% trans "Voice notes, MP3, WAV, OGG, FLAC, M4A" %}</span></span>
+  </label>
+  <input type="file" name="audio" id="id_audio" class="visually-hidden" accept="audio/*,.m4a,.opus,.webm" required>
+  {% for error in form.audio.errors %}<p class="text-danger small">{{ error }}</p>{% endfor %}
+
+  {# Once there is a file: what it is, an optional note, and done. #}
+  <div data-ready hidden><div class="d-grid gap-3">
+   <p class="mb-0"><i class="fa fa-check" aria-hidden="true"></i> <b data-file-name></b></p>
+   {% if not is_owner %}
+   <div>
+    <label class="form-label small" for="id_note">{% blocktrans with who=object.user|display_name %}Note for {{ who }} (optional){% endblocktrans %}</label>
+    <textarea class="form-control" name="note" id="id_note" rows="2" maxlength="500">{{ form.note.value|default:'' }}</textarea>
+   </div>
+   {% endif %}
+   <button type="submit" class="btn rp-btn-primary" data-submit>{% trans "Add" %}</button>
+  </div></div>
+
+  {# The work, heard while recording; out of sight. #}
+  <div class="d-none" data-tracks>{% for c in parts %}{% if c.alignment == "aligned" %}{% include "project/_track.html" with c=c candidate=False %}{% endif %}{% endfor %}</div>
+ </form>
+</div>
+{% endblock %}
+
+{% block body_end_scripts %}
+<script src="{% static 'js/obra-player.js' %}"></script>
+<script src="{% static 'js/recorder.js' %}"></script>
+<script src="{% static 'js/contribute.js' %}?{{ GIT_SHORT_VERSION }}"></script>
+{% endblock %}

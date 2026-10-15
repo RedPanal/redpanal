@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Report" %}{% endblock %}
+
+{% block content %}
+<div class="rp-narrow">
+ <h1 class="rp-h1">{% trans "Report" %}</h1>
+ <p class="rp-muted">{% blocktrans %}The volunteers who moderate RedPanal will review it. Reports are private: the author doesn't see who sent them.{% endblocktrans %}</p>
+ <p><b>{% if kind == "comentario" %}{% trans "Comment" %}: «{{ object.msg|truncatechars:120 }}»{% else %}{{ object.name }}{% endif %}</b></p>
+ <form method="post" class="d-grid gap-3">{% csrf_token %}
+  <fieldset>
+   <legend class="form-label fw-bold fs-6">{% trans "What is wrong?" %}</legend>
+   {% for value, label in reasons %}<label class="d-block"><input type="radio" name="reason" value="{{ value }}" required> {{ label }}</label>{% endfor %}
+  </fieldset>
+  <div>
+   <label class="form-label fw-bold" for="id_detail">{% trans "Details (optional)" %}</label>
+   <textarea class="form-control" name="detail" id="id_detail" rows="3" maxlength="2000"
+             placeholder="{% trans 'For example: where the original material is, or who should be credited.' %}"></textarea>
+  </div>
+  <div class="d-flex gap-2"><button class="btn rp-btn-primary">{% trans "Send report" %}</button><a class="btn btn-link" href="{{ back }}">{% trans "Cancel" %}</a></div>
+ </form>
+</div>
+{% endblock %}

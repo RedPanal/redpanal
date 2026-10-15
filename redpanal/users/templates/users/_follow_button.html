@@ -1,0 +1,10 @@
+{% load i18n %}{% if request.user.is_authenticated and person != request.user %}
+<form method="post" action="{% url 'person-follow' person.username %}" class="rp-follow">{% csrf_token %}
+ <input type="hidden" name="next" value="{{ request.get_full_path }}">
+ {% if person.pk in following_ids %}
+ <button class="btn btn-outline-dark btn-sm" aria-pressed="true"><i class="fa fa-check" aria-hidden="true"></i> {% trans "Following" %}</button>
+ {% else %}
+ <button class="btn rp-btn-primary btn-sm" aria-pressed="false"><i class="fa fa-plus" aria-hidden="true"></i> {% trans "Follow" %}</button>
+ {% endif %}
+</form>
+{% endif %}

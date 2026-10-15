@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% load i18n static obra_tags avatar_tags %}
+
+{% block title %}{% trans "Explore" %}{% endblock %}
+
+{% block content %}
+<h1 class="rp-h1">{% trans "Explore" %}</h1>
+
+{# One search box; instruments, tags, tempo and the rest in the advanced search behind the filters button. #}
+{# In Sounds on a computer the filters stay open on the left, like an archive. #}
+<div class="{% if tab == 'sonidos' %}rp-archive{% endif %}">
+<form method="get" class="rp-explore-form mb-3" role="search">
+ {% if f.order %}<input type="hidden" name="orden" value="{{ f.order }}">{% endif %}
+ {% if tab %}<input type="hidden" name="ver" value="{{ tab }}">{% endif %}
+ <div class="rp-explore-search">
+  <label class="visually-hidden" for="explore-q">{% trans "Search" %}</label>
+  <input class="form-control" type="search" id="explore-q" name="q" value="{{ q }}" placeholder="{% trans 'Search projects, sounds or people' %}">
+  <button class="btn btn-outline-dark" aria-label="{% trans 'Search' %}"><i class="fa fa-search" aria-hidden="true"></i></button>
+  <button type="button" class="btn btn-outline-dark{% if filtering and not q %} is-on{% endif %}" data-toggle-advanced aria-expanded="false" aria-controls="advanced" aria-label="{% trans 'Advanced search' %}"><i class="fa fa-sliders-h" aria-hidden="true"></i></button>
+ </div>
+ <div class="rp-advanced rp-card mt-2" id="advanced" hidden>
+  <div class="row g-3">
+   <div class="col-sm-6 col-lg-3">
+    <label class="form-label small fw-bold" for="a-instrument">{% trans "Instrument" %}</label>
+    <select class="form-select" id="a-instrument" name="instrumento">
+     <option value="">{% trans "Any" %}</option>
+     {% for value, label in instrument_choices %}{% if value %}<option value="{{ value }}" {% if value == f.instrument %}selected{% endif %}>{{ label|capfirst }}</option>{% endif %}{% endfor %}
+    </select>
+   </div>
+   <div class="col-sm-6 col-lg-3">
+    <label class="form-label small fw-bold" for="a-tag">{% trans "Hashtag" %}</label>
+    <input class="form-control" type="text" id="a-tag" name="tag" value="{{ f.tag }}" placeholder="{% trans 'folklore' %}">
+   </div>
+   <div class="col-sm-6 col-lg-3">
+    <label class="small d-block mt-sm-4 pt-sm-2"><input type="checkbox" name="pide" value="1" {% if f.asks %}checked{% endif %}> {% trans "Asking for parts" %}</label>
+   </div>
+   <div class="col-sm-6 col-lg-3">
+    <label class="form-label small fw-bold" for="a-key">{% trans "Key" %}</label>
+    <select class="form-select" id="a-key" name="tonalidad">
+     <option value="">{% trans "Any" %}</option>
+     {% for k in keys %}<option value="{{ k }}" {% if k == f.key %}selected{% endif %}>{{ k }}</option>{% endfor %}
+    </select>
+   </div>
+   <div class="col-sm-6 col-lg-3">
+    <label class="form-label small fw-bold" for="a-genre">{% trans "Genre" %}</label>
+    <select class="form-select" id="a-genre" name="genero">
+     <option value="">{% trans "Any" %}</option>
+     {% for value, label in genre_choices %}<option value="{{ value }}" {% if value == f.genre %}selected{% endif %}>{{ label|capfirst }}</option>{% endfor %}
+    </select>
+   </div>
+   <fieldset class="col-sm-6 col-lg-3">
+    <legend class="form-label small fw-bold">{% trans "Tempo (BPM)" %}</legend>
+    <div class="d-flex gap-2 align-items-center">
+     <label class="visually-hidden" for="a-bpm-min">{% trans "From" %}</label><input class="form-control" type="number" id="a-bpm-min" name="bpm_min" min="20" max="300" value="{{ f.bpm_min|default:'' }}">
+     <span>{% trans "to" %}</span>
+     <label class="visually-hidden" for="a-bpm-max">{% trans "To" %}</label><input class="form-control" type="number" id="a-bpm-max" name="bpm_max" min="20" max="300" value="{{ f.bpm_max|default:'' }}">
+    </div>
+   </fieldset>
+   <fieldset class="col-sm-6 col-lg-6">
+    <legend class="form-label small fw-bold">{% trans "Sound type" %}</legend>
+    <div class="rp-chips">{% for value, label in type_choices %}<label class="rp-chip rp-chip-sm"><input type="checkbox" name="tipo" value="{{ value }}" {% if value in f.types %}checked{% endif %}><span>{{ label|capfirst }}</span></label>{% endfor %}</div>
+   </fieldset>
+  </div>
+  <div class="d-flex gap-2 mt-3"><button class="btn rp-btn-primary">{% trans "Search" %}</button><a class="btn btn-link" href="?{% if tab %}ver={{ tab }}{% endif %}">{% trans "Clear" %}</a></div>
+ </div>
+</form>
+
+{# The tabs appear once there's a search: before that, Explore is one mixed feed. #}
+{% if filtering or tab %}
+<nav class="rp-tabs mb-3" aria-label="{% trans 'Explore' %}">
+ <a href="?{{ keep }}" {% if not tab %}aria-current="page"{% endif %}>{% trans "Everything" %}</a>
+ <a href="?ver=pedidos&amp;{{ keep }}" {% if tab == "pedidos" %}aria-current="page"{% endif %}>{% trans "Collaborations" %}{% if filtering %} <span class="rp-muted">{{ sections.pedidos.count }}</span>{% endif %}</a>
+ <a href="?ver=obras&amp;{{ keep }}" {% if tab == "obras" %}aria-current="page"{% endif %}>{% trans "Works" %}{% if filtering %} <span class="rp-muted">{{ sections.obras.count }}</span>{% endif %}</a>
+ <a href="?ver=comentarios&amp;{{ keep }}" {% if tab == "comentarios" %}aria-current="page"{% endif %}>{% trans "Comments" %}{% if filtering %} <span class="rp-muted">{{ sections.comentarios.count }}</span>{% endif %}</a>
+ <a href="?ver=sonidos&amp;{{ keep }}" {% if tab == "sonidos" %}aria-current="page"{% endif %}>{% trans "Sounds" %}{% if filtering %} <span class="rp-muted">{{ sections.sonidos.count }}</span>{% endif %}</a>
+ <a href="?ver=personas&amp;{{ keep }}" {% if tab == "personas" %}aria-current="page"{% endif %}>{% trans "People" %}{% if filtering %} <span class="rp-muted">{{ sections.personas.count }}</span>{% endif %}</a>
+</nav>
+{% endif %}
+
+{% if active_filters %}<div class="rp-chips mb-3" aria-label="{% trans 'Active filters' %}">{% for chip in active_filters %}<a class="rp-chip-link is-on" href="{{ chip.url }}" aria-label="{% blocktrans with f=chip.label %}Remove filter {{ f }}{% endblocktrans %}">{{ chip.label }} <span aria-hidden="true">×</span></a>{% endfor %}</div>{% endif %}
+
+{% if not sections.pedidos.count and not sections.obras.count and not sections.comentarios.count and not sections.sonidos.count and not sections.personas.count %}
+ <p class="rp-muted">{% trans "Nothing matches. Try other words or fewer filters." %}</p>
+{% endif %}
+
+{# Everything: one feed, every kind mixed, newest first. Each card says what it is. #}
+{% if not tab and mixed %}
+<div class="rp-feed rp-explore-feed">
+ {% for item in mixed %}
+  {% if item.kind == "pedido" %}{% include "project/_request_card.html" with r=item.obj %}
+  {% elif item.kind == "obra" %}{% include "project/_work_card.html" with work=item.obj %}
+  {% elif item.kind == "sonido" %}{% include "project/_sound_card.html" with sound=item.obj %}
+  {% elif item.kind == "comentario" %}{% include "project/_comment_card.html" with m=item.obj %}
+  {% elif item.kind == "persona" %}{% include "project/_person_card.html" with person=item.obj %}{% endif %}
+ {% endfor %}
+</div>
+{% if more %}<p class="text-center mt-3"><a class="btn btn-outline-dark" href="?n={{ next_n }}&amp;{{ keep }}">{% trans "See more" %}</a></p>{% endif %}
+{% endif %}
+
+{% if tab == "pedidos" and sections.pedidos.items %}
+<div class="rp-grid">{% for r in sections.pedidos.items %}{% include "project/_request_card.html" %}{% endfor %}</div>
+{% endif %}
+
+{% if tab == "obras" and sections.obras.items %}
+<div class="rp-grid">{% for work in sections.obras.items %}{% include "project/_work_card.html" %}{% endfor %}</div>
+{% endif %}
+
+{% if tab == "comentarios" and sections.comentarios.items %}
+<div class="rp-grid">{% for m in sections.comentarios.items %}{% include "project/_comment_card.html" %}{% endfor %}</div>
+{% endif %}
+
+{% if tab == "sonidos" and sections.sonidos.items %}
+<section class="rp-sounds" data-sounds aria-labelledby="sounds-title">
+ <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+  <h2 class="rp-sec mb-0" id="sounds-title">{% blocktrans count n=sections.sonidos.count %}{{ n }} sound{% plural %}{{ n }} sounds{% endblocktrans %} {% trans "Space: listen · ↑ ↓: move · D: download" as tip %}{% include "_info.html" %}</h2>
+  <div class="d-flex align-items-center gap-2 flex-wrap">
+   <form method="get" class="d-flex align-items-center gap-1" data-sort-form>
+    {% for key, values in request.GET.lists %}{% if key != 'orden' %}{% for v in values %}<input type="hidden" name="{{ key }}" value="{{ v }}">{% endfor %}{% endif %}{% endfor %}
+    <label class="small" for="sort">{% trans "Sort" %}</label>
+    <select class="form-select form-select-sm" id="sort" name="orden" onchange="this.form.submit()">
+     <option value="">{% trans "Newest" %}</option>
+     <option value="retomados" {% if f.order == 'retomados' %}selected{% endif %}>{% trans "Most picked up" %}</option>
+    </select>
+   </form>
+   <label class="small"><input type="checkbox" data-at-my-tempo {% if f.my_tempo %}checked{% endif %}> {% trans "Listen at my tempo" %}</label>
+   <input class="form-control form-control-sm rp-offset" type="number" id="my-tempo" min="40" max="240" value="{{ f.my_tempo|default:100 }}" data-my-tempo aria-label="{% trans 'My tempo (BPM)' %}">
+   <span class="small">BPM</span>
+  </div>
+ </div>
+ <ul class="list-unstyled d-grid gap-2" role="listbox" aria-label="{% trans 'Sounds' %}" data-sound-list>
+  {% for s in sections.sonidos.items %}
+  <li class="rp-sound" role="option" tabindex="{% if forloop.first %}0{% else %}-1{% endif %}" aria-selected="false"
+      data-sound data-download="{% url 'audio-download' s.pk %}">
+   <span class="rp-sound-name"><a href="{{ s.get_absolute_url }}"><b>{{ s.name }}</b></a>
+    <span class="small d-block"><span class="rp-muted">{{ s.user|display_name }}{% if s.instrument %} · {{ s.get_instrument_display }}{% endif %}</span>
+     {% if s.tempo %} · <b>{{ s.tempo }} BPM</b>{% endif %}{% if s.musical_key %} · {{ s.musical_key }}{% endif %}{% if s.use_type %} · <span class="rp-muted">{{ s.get_use_type_display }}</span>{% endif %}</span></span>
+   {% if s.n_used %}<span class="rp-tag rp-tag-quiet" title="{% trans 'Projects that picked it up' %}">{% blocktrans count n=s.n_used %}{{ n }} layer{% plural %}{{ n }} layers{% endblocktrans %}</span>{% endif %}
+   <a class="btn btn-outline-dark btn-sm" href="{% url 'audio-download' s.pk %}" draggable="true" data-download-link><i class="fa fa-download" aria-hidden="true"></i> {% trans "Download" %}</a>
+   <div class="rp-sound-player">{% audio_player s %}</div>
+  </li>
+  {% endfor %}
+ </ul>
+ <input type="hidden" value="{{ f.my_tempo }}" data-my-tempo-hidden>
+</section>
+{% endif %}
+
+{% if tab == "personas" and sections.personas.items %}
+<div class="rp-grid">{% for person in sections.personas.items %}{% include "project/_person_card.html" %}{% endfor %}</div>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block body_end_scripts %}
+<script>
+/* Advanced search: closed until asked for, open when filters are in use. */
+(function () {
+  var btn = document.querySelector("[data-toggle-advanced]"), panel = document.getElementById("advanced");
+  if (!btn || !panel) return;
+  function set(open) { panel.hidden = !open; btn.setAttribute("aria-expanded", open); }
+  btn.addEventListener("click", function () { set(panel.hidden); });
+  set({% if filtering and not q %}true{% else %}false{% endif %});
+})();
+</script>
+{% if tab == "sonidos" %}<script src="{% static 'js/sounds.js' %}"></script>{% endif %}
+{% endblock %}

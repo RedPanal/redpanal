@@ -1,0 +1,13 @@
+{% load i18n %}{% if tracks %}
+<div class="rp-compact{% if size == 'large' %} rp-compact-lg{% endif %}{% if caption %} rp-compact-file{% endif %}" data-mixer data-compact{% if tempo %} data-tempo="{{ tempo }}"{% endif %}
+     {% if item %}data-item-id="{{ item.id }}" data-item-title="{{ item.title }}" data-item-artist="{{ item.artist }}" data-item-url="{{ item.url }}" data-item-cover="{{ item.cover }}"{% endif %}>
+ <button type="button" class="rp-mini-play" data-play aria-pressed="false"
+         data-label-play="{% blocktrans %}Play {{ label }}{% endblocktrans %}" data-label-pause="{% blocktrans %}Pause {{ label }}{% endblocktrans %}"
+         aria-label="{% blocktrans %}Play {{ label }}{% endblocktrans %}"><i class="fa fa-play" aria-hidden="true"></i></button>
+ {% if caption %}<span class="rp-mini-cap">{% if caption_url %}<a href="{{ caption_url }}">{{ caption }}</a>{% else %}{{ caption }}{% endif %}{% if caption_sub %}<span>{{ caption_sub }}</span>{% endif %}</span>{% endif %}
+ <div class="rp-mini-wave" data-combined-wave title="{% trans 'Click to jump to that moment' %}"></div>
+ <span class="rp-mini-time"><span data-time>0:00</span><span class="rp-muted"> / <span data-duration>–</span></span></span>
+ {% if mode == "preview" %}<span class="rp-mini-tag">{% trans "preview" %}</span>{% endif %}
+ {% for t in tracks %}<span data-track data-src="{{ t.src }}" data-peaks="{{ t.peaks }}" data-offset="{{ t.offset }}"{% if t.duration %} data-duration-ms="{{ t.duration|floatformat:0 }}"{% endif %} hidden></span>{% endfor %}
+</div>
+{% endif %}

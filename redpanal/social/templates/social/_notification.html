@@ -1,0 +1,23 @@
+{% load i18n avatar_tags obra_tags %}<a class="rp-notice{% if n.unread %} is-unread{% endif %}" href="{{ n.url|default:'#' }}">
+ {% if n.actor %}<span class="rp-nav-avatar" aria-hidden="true">{% avatar n.actor 48 %}</span>{% endif %}
+ <span class="rp-notice-text">
+  {% with who=n.actor|display_name what=n.target_name %}
+  {% if n.kind == "contributed" %}{% blocktrans %}<b>{{ who }}</b> made a new version of «{{ what }}»{% endblocktrans %}
+  {% elif n.kind == "included" %}{% blocktrans %}<b>{{ who }}</b> included your part in «{{ what }}»{% endblocktrans %}
+  {% elif n.kind == "alternative" %}{% blocktrans %}<b>{{ who }}</b> kept your part as an alternative in «{{ what }}»{% endblocktrans %}
+  {% elif n.kind == "commented" %}{% blocktrans %}<b>{{ who }}</b> commented on «{{ what }}»{% endblocktrans %}
+  {% elif n.kind == "mentioned" %}{% blocktrans %}<b>{{ who }}</b> mentioned you in «{{ what }}»{% endblocktrans %}
+  {% elif n.kind == "access_requested" %}{% blocktrans %}<b>{{ who }}</b> asks to join «{{ what }}»{% endblocktrans %}
+  {% elif n.kind == "member_added" %}{% blocktrans %}<b>{{ who }}</b> added you to «{{ what }}»{% endblocktrans %}
+  {% elif n.kind == "shared" %}{% blocktrans %}<b>{{ who }}</b> shared «{{ what }}» with you{% endblocktrans %}
+  {% elif n.kind == "used_as_source" %}{% blocktrans %}<b>{{ who }}</b> created a project with «{{ what }}»{% endblocktrans %}
+  {% elif n.kind == "version_saved" %}{% blocktrans %}<b>{{ who }}</b> saved a new version of «{{ what }}»{% endblocktrans %}
+  {% elif n.kind == "favorited" %}{% blocktrans %}<b>{{ who }}</b> added «{{ what }}» to favorites{% endblocktrans %}
+  {% elif n.kind == "amplified" %}{% blocktrans %}<b>{{ who }}</b> amplified «{{ what }}»{% endblocktrans %}
+  {% elif n.kind == "replied" %}{% blocktrans %}<b>{{ who }}</b> replied to your comment on «{{ what }}»{% endblocktrans %}
+  {% elif n.kind == "followed" %}{% blocktrans %}<b>{{ who }}</b> follows you{% endblocktrans %}
+  {% endif %}
+  {% endwith %}
+  <span class="rp-muted small d-block">{% blocktrans with t=n.created_at|timesince %}{{ t }} ago{% endblocktrans %}</span>
+ </span>
+</a>

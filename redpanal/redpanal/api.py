@@ -3,6 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.contenttypes.models import ContentType
 from django.core import signing
 from django.shortcuts import get_object_or_404
+from django.utils.translation import gettext as _
 from django.urls import path, re_path
 from audio.models import Audio
 from social.models import Message
@@ -12,7 +13,8 @@ from rest_framework.filters import SearchFilter
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.decorators import action, api_view, authentication_classes, permission_classes
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import (AllowAny, BasePermission, IsAuthenticated, IsAuthenticatedOrReadOnly,
+                                        SAFE_METHODS)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from taggit_serializer.serializers import (TagListSerializerField,
@@ -39,9 +41,9 @@ class SignedTokenAuthentication(BaseAuthentication):
             user = User.objects.get(id=data['user_id'])
             return (user, token)
         except signing.SignatureExpired:
-            raise AuthenticationFailed('Token expirado')
+            raise AuthenticationFailed(_('Expired token'))
         except Exception:
-            raise AuthenticationFailed('Token inválido')
+            raise AuthenticationFailed(_('Invalid token'))
 
     def authenticate_header(self, request):
         return 'Bearer'
@@ -85,6 +87,22 @@ class AudioSerializer(TaggitSerializer, serializers.ModelSerializer):
         required=False, allow_null=True,
     )
 
+    def validate_source_audio_id(self, source):
+        # Only a sound this person can listen to can be where theirs comes from.
+        request = self.context.get("request")
+        if source is not None and not Audio.objects.visible_to(request.user).filter(pk=source.pk).exists():
+            raise serializers.ValidationError("Unknown sound.")
+        return source
+
+    def validate_audio(self, f):
+        # Same format and size rules as the site's forms.
+        from project.forms import clean_audio_upload
+        from django.core.exceptions import ValidationError as DjangoValidationError
+        try:
+            return clean_audio_upload(f)
+        except DjangoValidationError as e:
+            raise serializers.ValidationError(e.messages)
+
     class Meta:
         model = Audio
         fields = (
@@ -95,13 +113,26 @@ class AudioSerializer(TaggitSerializer, serializers.ModelSerializer):
         )
 
 
+class IsOwnerOrReadOnly(BasePermission):
+    """Anyone reads; only the person who uploaded a sound changes or deletes it."""
+    def has_object_permission(self, request, view, obj):
+        return request.method in SAFE_METHODS or obj.user_id == request.user.pk
+
+
 class AudioViewSet(viewsets.ModelViewSet):
-    queryset = Audio.objects.all().order_by('-created_at')
     serializer_class = AudioSerializer
     authentication_classes = [SignedTokenAuthentication]
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        # Parts of works that aren't public stay out of the API.
+        return Audio.objects.visible_to(self.request.user).order_by('-created_at')
 
     def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer):
+        # A sound stays with whoever uploaded it: user_id can't hand it to someone else.
         serializer.save(user=self.request.user)
 
 
@@ -120,7 +151,7 @@ class AudioList(generics.ListAPIView):
     search_fields = ['name', 'description', 'tags__name', 'user__username']
 
     def get_queryset(self):
-        queryset = Audio.objects.select_related('user')
+        queryset = Audio.objects.visible_to(self.request.user).select_related('user')
 
         filter_data = {}
         username = self.request.query_params.get('user', None)
@@ -152,10 +183,12 @@ class AudioList(generics.ListAPIView):
 
 
 class AudioBySlugView(generics.RetrieveAPIView):
-    queryset = Audio.objects.all()
     lookup_field = 'slug'
     serializer_class = AudioSerializer
     authentication_classes = [SignedTokenAuthentication]
+
+    def get_queryset(self):
+        return Audio.objects.visible_to(self.request.user)
 
 
 # ── User stats endpoint ───────────────────────────────────────────────────────
@@ -203,10 +236,10 @@ def auth_login_view(request):
     username = request.data.get('username', '').strip()
     password = request.data.get('password', '')
     if not username or not password:
-        return Response({'error': 'Usuario y contraseña requeridos'}, status=400)
+        return Response({'error': _('Username and password are required')}, status=400)
     user = authenticate(request, username=username, password=password)
     if user is None:
-        return Response({'error': 'Credenciales incorrectas'}, status=400)
+        return Response({'error': _('Wrong username or password')}, status=400)
     token = signing.dumps({'user_id': user.id}, salt=_TOKEN_SALT)
     return Response({'token': token, **_user_response(user)})
 
@@ -313,7 +346,9 @@ def _build_audio_tree(audio, depth=0, max_depth=5, request=None):
         'collaborations': [],
     }
     if depth < max_depth:
-        for child in audio.collaborations.select_related('user').order_by('created_at'):
+        user = request.user if request else None
+        children = audio.collaborations.filter(pk__in=Audio.objects.visible_to(user).values("pk"))
+        for child in children.select_related('user').order_by('created_at'):
             node['collaborations'].append(_build_audio_tree(child, depth + 1, max_depth, request=request))
     return node
 
@@ -323,15 +358,19 @@ class AudioCollabTreeView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, slug):
-        audio = get_object_or_404(Audio.objects.select_related('source_audio', 'user'), slug=slug)
-        # Walk up to find the root of the collaboration tree
+        visible = Audio.objects.visible_to(request.user)
+        audio = get_object_or_404(visible.select_related('source_audio', 'user'), slug=slug)
+        # Walk up to find the root of the collaboration tree, stopping at what this person can't see
         root = audio
         visited = {audio.pk}
         while root.source_audio_id is not None:
             if root.source_audio_id in visited:
                 break  # cycle guard
             visited.add(root.pk)
-            root = Audio.objects.select_related('source_audio', 'user').get(pk=root.source_audio_id)
+            parent = visible.select_related('source_audio', 'user').filter(pk=root.source_audio_id).first()
+            if parent is None:
+                break
+            root = parent
         return Response(_build_audio_tree(root, request=request))
 
 
@@ -340,7 +379,7 @@ class AudioCommentsView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request, slug):
-        audio = get_object_or_404(Audio, slug=slug)
+        audio = get_object_or_404(Audio.objects.visible_to(request.user), slug=slug)
         ct = ContentType.objects.get_for_model(Audio)
         comments = Message.objects.filter(
             content_type=ct, object_id=audio.pk
@@ -348,7 +387,7 @@ class AudioCommentsView(APIView):
         return Response(MessageSerializer(comments, many=True).data)
 
     def post(self, request, slug):
-        audio = get_object_or_404(Audio, slug=slug)
+        audio = get_object_or_404(Audio.objects.visible_to(request.user), slug=slug)
         msg_text = request.data.get('msg', '').strip()
         if not msg_text:
             return Response({'error': 'msg is required'}, status=400)
@@ -430,7 +469,7 @@ def user_follow(request, username):
     from actstream import actions
     target = get_object_or_404(User, username=username)
     if target == request.user:
-        return Response({'error': 'No podés seguirte a vos mismo'}, status=400)
+        return Response({'error': _("You can't follow yourself")}, status=400)
     if request.method == 'POST':
         from django.db import IntegrityError
         try:
@@ -463,7 +502,18 @@ def tags_popular(request):
 api_router = routers.DefaultRouter()
 api_router.register(r'audio', AudioViewSet, basename='audio-api')
 
-api_urls = [
+def _work_urls():
+    # Imported lazily: project.api imports SignedTokenAuthentication from this module.
+    from project import api as work_api
+    return [
+        path('works/', work_api.works),
+        re_path(r'^works/(?P<slug>[\w-]+)/$', work_api.work_detail),
+        re_path(r'^works/(?P<slug>[\w-]+)/stems/$', work_api.work_stems),
+        re_path(r'^works/(?P<slug>[\w-]+)/versions/$', work_api.work_versions),
+    ]
+
+
+api_urls = _work_urls() + [
     path('auth/me/', auth_me),
     path('auth/login/', auth_login_view),
     path('auth/logout/', auth_logout_view),

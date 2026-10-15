@@ -1,0 +1,14 @@
+{% load i18n avatar_tags %}{# Main navigation: the same items, order, icons and labels in the header (desktop) and the bottom bar (phones). #}
+{% url 'index' as home_url %}{% url 'explore' as explore_url %}{% url 'my-stuff' as mine_url %}{% url 'create' as create_url %}
+<a href="{{ home_url }}" {% if request.path == home_url %}aria-current="page"{% endif %}><i class="fa fa-users" aria-hidden="true"></i><span>{% trans "Community" %}</span></a>
+<a href="{{ explore_url }}" {% if request.path == explore_url %}aria-current="page"{% endif %}><i class="fa fa-compass" aria-hidden="true"></i><span>{% trans "Explore" %}</span></a>
+{% if request.user.is_authenticated %}
+<a class="rp-nav-create" href="{{ create_url }}" data-create-open aria-haspopup="dialog" {% if request.path == create_url %}aria-current="page"{% endif %}><i class="fa fa-plus" aria-hidden="true"></i><span>{% trans "Create" %}</span></a>
+<a href="{{ mine_url }}" {% if request.path == mine_url %}aria-current="page"{% endif %}><i class="fa fa-sliders-h" aria-hidden="true"></i><span>{% trans "My stuff" %}</span></a>
+{% with profile_url=request.user.get_absolute_url %}
+<a href="{{ profile_url }}" {% if request.path == profile_url %}aria-current="page"{% endif %}><span class="rp-nav-avatar" aria-hidden="true">{% avatar request.user 48 %}</span><span>{% trans "Profile" %}</span></a>
+{% endwith %}
+{% else %}
+<a class="rp-nav-create" href="{% url 'account_login' %}?next={{ create_url }}"><i class="fa fa-plus" aria-hidden="true"></i><span>{% trans "Create" %}</span></a>
+<a href="{% url 'account_login' %}?next={{ request.path }}"><i class="fa fa-sign-in-alt" aria-hidden="true"></i><span>{% trans "Sign in" %}</span></a>
+{% endif %}

@@ -16,6 +16,7 @@ from audio.models import Audio
 from audio.tests import get_test_audiofile
 
 class ProjectTestCase(TestCase, InstanceTestMixin):
+    create_url_name = 'create'
     TEST_FILE = File(open(__file__))
 
     def setUp(self):

@@ -14,7 +14,11 @@ urlpatterns = [
     path(r'followers/<int:content_type_id>/<int:object_id>/', views.followers,
         name='social-followers'),
     re_path(r'^following/(?P<user_id>\d+)/', views.following, name="social-following"),
-    re_path(r'^messsage/create/', views.message_create, name="message-create"),
-    re_path(r'^messsage/create-with-content/', views.message_with_content_create,
-        name="message-with-content-create"),
+    path('mensaje/nuevo/', views.message_create, name="message-create"),
+    path('reaccion/<str:kind>/<str:target>/<int:pk>/', views.react, name="react"),
+    path('responder/<str:target>/<int:pk>/', views.reply, name="reply"),
+    path('mensaje/nuevo-con-contenido/', views.message_with_content_create, name="message-with-content-create"),
+    # Old addresses (with a typo), for pages still open in someone's browser.
+    re_path(r'^messsage/create/$', views.message_create),
+    re_path(r'^messsage/create-with-content/$', views.message_with_content_create),
 ]

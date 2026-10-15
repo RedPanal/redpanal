@@ -5,7 +5,7 @@
 {% empty %}
       <span class="no-yet">{% trans "No tracks yet" %}</span>
   {% if request.user == user %}
-      <span class="new"><a href="{% url "audio-create" %}">{% trans "Upload track" %}</a></span>
+      <span class="new"><a href="{% url "create-sound" %}">{% trans "Upload track" %}</a></span>
   {% endif %}
 {% endfor %}
 {% show_more %}
