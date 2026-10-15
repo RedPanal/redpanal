@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
+import shutil
+import tempfile
+from unittest import mock
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
@@ -21,6 +24,7 @@ def get_test_audiofile():
     return audiofile
 
 class AudioTestCase(TestCase, InstanceTestMixin):
+    create_url_name = 'create-sound'
     def setUp(self):
         self.user = User.objects.create_user("owner", "e@a.com", "password")
         self.project = Project.objects.create(name="My Rock project", user=self.user)
@@ -137,3 +141,65 @@ class AudioTestCase(TestCase, InstanceTestMixin):
     #         resp = self.client.get(resp.url)
     #         self.assertEqual(resp.status_code, 200)
     #         self.assertFalse(self.project.name in resp.content.decode())
+
+
+PROCESSING_MEDIA = tempfile.mkdtemp()
+
+
+@override_settings(MEDIA_ROOT=PROCESSING_MEDIA)
+class AudioProcessingTestCase(TestCase):
+    """The file is decoded with ffmpeg only when it is new or replaced."""
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        shutil.rmtree(PROCESSING_MEDIA, ignore_errors=True)
+
+    def setUp(self):
+        self.user = User.objects.create_user("john", "lenon@beatles.com", "yoko")
+
+    def create_audio(self):
+        audio = Audio(user=self.user, name="tone", audio=get_test_audiofile())
+        audio.save()
+        return audio
+
+    def test_new_audio_is_processed(self):
+        audio = self.create_audio()
+        self.assertIsNotNone(audio.samplerate)
+        self.assertTrue(os.path.exists(audio.audio.path + '.json'))
+        self.assertTrue(os.path.exists(audio.audio.path + '.big.json'))
+
+    def test_saving_metadata_does_not_reprocess(self):
+        audio = self.create_audio()
+        with mock.patch("audio.models.audio_processing") as processing:
+            audio.description = "new desc"
+            audio.save()
+            reloaded = Audio.objects.get(pk=audio.pk)
+            reloaded.name = "renamed"
+            reloaded.save()
+        processing.assert_not_called()
+
+    def test_replacing_the_file_reprocesses(self):
+        audio = Audio.objects.get(pk=self.create_audio().pk)
+        with open(os.path.join(TEST_DATA_PATH, u'tone.ogg'), 'rb') as f:
+            audio.audio = SimpleUploadedFile("other.ogg", f.read())
+        with mock.patch("audio.models.audio_processing") as processing:
+            audio.save()
+        processing.assert_called_once_with(audio)
+
+    def test_silent_file_is_accepted(self):
+        import io
+        from pydub import AudioSegment
+        buf = io.BytesIO()
+        AudioSegment.silent(duration=3000).export(buf, format="wav")
+        audio = Audio(user=self.user, name="pista vacia", audio=SimpleUploadedFile("vacia.wav", buf.getvalue()))
+        audio.save()
+        self.assertIsNotNone(audio.samplerate)
+
+    def test_deferred_file_is_not_loaded_nor_reprocessed(self):
+        self.create_audio()
+        with mock.patch("audio.models.audio_processing") as processing:
+            audio = Audio.objects.only("id", "name", "user").get()
+            self.assertEqual(audio.get_deferred_fields() & {"audio"}, {"audio"})
+            audio.save(update_fields=["name"])
+        processing.assert_not_called()

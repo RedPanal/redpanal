@@ -24,7 +24,7 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Buenos_Aires'
+TIME_ZONE = 'America/Argentina/Buenos_Aires'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -88,4 +88,14 @@ LOGGING = {
     }
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS: allow all origins; token auth is header-based so no cookie credentials needed.
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_HEADERS = [
+    'accept', 'accept-encoding', 'authorization', 'content-type',
+    'dnt', 'origin', 'user-agent', 'x-csrftoken', 'x-requested-with',
+]
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

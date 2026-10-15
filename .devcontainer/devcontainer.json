@@ -1,0 +1,13 @@
+{
+  "name": "RedPanal (aislado)",
+  "dockerComposeFile": ["../compose.yaml"],
+  "service": "web",
+  "workspaceFolder": "/app",
+  "remoteUser": "dev",
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python"]
+    }
+  }
+}

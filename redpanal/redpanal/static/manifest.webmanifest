@@ -1,0 +1,20 @@
+{
+  "name": "RedPanal",
+  "short_name": "RedPanal",
+  "description": "Música libre y colaborativa: grabá una idea y sumá a otras personas.",
+  "lang": "es",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1d2b36",
+  "icons": [
+    { "src": "/static/img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/static/img/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/static/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Grabar una idea", "url": "/crear/" },
+    { "name": "Explorar", "url": "/explorar/" }
+  ]
+}

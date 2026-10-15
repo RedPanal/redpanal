@@ -1,0 +1,8 @@
+{% extends "social/action_teaser.html" %}
+{% load i18n %}
+
+{% block action_text %}{% trans "asked to join" %}{% endblock action_text %}
+
+{% block action_body %}
+  {% if action.target %}<a href="{{ action.target.get_absolute_url }}">«{{ action.target.name }}»</a>{% endif %}
+{% endblock action_body %}

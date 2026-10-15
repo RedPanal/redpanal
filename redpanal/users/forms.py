@@ -5,12 +5,18 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
 from .models import UserProfile
+from audio.models import INSTRUMENT_CHOICES
 from core.forms import TagField
 
 
 class UserProfileForm(ModelForm):
-    tags =  TagField(label=_('hashtags').capitalize(), required=False, 
+    tags =  TagField(label=_('hashtags').capitalize(), required=False,
                      help_text=_("put tags helps you to contact users who share musical tastes"))
+    instruments = forms.MultipleChoiceField(
+        label=_("instruments you play"), required=False,
+        choices=[c for c in INSTRUMENT_CHOICES if c[0] not in ("multiple", "other")],
+        widget=forms.CheckboxSelectMultiple,
+        help_text=_("we use them to show you works that are looking for those parts"))
 
 
     helper = FormHelper()
@@ -18,7 +24,8 @@ class UserProfileForm(ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ['realname', 'about', 'website', 'location']
+        fields = ['realname', 'about', 'website', 'location', 'instruments',
+                  'cover', 'open_to_collaborate', 'genres', 'tools', 'other_link']
         fieldsets = (
            (None, {'fields': ('tags',)}),
         )
