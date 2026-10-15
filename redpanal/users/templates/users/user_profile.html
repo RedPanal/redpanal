@@ -1,28 +1,139 @@
-{% extends "base_background_image.html" %}
-{% load i18n avatar_tags crispy_forms_tags %}
+{% extends "base.html" %}
+{% load i18n avatar_tags %}
 
-{% block head_title %}{% trans "Profile options" %}{% endblock %}
-
-{% block title %}{% trans "Edit Profile" %}{% endblock %}
+{% block title %}{% trans "Edit profile" %}{% endblock %}
 
 {% block content %}
-<div class="m-auto" style="max-width: 700px;">
-	<div class="profile-options sign-form p-4 rounded-4 border redpanal-form-wrapper">
-		<h2 class="pb-4 text-light text-center">
-		   <span class="item"><b>{% trans "Username" %}:</b> </span>
-		   <span class="value"><b>{{ request.user.username }}</b></span>
-		</h2>
-		<p>
-		   <span class="image">{% avatar request.user 200 %}</span>
-		   <span class="action"><a href="{% if request.user|has_avatar %}{% url 'avatar:change' %}{% else %}{% url 'avatar:add' %}{% endif %}">{% trans "Change your avatar" %}</a></span>
-		</p>
-		<div class="mb-3 text-light crispy-form-wrapper">
-			{% crispy form %}
-		</div>
-	<div class="alert alert-danger" role="alert">
-	  {% trans "Delete account" %} <a href="{% url 'delete-account' %}" class="alert-link">{% trans "here" %}</a>.
-	</div>
-	</div>
+{# Instruments come right after the name: they decide which requests reach you. #}
+<div class="rp-narrow">
+ <p class="rp-muted small mb-1"><a href="{{ request.user.get_absolute_url }}">{% trans "Profile" %}</a> › {% trans "Edit profile" %}</p>
+ <h1 class="rp-h1">{% trans "Edit profile" %}</h1>
+
+ <form method="post" enctype="multipart/form-data" class="d-grid gap-3">{% csrf_token %}
+  {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+  <div class="d-flex align-items-center gap-3">
+   <span class="rp-profile-avatar"><img src="{% avatar_url request.user 192 %}" alt="" data-image-preview-of="id_avatar"></span>
+   <div class="flex-grow-1">
+    <label class="form-label fw-bold" for="id_realname">{{ form.realname.label|capfirst }}</label>
+    <input class="form-control" type="text" name="realname" id="id_realname" maxlength="20" required value="{{ form.realname.value|default:'' }}">
+    <p class="rp-muted small mb-0 mt-1">@{{ request.user.username }} · <label class="rp-link mb-0" for="id_avatar">{% trans "Change your picture" %}</label></p>
+    <input type="file" name="avatar" id="id_avatar" class="visually-hidden" accept="image/*" data-image-preview>
+    {% if avatar_error %}<p class="text-danger small mb-0">{{ avatar_error }}</p>{% endif %}
+    {% for error in form.realname.errors %}<p class="text-danger small mb-0">{{ error }}</p>{% endfor %}
+   </div>
+  </div>
+
+  <fieldset>
+   <legend class="form-label fw-bold fs-6">{% trans "Instruments you play" %}</legend>
+   <p class="rp-muted small mb-2">{% trans "We use them to show you works that ask for those parts, and so people looking for someone find you." %}</p>
+   <div class="rp-chips">{% for cb in form.instruments %}<label class="rp-chip">{{ cb.tag }}<span>{{ cb.choice_label|capfirst }}</span></label>{% endfor %}</div>
+  </fieldset>
+
+  <label class="d-flex gap-2 align-items-center"><input type="checkbox" name="open_to_collaborate" {% if form.open_to_collaborate.value %}checked{% endif %}> <b>{% trans "Available to collaborate" %}</b> <span class="rp-muted small">· {% trans "shown on your profile" %}</span></label>
+
+  <div class="row g-3">
+   <div class="col-sm-6">
+    <label class="form-label fw-bold" for="id_genres">{% trans "Genres" %}</label>
+    <input class="form-control" type="text" name="genres" id="id_genres" maxlength="200" placeholder="{% trans 'candombe, cumbia, electronic' %}" value="{{ form.genres.value|default:'' }}">
+   </div>
+   <div class="col-sm-6">
+    <label class="form-label fw-bold" for="id_tools">{% trans "Records with" %}</label>
+    <input class="form-control" type="text" name="tools" id="id_tools" maxlength="200" placeholder="{% trans 'phone, REAPER, Ardour' %}" value="{{ form.tools.value|default:'' }}">
+   </div>
+  </div>
+
+  <div>
+   <p class="form-label fw-bold mb-1">{% trans "Cover image" %}</p>
+   <div class="rp-image-field">
+    <img class="rp-cover rp-cover-wide" data-image-preview-of="id_cover" src="{% if form.instance.cover %}{{ form.instance.cover.url }}{% endif %}" alt="" {% if not form.instance.cover %}hidden{% endif %}>
+    <div><label class="btn btn-outline-dark btn-sm mb-0" for="id_cover"><i class="fa fa-image" aria-hidden="true"></i> {% if form.instance.cover %}{% trans "Change the image" %}{% else %}{% trans "Add an image" %}{% endif %}</label>
+     <input type="file" name="cover" id="id_cover" accept="image/*" class="visually-hidden" data-image-preview>
+     {% if form.instance.cover %}<label class="small d-block mt-1"><input type="checkbox" name="cover-clear"> {% trans "Remove the image" %}</label>{% endif %}
+     {% for error in form.cover.errors %}<p class="text-danger small mb-0">{{ error }}</p>{% endfor %}</div>
+   </div>
+  </div>
+
+  {# Pictures between the bio and the posts: up to ten. #}
+  <div>
+   <p class="form-label fw-bold mb-1">{% trans "Pictures" %} <span class="rp-muted fw-normal small">{% blocktrans with n=gallery|length max=gallery_max %}{{ n }} of {{ max }}{% endblocktrans %}</span></p>
+   {% if gallery %}<div class="rp-gallery-edit">
+    {% for g in gallery %}<label class="rp-gallery-edit-item"><img src="{{ g.image.url }}" alt="">
+     <span class="small"><input type="checkbox" name="gallery-remove" value="{{ g.pk }}"> {% trans "Remove" %}</span></label>{% endfor %}
+   </div>{% endif %}
+   {% if gallery_left > 0 %}
+   <label class="btn btn-outline-dark btn-sm mt-2 mb-0" for="id_gallery"><i class="fa fa-images" aria-hidden="true"></i> {% trans "Add pictures" %}</label>
+   <input type="file" name="gallery" id="id_gallery" accept="image/*" multiple class="visually-hidden" data-gallery-input>
+   <span class="small rp-muted ms-2" data-gallery-count data-left="{{ gallery_left }}"></span>
+   <script>
+    (function () {
+      var input = document.querySelector("[data-gallery-input]"), out = document.querySelector("[data-gallery-count]");
+      if (!input) return;
+      input.addEventListener("change", function () {
+        var n = Math.min(input.files.length, parseInt(out.dataset.left, 10));
+        out.textContent = n ? "+" + n : "";
+      });
+    })();
+   </script>
+   {% endif %}
+  </div>
+
+  <div>
+   <label class="form-label fw-bold" for="id_location">{{ form.location.label|capfirst }}</label>
+   <input class="form-control" type="text" name="location" id="id_location" maxlength="50" placeholder="{% trans 'e.g. Rosario' %}" value="{{ form.location.value|default:'' }}">
+  </div>
+
+  <div>
+   <label class="form-label fw-bold" for="id_about">{{ form.about.label|capfirst }}</label>
+   <textarea class="form-control" name="about" id="id_about" rows="3">{{ form.about.value|default:'' }}</textarea>
+  </div>
+
+  <div>
+   <label class="form-label fw-bold" for="id_website">{{ form.website.label|capfirst }}</label>
+   <input class="form-control" type="url" name="website" id="id_website" placeholder="https://" value="{{ form.website.value|default:'' }}">
+   {% for error in form.website.errors %}<p class="text-danger small mb-0">{{ error }}</p>{% endfor %}
+  </div>
+  <div>
+   <label class="form-label fw-bold" for="id_other_link">{% trans "Another link" %}</label>
+   <input class="form-control" type="url" name="other_link" id="id_other_link" placeholder="https://" value="{{ form.other_link.value|default:'' }}">
+   {% for error in form.other_link.errors %}<p class="text-danger small mb-0">{{ error }}</p>{% endfor %}
+  </div>
+
+  {% get_available_languages as site_languages %}
+  <div>
+   <label class="form-label fw-bold" for="id_language">{% trans "Language" %}</label>
+   <select class="form-select" name="language" id="id_language">
+    <option value="">{% trans "The one of my browser" %}</option>
+    {% for code, name in site_languages %}{% get_language_info for code as info %}<option value="{{ code }}" lang="{{ code }}" {% if form.instance.language == code %}selected{% endif %}>{{ info.name_local|capfirst }}</option>{% endfor %}
+   </select>
+  </div>
+
+  {# Only the colors change between palettes. #}
+  <fieldset id="colores">
+   <legend class="form-label fw-bold fs-6">{% trans "Colors" %}</legend>
+   <div class="rp-palette-picker">
+    {% for key, label in palettes %}<label class="rp-palette-option">
+     <input type="radio" name="palette" value="{{ key }}" {% if form.instance.palette == key %}checked{% endif %}>
+     <span class="rp-palette-sample" data-palette="{{ key }}" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+     <span>{{ label }}</span>
+    </label>{% endfor %}
+   </div>
+  </fieldset>
+
+  <fieldset id="avisos">
+   <legend class="form-label fw-bold fs-6">{% trans "Notify me when" %}</legend>
+   {% for key, label, on in notify_choices %}<label class="d-block"><input type="checkbox" name="notify" value="{{ key }}" {% if on %}checked{% endif %}> {{ label|capfirst }}</label>{% endfor %}
+  </fieldset>
+
+  <div class="d-flex gap-2">
+   <button class="btn rp-btn-primary">{% trans "Save" %}</button>
+   <a class="btn btn-link" href="{{ request.user.get_absolute_url }}">{% trans "Cancel" %}</a>
+  </div>
+ </form>
+
+ <details class="mt-5">
+  <summary class="small rp-muted">{% trans "Delete my account" %}</summary>
+  <p class="small mt-2">{% trans "Your account, your works and your audios are deleted, including the parts you gave to other people's works. It can't be undone." %}
+   <a class="text-danger" href="{% url 'delete-account' %}">{% trans "Go on to delete the account" %}</a></p>
+ </details>
 </div>
 {% endblock %}
-

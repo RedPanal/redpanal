@@ -1,0 +1,6 @@
+{% load i18n obra_tags %}<div class="rp-credits">
+ <span class="rp-sec">{% trans "Credits" %}</span>
+ <ul class="list-unstyled mb-0">
+  {% for credit in credits %}<li><a href="{{ credit.user.get_absolute_url }}"><b>{{ credit.user|display_name }}</b></a> · {{ credit.roles|join:", "|lower }}</li>{% endfor %}
+ </ul>
+</div>

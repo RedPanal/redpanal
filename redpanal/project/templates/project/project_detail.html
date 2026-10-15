@@ -1,59 +1,356 @@
 {% extends "base.html" %}
-{% load i18n social_tags %}
+{% load i18n static obra_tags thumbnail avatar_tags %}
 
 {% block title %}{{ object.name }}{% endblock %}
 
-{% block extra_head %}
-{{ block.super }}
-<script type="text/javascript">
-    $(function (){
-        $('video,audio').mediaelementplayer({
-            audioWidth: 940,
-            // height of audio player
-            audioHeight: 30,
-            // initial volume when the player starts
-            audioWaveHeight: 100,
-            customSize: 'big',
-            startVolume: 0.8});
-    });
-</script>
+{% block content %}
+{# Order follows the interaction design: parts, contributions, requests, conversation; then versions, lineage, files and settings. #}
+{# No "play the work": files are rarely in sync, so each one plays on its own (in the persistent player). #}
+<div class="rp-obra">
+ <header class="rp-obra-head">
+  <div class="rp-head-id">
+   {% if object.image %}<img class="rp-cover rp-cover-lg" src="{% thumbnail object.image 240x240 crop %}" alt="">{% endif %}
+   <div>
+   <div class="d-flex align-items-center flex-wrap gap-2">
+    <h1 class="rp-h1 mb-0">{{ object.name }}</h1>
+    {% if is_owner %}<a class="rp-tag rp-tag-quiet rp-tag-link" href="{% url 'project-settings' object.slug %}#acceso"><i class="fa fa-{{ object.visibility_icon }}" aria-hidden="true"></i> {{ object.visibility_short }}</a>
+    {% elif object.visibility != "public" %}<span class="rp-tag rp-tag-quiet"><i class="fa fa-{{ object.visibility_icon }}" aria-hidden="true"></i> {{ object.visibility_short }}</span>{% endif %}
+    {% if version_list|length > 1 %}
+    {# Which version is sounding, and the others: one click away. #}
+    <div class="dropdown">
+     <button class="rp-tag rp-tag-quiet rp-tag-link rp-version-chip" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+             aria-label="{% trans 'Versions' %}">{% if viewing %}v{{ viewing.number }}{% elif current_version %}v{{ current_version.number }}{% else %}{% trans "versions" %}{% endif %} <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+     <ul class="dropdown-menu rp-version-menu">
+      {% for v in version_list %}
+      <li><a class="dropdown-item{% if viewing and viewing.pk == v.pk or not viewing and current_version.pk == v.pk %} active{% endif %}"
+             href="{{ object.get_absolute_url }}{% if current_version.pk != v.pk %}?v={{ v.number }}{% endif %}">
+       <b>v{{ v.number }}</b> · {{ v.created_by|display_name }}
+       <span class="small d-block rp-muted">{% if current_version.pk == v.pk %}{% blocktrans with who=object.user|display_name %}{{ who }}'s version, sounds by default{% endblocktrans %}{% elif v.parent %}{% blocktrans with n=v.parent.number %}comes from v{{ n }}{% endblocktrans %}{% endif %}{% if v.hidden %} · {% trans "hidden" %}{% endif %}</span></a></li>
+      {% endfor %}
+     </ul>
+    </div>
+    {% endif %}
+   </div>
+   <p class="rp-muted mb-1 rp-started-by">
+    {% trans "Started by" %} <a href="{{ object.user.get_absolute_url }}">{{ object.user|display_name }}</a>
+    {% if credits|length > 1 %}· <span class="rp-avatars" aria-hidden="true">{% for credit in credits|slice:":5" %}{% avatar credit.user 48 %}{% endfor %}</span>
+    <a href="#creditos">{% blocktrans count n=credits|length %}{{ n }} person plays here{% plural %}{{ n }} people play here{% endblocktrans %}</a>{% endif %}
+    {% if object.tempo %} · {{ object.tempo }} BPM{% endif %}{% if object.musical_key %} · {{ object.musical_key }}{% endif %}
+   </p>
+   </div>
+  </div>
+  <div class="rp-obra-actions">
+   {% if is_owner %}
+    <a class="btn rp-btn-primary" href="{% url 'project-contribute' object.slug %}"><i class="fa fa-microphone" aria-hidden="true"></i> {% trans "Add a layer" %}</a>
+   {% elif can_join_by_link %}
+    <form method="post" action="{% url 'project-join' object.slug %}">{% csrf_token %}
+     <button class="btn rp-btn-primary">{% trans "Join this work" %}</button>
+    </form>
+   {% elif can_contribute %}
+    {# A new version from the one being listened to. #}
+    <a class="btn rp-btn-primary" href="{% url 'project-contribute' object.slug %}{% if viewing %}?v={{ viewing.number }}{% endif %}"><i class="fa fa-microphone" aria-hidden="true"></i> {% trans "Add a layer" %}</a>
+   {% elif not request.user.is_authenticated %}
+    <a class="btn rp-btn-primary" href="{% url 'account_login' %}?next={% url 'project-contribute' object.slug %}">{% trans "Sign in to add a layer" %}</a>
+   {% endif %}
+   <button type="button" class="btn btn-outline-dark" data-share data-copied="{% trans 'Link copied' %}" title="{% trans 'Share' %}" aria-label="{% trans 'Share' %}"><i class="fa fa-share-alt" aria-hidden="true"></i></button>
+   {% if request.user.is_authenticated and not is_owner %}{% include "social/_interactions.html" with target="proyecto" target_obj=object is_favorite=reactions.0 is_amplified=reactions.1 public=is_public no_reply=True %}{% endif %}
+   {% if request.user.is_authenticated or can_download and parts or aligned_parts|length > 1 %}
+   <div class="dropdown">
+    <button class="btn btn-outline-dark" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{% trans 'More options' %}"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
+    <ul class="dropdown-menu dropdown-menu-end">
+     {# Following, downloading everything and listening to stems in sync: one click away. #}
+     {% if request.user.is_authenticated and not is_owner %}<li><form method="post" action="{% url 'project-follow' object.slug %}">{% csrf_token %}
+      <button class="dropdown-item" aria-pressed="{% if follows_project %}true{% else %}false{% endif %}">{% if follows_project %}<i class="fa fa-check fa-fw" aria-hidden="true"></i> {% trans "Following" %}{% else %}<i class="fa fa-plus fa-fw" aria-hidden="true"></i> {% trans "Follow" %}{% endif %}</button></form></li>{% endif %}
+     {% if can_download and parts %}<li><a class="dropdown-item" href="{% url 'project-parts-zip' object.slug %}"><i class="fa fa-download fa-fw" aria-hidden="true"></i> {% trans "Download all (.zip)" %}</a></li>{% endif %}
+     {% if aligned_parts|length > 1 %}<li><a class="dropdown-item" href="#juntos"><i class="fa fa-layer-group fa-fw" aria-hidden="true"></i> {% trans "Listen together (stems in sync)" %}</a></li>{% endif %}
+     {% if is_owner or can_contribute %}<li><a class="dropdown-item" href="{% url 'project-stems' object.slug %}"><i class="fa fa-folder-open fa-fw" aria-hidden="true"></i> {% trans "Upload a studio folder" %}</a></li>{% endif %}
+     {% if request.user.is_authenticated %}<li><a class="dropdown-item" href="{% url 'create' %}?from={{ object.slug }}"><i class="fa fa-code-branch fa-fw" aria-hidden="true"></i> {% trans "Create a new work based on this one" %}</a></li>{% endif %}
+     {% if is_member and not is_owner %}<li><a class="dropdown-item" href="{% url 'project-certificate' object.slug %}"><i class="fa fa-certificate fa-fw" aria-hidden="true"></i> {% trans "Proof of authorship" %}</a></li>{% endif %}
+     {% if is_owner %}
+     <li><hr class="dropdown-divider"></li>
+     <li><a class="dropdown-item" href="{% url 'project-settings' object.slug %}"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> {% trans "Settings" %}</a></li>
+     {% elif request.user.is_authenticated %}
+     <li><a class="dropdown-item" href="{% url 'report-create' 'obra' object.pk %}"><i class="fa fa-flag fa-fw" aria-hidden="true"></i> {% trans "Report" %}</a></li>
+     {% endif %}
+    </ul>
+   </div>
+   {% endif %}
+  </div>
+ </header>
+
+ {% if object.moderation_hidden %}
+ <div class="alert alert-warning" role="status">{% trans "This work was hidden by the volunteers who moderate RedPanal after a report. Only you can see it. If you think it's a mistake, write to the moderation team." %}</div>
+ {% endif %}
+
+ {% if viewing %}
+ {# Another version than the author's: whose it is, where it comes from, and the way back. #}
+ <div class="rp-card rp-viewing mb-4" role="status">
+  <span><i class="fa fa-code-branch" aria-hidden="true"></i>
+   {% blocktrans with n=viewing.number who=viewing.created_by|display_name %}You are listening to v{{ n }}, by {{ who }}{% endblocktrans %}{% if viewing.parent %} · <span class="rp-muted">{% blocktrans with n=viewing.parent.number %}comes from v{{ n }}{% endblocktrans %}</span>{% endif %}
+   {% if viewing.message %}<span class="d-block small">«{{ viewing.message }}»</span>{% endif %}</span>
+  <span class="d-flex gap-2 flex-wrap align-items-center">
+   {% if is_owner %}<form method="post" action="{% url 'project-version-restore' object.slug viewing.number %}">{% csrf_token %}
+    <button class="btn rp-btn-primary btn-sm">{% trans "Adopt this version" %}</button></form>{% endif %}
+   <a class="btn btn-link btn-sm" href="{{ object.get_absolute_url }}">{% trans "Back to what sounds by default" %}</a>
+  </span>
+ </div>
+ {% endif %}
+
+ <div class="rp-obra-grid">
+  <div class="rp-obra-main">
+   {# What waits for a decision comes first, once: no banner pointing further down. #}
+   {% if access_requests %}
+   <section aria-labelledby="solicitudes-title" id="solicitudes" class="mb-4">
+    <h2 class="rp-sec" id="solicitudes-title">{% trans "People who ask to join" %}</h2>
+    {% for m in access_requests %}
+    <div class="rp-card d-flex justify-content-between align-items-center flex-wrap gap-2">
+     <span><a href="{{ m.user.get_absolute_url }}"><b>{{ m.user|display_name }}</b></a>
+      {% if m.message %}<span class="small d-block">«{{ m.message }}»</span>{% endif %}</span>
+     <span class="d-flex gap-2">
+      <form method="post" action="{% url 'project-member-decide' object.slug m.pk %}">{% csrf_token %}
+       <input type="hidden" name="decision" value="accept"><button class="btn rp-btn-primary btn-sm">{% trans "Accept" %}</button></form>
+      <form method="post" action="{% url 'project-member-decide' object.slug m.pk %}">{% csrf_token %}
+       <input type="hidden" name="decision" value="decline"><button class="btn btn-outline-dark btn-sm">{% trans "Decline" %}</button></form>
+     </span>
+    </div>
+    {% endfor %}
+   </section>
+   {% endif %}
+
+   {% if proposed and is_owner or proposed and is_member %}
+   <section aria-labelledby="aportes-title" id="aportes" class="mb-4">
+    <h2 class="rp-sec" id="aportes-title">{% trans "In audition" %} <span class="rp-muted">({{ proposed|length }})</span>
+     {% trans "Visible to the people in the project" as tip %}{% include "_info.html" %}</h2>
+    {% for c in proposed %}
+    <article class="rp-card rp-contribution" id="aporte-{{ c.pk }}">
+     {% if c.request or c.note %}<div>
+      {% if c.request %}<span class="rp-muted small">{% blocktrans with r=c.request %}for the request «{{ r }}»{% endblocktrans %}</span>{% endif %}
+      {% if c.note %}<p class="mb-0 mt-1">«{{ c.note }}»</p>{% endif %}
+     </div>{% endif %}
+     {% contribution_player object c %}
+     {% if is_owner %}
+     <div class="d-flex gap-2 flex-wrap align-items-center">
+      <form method="post" action="{% url 'contribution-status' object.slug c.pk %}" class="d-flex gap-2 align-items-center">{% csrf_token %}
+       <input type="hidden" name="status" value="included">
+       <button class="btn rp-btn-primary">{% trans "Include in the work" %}</button>
+       {% if c.request and c.request.is_open %}<label class="small"><input type="checkbox" name="close_request" value="1" checked> {% trans "close the request" %}</label>{% endif %}
+      </form>
+      <form method="post" action="{% url 'contribution-status' object.slug c.pk %}">{% csrf_token %}
+       <input type="hidden" name="status" value="alternative">
+       <button class="btn btn-outline-dark">{% trans "Keep as an alternative" %}</button>
+      </form>
+     </div>
+     {% endif %}
+    </article>
+    {% endfor %}
+   </section>
+   {% endif %}
+
+   <section aria-labelledby="partes-title" id="partes">
+    <h2 class="rp-sec" id="partes-title">{% trans "Layers" %}</h2>
+    {# Every file plays on its own; after it, the others of the work. #}
+    <div data-queue>
+    {% for g in layer_groups %}
+    <div class="rp-layer-group">
+     {% if g.label %}<p class="rp-eyebrow mb-1">{{ g.label }}</p>{% endif %}
+     <div class="rp-files">
+      {% for c in g.layers %}
+      <div class="rp-file-row" id="capa-{{ c.pk }}">
+       {% if g.label %}{% contribution_player object c grouped=True %}{% else %}{% contribution_player object c %}{% endif %}
+       {% if can_download or request.user.is_authenticated %}
+       <div class="dropdown">
+        <button type="button" class="rp-mini" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{% blocktrans with role=c.audio|part_role %}More options for {{ role }}{% endblocktrans %}"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+        <ul class="dropdown-menu dropdown-menu-end">
+         {% if can_download %}<li><a class="dropdown-item" href="{% url 'audio-download' c.audio_id %}"><i class="fa fa-download fa-fw" aria-hidden="true"></i> {% blocktrans with role=c.audio|part_role %}Download {{ role }}{% endblocktrans %}</a></li>{% endif %}
+         {% if c.alignment != "aligned" and aligned_parts and is_owner or c.alignment != "aligned" and aligned_parts and request.user == c.contributor %}<li><a class="dropdown-item" href="{% url 'contribution-align' object.slug c.pk %}"><i class="fa fa-sliders-h fa-fw" aria-hidden="true"></i> {% trans "Align with the others" %}</a></li>{% endif %}
+         {% if request.user.is_authenticated and request.user != c.audio.user %}<li><a class="dropdown-item" href="{% url 'report-create' 'audio' c.audio_id %}"><i class="fa fa-flag fa-fw" aria-hidden="true"></i> {% trans "Report this part" %}</a></li>{% endif %}
+        </ul>
+       </div>
+       {% endif %}
+      </div>
+      {% endfor %}
+      {% for r in g.wanted %}
+      <div class="rp-track rp-track-wanted">
+       <span><b>{% blocktrans with what=r.get_instrument_display %}Wanted: {{ what }}{% endblocktrans %}</b>
+        <span class="rp-muted small rp-dots">{% if r.open_until %}<span>{% blocktrans with d=r.open_until|date:"j M" %}open until {{ d }}{% endblocktrans %}</span>{% endif %}{% if r.n_proposed %}<span>{% blocktrans count n=r.n_proposed %}{{ n }} layer in audition{% plural %}{{ n }} layers in audition{% endblocktrans %}</span>{% endif %}</span>
+        {% if r.description %}<span class="small d-block">{{ r.description }}</span>{% endif %}</span>
+       {% if is_owner %}<form method="post" action="{% url 'project-request-toggle' object.slug r.pk %}">{% csrf_token %}<button class="btn btn-link btn-sm p-0">{% trans "Close" %}</button></form>
+       {% elif can_contribute %}<a class="btn btn-outline-dark btn-sm" href="{% url 'project-contribute' object.slug %}?pedido={{ r.pk }}">{% trans "Answer the collaboration" %}</a>
+       {% elif not request.user.is_authenticated %}<a class="btn btn-outline-dark btn-sm" href="{% url 'account_login' %}?next={% url 'project-contribute' object.slug %}?pedido={{ r.pk }}">{% trans "Answer the collaboration" %}</a>{% endif %}
+      </div>
+      {% endfor %}
+     </div>
+    </div>
+    {% endfor %}
+    </div>
+
+    {% if aligned_parts|length > 1 %}
+    {# Stems exported from the same session: heard together from the ⋯ menu; out of sight until then. #}
+    <details class="rp-together mt-3" id="juntos">
+     <summary class="small"><i class="fa fa-layer-group" aria-hidden="true"></i> {% trans "Listen together (stems in sync)" %} <i class="fa fa-times ms-1" aria-hidden="true"></i></summary>
+     <div class="rp-together-body" data-mixer>
+      <div class="rp-transport">
+       <button type="button" class="rp-play" data-play data-label-play="{% trans 'Play' %}" data-label-pause="{% trans 'Pause' %}" aria-label="{% trans 'Play' %}"><i class="fa fa-play" aria-hidden="true"></i></button>
+       <span class="rp-time"><b data-time>0:00</b> <span class="rp-muted">/ <span data-duration>0:00</span></span></span>
+       <label class="visually-hidden" for="rp-seek">{% trans "Position" %}</label>
+       <input id="rp-seek" class="rp-seek" type="range" min="0" max="1000" value="0" data-seek>
+       <span class="rp-muted small" data-status data-loading="{% trans 'Loading…' %}"></span>
+      </div>
+      <div class="rp-tracks">{% for c in aligned_parts %}{% include "project/_track.html" with c=c candidate=False %}{% endfor %}</div>
+     </div>
+    </details>
+    {% endif %}
+   </section>
+
+   {% if comments or can_contribute %}<section class="mt-4" aria-labelledby="conv-title" id="conversacion">
+    <h2 class="rp-sec" id="conv-title">{% trans "Conversation" %}</h2>
+    <ul class="rp-comments">
+     {% for m in comments %}
+     <li id="c{{ m.pk }}">
+      <a href="{{ m.user.get_absolute_url }}"><b>{{ m.user|display_name }}</b></a>
+      {% if m.at_ms is not None %}<span class="rp-at">{% blocktrans with t=m.at_ms|mmss %}at {{ t }}{% endblocktrans %}</span>{% endif %}
+      <span class="rp-muted small">· {% blocktrans with t=m.created_at|timesince %}{{ t }} ago{% endblocktrans %}</span>
+      {% if request.user.is_authenticated and request.user != m.user %}<a class="rp-muted small ms-1 rp-on-hover" href="{% url 'report-create' 'comentario' m.pk %}" aria-label="{% trans 'Report this comment' %}"><i class="fa fa-flag" aria-hidden="true"></i></a>{% endif %}
+      <div>{{ m.as_html|safe }}</div>
+      {% if m.replies.all %}
+      <ul class="rp-replies">
+       {% for r in m.replies.all %}{% if not r.moderation_hidden %}
+       <li><a href="{{ r.user.get_absolute_url }}"><b>{{ r.user|display_name }}</b></a> <span class="rp-muted small">· {% blocktrans with t=r.created_at|timesince %}{{ t }} ago{% endblocktrans %}</span>
+        <div>{{ r.as_html|safe }}</div></li>
+       {% endif %}{% endfor %}
+      </ul>
+      {% endif %}
+      {% if can_contribute %}
+      <details class="rp-reply">
+       <summary class="small">{% trans "Reply" %}</summary>
+       <form method="post" action="{% url 'project-comment' object.slug %}" class="d-flex gap-2 mt-1">{% csrf_token %}
+        <input type="hidden" name="parent" value="{{ m.pk }}">
+        <label class="visually-hidden" for="reply-{{ m.pk }}">{% trans "Reply" %}</label>
+        <input class="form-control form-control-sm" type="text" id="reply-{{ m.pk }}" name="msg" maxlength="1000" required>
+        <button class="btn btn-outline-dark btn-sm">{% trans "Send" %}</button>
+       </form>
+      </details>
+      {% endif %}
+     </li>
+     {% endfor %}
+    </ul>
+    {% if can_contribute %}
+    <form method="post" action="{% url 'project-comment' object.slug %}" class="d-flex gap-2" data-comment-form>{% csrf_token %}
+     <input type="hidden" name="at_ms" value="">
+     <label class="visually-hidden" for="id_msg">{% trans "Comment" %}</label>
+     <input class="form-control" type="text" id="id_msg" name="msg" maxlength="1000" required
+            placeholder="{% trans 'Write a comment' %}" data-placeholder-at="{% trans 'Comment at %s' %}">
+     <button class="btn btn-outline-dark">{% trans "Send" %}</button>
+    </form>
+    {% endif %}
+   </section>{% endif %}
+  </div>
+
+  <aside class="rp-obra-side">
+   {# Open collaborations show among the layers; asking for a new one, one click away. #}
+   {% if is_owner %}
+   <details class="rp-card" id="pedidos">
+     <summary class="rp-sec mb-0">{% trans "New collaboration" %}</summary>
+     <form method="post" action="{% url 'project-request-create' object.slug %}" class="mt-2 d-grid gap-2">{% csrf_token %}
+      <label class="visually-hidden" for="id_instrument">{% trans "Instrument" %}</label>
+      <select class="form-select form-select-sm" name="instrument" id="id_instrument">{% for value, label in request_form.fields.instrument.choices %}{% if value %}<option value="{{ value }}">{{ label|capfirst }}</option>{% endif %}{% endfor %}</select>
+      <label class="visually-hidden" for="id_description">{% trans "What you are looking for" %}</label>
+      <input class="form-control form-control-sm" name="description" id="id_description" maxlength="200" placeholder="{% trans 'Notes: register, references…' %}">
+      <label class="small" for="id_open_until">{% trans "Open until (optional)" %}</label>
+      <input class="form-control form-control-sm" type="date" name="open_until" id="id_open_until">
+      <button class="btn btn-outline-dark btn-sm">{% trans "Add collaboration" %}</button>
+     </form>
+     {% if closed_requests %}
+     <p class="rp-eyebrow mt-3 mb-1">{% blocktrans count n=closed_requests|length %}{{ n }} closed request{% plural %}{{ n }} closed requests{% endblocktrans %}</p>
+     {% for r in closed_requests %}
+     <div class="rp-row">
+      <span>{{ r.get_instrument_display|capfirst }}{% if r.description %} <span class="rp-muted small">· {{ r.description }}</span>{% endif %}</span>
+      <form method="post" action="{% url 'project-request-toggle' object.slug r.pk %}">{% csrf_token %}<button class="btn btn-link btn-sm p-0">{% trans "Reopen" %}</button></form>
+     </div>
+     {% endfor %}
+     {% endif %}
+   </details>
+   {% endif %}
+
+   {% if documents %}
+   <section class="rp-card" aria-labelledby="docs-title">
+    <h2 class="rp-sec" id="docs-title">{% trans "Lyrics and chords" %}</h2>
+    {% for f in documents %}<a class="rp-doc" href="{{ f.get_absolute_url }}"><span class="rp-doc-kind">{{ f.name|slice:"-3:"|upper }}</span> {{ f.name }}</a>{% endfor %}
+   </section>
+   {% endif %}
+
+   {# Credits, license, versions, lineage and files: one click away. Only what has something in it. #}
+   <details class="rp-card rp-history" id="historia">
+    <summary class="rp-sec mb-0">{% trans "More data" %}</summary>
+
+    {% if credits %}
+    <section class="rp-history-part" id="creditos" aria-labelledby="creditos-title">
+     <div class="rp-section-head"><h2 class="rp-eyebrow mb-0" id="creditos-title">{% trans "Credits" %}</h2><a class="small" href="{% url 'project-credits' object.slug %}">{% trans "Export" %}</a></div>
+     {% for credit in credits %}<div class="rp-row"><a href="{{ credit.user.get_absolute_url }}">{{ credit.user|display_name }}</a><span class="rp-muted small text-end">{{ credit.roles|join:", " }}</span></div>{% endfor %}
+    </section>
+    {% endif %}
+    <p class="rp-history-part rp-muted small mb-0">{{ object.get_license.plain }} · <a href="{{ object.get_license.url }}" rel="license" target="_blank">{{ object.license }}</a></p>
+
+    {% if versions %}
+    <section class="rp-history-part" id="versiones" aria-labelledby="versiones-title">
+     <h2 class="rp-eyebrow" id="versiones-title">{% trans "Versions" %}</h2>
+     {% if latest_version and can_download %}<a class="small d-block mb-1" href="{% url 'project-version-mix' object.slug latest_version.number %}"><i class="fa fa-download" aria-hidden="true"></i> {% blocktrans with n=latest_version.number %}Mix of v{{ n }} (MP3){% endblocktrans %}</a>{% endif %}
+     {# The tree of versions: who made each one and which one it comes from. #}
+     {% for v in versions %}
+      <div class="rp-row"><a href="{{ object.get_absolute_url }}{% if current_version.pk != v.pk %}?v={{ v.number }}{% endif %}"><b>v{{ v.number }}</b> {{ v.created_by|display_name }}{% if v.parent %} <span class="rp-muted small">← v{{ v.parent.number }}</span>{% endif %}</a><span class="rp-muted small">{{ v.created_at|date:"j M" }}</span></div>
+     {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if alternatives %}
+    <section class="rp-history-part" id="alternativas" aria-labelledby="alternativas-title">
+     <h2 class="rp-eyebrow" id="alternativas-title">{% trans "Alternatives" %} ({{ alternatives|length }})</h2>
+     {% for c in alternatives %}
+      {% contribution_player object c %}
+      {% if is_owner %}
+      <form method="post" action="{% url 'contribution-status' object.slug c.pk %}">{% csrf_token %}
+       <input type="hidden" name="status" value="included"><button class="btn btn-link btn-sm p-0">{% trans "Bring it back" %}</button>
+      </form>
+      {% endif %}
+     {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if genealogy_above or genealogy_below %}
+    <div class="rp-history-part">{% include "project/_genealogy.html" with above=genealogy_above below=genealogy_below here=object.name bare=True %}</div>
+    {% endif %}
+
+    {% if attachments %}
+    <section class="rp-history-part" id="archivos" aria-labelledby="archivos-title">
+     <h2 class="rp-eyebrow" id="archivos-title">{% trans "Files to work in your studio" %}
+      {% trans "Session files only open in the same program, with the same plugins." as tip %}{% include "_info.html" %}</h2>
+     {% for f in attachments %}
+     <div class="rp-row mt-1">
+      <span class="text-truncate small">{% if can_download %}<a href="{{ f.get_absolute_url }}"><i class="fa fa-download" aria-hidden="true"></i> {{ f.name }}</a>{% else %}{{ f.name }}{% endif %}
+       <span class="rp-muted d-block">{{ f.get_kind_display }} · {{ f.size|filesizeformat }}{% if f.kind == "dawproject" %} · {% trans "opens in compatible DAWs" %}{% endif %}</span></span>
+     </div>
+     {% endfor %}
+    </section>
+    {% endif %}
+   </details>
+  </aside>
+ </div>
+
+ {% if more_to_listen %}
+ {# The page never ends in a dead end: more works and sounds to keep listening. #}
+ <section class="mt-5" aria-labelledby="mas-title">
+  <h2 class="rp-sec" id="mas-title">{% trans "Keep listening" %}</h2>
+  <div class="rp-grid">
+   {% for item in more_to_listen %}
+    {% if item.kind == "obra" %}{% include "project/_work_card.html" with work=item.obj %}{% else %}{% include "project/_sound_card.html" with sound=item.obj %}{% endif %}
+   {% endfor %}
+  </div>
+ </section>
+ {% endif %}
+</div>
 {% endblock %}
 
-{% block content %}
-<div class="project-detail">
-
-   {% with mode="in-project-detail" %}
-      {% include "project/project_teaser.html" %}
-   {% endwith %}
-
-   <div class="form-actions">
-     <div class="project-btn">
-      <a class="btn btn-warning" title="{% trans "You can download a mix of proyect audio selecting traks" %}" href="{% url "project-download-mix" object.slug %}"><i class="fa fa-copy"></i> {% trans "Download Mix" %}</a>
-      <a class="btn btn-warning" title="{% trans "You can add your own tracks and make the changes you want to the cloned version of this project" %}" href="{% url "project-create-version" object.slug %}"><i class="fa fa-copy"></i> {% trans "Clone Project" %}</a></div>
-   </div>
-
-   {% for audio in project.audios.all %}
-     {% include "audio/audio_teaser.html" with object=audio mode="in-project-detail" %}
-   {% endfor %}
-
-   {% if project.audios_from_versions %}
-      <h3>{% trans "Tracks from versions" %}</h3>
-
-      {% for audio in project.audios_from_versions %}
-         {% include "audio/audio_teaser.html" with object=audio mode="in-project-detail" %}
-      {% endfor %}
-   {% endif %}
-</div>
-
-<h4 class="comments-title">{% blocktrans with obj_name=object.name|capfirst %}Comments for '{{ obj_name }}' project:{% endblocktrans %}</h4>
-<div class="action-stream-wrapper for-object">
-{% show_messages_for object %}
-</div>
-
-{% if request.user.is_authenticated %}
-    {% with initial_msg=object|render_collaborators %}
-        {% message_form_for object %}
-    {% endwith %}
-{% endif %}
-
+{% block body_end_scripts %}
+<script src="{% static 'js/obra-player.js' %}"></script>
+<script src="{% static 'js/obra-page.js' %}"></script>
 {% endblock %}

@@ -1,0 +1,17 @@
+{% load i18n %}<fieldset class="rp-visibility">
+ <legend class="form-label fw-bold fs-6">{% trans "Who can listen" %}</legend>
+ {% for radio in field %}
+ <label class="rp-vis-option">
+  {{ radio.tag }}
+  <span>
+   <b>{{ radio.choice_label }}</b>
+   <span class="rp-muted small d-block">
+    {% if radio.data.value == "private" %}{% trans "Nobody else finds it. You add people from the work." %}
+    {% elif radio.data.value == "link" %}{% trans "Whoever has the secret link listens to it. It doesn't show up in listings or search." %}
+    {% elif radio.data.value == "open_call" %}{% blocktrans %}It shows up in Explore with what it needs and a 30 second preview. To hear it whole, people ask you to join.{% endblocktrans %}
+    {% else %}{% trans "Anyone listens to all of it and can create new works based on it." %}{% endif %}
+   </span>
+  </span>
+ </label>
+ {% endfor %}
+</fieldset>

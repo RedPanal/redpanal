@@ -1,9 +1,10 @@
 import datetime
 from haystack import indexes
+from redpanal.utils.search import PublicOnlyIndexMixin
 from .models import Project
 
 
-class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
+class ProjectIndex(PublicOnlyIndexMixin, indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     author = indexes.CharField(model_attr='user')
     created_at = indexes.DateTimeField(model_attr='created_at')
@@ -15,5 +16,8 @@ class ProjectIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Project
 
+    def is_public(self, obj):
+        return obj.is_listed
+
     def index_queryset(self, using=None):
-        return self.get_model().objects.all()
+        return self.get_model().objects.listed()

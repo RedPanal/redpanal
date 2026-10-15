@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load i18n obra_tags avatar_tags %}
+
+{% block title %}{% trans "Community" %}{% endblock %}
+{% block body_class %}home{% endblock %}
+
+{% block content %}
+{# Only what has something to show is shown: no empty sections. #}
+<div class="rp-home">
+ {% if notices %}
+ {# Only what waits for your decision; everything else is in the bell. #}
+ <section class="mb-4 rp-notices" aria-label="{% trans 'Waiting for you' %}">{% for n in notices %}{% include "social/_notification.html" %}{% endfor %}</section>
+ {% endif %}
+
+ {% if feed %}
+ <div class="rp-feed" aria-label="{% trans 'Community' %}">
+  {% for item in feed %}
+  <article class="rp-feed-item">
+   {% if item.reason %}
+   {# Related to what you play or tag: says why, and the card names who made it. #}
+   <p class="rp-feed-who rp-feed-why">{{ item.reason }}</p>
+   {% else %}
+   <p class="rp-feed-who">
+    <a href="{{ item.actor.get_absolute_url }}"><span class="rp-nav-avatar" aria-hidden="true">{% avatar item.actor 48 %}</span><b>{{ item.actor|display_name }}</b></a>
+    <span class="rp-muted">{% if item.amplified %}<i class="fa fa-retweet" aria-hidden="true"></i> {% trans "amplified" %}{% elif item.kind == "project" %}{% trans "started a project" %}{% elif item.kind == "sound" %}{% trans "shared a sound" %}{% elif item.kind == "comment" %}{% trans "commented" %}{% elif item.kind == "post" %}{% trans "posted" %}{% elif item.kind == "version" %}{% blocktrans with n=item.object.number %}saved version {{ n }}{% endblocktrans %}{% elif item.kind == "layer" %}{% trans "added a layer" %}{% endif %}
+     · {% blocktrans with t=item.when|timesince %}{{ t }} ago{% endblocktrans %}</span>
+   </p>
+   {% endif %}
+   {# The author is already named above when it's the same person: the card doesn't repeat it. #}
+   {% if item.kind == "project" or item.kind == "version" or item.kind == "layer" %}
+    {% if item.actor == item.work.user %}{% include "project/_work_card.html" with work=item.work hide_author=True hide_status=True %}{% else %}{% include "project/_work_card.html" with work=item.work hide_status=True %}{% endif %}
+   {% elif item.kind == "sound" %}
+    {% if item.actor == item.object.user %}{% include "project/_sound_card.html" with sound=item.object hide_author=True %}{% else %}{% include "project/_sound_card.html" with sound=item.object %}{% endif %}
+   {% elif item.kind == "comment" or item.kind == "post" %}
+   <div class="rp-card rp-comment-card">
+    {% if item.actor != item.object.user %}<span class="small"><b>{{ item.object.user|display_name }}</b></span>{% endif %}
+    <span>{{ item.object.as_html|safe }}</span>
+    {% if item.object.content_object.name %}<a class="rp-muted small" href="{{ item.object.content_object.get_absolute_url }}">{% blocktrans with name=item.object.content_object.name %}on «{{ name }}»{% endblocktrans %}</a>{% endif %}
+    {% with replies=item.object.replies.all %}{% if replies %}
+    <details class="rp-replies-fold"><summary class="rp-muted small">{% blocktrans count n=replies|length %}{{ n }} reply{% plural %}{{ n }} replies{% endblocktrans %}</summary>
+    <ul class="rp-replies">{% for r in replies %}{% if not r.moderation_hidden %}<li><b>{{ r.user|display_name }}</b> <span>{{ r.as_html|safe }}</span></li>{% endif %}{% endfor %}</ul></details>
+    {% endif %}{% endwith %}
+   </div>
+   {% endif %}
+   {% include "social/_interactions.html" with target=item.target target_obj=item.target_obj is_favorite=item.is_favorite is_amplified=item.is_amplified public=item.public %}
+  </article>
+  {% endfor %}
+ </div>
+ {% endif %}</div>
+{% endblock %}
