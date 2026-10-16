@@ -11,6 +11,10 @@ EXTRA = {
     "media", "moderacion", "notificaciones", "personas", "privacidad", "proyectos", "redpanal", "reproductor",
     "robots.txt", "sitemap.xml", "sonidos", "static", "settings", "sobre", "soporte", "terminos", "u", "p", "a",
     "usuarios", "www",
+    # Studio and lab, in every language the site speaks (or may): kept for the workspace and experiments.
+    "studio", "estudio", "lab", "labo", "laboratorio", "laboratory",
+    # Language prefixes, for when English and Portuguese get their own addresses (/en/..., /pt/...).
+    "es", "en", "pt",
 }
 
 _LITERAL = re.compile(r"^\^?([\w.-]+)/")

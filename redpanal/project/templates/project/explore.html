@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% load i18n static obra_tags avatar_tags %}
+{% load i18n static obra_tags avatar_tags seo_tags %}
 
 {% block title %}{% trans "Explore" %}{% endblock %}
+{% block seo %}{% trans "Projects, sounds and people on RedPanal: search by instrument, tempo, key or hashtag." as explore_desc %}{% seo_meta title=_("Explore") description=explore_desc noindex=request.GET %}{% endblock %}
 
 {% block content %}
 <h1 class="rp-h1">{% trans "Explore" %}</h1>

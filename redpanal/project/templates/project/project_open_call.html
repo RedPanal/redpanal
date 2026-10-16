@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% load i18n obra_tags %}
+{% load i18n obra_tags seo_tags %}
 
 {% block title %}{{ object.name }}{% endblock %}
+{% block seo %}{% seo_project object %}{% endblock %}
 
 {% block content %}
 <div class="rp-narrow">

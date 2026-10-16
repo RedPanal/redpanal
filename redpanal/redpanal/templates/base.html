@@ -1,10 +1,12 @@
-{% load static avatar_tags i18n obra_tags %}
+{% load static avatar_tags i18n obra_tags seo_tags %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:'es' }}" data-palette="{{ palette }}"{% if palette_is_dark %} data-bs-theme="dark"{% endif %}>
 <head>
  <meta charset="UTF-8" />
  <meta name="viewport" content="width=device-width, initial-scale=1">
- <title>RedPanal | {% block title %}{% endblock %}</title>
+ <title>{% block head_title %}{% block title %}{% endblock %} · RedPanal{% endblock %}</title>
+ {# Description, canonical, link previews and schema.org (core/seo.py); detail pages pass their object. #}
+ {% block seo %}{% seo_meta %}{% endblock %}
  <link href="{% static 'css/bootstrap-5.3.min.css' %}" rel="stylesheet">
  <link href="{% static 'fontawesome/css/all.min.css' %}" rel="stylesheet">
  <link href="{% static 'css/redpanal.css' %}?{{ GIT_SHORT_VERSION }}" rel="stylesheet">

@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% load i18n avatar_tags obra_tags thumbnail %}
+{% load i18n avatar_tags obra_tags thumbnail seo_tags %}
 
 {% block title %}{{ person|display_name }}{% endblock %}
+{% block seo %}{% seo_person person %}{% endblock %}
 
 {% block content %}
 {# What someone plays and makes, and who they play with. Only sections with something in them are shown. #}

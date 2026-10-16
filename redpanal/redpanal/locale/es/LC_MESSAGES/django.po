@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-15 19:28-0300\n"
+"POT-Creation-Date: 2026-10-16 11:56-0300\n"
 "PO-Revision-Date: 2026-03-11 00:00+0000\n"
 "Last-Translator: RedPanal, 2026\n"
 "Language-Team: Spanish\n"
@@ -62,7 +62,7 @@ msgstr "jazz"
 msgid "blues"
 msgstr "blues"
 
-#: audio/models.py:40 project/templates/project/explore.html:32
+#: audio/models.py:40 project/templates/project/explore.html:33
 msgid "folklore"
 msgstr "folklore"
 
@@ -242,66 +242,66 @@ msgid "Are you sure you want to delete this audio?"
 msgstr "¿Estás seguro de que querés eliminar este audio?"
 
 #: audio/templates/audio/audio_confirm_delete.html:16
-#: audio/templates/audio/audio_detail.html:48
+#: audio/templates/audio/audio_detail.html:49
 #: project/templates/project/project_confirm_delete.html:16
 #: project/templates/project/project_settings.html:43
 #: project/templates/project/project_teaser.html:37
 msgid "Delete"
 msgstr "Eliminar"
 
-#: audio/templates/audio/audio_detail.html:14 project/models.py:44
+#: audio/templates/audio/audio_detail.html:15 project/models.py:44
 msgid "private"
 msgstr "privado"
 
-#: audio/templates/audio/audio_detail.html:15
+#: audio/templates/audio/audio_detail.html:16
 #: moderation/templates/moderation/panel.html:20
 #: project/templates/project/my_favorites.html:39
-#: project/templates/project/project_detail.html:212
-#: project/templates/project/project_detail.html:218
+#: project/templates/project/project_detail.html:213
+#: project/templates/project/project_detail.html:219
 #: redpanal/templates/home.html:26
 #: social/templates/social/_notification.html:21
-#: users/templates/users/profile.html:113
+#: users/templates/users/profile.html:114
 #, python-format
 msgid "%(t)s ago"
 msgstr "hace %(t)s"
 
-#: audio/templates/audio/audio_detail.html:17
+#: audio/templates/audio/audio_detail.html:18
 #, python-format
 msgid "Track of <a href=\"%(url)s\">«%(name)s»</a>"
 msgstr "Pista de <a href=\"%(url)s\">«%(name)s»</a>"
 
-#: audio/templates/audio/audio_detail.html:18
-#: audio/templates/audio/audio_detail.html:62
+#: audio/templates/audio/audio_detail.html:19
+#: audio/templates/audio/audio_detail.html:63
 msgid "About this sound"
 msgstr "Sobre este sonido"
 
-#: audio/templates/audio/audio_detail.html:32 redpanal/templates/_dock.html:53
+#: audio/templates/audio/audio_detail.html:33 redpanal/templates/_dock.html:53
 msgid "Download original"
 msgstr "Bajar el original"
 
-#: audio/templates/audio/audio_detail.html:36
-#: project/templates/project/project_detail.html:59
-#: redpanal/templates/base.html:121
+#: audio/templates/audio/audio_detail.html:37
+#: project/templates/project/project_detail.html:60
+#: redpanal/templates/base.html:123
 msgid "More options"
 msgstr "Más opciones"
 
-#: audio/templates/audio/audio_detail.html:40
+#: audio/templates/audio/audio_detail.html:41
 msgid "New project with this sound"
 msgstr "Proyecto nuevo con este sonido"
 
-#: audio/templates/audio/audio_detail.html:41
+#: audio/templates/audio/audio_detail.html:42
 msgid "Add to one of yours"
 msgstr "Sumarlo a uno tuyo"
 
-#: audio/templates/audio/audio_detail.html:46
-#: project/templates/project/project_detail.html:55
+#: audio/templates/audio/audio_detail.html:47
+#: project/templates/project/project_detail.html:56
 #: project/templates/project/sound_create.html:74
 #: project/templates/project/upload_share.html:4
 #: project/templates/project/upload_share.html:9
 msgid "Share"
 msgstr "Compartir"
 
-#: audio/templates/audio/audio_detail.html:47
+#: audio/templates/audio/audio_detail.html:48
 #: audio/templates/audio/audio_form.html:4
 #: audio/templates/audio/audio_form.html:8
 #: audio/templates/audio/audio_form.html:9
@@ -312,60 +312,60 @@ msgstr "Compartir"
 msgid "Edit details"
 msgstr "Editar datos"
 
-#: audio/templates/audio/audio_detail.html:50
+#: audio/templates/audio/audio_detail.html:51
 #: moderation/templates/moderation/report_form.html:4
 #: moderation/templates/moderation/report_form.html:8
-#: project/templates/project/project_detail.html:73
+#: project/templates/project/project_detail.html:74
 msgid "Report"
 msgstr "Reportar"
 
-#: audio/templates/audio/audio_detail.html:70
+#: audio/templates/audio/audio_detail.html:71
 msgid "Appears in"
 msgstr "Aparece en"
 
-#: audio/templates/audio/audio_detail.html:75
-#: project/templates/project/project_detail.html:206
+#: audio/templates/audio/audio_detail.html:76
+#: project/templates/project/project_detail.html:207
 msgid "Conversation"
 msgstr "Conversación"
 
-#: audio/templates/audio/audio_detail.html:85
+#: audio/templates/audio/audio_detail.html:86
 msgid "Technical data"
 msgstr "Datos técnicos"
 
-#: audio/templates/audio/audio_detail.html:87
+#: audio/templates/audio/audio_detail.html:88
 #: audio/templates/audio/audio_teaser.html:53
-#: project/templates/project/explore.html:45
+#: project/templates/project/explore.html:46
 msgid "Genre"
 msgstr "Género"
 
-#: audio/templates/audio/audio_detail.html:88
+#: audio/templates/audio/audio_detail.html:89
 msgid "Duration"
 msgstr "Duración"
 
-#: audio/templates/audio/audio_detail.html:89
+#: audio/templates/audio/audio_detail.html:90
 msgid "Sample rate"
 msgstr "Frecuencia de muestreo"
 
-#: audio/templates/audio/audio_detail.html:90
+#: audio/templates/audio/audio_detail.html:91
 #: audio/templates/audio/audio_teaser.html:11
 #: audio/templates/audio/audio_teaser.html:23
 #: audio/templates/audio/audio_teaser.html:39
 msgid "Channels"
 msgstr "Canales"
 
-#: audio/templates/audio/audio_detail.html:91
+#: audio/templates/audio/audio_detail.html:92
 msgid "Size"
 msgstr "Tamaño"
 
-#: audio/templates/audio/audio_detail.html:92
+#: audio/templates/audio/audio_detail.html:93
 msgid "Format"
 msgstr "Formato"
 
-#: audio/templates/audio/audio_detail.html:93
+#: audio/templates/audio/audio_detail.html:94
 msgid "Published"
 msgstr "Publicado"
 
-#: audio/templates/audio/audio_detail.html:94
+#: audio/templates/audio/audio_detail.html:95
 msgid "License"
 msgstr "Licencia"
 
@@ -388,20 +388,20 @@ msgstr "Tipo"
 
 #: audio/templates/audio/audio_form.html:27 project/forms.py:74
 #: project/forms.py:111 project/forms.py:127
-#: project/templates/project/explore.html:52
+#: project/templates/project/explore.html:53
 #: project/templates/project/project_form.html:23
 msgid "Tempo (BPM)"
 msgstr "Tempo (BPM)"
 
 #: audio/templates/audio/audio_form.html:31 project/forms.py:128
-#: project/templates/project/explore.html:38
+#: project/templates/project/explore.html:39
 #: project/templates/project/project_form.html:27
 msgid "Key"
 msgstr "Tonalidad"
 
 #: audio/templates/audio/audio_form.html:35 project/forms.py:125
-#: project/forms.py:143 project/templates/project/explore.html:24
-#: project/templates/project/project_detail.html:255
+#: project/forms.py:143 project/templates/project/explore.html:25
+#: project/templates/project/project_detail.html:256
 #: project/templates/project/stems_upload.html:59
 #: project/templates/project/upload_complete.html:53
 #: project/templates/project/work_create_folder.html:38
@@ -494,44 +494,94 @@ msgstr ""
 "Cualquiera puede usar este material si nombra a quienes lo hicieron y "
 "comparte igual."
 
-#: core/templates/core/hashtaged_list.html:45
+#: core/seo.py:46
+msgid "sound"
+msgstr "sonido"
+
+#: core/seo.py:48
+#, python-format
+msgid "%(kind)s of %(instrument)s"
+msgstr "%(kind)s de %(instrument)s"
+
+#: core/seo.py:67
+#, python-format
+msgid "%(what)s by %(who)s."
+msgstr "%(what)s, de %(who)s."
+
+#: core/seo.py:68
+msgid "Free license: listen to it, download it and use it in your projects."
+msgstr "Licencia libre: escuchalo, bajalo y usalo en tus proyectos."
+
+#: core/seo.py:94
+#, python-format
+msgid "A project by %(who)s on RedPanal, made in layers."
+msgstr "Un proyecto de %(who)s en RedPanal, hecho por capas."
+
+#: core/seo.py:95
+msgid "Listen to it and add your own layer."
+msgstr "Escuchalo y sumale tu capa."
+
+#: core/seo.py:123
+#, python-format
+msgid "%(who)s on RedPanal."
+msgstr "%(who)s en RedPanal."
+
+#: core/seo.py:125
+#, python-format
+msgid "Plays %(what)s."
+msgstr "Toca %(what)s."
+
+#: core/seo.py:126
+msgid "Listen to their projects and sounds, under free licenses."
+msgstr "Escuchá sus proyectos y sonidos, con licencias libres."
+
+#: core/templates/core/hashtaged_list.html:5
+#, python-format
+msgid ""
+"Projects, sounds and posts with #%(tag)s on RedPanal, the free music "
+"community."
+msgstr ""
+"Proyectos, sonidos y publicaciones con #%(tag)s en RedPanal, la comunidad de "
+"música libre."
+
+#: core/templates/core/hashtaged_list.html:46
 msgid "Projects tagged with"
 msgstr "Proyectos etiquetados con"
 
-#: core/templates/core/hashtaged_list.html:46
+#: core/templates/core/hashtaged_list.html:47
 msgid "List of projects tagged with"
 msgstr "Lista de proyectos etiquetados con"
 
-#: core/templates/core/hashtaged_list.html:48
+#: core/templates/core/hashtaged_list.html:49
 msgid "Tracks tagged with"
 msgstr "Pistas etiquetadas con"
 
-#: core/templates/core/hashtaged_list.html:49
+#: core/templates/core/hashtaged_list.html:50
 msgid "List of tracks tagged with"
 msgstr "Lista de pistas etiquetadas con"
 
-#: core/templates/core/hashtaged_list.html:51
+#: core/templates/core/hashtaged_list.html:52
 msgid "Messages tagged with"
 msgstr "Mensajes etiquetados con"
 
-#: core/templates/core/hashtaged_list.html:52
+#: core/templates/core/hashtaged_list.html:53
 msgid "List of messages tagged with"
 msgstr "Lista de mensajes etiquetados con"
 
-#: core/templates/core/hashtaged_list.html:54
+#: core/templates/core/hashtaged_list.html:55
 msgid "Users tagged with"
 msgstr "Usuarios etiquetados con"
 
-#: core/templates/core/hashtaged_list.html:55
+#: core/templates/core/hashtaged_list.html:56
 msgid "List of users tagged with"
 msgstr "Lista de usuarios etiquetados con"
 
-#: core/templates/core/hashtaged_list.html:57
+#: core/templates/core/hashtaged_list.html:58
 #: redpanal/templates/search/search.html:41
 msgid "Results for "
 msgstr "Resultados para "
 
-#: core/templates/core/hashtaged_list.html:58
+#: core/templates/core/hashtaged_list.html:59
 msgid "List of objects tagged with"
 msgstr "Lista de objetos etiquetados con"
 
@@ -572,6 +622,14 @@ msgstr ""
 msgid "Try again"
 msgstr "Reintentar"
 
+#: core/templatetags/seo_tags.py:27
+msgid ""
+"Free music community: share ideas, add layers to other people's projects and "
+"find sounds to use, all under free licenses."
+msgstr ""
+"Comunidad de música libre: compartí ideas, sumá capas a proyectos de otras "
+"personas y encontrá sonidos para usar, todo con licencias libres."
+
 #: moderation/models.py:22
 msgid "It uses material without permission"
 msgstr "Usa material sin permiso"
@@ -596,7 +654,7 @@ msgstr "Otra cosa"
 msgid "open"
 msgstr "abiertos"
 
-#: moderation/models.py:29 project/templates/project/project_detail.html:28
+#: moderation/models.py:29 project/templates/project/project_detail.html:29
 #: project/templates/project/project_settings.html:26
 msgid "hidden"
 msgstr "ocultados"
@@ -619,7 +677,7 @@ msgstr "nota"
 
 #: moderation/templates/moderation/panel.html:4
 #: moderation/templates/moderation/panel.html:7
-#: redpanal/templates/base.html:125
+#: redpanal/templates/base.html:127
 msgid "Moderation"
 msgstr "Moderación"
 
@@ -639,7 +697,7 @@ msgstr ""
 
 #: moderation/templates/moderation/panel.html:18
 #: moderation/templates/moderation/report_form.html:10 project/forms.py:169
-#: project/templates/project/project_detail.html:240
+#: project/templates/project/project_detail.html:241
 #: social/templates/social/message_with_content_form.html:7
 msgid "Comment"
 msgstr "Comentario"
@@ -879,7 +937,7 @@ msgstr "Público: cualquiera lo escucha entero"
 msgid "with link"
 msgstr "con link"
 
-#: project/models.py:46 project/templates/project/project_open_call.html:11
+#: project/models.py:46 project/templates/project/project_open_call.html:12
 msgid "open call"
 msgstr "convocatoria"
 
@@ -1088,7 +1146,7 @@ msgstr "Quitar"
 #: project/templates/project/group_detail.html:8
 #: project/templates/project/groups.html:4
 #: project/templates/project/groups.html:8
-#: users/templates/users/profile.html:79 users/templates/users/profile.html:124
+#: users/templates/users/profile.html:80 users/templates/users/profile.html:125
 msgid "Groups"
 msgstr "Grupos"
 
@@ -1117,13 +1175,13 @@ msgstr "Invitar"
 
 #: project/templates/project/_comment_card.html:2
 #: project/templates/project/my_favorites.html:39
-#: redpanal/templates/home.html:38 users/templates/users/profile.html:113
+#: redpanal/templates/home.html:38 users/templates/users/profile.html:114
 #, python-format
 msgid "on «%(name)s»"
 msgstr "en «%(name)s»"
 
 #: project/templates/project/_credits.html:2
-#: project/templates/project/project_detail.html:288
+#: project/templates/project/project_detail.html:289
 msgid "Credits"
 msgstr "Créditos"
 
@@ -1214,8 +1272,8 @@ msgstr "hasta el %(d)s"
 #: project/templates/project/_request_card.html:8
 #: project/templates/project/contribute.html:4
 #: project/templates/project/contribute.html:10
-#: project/templates/project/project_detail.html:44
-#: project/templates/project/project_detail.html:51
+#: project/templates/project/project_detail.html:45
+#: project/templates/project/project_detail.html:52
 msgid "Add a layer"
 msgstr "Sumar una pista"
 
@@ -1247,19 +1305,19 @@ msgid "Volume of %(role)s"
 msgstr "Volumen de %(role)s"
 
 #: project/templates/project/_track.html:23
-#: project/templates/project/project_detail.html:162
+#: project/templates/project/project_detail.html:163
 #, python-format
 msgid "More options for %(role)s"
 msgstr "Más opciones de %(role)s"
 
 #: project/templates/project/_track.html:25
-#: project/templates/project/project_detail.html:164
+#: project/templates/project/project_detail.html:165
 #, python-format
 msgid "Download %(role)s"
 msgstr "Bajar %(role)s"
 
 #: project/templates/project/_track.html:26
-#: project/templates/project/project_detail.html:166
+#: project/templates/project/project_detail.html:167
 msgid "Report this part"
 msgstr "Reportar esta capa"
 
@@ -1323,24 +1381,24 @@ msgid "Listen together"
 msgstr "Escuchar juntas"
 
 #: project/templates/project/align.html:18
-#: project/templates/project/project_detail.html:193
+#: project/templates/project/project_detail.html:194
 #: project/templates/project/upload.html:63
-#: project/templates/project/version_detail.html:28
+#: project/templates/project/version_detail.html:29
 #: project/templates/project/work_create.html:35
 #: redpanal/templates/_dock.html:6
 msgid "Pause"
 msgstr "Pausar"
 
 #: project/templates/project/align.html:20
-#: project/templates/project/project_detail.html:195
-#: project/templates/project/version_detail.html:30
+#: project/templates/project/project_detail.html:196
+#: project/templates/project/version_detail.html:31
 #: redpanal/templates/_dock.html:42
 msgid "Position"
 msgstr "Posición"
 
 #: project/templates/project/align.html:22
-#: project/templates/project/project_detail.html:197
-#: project/templates/project/version_detail.html:32
+#: project/templates/project/project_detail.html:198
+#: project/templates/project/version_detail.html:33
 msgid "Loading…"
 msgstr "Cargando…"
 
@@ -1413,7 +1471,7 @@ msgstr "Es independiente: dejarla aparte"
 #: project/templates/project/certificate.html:4
 #: project/templates/project/certificate.html:8
 #: project/templates/project/certificate.html:9
-#: project/templates/project/project_detail.html:68
+#: project/templates/project/project_detail.html:69
 #: project/templates/project/project_settings.html:35
 msgid "Proof of authorship"
 msgstr "Comprobante de autoría"
@@ -1530,156 +1588,166 @@ msgid "Add"
 msgstr "Sumar"
 
 #: project/templates/project/explore.html:4
-#: project/templates/project/explore.html:7
-#: project/templates/project/explore.html:70 redpanal/templates/_nav.html:4
-#: redpanal/templates/home_anonymous.html:14
+#: project/templates/project/explore.html:5
+#: project/templates/project/explore.html:8
+#: project/templates/project/explore.html:71 redpanal/templates/_nav.html:4
+#: redpanal/templates/home_anonymous.html:16
 msgid "Explore"
 msgstr "Explorar"
 
-#: project/templates/project/explore.html:16
-#: project/templates/project/explore.html:18
-#: project/templates/project/explore.html:64 redpanal/templates/base.html:111
+#: project/templates/project/explore.html:5
+msgid ""
+"Projects, sounds and people on RedPanal: search by instrument, tempo, key or "
+"hashtag."
+msgstr ""
+"Proyectos, sonidos y personas en RedPanal: buscá por instrumento, tempo, "
+"tonalidad o hashtag."
+
+#: project/templates/project/explore.html:17
+#: project/templates/project/explore.html:19
+#: project/templates/project/explore.html:65 redpanal/templates/base.html:113
 #: redpanal/templates/search/search.html:26
 #: redpanal/templates/search/search.html:31
 #: redpanal/templates/search/search.html:34
 msgid "Search"
 msgstr "Buscar"
 
-#: project/templates/project/explore.html:17
+#: project/templates/project/explore.html:18
 msgid "Search projects, sounds or people"
 msgstr "Buscar proyectos, sonidos o personas"
 
-#: project/templates/project/explore.html:19
+#: project/templates/project/explore.html:20
 msgid "Advanced search"
 msgstr "Búsqueda avanzada"
 
-#: project/templates/project/explore.html:26
-#: project/templates/project/explore.html:40
-#: project/templates/project/explore.html:47
+#: project/templates/project/explore.html:27
+#: project/templates/project/explore.html:41
+#: project/templates/project/explore.html:48
 msgid "Any"
 msgstr "Cualquiera"
 
-#: project/templates/project/explore.html:31
+#: project/templates/project/explore.html:32
 msgid "Hashtag"
 msgstr "Hashtag"
 
-#: project/templates/project/explore.html:35 project/views.py:1035
+#: project/templates/project/explore.html:36 project/views.py:1035
 msgid "Asking for parts"
 msgstr "Buscan capas"
 
-#: project/templates/project/explore.html:54
+#: project/templates/project/explore.html:55
 msgid "From"
 msgstr "Desde"
 
-#: project/templates/project/explore.html:55
+#: project/templates/project/explore.html:56
 msgid "to"
 msgstr "a"
 
-#: project/templates/project/explore.html:56
+#: project/templates/project/explore.html:57
 msgid "To"
 msgstr "Hasta"
 
-#: project/templates/project/explore.html:60
+#: project/templates/project/explore.html:61
 msgid "Sound type"
 msgstr "Tipo de sonido"
 
-#: project/templates/project/explore.html:64
+#: project/templates/project/explore.html:65
 msgid "Clear"
 msgstr "Limpiar"
 
-#: project/templates/project/explore.html:71
+#: project/templates/project/explore.html:72
 #: project/templates/project/my_favorites.html:11
 msgid "Everything"
 msgstr "Todo"
 
-#: project/templates/project/explore.html:72
+#: project/templates/project/explore.html:73
 msgid "Collaborations"
 msgstr "Colaboraciones"
 
-#: project/templates/project/explore.html:73
+#: project/templates/project/explore.html:74
 #: project/templates/project/my_stuff.html:15
-#: users/templates/users/profile.html:75 users/templates/users/profile.html:84
+#: users/templates/users/profile.html:76 users/templates/users/profile.html:85
 msgid "Works"
 msgstr "Proyectos"
 
-#: project/templates/project/explore.html:74
+#: project/templates/project/explore.html:75
 msgid "Comments"
 msgstr "Comentarios"
 
-#: project/templates/project/explore.html:75
-#: project/templates/project/explore.html:130
+#: project/templates/project/explore.html:76
+#: project/templates/project/explore.html:131
 #: project/templates/project/my_favorites.html:13
 #: project/templates/project/my_favorites.html:26
 #: project/templates/project/my_stuff.html:18
-#: users/templates/users/profile.html:77
+#: users/templates/users/profile.html:78
 msgid "Sounds"
 msgstr "Sonidos"
 
-#: project/templates/project/explore.html:76
+#: project/templates/project/explore.html:77
 #: users/templates/users/all_people.html:4
+#: users/templates/users/all_people.html:5
 msgid "People"
 msgstr "Personas"
 
-#: project/templates/project/explore.html:80
+#: project/templates/project/explore.html:81
 msgid "Active filters"
 msgstr "Filtros activos"
 
-#: project/templates/project/explore.html:80
+#: project/templates/project/explore.html:81
 #, python-format
 msgid "Remove filter %(f)s"
 msgstr "Quitar el filtro %(f)s"
 
-#: project/templates/project/explore.html:83
+#: project/templates/project/explore.html:84
 msgid "Nothing matches. Try other words or fewer filters."
 msgstr "Nada coincide. Probá con otras palabras o menos filtros."
 
-#: project/templates/project/explore.html:97
+#: project/templates/project/explore.html:98
 msgid "See more"
 msgstr "Ver más"
 
-#: project/templates/project/explore.html:115
+#: project/templates/project/explore.html:116
 #, python-format
 msgid "%(n)s sound"
 msgid_plural "%(n)s sounds"
 msgstr[0] "%(n)s sonido"
 msgstr[1] "%(n)s sonidos"
 
-#: project/templates/project/explore.html:115
+#: project/templates/project/explore.html:116
 msgid "Space: listen · ↑ ↓: move · D: download"
 msgstr "Espacio: escuchar · ↑ ↓: moverse · D: bajar"
 
-#: project/templates/project/explore.html:119
+#: project/templates/project/explore.html:120
 msgid "Sort"
 msgstr "Ordenar"
 
-#: project/templates/project/explore.html:121
+#: project/templates/project/explore.html:122
 msgid "Newest"
 msgstr "Más recientes"
 
-#: project/templates/project/explore.html:122
+#: project/templates/project/explore.html:123
 msgid "Most picked up"
 msgstr "Más retomados"
 
-#: project/templates/project/explore.html:125
+#: project/templates/project/explore.html:126
 msgid "Listen at my tempo"
 msgstr "Escuchar a mi tempo"
 
-#: project/templates/project/explore.html:126
+#: project/templates/project/explore.html:127
 msgid "My tempo (BPM)"
 msgstr "Mi tempo (BPM)"
 
-#: project/templates/project/explore.html:137
+#: project/templates/project/explore.html:138
 msgid "Projects that picked it up"
 msgstr "Proyectos que lo retomaron"
 
-#: project/templates/project/explore.html:137
+#: project/templates/project/explore.html:138
 #, python-format
 msgid "%(n)s layer"
 msgid_plural "%(n)s layers"
 msgstr[0] "%(n)s capa"
 msgstr[1] "%(n)s capas"
 
-#: project/templates/project/explore.html:138
+#: project/templates/project/explore.html:139
 #: project/templates/project/project_download_mix.html:56
 msgid "Download"
 msgstr "Descargar"
@@ -1815,7 +1883,7 @@ msgstr "Proyectos"
 
 #: project/templates/project/my_favorites.html:14
 #: project/templates/project/my_favorites.html:33
-#: users/templates/users/profile.html:107
+#: users/templates/users/profile.html:108
 msgid "Posts and comments"
 msgstr "Publicaciones y comentarios"
 
@@ -1844,11 +1912,12 @@ msgstr[1] "%(n)s archivos subidos sin datos."
 
 #: project/templates/project/my_stuff.html:11
 #: project/templates/project/upload_complete.html:4
+#: project/templates/project/upload_complete.html:10
 msgid "Complete"
 msgstr "Completar"
 
 #: project/templates/project/my_stuff.html:14
-#: users/templates/users/profile.html:74
+#: users/templates/users/profile.html:75
 msgid "Sections"
 msgstr "Secciones"
 
@@ -1858,7 +1927,7 @@ msgid "Shared with you"
 msgstr "Compartidos con vos"
 
 #: project/templates/project/my_stuff.html:17
-#: users/templates/users/profile.html:76
+#: users/templates/users/profile.html:77
 msgid "Contributions"
 msgstr "Capas"
 
@@ -1922,88 +1991,88 @@ msgstr "¿Estás seguro de que querés eliminar este proyecto?"
 msgid "Do you want to create a version for this project?"
 msgstr "¿Querés crear una versión de este proyecto?"
 
-#: project/templates/project/project_detail.html:22
-#: project/templates/project/project_detail.html:296
-#: project/templates/project/version_detail.html:8
-#: project/templates/project/version_detail.html:53
+#: project/templates/project/project_detail.html:23
+#: project/templates/project/project_detail.html:297
+#: project/templates/project/version_detail.html:9
+#: project/templates/project/version_detail.html:54
 msgid "Versions"
 msgstr "Versiones"
 
-#: project/templates/project/project_detail.html:22
+#: project/templates/project/project_detail.html:23
 msgid "versions"
 msgstr "versiones"
 
-#: project/templates/project/project_detail.html:28
+#: project/templates/project/project_detail.html:29
 #, python-format
 msgid "%(who)s's version, sounds by default"
 msgstr "la versión de %(who)s, suena por defecto"
 
-#: project/templates/project/project_detail.html:28
-#: project/templates/project/project_detail.html:89
+#: project/templates/project/project_detail.html:29
+#: project/templates/project/project_detail.html:90
 #, python-format
 msgid "comes from v%(n)s"
 msgstr "sale de la v%(n)s"
 
-#: project/templates/project/project_detail.html:35
+#: project/templates/project/project_detail.html:36
 msgid "Started by"
 msgstr "Iniciado por"
 
-#: project/templates/project/project_detail.html:37
+#: project/templates/project/project_detail.html:38
 #, python-format
 msgid "%(n)s person plays here"
 msgid_plural "%(n)s people play here"
 msgstr[0] "%(n)s persona toca acá"
 msgstr[1] "%(n)s personas tocan acá"
 
-#: project/templates/project/project_detail.html:47
+#: project/templates/project/project_detail.html:48
 msgid "Join this work"
 msgstr "Sumarme a este proyecto"
 
-#: project/templates/project/project_detail.html:53
+#: project/templates/project/project_detail.html:54
 msgid "Sign in to add a layer"
 msgstr "Iniciá sesión para sumar una pista"
 
-#: project/templates/project/project_detail.html:55
+#: project/templates/project/project_detail.html:56
 msgid "Link copied"
 msgstr "Link copiado"
 
-#: project/templates/project/project_detail.html:63
-#: redpanal/templates/base.html:60 users/templates/users/_follow_button.html:5
+#: project/templates/project/project_detail.html:64
+#: redpanal/templates/base.html:62 users/templates/users/_follow_button.html:5
 #: users/templates/users/user_prof.html:47
 msgid "Following"
 msgstr "Siguiendo"
 
-#: project/templates/project/project_detail.html:63
-#: redpanal/templates/base.html:60 users/templates/users/_follow_button.html:7
+#: project/templates/project/project_detail.html:64
+#: redpanal/templates/base.html:62 users/templates/users/_follow_button.html:7
 msgid "Follow"
 msgstr "Seguir"
 
-#: project/templates/project/project_detail.html:64
+#: project/templates/project/project_detail.html:65
 msgid "Download all (.zip)"
 msgstr "Bajar todas (.zip)"
 
-#: project/templates/project/project_detail.html:65
-#: project/templates/project/project_detail.html:190
+#: project/templates/project/project_detail.html:66
+#: project/templates/project/project_detail.html:191
 msgid "Listen together (stems in sync)"
 msgstr "Escuchar juntas (stems en sincro)"
 
-#: project/templates/project/project_detail.html:66
+#: project/templates/project/project_detail.html:67
 #: project/templates/project/stems_upload.html:4
 #: project/templates/project/stems_upload.html:8
 #: project/templates/project/stems_upload.html:9
 msgid "Upload a studio folder"
 msgstr "Subir una carpeta de stems"
 
-#: project/templates/project/project_detail.html:67
+#: project/templates/project/project_detail.html:68
 msgid "Create a new work based on this one"
 msgstr "Crear un proyecto nuevo a partir de este"
 
-#: project/templates/project/project_detail.html:71
+#: project/templates/project/project_detail.html:72
 #: project/templates/project/project_settings.html:10
 msgid "Settings"
 msgstr "Ajustes"
 
-#: project/templates/project/project_detail.html:82
+#: project/templates/project/project_detail.html:83
 msgid ""
 "This work was hidden by the volunteers who moderate RedPanal after a report. "
 "Only you can see it. If you think it's a mistake, write to the moderation "
@@ -2013,203 +2082,203 @@ msgstr ""
 "después de un reporte. Solo vos lo podés ver. Si creés que es un error, "
 "escribile al equipo de moderación."
 
-#: project/templates/project/project_detail.html:89
+#: project/templates/project/project_detail.html:90
 #, python-format
 msgid "You are listening to v%(n)s, by %(who)s"
 msgstr "Estás escuchando la v%(n)s, de %(who)s"
 
-#: project/templates/project/project_detail.html:93
+#: project/templates/project/project_detail.html:94
 msgid "Adopt this version"
 msgstr "Adoptar esta versión"
 
-#: project/templates/project/project_detail.html:94
+#: project/templates/project/project_detail.html:95
 msgid "Back to what sounds by default"
 msgstr "Volver a lo que suena por defecto"
 
-#: project/templates/project/project_detail.html:104
+#: project/templates/project/project_detail.html:105
 msgid "People who ask to join"
 msgstr "Personas que piden sumarse"
 
-#: project/templates/project/project_detail.html:111
+#: project/templates/project/project_detail.html:112
 msgid "Accept"
 msgstr "Aceptar"
 
-#: project/templates/project/project_detail.html:113
+#: project/templates/project/project_detail.html:114
 msgid "Decline"
 msgstr "Rechazar"
 
-#: project/templates/project/project_detail.html:122
+#: project/templates/project/project_detail.html:123
 msgid "In audition"
 msgstr "En audición"
 
-#: project/templates/project/project_detail.html:123
+#: project/templates/project/project_detail.html:124
 msgid "Visible to the people in the project"
 msgstr "Lo ven quienes integran el proyecto"
 
-#: project/templates/project/project_detail.html:127
+#: project/templates/project/project_detail.html:128
 #, python-format
 msgid "for the request «%(r)s»"
 msgstr "para la colaboración «%(r)s»"
 
-#: project/templates/project/project_detail.html:135
+#: project/templates/project/project_detail.html:136
 msgid "Include in the work"
 msgstr "Incluir en el proyecto"
 
-#: project/templates/project/project_detail.html:136
+#: project/templates/project/project_detail.html:137
 msgid "close the request"
 msgstr "cerrar la colaboración"
 
-#: project/templates/project/project_detail.html:140
+#: project/templates/project/project_detail.html:141
 msgid "Keep as an alternative"
 msgstr "Guardar como alternativa"
 
-#: project/templates/project/project_detail.html:150
+#: project/templates/project/project_detail.html:151
 msgid "Layers"
 msgstr "Capas"
 
-#: project/templates/project/project_detail.html:165
+#: project/templates/project/project_detail.html:166
 msgid "Align with the others"
 msgstr "Alinear con las demás"
 
-#: project/templates/project/project_detail.html:174
+#: project/templates/project/project_detail.html:175
 #, python-format
 msgid "Wanted: %(what)s"
 msgstr "Se busca: %(what)s"
 
-#: project/templates/project/project_detail.html:175
+#: project/templates/project/project_detail.html:176
 #, python-format
 msgid "open until %(d)s"
 msgstr "abierta hasta el %(d)s"
 
-#: project/templates/project/project_detail.html:175
+#: project/templates/project/project_detail.html:176
 #, python-format
 msgid "%(n)s layer in audition"
 msgid_plural "%(n)s layers in audition"
 msgstr[0] "%(n)s capa en audición"
 msgstr[1] "%(n)s capas en audición"
 
-#: project/templates/project/project_detail.html:177
+#: project/templates/project/project_detail.html:178
 #: redpanal/templates/_dock.html:31 redpanal/templates/_post_fab.html:26
-#: redpanal/templates/base.html:149 users/templates/users/profile.html:59
+#: redpanal/templates/base.html:151 users/templates/users/profile.html:60
 msgid "Close"
 msgstr "Cerrar"
 
-#: project/templates/project/project_detail.html:178
 #: project/templates/project/project_detail.html:179
+#: project/templates/project/project_detail.html:180
 msgid "Answer the collaboration"
 msgstr "Responder a la colaboración"
 
-#: project/templates/project/project_detail.html:193
-#: project/templates/project/version_detail.html:28
+#: project/templates/project/project_detail.html:194
+#: project/templates/project/version_detail.html:29
 #: redpanal/templates/_dock.html:6 redpanal/templates/_dock.html:23
 #: redpanal/templates/_dock.html:47
 msgid "Play"
 msgstr "Reproducir"
 
-#: project/templates/project/project_detail.html:211
+#: project/templates/project/project_detail.html:212
 #, python-format
 msgid "at %(t)s"
 msgstr "en %(t)s"
 
-#: project/templates/project/project_detail.html:213
+#: project/templates/project/project_detail.html:214
 msgid "Report this comment"
 msgstr "Reportar este comentario"
 
-#: project/templates/project/project_detail.html:225
-#: project/templates/project/project_detail.html:228
+#: project/templates/project/project_detail.html:226
+#: project/templates/project/project_detail.html:229
 #: social/templates/social/_interactions.html:7
 #: social/templates/social/_interactions.html:10
 msgid "Reply"
 msgstr "Responder"
 
-#: project/templates/project/project_detail.html:230
-#: project/templates/project/project_detail.html:243
+#: project/templates/project/project_detail.html:231
+#: project/templates/project/project_detail.html:244
 #: social/templates/social/_interactions.html:13
 #: social/templates/social/message_with_content_form.html:9
 msgid "Send"
 msgstr "Enviar"
 
-#: project/templates/project/project_detail.html:242
+#: project/templates/project/project_detail.html:243
 #: social/templates/social/message_with_content_form.html:8
 msgid "Write a comment"
 msgstr "Escribí un comentario"
 
-#: project/templates/project/project_detail.html:242
+#: project/templates/project/project_detail.html:243
 #, python-format
 msgid "Comment at %%s"
 msgstr "Comentar en %%s"
 
-#: project/templates/project/project_detail.html:253
+#: project/templates/project/project_detail.html:254
 msgid "New collaboration"
 msgstr "Nueva colaboración"
 
-#: project/templates/project/project_detail.html:257
+#: project/templates/project/project_detail.html:258
 msgid "What you are looking for"
 msgstr "Qué buscás"
 
-#: project/templates/project/project_detail.html:258
+#: project/templates/project/project_detail.html:259
 msgid "Notes: register, references…"
 msgstr "Notas: registro, referencias…"
 
-#: project/templates/project/project_detail.html:259
+#: project/templates/project/project_detail.html:260
 msgid "Open until (optional)"
 msgstr "Abierta hasta (opcional)"
 
-#: project/templates/project/project_detail.html:261
+#: project/templates/project/project_detail.html:262
 msgid "Add collaboration"
 msgstr "Agregar colaboración"
 
-#: project/templates/project/project_detail.html:264
+#: project/templates/project/project_detail.html:265
 #, python-format
 msgid "%(n)s closed request"
 msgid_plural "%(n)s closed requests"
 msgstr[0] "%(n)s colaboración cerrada"
 msgstr[1] "%(n)s colaboraciones cerradas"
 
-#: project/templates/project/project_detail.html:268
+#: project/templates/project/project_detail.html:269
 msgid "Reopen"
 msgstr "Reabrir"
 
-#: project/templates/project/project_detail.html:277
+#: project/templates/project/project_detail.html:278
 msgid "Lyrics and chords"
 msgstr "Letra y acordes"
 
-#: project/templates/project/project_detail.html:284
+#: project/templates/project/project_detail.html:285
 msgid "More data"
 msgstr "Más datos"
 
-#: project/templates/project/project_detail.html:288
+#: project/templates/project/project_detail.html:289
 msgid "Export"
 msgstr "Exportar"
 
-#: project/templates/project/project_detail.html:297
+#: project/templates/project/project_detail.html:298
 #, python-format
 msgid "Mix of v%(n)s (MP3)"
 msgstr "Mezcla de la v%(n)s (MP3)"
 
-#: project/templates/project/project_detail.html:307
+#: project/templates/project/project_detail.html:308
 msgid "Alternatives"
 msgstr "Alternativas"
 
-#: project/templates/project/project_detail.html:312
+#: project/templates/project/project_detail.html:313
 msgid "Bring it back"
 msgstr "Recuperarla"
 
-#: project/templates/project/project_detail.html:325
+#: project/templates/project/project_detail.html:326
 msgid "Files to work in your studio"
 msgstr "Archivos para trabajar en tu programa"
 
-#: project/templates/project/project_detail.html:326
+#: project/templates/project/project_detail.html:327
 msgid "Session files only open in the same program, with the same plugins."
 msgstr ""
 "Los archivos de sesión solo se abren en el mismo programa y con los mismos "
 "plugins."
 
-#: project/templates/project/project_detail.html:330
+#: project/templates/project/project_detail.html:331
 msgid "opens in compatible DAWs"
 msgstr "se abre en DAWs compatibles"
 
-#: project/templates/project/project_detail.html:342
+#: project/templates/project/project_detail.html:343
 msgid "Keep listening"
 msgstr "Para seguir escuchando"
 
@@ -2278,11 +2347,11 @@ msgstr "Creado el"
 msgid "HashTags"
 msgstr "Etiquetas"
 
-#: project/templates/project/project_open_call.html:17
+#: project/templates/project/project_open_call.html:18
 msgid "Preview"
 msgstr "Fragmento"
 
-#: project/templates/project/project_open_call.html:20
+#: project/templates/project/project_open_call.html:21
 msgid ""
 "A short excerpt in low quality. The author shares the whole work with the "
 "people who join."
@@ -2290,19 +2359,19 @@ msgstr ""
 "Un fragmento corto en baja calidad. Quien creó el proyecto lo comparte "
 "entero con las personas que se suman."
 
-#: project/templates/project/project_open_call.html:22
+#: project/templates/project/project_open_call.html:23
 msgid "There is no preview yet."
 msgstr "Todavía no hay fragmento."
 
-#: project/templates/project/project_open_call.html:27
+#: project/templates/project/project_open_call.html:28
 msgid "What it needs"
 msgstr "Qué busca"
 
-#: project/templates/project/project_open_call.html:34
+#: project/templates/project/project_open_call.html:35
 msgid "Do you want to take part?"
 msgstr "¿Querés participar?"
 
-#: project/templates/project/project_open_call.html:36
+#: project/templates/project/project_open_call.html:37
 msgid ""
 "Sign in to ask to join. If they accept you, you'll hear the whole work and "
 "can contribute."
@@ -2310,7 +2379,7 @@ msgstr ""
 "Iniciá sesión para pedir sumarte. Si te aceptan, vas a escuchar el proyecto "
 "entero y vas a poder sumar una pista."
 
-#: project/templates/project/project_open_call.html:37
+#: project/templates/project/project_open_call.html:38
 #: redpanal/templates/_nav.html:13 redpanal/templates/account/login.html:4
 #: redpanal/templates/account/login.html:8
 #: redpanal/templates/account/login.html:25
@@ -2319,12 +2388,12 @@ msgstr ""
 msgid "Sign in"
 msgstr "Iniciar sesión"
 
-#: project/templates/project/project_open_call.html:39
+#: project/templates/project/project_open_call.html:40
 #, python-format
 msgid "You asked to join. %(who)s will decide."
 msgstr "Pediste sumarte. %(who)s va a decidir."
 
-#: project/templates/project/project_open_call.html:44
+#: project/templates/project/project_open_call.html:45
 msgid "Ask to join"
 msgstr "Pedir sumarme"
 
@@ -2839,7 +2908,7 @@ msgid "You are not in any group yet."
 msgstr "Todavía no estás en ningún grupo."
 
 #: project/templates/project/upload_share.html:35
-#: users/templates/users/profile.html:127
+#: users/templates/users/profile.html:128
 msgid "Create or join a group"
 msgstr "Crear o sumarte a un grupo"
 
@@ -2859,24 +2928,24 @@ msgstr "Dejarlo privado por ahora"
 msgid "You can share it later."
 msgstr "Lo podés compartir después."
 
-#: project/templates/project/version_detail.html:12
+#: project/templates/project/version_detail.html:13
 #, python-format
 msgid "Saved on %(date)s by %(who)s"
 msgstr "Guardada el %(date)s por %(who)s"
 
-#: project/templates/project/version_detail.html:12
+#: project/templates/project/version_detail.html:13
 msgid "it sounds like this now"
 msgstr "así suena ahora"
 
-#: project/templates/project/version_detail.html:15
+#: project/templates/project/version_detail.html:16
 msgid "Download the mix (MP3)"
 msgstr "Bajar la mezcla (MP3)"
 
-#: project/templates/project/version_detail.html:18
+#: project/templates/project/version_detail.html:19
 msgid "Go back to this version"
 msgstr "Volver a esta versión"
 
-#: project/templates/project/version_detail.html:23
+#: project/templates/project/version_detail.html:24
 msgid ""
 "Going back includes these parts again; the ones that are in the work now and "
 "not here stay as alternatives, so you can bring them back."
@@ -2884,7 +2953,7 @@ msgstr ""
 "Volver incluye de nuevo estas capas; las que hoy están en el proyecto y acá "
 "no quedan como alternativas, así que podés recuperarlas."
 
-#: project/templates/project/version_detail.html:41
+#: project/templates/project/version_detail.html:42
 msgid "Parts that play on their own"
 msgstr "Capas que suenan aparte"
 
@@ -3307,13 +3376,13 @@ msgstr "Abrir el reproductor"
 
 #: redpanal/templates/_dock.html:22 redpanal/templates/_dock.html:46
 #: redpanal/templates/search/search.html:65
-#: users/templates/users/profile.html:60
+#: users/templates/users/profile.html:61
 msgid "Previous"
 msgstr "Anterior"
 
 #: redpanal/templates/_dock.html:24 redpanal/templates/_dock.html:48
 #: redpanal/templates/search/search.html:67
-#: users/templates/users/profile.html:62
+#: users/templates/users/profile.html:63
 msgid "Next"
 msgstr "Siguiente"
 
@@ -3414,7 +3483,7 @@ msgstr "Crear una"
 
 #: redpanal/templates/account/logout.html:4
 #: redpanal/templates/account/logout.html:8
-#: redpanal/templates/account/logout.html:12 redpanal/templates/base.html:128
+#: redpanal/templates/account/logout.html:12 redpanal/templates/base.html:130
 #: redpanal/templates/index.html:78
 msgid "Log out"
 msgstr "Cerrar sesión"
@@ -3481,36 +3550,36 @@ msgstr "Elegir nuevo predeterminado"
 msgid "Upload New Image"
 msgstr "Subir nueva imagen"
 
-#: redpanal/templates/base.html:70
+#: redpanal/templates/base.html:72
 msgid "Unfollow"
 msgstr "Dejar de seguir"
 
-#: redpanal/templates/base.html:102
+#: redpanal/templates/base.html:104
 msgid "Skip to content"
 msgstr "Saltar al contenido"
 
-#: redpanal/templates/base.html:109 redpanal/templates/base.html:195
+#: redpanal/templates/base.html:111 redpanal/templates/base.html:197
 msgid "Main"
 msgstr "Principal"
 
-#: redpanal/templates/base.html:112
+#: redpanal/templates/base.html:114
 msgid "Search works, sounds or people"
 msgstr "Buscar proyectos, sonidos o personas"
 
-#: redpanal/templates/base.html:117
+#: redpanal/templates/base.html:119
 #, python-format
 msgid "%(n)s new notification"
 msgid_plural "%(n)s new notifications"
 msgstr[0] "%(n)s aviso nuevo"
 msgstr[1] "%(n)s avisos nuevos"
 
-#: redpanal/templates/base.html:117
+#: redpanal/templates/base.html:119
 #: social/templates/social/notifications.html:4
 #: social/templates/social/notifications.html:8
 msgid "Notifications"
 msgstr "Avisos"
 
-#: redpanal/templates/base.html:124 users/templates/users/profile.html:21
+#: redpanal/templates/base.html:126 users/templates/users/profile.html:22
 #: users/templates/users/user_prof.html:26
 #: users/templates/users/user_profile.html:4
 #: users/templates/users/user_profile.html:9
@@ -3518,53 +3587,53 @@ msgstr "Avisos"
 msgid "Edit profile"
 msgstr "Editar perfil"
 
-#: redpanal/templates/base.html:132
+#: redpanal/templates/base.html:134
 msgid "Sign up"
 msgstr "Registrarse"
 
-#: redpanal/templates/base.html:173
+#: redpanal/templates/base.html:175
 msgid ""
 "Free Software under <a href=\"http://www.gnu.org/licenses/agpl.txt\">AGPL</a>"
 msgstr ""
 "Software libre con licencia <a href=\"http://www.gnu.org/licenses/agpl."
 "txt\">AGPL</a>"
 
-#: redpanal/templates/base.html:173
+#: redpanal/templates/base.html:175
 msgid "Hosted by <a href=\"http://www.codigosur.org\">Código Sur</a>"
 msgstr "Alojado por <a href=\"http://www.codigosur.org\">Código Sur</a>"
 
-#: redpanal/templates/base.html:174
+#: redpanal/templates/base.html:176
 msgid "RedPanal elsewhere"
 msgstr "RedPanal en otros lugares"
 
-#: redpanal/templates/base.html:175
+#: redpanal/templates/base.html:177
 msgid "Blog"
 msgstr "Blog"
 
-#: redpanal/templates/base.html:186 users/templates/users/user_profile.html:103
+#: redpanal/templates/base.html:188 users/templates/users/user_profile.html:103
 msgid "Language"
 msgstr "Idioma"
 
-#: redpanal/templates/base.html:207
+#: redpanal/templates/base.html:209
 msgid "No connection: it will upload by itself when the signal comes back."
 msgstr "Sin conexión: se va a subir sola cuando vuelva la señal."
 
-#: redpanal/templates/base.html:208
+#: redpanal/templates/base.html:210
 #, python-format
 msgid "Uploading… %%s"
 msgstr "Subiendo… %%s"
 
-#: redpanal/templates/base.html:209
+#: redpanal/templates/base.html:211
 #, python-format
 msgid "Uploaded «%%s»."
 msgstr "Se subió «%%s»."
 
-#: redpanal/templates/base.html:210
+#: redpanal/templates/base.html:212
 #, python-format
 msgid "Could not upload «%%s»."
 msgstr "No se pudo subir «%%s»."
 
-#: redpanal/templates/base.html:211
+#: redpanal/templates/base.html:213
 msgid "See"
 msgstr "Ver"
 
@@ -3625,15 +3694,12 @@ msgstr[1] "%(n)s respuestas"
 msgid "Free music, made in layers"
 msgstr "Música libre, hecha por capas"
 
-#: redpanal/templates/home_anonymous.html:10
-msgid "Free music community · since 2008"
-msgstr "Comunidad de música libre · desde 2008"
+#: redpanal/templates/home_anonymous.html:5
+msgid "Free multitrack music"
+msgstr "Música libre multitrack"
 
-#: redpanal/templates/home_anonymous.html:11
-msgid "Free music, made in layers."
-msgstr "Música libre, hecha por capas."
-
-#: redpanal/templates/home_anonymous.html:12
+#: redpanal/templates/home_anonymous.html:6
+#: redpanal/templates/home_anonymous.html:14
 msgid ""
 "Share a track or an idea. Other people add bass, voice or percussion from "
 "home. Everything stays open for anyone to pick it up and take it somewhere "
@@ -3643,37 +3709,45 @@ msgstr ""
 "desde su casa. Todo queda abierto para que cualquiera lo retome y lo lleve a "
 "otro lado."
 
-#: redpanal/templates/home_anonymous.html:15
-#: redpanal/templates/home_anonymous.html:36
+#: redpanal/templates/home_anonymous.html:12
+msgid "Free music community · since 2008"
+msgstr "Comunidad de música libre · desde 2008"
+
+#: redpanal/templates/home_anonymous.html:13
+msgid "Free music, made in layers."
+msgstr "Música libre, hecha por capas."
+
+#: redpanal/templates/home_anonymous.html:17
+#: redpanal/templates/home_anonymous.html:38
 msgid "How it works"
 msgstr "Cómo funciona"
 
-#: redpanal/templates/home_anonymous.html:29
+#: redpanal/templates/home_anonymous.html:31
 #, python-format
 msgid "Wanted: %(what)s — will you join?"
 msgstr "Se busca: %(what)s — ¿te sumás?"
 
-#: redpanal/templates/home_anonymous.html:38
+#: redpanal/templates/home_anonymous.html:40
 msgid "Step 1"
 msgstr "Paso 1"
 
-#: redpanal/templates/home_anonymous.html:38
+#: redpanal/templates/home_anonymous.html:40
 msgid "Find a project or a sound"
 msgstr "Encontrá un proyecto o un sonido"
 
-#: redpanal/templates/home_anonymous.html:39
+#: redpanal/templates/home_anonymous.html:41
 msgid "Listen to how it sounds and download the layers if you need them."
 msgstr "Escuchá cómo suena y bajá las capas si las necesitás."
 
-#: redpanal/templates/home_anonymous.html:40
+#: redpanal/templates/home_anonymous.html:42
 msgid "Step 2"
 msgstr "Paso 2"
 
-#: redpanal/templates/home_anonymous.html:40
+#: redpanal/templates/home_anonymous.html:42
 msgid "Record your layer"
 msgstr "Grabá tu capa"
 
-#: redpanal/templates/home_anonymous.html:41
+#: redpanal/templates/home_anonymous.html:43
 msgid ""
 "From your phone, while listening, or in the program you use: Ardour, REAPER, "
 "GarageBand."
@@ -3681,15 +3755,15 @@ msgstr ""
 "Desde el celular, mientras escuchás, o en el programa que uses: Ardour, "
 "REAPER, GarageBand."
 
-#: redpanal/templates/home_anonymous.html:42
+#: redpanal/templates/home_anonymous.html:44
 msgid "Step 3"
 msgstr "Paso 3"
 
-#: redpanal/templates/home_anonymous.html:42
+#: redpanal/templates/home_anonymous.html:44
 msgid "It stays linked"
 msgstr "Queda vinculada"
 
-#: redpanal/templates/home_anonymous.html:43
+#: redpanal/templates/home_anonymous.html:45
 msgid ""
 "Your layer is connected to where it comes from, with your name in the "
 "credits and open for others to continue."
@@ -3697,27 +3771,27 @@ msgstr ""
 "Tu capa queda conectada a su origen, con tu nombre en los créditos y abierta "
 "para que otras personas sigan."
 
-#: redpanal/templates/home_anonymous.html:49
+#: redpanal/templates/home_anonymous.html:51
 msgid "Projects looking for musicians"
 msgstr "Proyectos que buscan músicos y músicas"
 
-#: redpanal/templates/home_anonymous.html:49
+#: redpanal/templates/home_anonymous.html:51
 msgid "See all collaborations"
 msgstr "Ver todas las colaboraciones"
 
-#: redpanal/templates/home_anonymous.html:56
+#: redpanal/templates/home_anonymous.html:58
 msgid "Recently shared"
 msgstr "Recién compartidos"
 
-#: redpanal/templates/home_anonymous.html:56
+#: redpanal/templates/home_anonymous.html:58
 msgid "Listen to more"
 msgstr "Escuchar más"
 
-#: redpanal/templates/home_anonymous.html:63
+#: redpanal/templates/home_anonymous.html:65
 msgid "Start from a loop"
 msgstr "Empezá desde un loop"
 
-#: redpanal/templates/home_anonymous.html:64
+#: redpanal/templates/home_anonymous.html:66
 msgid "Loose sounds to pick up, by instrument, tempo and key."
 msgstr "Sonidos sueltos para retomar, por instrumento, tempo y tonalidad."
 
@@ -4187,7 +4261,13 @@ msgstr "idioma"
 msgid "colors"
 msgstr "colores"
 
-#: users/templates/users/all_people.html:28
+#: users/templates/users/all_people.html:5
+msgid "Musicians on RedPanal: who plays what, who is available to collaborate."
+msgstr ""
+"Músicos y músicas en RedPanal: quién toca qué y quién está disponible para "
+"colaborar."
+
+#: users/templates/users/all_people.html:29
 msgid "RedPanal people"
 msgstr "Gente de RedPanal"
 
@@ -4202,85 +4282,85 @@ msgstr ""
 "¿Estás seguro de que querés eliminar tu cuenta? Esta acción no se puede "
 "deshacer."
 
-#: users/templates/users/profile.html:15
+#: users/templates/users/profile.html:16
 #: users/templates/users/user_profile.html:32
 msgid "Available to collaborate"
 msgstr "Disponible para colaborar"
 
-#: users/templates/users/profile.html:17
+#: users/templates/users/profile.html:18
 #, python-format
 msgid "on RedPanal since %(y)s"
 msgstr "en RedPanal desde %(y)s"
 
-#: users/templates/users/profile.html:26
+#: users/templates/users/profile.html:27
 msgid "Invite to a project"
 msgstr "Invitar a un proyecto"
 
-#: users/templates/users/profile.html:41
+#: users/templates/users/profile.html:42
 msgid "Plays"
 msgstr "Toca"
 
-#: users/templates/users/profile.html:42
+#: users/templates/users/profile.html:43
 #: users/templates/users/user_profile.html:36
 msgid "Genres"
 msgstr "Géneros"
 
-#: users/templates/users/profile.html:43
+#: users/templates/users/profile.html:44
 #: users/templates/users/user_profile.html:40
 msgid "Records with"
 msgstr "Graba con"
 
-#: users/templates/users/profile.html:45
+#: users/templates/users/profile.html:46
 msgid "Tell us which instruments you play"
 msgstr "Contanos qué instrumentos tocás"
 
-#: users/templates/users/profile.html:52
+#: users/templates/users/profile.html:53
 #, python-format
 msgid "Picture %(n)s of %(total)s"
 msgstr "Imagen %(n)s de %(total)s"
 
-#: users/templates/users/profile.html:58
+#: users/templates/users/profile.html:59
 #: users/templates/users/user_profile.html:58
 msgid "Pictures"
 msgstr "Imágenes"
 
-#: users/templates/users/profile.html:69
+#: users/templates/users/profile.html:70
 #, python-format
 msgid "%(n)s layer in other people's projects"
 msgid_plural "%(n)s layers in other people's projects"
 msgstr[0] "%(n)s capa en proyectos de otras personas"
 msgstr[1] "%(n)s capas en proyectos de otras personas"
 
-#: users/templates/users/profile.html:69
+#: users/templates/users/profile.html:70
 #, python-format
 msgid "picked up once by other projects"
 msgid_plural "picked up %(n)s times by other projects"
 msgstr[0] "otros proyectos retomaron su material una vez"
 msgstr[1] "otros proyectos retomaron su material %(n)s veces"
 
-#: users/templates/users/profile.html:78
+#: users/templates/users/profile.html:79
 msgid "Posts"
 msgstr "Publicaciones"
 
-#: users/templates/users/profile.html:89
+#: users/templates/users/profile.html:90
 msgid "Parts in works by other people"
 msgstr "Capas en proyectos de otras personas"
 
-#: users/templates/users/profile.html:94
+#: users/templates/users/profile.html:95
 #, python-format
 msgid "in a work by %(who)s"
 msgstr "en un proyecto de %(who)s"
 
-#: users/templates/users/profile.html:102
+#: users/templates/users/profile.html:103
 msgid "Sounds to share"
 msgstr "Sonidos para compartir"
 
-#: users/templates/users/profile.html:125
+#: users/templates/users/profile.html:126
 #, python-format
 msgid "code %(code)s"
 msgstr "código %(code)s"
 
-#: users/templates/users/profile.html:126
+#: users/templates/users/profile.html:127
 msgid ""
 "To share projects with your band, your class or your workshop without making "
 "them public."
@@ -4288,11 +4368,11 @@ msgstr ""
 "Para compartir proyectos con tu banda, tu clase o tu taller sin hacerlos "
 "públicos."
 
-#: users/templates/users/profile.html:134
+#: users/templates/users/profile.html:135
 msgid "Played with"
 msgstr "Tocó con"
 
-#: users/templates/users/profile.html:143
+#: users/templates/users/profile.html:144
 msgid "Links"
 msgstr "Enlaces"
 

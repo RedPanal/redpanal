@@ -35,7 +35,8 @@ class AddressesTestCase(TestCase):
 
     def test_pages_win_over_people_and_their_names_are_reserved(self):
         self.assertEqual(resolve("/explorar/").url_name, "explore")
-        for name in ("explorar", "Estudio", "grupos", "p", "u", "ajustes", "personas", "robots.txt", "sin-conexion"):
+        for name in ("explorar", "Estudio", "grupos", "p", "u", "ajustes", "personas", "robots.txt", "sin-conexion",
+                     "studio", "lab", "Labo", "laboratorio", "laboratory", "en", "pt", "es"):
             self.assertTrue(is_reserved(name), name)
         self.assertFalse(is_reserved("lucia"))
         self.assertLessEqual({"explorar", "estudio", "crear", "avisos", "grupos", "p", "a", "u", "tag", "api"},
