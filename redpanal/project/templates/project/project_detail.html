@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% load i18n static obra_tags thumbnail avatar_tags %}
+{% load i18n static obra_tags thumbnail avatar_tags seo_tags %}
 
 {% block title %}{{ object.name }}{% endblock %}
+{% block seo %}{% seo_project object %}{% endblock %}
 
 {% block content %}
 {# Order follows the interaction design: parts, contributions, requests, conversation; then versions, lineage, files and settings. #}

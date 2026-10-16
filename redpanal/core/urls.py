@@ -2,6 +2,7 @@ from django.urls import path, re_path
 from django.views.generic import RedirectView
 
 from . import views
+from .sitemaps import sitemap_xml
 
 home = RedirectView.as_view(pattern_name='index', permanent=False)
 
@@ -11,6 +12,7 @@ urlpatterns = [
     path('actividad/', home, name='activity-feed'),
     path('sw.js', views.service_worker, name='service-worker'),
     path('robots.txt', views.robots, name='robots'),
+    path('sitemap.xml', sitemap_xml, name='sitemap'),
     path('sin-conexion/', views.offline, name='offline'),
     path('live/', home, name="activity-all"),
     path('live/iframe', views.activity_all_iframe, name="activity-all-iframe"),

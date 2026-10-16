@@ -67,6 +67,8 @@ def robots(request):
     lines = ["User-agent: *"] + ["Disallow: %s" % p for p in (
         "/estudio/", "/avisos/", "/ajustes/", "/crear/", "/reproductor/", "/moderacion/", "/accounts/", "/activity/",
         "/admin/", "/api/")]
+    from django.urls import reverse
+    lines.append("Sitemap: %s" % request.build_absolute_uri(reverse("sitemap")))
     return HttpResponse("\n".join(lines) + "\n", content_type="text/plain")
 
 

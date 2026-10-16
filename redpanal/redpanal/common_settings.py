@@ -98,6 +98,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.messages',
     'django.contrib.admin',
+    'django.contrib.sitemaps',
     'haystack',
     'core',
     'audio.apps.AudioConfig',

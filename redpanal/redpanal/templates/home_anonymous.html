@@ -1,7 +1,9 @@
 {% extends "base.html" %}
-{% load i18n obra_tags %}
+{% load i18n obra_tags seo_tags %}
 
 {% block title %}{% trans "Free music, made in layers" %}{% endblock %}
+{% block head_title %}RedPanal · {% trans "Free multitrack music" %}{% endblock %}
+{% block seo %}{% trans "Share a track or an idea. Other people add bass, voice or percussion from home. Everything stays open for anyone to pick it up and take it somewhere else." as home_desc %}{% seo_site description=home_desc %}{% endblock %}
 {% block body_class %}home{% endblock %}
 
 {% block content %}

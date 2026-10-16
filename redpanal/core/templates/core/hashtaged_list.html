@@ -1,7 +1,8 @@
 {% extends "two_rows.html" %}
-{% load i18n avatar_tags %}
+{% load i18n avatar_tags seo_tags %}
 
 {% block title %} #{{ tag }}{% endblock %}
+{% block seo %}{% blocktrans asvar tag_desc %}Projects, sounds and posts with #{{ tag }} on RedPanal, the free music community.{% endblocktrans %}{% seo_meta title="#"|add:tag description=tag_desc %}{% endblock %}
 
 {% block extra_head %}
 {{ block.super }}
