@@ -7,6 +7,9 @@
  <title>{% block head_title %}{% block title %}{% endblock %} · RedPanal{% endblock %}</title>
  {# Description, canonical, link previews and schema.org (core/seo.py); detail pages pass their object. #}
  {% block seo %}{% seo_meta %}{% endblock %}
+ {% if umami %}{# Visit statistics (core/analytics.py): no cookies, no one identified, nothing private. #}
+ <script defer src="{{ umami.script }}" data-website-id="{{ umami.website }}" data-auto-track="false" data-do-not-track="true" data-exclude-search="true"{% if umami.domains %} data-domains="{{ umami.domains }}"{% endif %}></script>
+ <script defer src="{% static 'js/rp-analytics.js' %}?{{ GIT_SHORT_VERSION }}"></script>{% endif %}
  <link href="{% static 'css/bootstrap-5.3.min.css' %}" rel="stylesheet">
  <link href="{% static 'fontawesome/css/all.min.css' %}" rel="stylesheet">
  <link href="{% static 'css/redpanal.css' %}?{{ GIT_SHORT_VERSION }}" rel="stylesheet">
@@ -218,6 +221,6 @@
 <script>
  if ("serviceWorker" in navigator) { window.addEventListener("load", function () { navigator.serviceWorker.register("/sw.js").catch(function () {}); }); }
 </script>
-<div id="rp-page-scripts">{% block body_end_scripts %}{% endblock %}</div>
+<div id="rp-page-scripts">{% analytics_page %}{% block body_end_scripts %}{% endblock %}</div>
 </body>
 </html>

@@ -6,6 +6,7 @@
 """
 from django import template
 from django.templatetags.static import static
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language, gettext as _
 
@@ -20,6 +21,8 @@ def _context(context, title=None, description=None, image=None, kind="website", 
     request = context.get("request")
     if request is None:
         return {}
+    if noindex:
+        request.rp_noindex = True  # nor counted in the statistics (core.analytics)
     if data is not None and not isinstance(data, list):
         data = [data]
     return {
@@ -87,3 +90,15 @@ def seo_site(context, title=None, description=None):
 def audio_title(audio):
     """The <title> of a sound's page: its name and what it is."""
     return seo.audio_title(audio)
+
+
+@register.simple_tag(takes_context=True)
+def analytics_page(context):
+    """Inside #rp-page-scripts (swapped on every page): whether this page can be counted, and the events the server
+    queued for it. Read by rp-analytics.js; nothing when statistics are off."""
+    from core import analytics
+    request = context.get("request")
+    if request is None or not analytics.enabled():
+        return ""
+    return format_html('<div hidden id="rp-analytics" data-track="{}" data-events="{}"></div>',
+                       "1" if analytics.trackable(request) else "0", ",".join(analytics.pop_events(request)))

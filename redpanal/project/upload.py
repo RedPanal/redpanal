@@ -72,6 +72,8 @@ def upload_file(request):
         audio = ingest(request.user, f)
     except ValidationError as e:
         return JsonResponse({"error": " ".join(e.messages)}, status=400)
+    from core.analytics import queue_event
+    queue_event(request, "upload")
     duration = audio.get_duration()
     return JsonResponse({"id": audio.pk, "name": audio.name, "instrument": audio.instrument,
                          "type": audio.use_type, "duration": round(duration / 1000, 3) if duration else None})
