@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template import RequestContext
 from django.views.decorators.http import require_POST
 from django.contrib import messages
+
+from core.analytics import queue_event
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -29,6 +31,7 @@ def follow_unfollow(request, content_type_id, object_id, do_follow=True, actor_o
 
     if do_follow:
         actions.follow(request.user, actor, send_action=False, actor_only=actor_only)
+        queue_event(request, "follow")
         return respond(request, 201)   # CREATED
     actions.unfollow(request.user, actor)
     return respond(request, 204)   # NO CONTENT
@@ -46,6 +49,7 @@ def person_follow(request, username):
     else:
         actions.follow(request.user, person, send_action=False, actor_only=True)
         notify(person, request.user, "followed", "", request.user.get_absolute_url())
+        queue_event(request, "follow")
     return HttpResponseRedirect(request.POST.get("next") or person.get_absolute_url())
 
 
@@ -190,6 +194,7 @@ def message_create(request):
         if form.is_valid():
             msg = Message(msg=form.cleaned_data["msg"], user=request.user)
             msg.save()
+            queue_event(request, "post")
             return render(request, "social/message_form_popup_response.html",
                      {'response': _("Your message has been successfully posted"),
                       'object': msg,
@@ -201,6 +206,7 @@ def message_create(request):
         if form.is_valid():
             msg = Message(msg=form.cleaned_data["msg"], user=request.user)
             msg.save()
+            queue_event(request, "post")
             # Posted from the floating pen on any page: say so, and where it can be seen.
             messages.success(request, _("Posted. It's on your profile and in the Comunidad of the people who follow you."))
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

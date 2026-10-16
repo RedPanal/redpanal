@@ -478,6 +478,8 @@ def contribute(request, slug):
                 version = project.new_version(request.user, [contribution], parent=None if is_owner else parent,
                                               message=data["note"])
             project.reindex_search()
+            from core.analytics import queue_event
+            queue_event(request, "contribute")
             public = project.visibility == VISIBILITY_PUBLIC
             if is_owner:
                 project.refresh_preview()

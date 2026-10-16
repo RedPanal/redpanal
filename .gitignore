@@ -14,3 +14,4 @@ local_settings.py
 CLAUDE.md
 .claude/
 redpanal/audio/migrations/0008_auto_20230301_1935.py
+docker/umami/.env

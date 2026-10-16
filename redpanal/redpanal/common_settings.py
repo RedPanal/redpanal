@@ -68,6 +68,7 @@ TEMPLATES = [
                 "redpanal.utils.context_processors.git_hash",
                 "social.context_processors.notifications",
                 "users.context_processors.palette",
+                "core.analytics.context",
             ],
         },
     },
@@ -187,3 +188,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
 }
+
+# Visit statistics with Umami, hosted by RedPanal (ESTADISTICAS.md). Empty: off, as in development and tests.
+# UMAMI_SCRIPT_URL: the tracker, e.g. https://stats.redpanal.org/script.js; UMAMI_DOMAINS: only count on these hosts.
+UMAMI_SCRIPT_URL = os.environ.get("UMAMI_SCRIPT_URL", "")
+UMAMI_WEBSITE_ID = os.environ.get("UMAMI_WEBSITE_ID", "")
+UMAMI_DOMAINS = os.environ.get("UMAMI_DOMAINS", "")
