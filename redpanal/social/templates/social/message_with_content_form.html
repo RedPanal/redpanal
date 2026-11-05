@@ -1,12 +1,10 @@
 {% load i18n %}
-
-<div class="message-form-wrapper for-object">
-   <form method="post" action="{% url 'message-with-content-create' %}" id="comment-form-small">
-    {% csrf_token %}
-    {{ form.content_type }}
-    {{ form.object_id }}
-    <textarea id="id_msg" maxlength="200" name="msg" type="text" cols="60" rows="1" placeholder="{% trans 'Add Your Comment' %}" >  {{ initial_msg }}</textarea>
-      <div class="btn-wrapper"><button type="submit" id="submit-id-submit" class="btn btn-primary" value="" name="submit" title="{% trans 'Publish comment' %}">{% trans 'Publish comment' %}</button></div>
-   </form>
-</div>
-
+{# Same look as the conversation on a work. #}
+<form method="post" action="{% url 'message-with-content-create' %}" id="comment-form-small" class="d-flex gap-2 mt-2">
+ {% csrf_token %}
+ {{ form.content_type }}
+ {{ form.object_id }}
+ <label class="visually-hidden" for="id_msg">{% trans "Comment" %}</label>
+ <input class="form-control" type="text" id="id_msg" maxlength="200" name="msg" required placeholder="{% trans 'Write a comment' %}">
+ <button type="submit" id="submit-id-submit" class="btn btn-outline-dark" name="submit">{% trans "Send" %}</button>
+</form>

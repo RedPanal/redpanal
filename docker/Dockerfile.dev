@@ -1,0 +1,33 @@
+# Imagen de desarrollo endurecida para RedPanal.
+# A diferencia del Dockerfile original, corre sin root y las dependencias
+# quedan fijas en la imagen (en ejecución no se pueden modificar).
+FROM python:3.11-slim-bookworm
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_NO_CACHE_DIR=1
+
+# ffmpeg: procesamiento de audio (pydub). gettext: makemessages/compilemessages. Sin sudo.
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends ffmpeg libavcodec-extra gettext \
+ && apt-get upgrade -y \
+ && rm -rf /var/lib/apt/lists/*
+
+# Dependencias de Python instaladas como root en tiempo de build.
+# Para agregar una: editar requirements.txt y reconstruir (docker compose build).
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install "setuptools<58" tzdata \
+ && pip install -r /tmp/requirements.txt \
+ && rm /tmp/requirements.txt
+
+# Usuario sin privilegios
+RUN groupadd --gid 1000 dev \
+ && useradd --uid 1000 --gid 1000 --create-home --shell /bin/bash dev
+
+USER dev
+WORKDIR /app/redpanal
+EXPOSE 8000
+
+CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]

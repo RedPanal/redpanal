@@ -1,0 +1,7 @@
+{% load i18n %}{# Estudio is your library: what's yours, what you saved, what you downloaded. #}
+<h1 class="rp-h1 mb-2">{% trans "My stuff" %}</h1>
+<nav class="rp-tabs mb-3" aria-label="{% trans 'My stuff' %}">
+ <a href="{% url 'my-stuff' %}"{% if tab == "mine" %} aria-current="page"{% endif %}>{% trans "Mine" %}</a>
+ <a href="{% url 'my-favorites' %}"{% if tab == "favorites" %} aria-current="page"{% endif %}>{% trans "Favorites" %}</a>
+ <a href="{% url 'my-downloads' %}"{% if tab == "downloads" %} aria-current="page"{% endif %}>{% trans "Downloads" %}</a>
+</nav>

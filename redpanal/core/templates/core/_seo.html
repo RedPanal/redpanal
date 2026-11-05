@@ -1,0 +1,16 @@
+<meta name="description" content="{{ description }}">
+<link rel="canonical" href="{{ canonical }}">
+{% if noindex %}<meta name="robots" content="noindex, follow">{% endif %}
+<meta property="og:site_name" content="RedPanal">
+<meta property="og:type" content="{{ kind }}">
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ description }}">
+<meta property="og:url" content="{{ canonical }}">
+<meta property="og:image" content="{{ image }}">
+<meta property="og:locale" content="{{ locale }}">
+<meta name="twitter:card" content="{% if large_image %}summary_large_image{% else %}summary{% endif %}">
+<meta name="twitter:title" content="{{ title }}">
+<meta name="twitter:description" content="{{ description }}">
+<meta name="twitter:image" content="{{ image }}">
+{% for data in json_ld %}<script type="application/ld+json">{{ data }}</script>
+{% endfor %}

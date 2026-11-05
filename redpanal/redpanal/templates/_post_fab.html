@@ -1,0 +1,43 @@
+{% load i18n %}{% comment %}
+"+ Crear" opens this panel, from any page: writing on top (posted right here), uploading or recording below.
+Without JavaScript the same link goes to the upload page.
+{% endcomment %}
+<dialog class="rp-post-dialog rp-create-sheet" id="post-dialog" aria-labelledby="post-dialog-title">
+ <h2 class="rp-sec" id="post-dialog-title">{% trans "Create" %}</h2>
+ <form method="post" action="{% url 'message-create' %}" class="rp-composer">{% csrf_token %}
+  <label class="visually-hidden" for="post-msg">{% trans "Post something" %}</label>
+  <textarea class="form-control" id="post-msg" name="msg" rows="3" maxlength="1000" required
+            placeholder="{% trans 'Share what you are up to: a rehearsal, an idea, something you heard…' %}"></textarea>
+  <div class="d-flex justify-content-end align-items-center gap-2 mt-2">
+   {% trans "People who follow you see it in Comunidad. #hashtags and @mentions work." as tip %}{% include "_info.html" %}
+   <button class="btn rp-btn-primary">{% trans "Post" %}</button>
+  </div>
+ </form>
+ <div class="rp-create-audio">
+  <a class="rp-bigoption" href="{% url 'create' %}" data-full-load>
+   <span class="rp-bigoption-icon"><i class="fa fa-upload" aria-hidden="true"></i></span>
+   <span><b>{% trans "Upload" %}</b><span class="rp-muted d-block small">{% trans "One file, many, a folder" %}</span></span>
+  </a>
+  <a class="rp-bigoption" href="{% url 'create' %}?grabar=1" data-full-load>
+   <span class="rp-bigoption-icon"><i class="fa fa-microphone" aria-hidden="true"></i></span>
+   <span><b>{% trans "Record" %}</b><span class="rp-muted d-block small">{% trans "With the phone or the computer" %}</span></span>
+  </a>
+ </div>
+ <button type="button" class="rp-sheet-close" data-post-close aria-label="{% trans 'Close' %}"><i class="fa fa-times" aria-hidden="true"></i></button>
+</dialog>
+<script>
+(function () {
+  var dialog = document.getElementById("post-dialog");
+  if (!dialog || !dialog.showModal) return;  // the link takes to the upload page instead
+  // Captured before page navigation (rp-nav.js) sees the click on "+ Crear".
+  document.addEventListener("click", function (e) {
+    var link = e.target.closest("a[data-create-open]");
+    if (!link || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    dialog.showModal();
+    dialog.querySelector("textarea").focus();
+  }, true);
+  dialog.querySelector("[data-post-close]").addEventListener("click", function () { dialog.close(); });
+  dialog.addEventListener("click", function (e) { if (e.target === dialog) dialog.close(); });
+})();
+</script>
