@@ -1,21 +1,21 @@
-import re
 from django import forms
-
 from django.utils.translation import gettext_lazy as _
 from allauth.account.adapter import DefaultAccountAdapter
 
-USERNAME_REGEX = re.compile(r'^[\w.+-]+$')  # same as UserCreationForm regex but without '@'
+from .reserved import is_reserved
 
 
 class MyAccountAdapter(DefaultAccountAdapter):
 
-    def clean_username(self, username):
-        username = super(MyAccountAdapter, self).clean_username(username)
-        if not USERNAME_REGEX.match(username):
-            raise forms.ValidationError(_("Usernames can only contain "
-                                          "letters, digits and ./+/-/_."))
+    def save_user(self, request, user, form, commit=True):
+        user = super().save_user(request, user, form, commit=commit)
+        from core.analytics import queue_event
+        queue_event(request, "signup")  # only that someone joined, never who
+        return user
 
-        if not (3 <= len(username) <= 15):
-            raise forms.ValidationError(_("Username length must be between 3 and 15 chars"))
-
+    def clean_username(self, username, shallow=False):
+        username = super().clean_username(username, shallow=shallow)
+        # Profiles live at redpanal.org/<username>/: a page's name can't be taken.
+        if is_reserved(username):
+            raise forms.ValidationError(_("That name is taken by a page of RedPanal. Try another."))
         return username
