@@ -22,46 +22,62 @@ lista de correo en la siguiente dirección: http://listas.usla.org.ar/cgi-bin/ma
 
 En una terminal podés seguir los siguientes pasos, para poder tener el sitio de forma local:
 
-0) Es necesario que tengas instalados los siguientes programas:
+### Opción 1: Con Docker (recomendado)
 
-    `sudo apt-get install virtualenv git ffmpeg libavcodec-extra`
+Es necesario que tengas instalados **Docker** y **Docker Compose**.
 
 1) Clonar el repositorio:
 
     `git clone https://github.com/RedPanal/redpanal.git`
 
-2) Crear virtualenv:
+2) Entrar al directorio y levantar el contenedor:
 
-    `virtualenv --python=python3 redpanal_venv`
+    ```
+    cd redpanal
+    docker compose up
+    ```
+
+3) Ingresar a http://127.0.0.1:8000 desde un navegador web para ver la versión local del sitio.
+
+### Opción 2: Con virtualenv
+
+Es necesario que tengas instalados los siguientes programas:
+
+`sudo apt-get install virtualenv git ffmpeg libavcodec-extra python3.11`
+
+1) Clonar el repositorio:
+
+    `git clone https://github.com/RedPanal/redpanal.git`
+
+2) Crear virtualenv con Python 3.11:
+
+    `virtualenv --python=python3.11 redpanal_venv`
 
 3) Entrar en virtualenv:
 
     `source redpanal_venv/bin/activate`
 
 4) Instalar los requerimientos:
+
     ```
     cd redpanal
-
     pip install -r requirements.txt
     ```
 
 5) Entrar al directorio redpanal y ejecutar:
+
     ```
     cd redpanal
-
-    python manage.py makemigrations
-
-    python manage.py migrate --fake-initial
-
+    python manage.py migrate
     python manage.py runserver
     ```
 
-6)  Ingresar a http://127.0.0.1:8000 desde un navegador web para ver la versión local del sitio
+6) Ingresar a http://127.0.0.1:8000 desde un navegador web para ver la versión local del sitio.
 
 ## Cómo colaborar
 
-Nos organizamos colectivamente dentro de este repositorio de github a través de issues y pull requests. 
-Cualquier tipo de colaboración es muy muy bienvenida :) 
+Nos organizamos colectivamente dentro de este repositorio de github a través de issues y pull requests.
+Cualquier tipo de colaboración es muy muy bienvenida :)
 Si querés participar pero no sabés por donde empezar podés mirar el listado de issues abiertos, además hay una etiqueta good-first-issue (https://github.com/RedPanal/redpanal/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) donde están marcados algunos que pueden ser un buen punto de entrada al proyecto.
 
 ## Licencia

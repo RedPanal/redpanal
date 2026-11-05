@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load i18n static obra_tags %}
+
+{% block title %}{{ object.name }} · v{{ version.number }}{% endblock %}
+
+{% block content %}
+<div class="rp-narrow rp-narrow-wide">
+ <p class="rp-muted small mb-1"><a href="{{ object.get_absolute_url }}">{{ object.name }}</a> › {% trans "Versions" %}</p>
+ <header class="rp-obra-head">
+  <div>
+   <h1 class="rp-h1 mb-0">{{ object.name }} <span class="rp-muted">· v{{ version.number }}</span></h1>
+   <p class="rp-muted mb-0">{% blocktrans with date=version.created_at|date:"j F Y" who=version.created_by|display_name %}Saved on {{ date }} by {{ who }}{% endblocktrans %}{% if is_current %} · <b>{% trans "it sounds like this now" %}</b>{% endif %}</p>
+  </div>
+  <div class="rp-obra-actions">
+   {% if can_download and parts %}<a class="btn rp-btn-primary" href="{% url 'project-version-mix' object.slug version.number %}"><i class="fa fa-download" aria-hidden="true"></i> {% trans "Download the mix (MP3)" %}</a>{% endif %}
+   {% if is_owner and not is_current %}
+   <form method="post" action="{% url 'project-version-restore' object.slug version.number %}">{% csrf_token %}
+    <button class="btn btn-outline-dark"><i class="fa fa-history" aria-hidden="true"></i> {% trans "Go back to this version" %}</button>
+   </form>
+   {% endif %}
+  </div>
+ </header>
+ {% if is_owner and not is_current %}<p class="rp-muted small">{% trans "Going back includes these parts again; the ones that are in the work now and not here stay as alternatives, so you can bring them back." %}</p>{% endif %}
+ {% if version.message %}<blockquote class="rp-card">«{{ version.message }}»</blockquote>{% endif %}
+
+ <div data-mixer>
+  <div class="rp-transport mb-2">
+   <button type="button" class="rp-play" data-play data-label-play="{% trans 'Play' %}" data-label-pause="{% trans 'Pause' %}" aria-label="{% trans 'Play' %}"><i class="fa fa-play" aria-hidden="true"></i></button>
+   <span class="rp-time"><b data-time>0:00</b> <span class="rp-muted">/ <span data-duration>0:00</span></span></span>
+   <label class="visually-hidden" for="rp-seek">{% trans "Position" %}</label>
+   <input id="rp-seek" class="rp-seek" type="range" min="0" max="1000" value="0" data-seek>
+   <span class="rp-muted small" data-status data-loading="{% trans 'Loading…' %}"></span>
+  </div>
+  <div class="rp-tracks mb-4">
+   {% for c in parts %}{% include "project/_track.html" with c=c candidate=False %}{% endfor %}
+  </div>
+ </div>
+
+ {% if loose_parts %}
+ <section class="mb-4">
+  <h2 class="rp-h2">{% trans "Parts that play on their own" %}</h2>
+  <ul class="list-unstyled d-grid gap-2 mb-0">
+   {% for c in loose_parts %}
+   <li><b>{{ c.audio|part_role }}</b> <span class="rp-muted">· {{ c.contributor|display_name }}</span>{% audio_player c.audio %}</li>
+   {% endfor %}
+  </ul>
+ </section>
+ {% endif %}
+
+ {% include "project/_credits.html" %}
+ <p class="rp-muted small mt-3">{{ object.get_license.plain }} · <a href="{{ object.get_license.url }}" rel="license" target="_blank">{{ object.license }}</a></p>
+
+ <nav class="d-flex justify-content-between mt-4" aria-label="{% trans 'Versions' %}">
+  {% if previous %}<a href="{{ previous.get_absolute_url }}"><i class="fa fa-chevron-left" aria-hidden="true"></i> v{{ previous.number }}</a>{% else %}<span></span>{% endif %}
+  {% if next %}<a href="{{ next.get_absolute_url }}">v{{ next.number }} <i class="fa fa-chevron-right" aria-hidden="true"></i></a>{% endif %}
+ </nav>
+</div>
+{% endblock %}

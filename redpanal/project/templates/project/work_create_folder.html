@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "New work from a studio folder" %}{% endblock %}
+
+{% block content %}
+<div class="rp-narrow rp-narrow-wide">
+ <p class="rp-muted small mb-1"><a href="{% url 'create' %}">{% trans "Create" %}</a> › {% trans "A studio folder" %}</p>
+ <h1 class="rp-h1">{% trans "New work from a studio folder" %}</h1>
+ <p class="rp-muted">{% blocktrans %}Export the stems from bar 1 (all starting at the same point) and drop the folder here. Each audio file becomes a part, already lined up. Session files, MIDI and presets travel with the work as attachments.{% endblocktrans %}</p>
+
+ {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+ {% if result %}{% for e in result.errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}{% endif %}
+
+ <form method="post" enctype="multipart/form-data" id="stems-form" class="d-grid gap-3" data-offline-queue>{% csrf_token %}
+  <div class="rp-dropzone" data-dropzone tabindex="-1">
+   <p class="mb-2"><b>{% trans "Drop a folder or files here" %}</b></p>
+   <div class="d-flex gap-2 justify-content-center flex-wrap">
+    <label class="btn btn-outline-dark mb-0" for="pick-folder"><i class="fa fa-folder-open" aria-hidden="true"></i> {% trans "Choose a folder" %}</label>
+    <input type="file" id="pick-folder" class="visually-hidden" webkitdirectory multiple>
+    <label class="btn btn-outline-dark mb-0" for="id_stems"><i class="fa fa-file-audio" aria-hidden="true"></i> {% trans "Choose files" %}</label>
+    <input type="file" name="stems" id="id_stems" class="visually-hidden" multiple
+           accept="audio/*,{% for e in audio_extensions %}.{{ e }},{% endfor %}{% for e in attachment_extensions %}.{{ e }}{% if not forloop.last %},{% endif %}{% endfor %}">
+   </div>
+   <details class="rp-muted small mt-2"><summary>{% trans "Which files it takes" %}</summary>{% trans "Audio:" %} {{ audio_extensions|join:", " }} · {% trans "Sessions and other files:" %} {{ attachment_extensions|join:", " }}</details>
+  </div>
+
+  <div data-file-list hidden>
+   <table class="table table-sm align-middle">
+    <thead><tr><th scope="col">{% trans "File" %}</th><th scope="col">{% trans "Becomes" %}</th></tr></thead>
+    <tbody data-rows></tbody>
+   </table>
+  </div>
+  <template data-row-template>
+   <tr>
+    <td><span data-name></span> <span class="rp-muted small" data-size></span></td>
+    <td data-kind-cell>
+     <label class="visually-hidden" data-select-label>{% trans "Instrument" %}</label>
+     <select class="form-select form-select-sm" name="instruments" data-instrument>
+      <option value="">{% trans "Detect from the name" %}</option>
+      {% for value, label in instrument_choices %}<option value="{{ value }}">{{ label|capfirst }}</option>{% endfor %}
+     </select>
+     <span class="rp-muted small" data-attachment-label hidden>{% trans "session file" %}</span>
+    </td>
+   </tr>
+  </template>
+
+  <div>
+   <label class="form-label fw-bold" for="id_name">{{ form.name.label }}</label>
+   <input class="form-control" type="text" name="name" id="id_name" value="{{ form.name.value|default:'' }}" maxlength="100" required>
+   {% for error in form.name.errors %}<p class="text-danger small">{{ error }}</p>{% endfor %}
+  </div>
+  {% include "project/_image_field.html" with errors=form.image.errors %}
+
+  <div class="row g-3">
+   <div class="col-sm-4">
+    <label class="form-label fw-bold" for="id_tempo">{{ form.tempo.label }} <span class="rp-muted fw-normal">{% trans "(optional)" %}</span></label>
+    <input class="form-control" type="number" name="tempo" id="id_tempo" min="20" max="300" value="{{ form.tempo.value|default:'' }}">
+   </div>
+  </div>
+
+  <fieldset>
+   <legend class="form-label fw-bold fs-6">{{ form.missing.label }}</legend>
+   <div class="rp-chips">{% for cb in form.missing %}<label class="rp-chip">{{ cb.tag }}<span>{{ cb.choice_label|capfirst }}</span></label>{% endfor %}</div>
+   <label class="form-label small rp-muted mt-2" for="id_missing_text">{{ form.missing_text.label }}</label>
+   <textarea class="form-control" name="missing_text" id="id_missing_text" rows="2" maxlength="200">{{ form.missing_text.value|default:'' }}</textarea>
+  </fieldset>
+
+  <div>{% include "project/_visibility_choices.html" with field=form.visibility %}</div>
+
+  <p class="rp-muted small mb-0">{% blocktrans %}You use {{ usage_mb }} MB of {{ quota_mb }} MB.{% endblocktrans %}</p>
+  <div class="d-flex gap-2">
+   <button class="btn rp-btn-primary" data-submit>{% trans "Publish" %}</button>
+   <a class="btn btn-link" href="{% url 'create' %}">{% trans "Cancel" %}</a>
+  </div>
+  <p class="rp-muted small" data-uploading hidden>{% trans "Uploading… don't close this page." %}</p>
+ </form>
+</div>
+{% endblock %}
+
+{% block body_end_scripts %}
+<script>window.RP_AUDIO_EXT = {{ audio_extensions|safe }}; window.RP_ATTACH_EXT = {{ attachment_extensions|safe }};</script>
+<script src="{% static 'js/stems.js' %}"></script>
+{% endblock %}

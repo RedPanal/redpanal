@@ -23,7 +23,7 @@
 	       	<div class="user-name text-secondary text-decoration-none"
 	       		>@{{ user.username }} 
 	       		{% if request.user == user %}
-	       			<span class="edit"><a href="/accounts/profile/">[{% trans "Edit profile" %}]</a></span>
+	       			<span class="edit"><a href="{% url 'user-profile' %}">[{% trans "Edit profile" %}]</a></span>
 	       		{% endif %}
 	       	</div>
 		</div>
