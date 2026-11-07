@@ -13,7 +13,7 @@ docker compose down                                        # apagar
 docker compose run --rm offline python manage.py test      # tests SIN red
 ```
 Docker avisa que hay dos archivos compose: usa `compose.yaml` (este, endurecido).
-El `docker-compose.yml` original del repo queda intacto, pero corre como root y expone el puerto a toda la red.
+El `docker-compose.yml` es una variante simple (corre como root); se usa solo con `docker compose -f docker-compose.yml up`.
 
 Para comprobar que funciona: http://localhost:8000/api/audio/list/ y http://localhost:8000/admin/
 

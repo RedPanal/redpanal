@@ -78,7 +78,7 @@ cd redpanal
 ### 2. Levantar los contenedores
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 Las migraciones se aplican automáticamente al iniciar.
@@ -88,7 +88,7 @@ Las migraciones se aplican automáticamente al iniciar.
 En otra terminal, con los contenedores corriendo:
 
 ```bash
-docker-compose exec web python manage.py createsuperuser
+docker compose exec web python manage.py createsuperuser
 ```
 
 ---

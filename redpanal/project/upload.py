@@ -24,6 +24,7 @@ from actstream import action
 from audio.ingest import ingest
 from audio.models import Audio, Download, INSTRUMENT_CHOICES, TYPE_CHOICES, UPLOAD_TYPES
 from audio.uploads import ACCEPTED_EXTENSIONS
+from redpanal.utils.helpers import back
 from .models import (ATTACHMENT_EXTENSIONS, Contribution, Membership, Project, VISIBILITY_PRIVATE,
                      VISIBILITY_PUBLIC, WorkGroup, guess_alignment)
 
@@ -163,7 +164,7 @@ def upload_new_project(request):
     name = (request.POST.get("name") or "").strip()[:100]
     if not name:
         messages.error(request, _("Give the project a name."))
-        return redirect(request.META.get("HTTP_REFERER") or reverse("create"))
+        return redirect(back(request, default=reverse("create")))
     with transaction.atomic():
         project = Project.objects.create(name=name, user=request.user, status="idea",
                                          visibility=VISIBILITY_PRIVATE, version_of=ctx["source"])
@@ -190,6 +191,10 @@ def upload_attachment(request, slug):
     if f.size > settings.RP_ATTACHMENT_MAX_MB * 1024 * 1024:
         return JsonResponse({"error": _("«%(name)s» is bigger than %(mb)d MB.") % {
             "name": f.name, "mb": settings.RP_ATTACHMENT_MAX_MB}}, status=400)
+    from .stems import space_error
+    error = space_error(request.user, f.size)
+    if error:
+        return JsonResponse({"error": error}, status=400)
     digest = file_sha256(f)
     if not project.attachments.filter(replaced=False, sha256=digest).exists():
         Attachment.objects.create(project=project, uploaded_by=request.user, file=f, name=f.name,

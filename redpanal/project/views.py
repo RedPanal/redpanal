@@ -27,6 +27,7 @@ from social.following import reaction_state
 from .models import (Project, PartRequest, Contribution, Version, Membership, WorkGroup, guess_alignment,
                      VISIBILITY_PUBLIC, VISIBILITY_OPEN_CALL, VISIBILITY_PRIVATE, VISIBILITY_CHOICES,
                      sync_action_visibility)
+from .stems import form_fits
 from .forms import (ProjectForm, NewWorkForm, ContributionForm, PartRequestForm,
                     CommentForm, VersionForm, VisibilityForm, InviteForm, AccessRequestForm,
                     FolderWorkForm, SoundForm)
@@ -279,7 +280,7 @@ def work_create(request):
 
     if request.method == "POST":
         form = NewWorkForm(request.POST, request.FILES, user=request.user, sound=sound)
-        if form.is_valid():
+        if form.is_valid() and form_fits(form, request.user):
             data = form.cleaned_data
             with transaction.atomic():
                 audio_file = prepare_audio_file(data["audio"], data.get("trim_start_ms"),
@@ -374,7 +375,7 @@ def sound_create(request):
     """Share a loose sound (loop, sample, field recording) for anyone to use in their works."""
     if request.method == "POST":
         form = SoundForm(request.POST, request.FILES)
-        if form.is_valid():
+        if form.is_valid() and form_fits(form, request.user):
             data = form.cleaned_data
             audio = Audio(user=request.user, audio=prepare_audio_file(data["audio"]), name=data["name"],
                           use_type=data["use_type"], instrument=data["instrument"], tempo=data.get("tempo"),
@@ -451,7 +452,7 @@ def contribute(request, slug):
 
     if request.method == "POST":
         form = ContributionForm(request.POST, request.FILES, project=project, is_owner=is_owner)
-        if form.is_valid():
+        if form.is_valid() and form_fits(form, request.user):
             data = form.cleaned_data
             # What it is: the collaboration answered, else what the person plays, else the file name.
             from .stems import guess_instrument
@@ -1127,10 +1128,12 @@ def my_stuff(request):
                 .order_by("-created_at"))
     joined = (Project.objects.filter(Q(memberships__user=request.user, memberships__status=Membership.ACTIVE)
                                      | Q(shared_groups__members__user=request.user))
-              .exclude(user=request.user).distinct().select_related("user"))
-    # Contributions still waiting for a decision come first.
+              .exclude(user=request.user).exclude(moderation_hidden=True).distinct().select_related("user"))
+    # Contributions still waiting for a decision come first. A work hidden by moderation is gone
+    # for everyone but its author: not even its name shows here.
     contributions = (Contribution.objects.filter(contributor=request.user)
                      .exclude(project__user=request.user)
+                     .exclude(project__moderation_hidden=True)
                      .exclude(status=Contribution.WITHDRAWN)
                      .select_related("project", "project__user", "audio")
                      .order_by(Case(When(status=Contribution.PROPOSED, then=0), default=1), "-created_at"))

@@ -9,7 +9,7 @@ from django.utils.safestring import mark_safe
 from django.db.models.signals import post_save
 from django.urls import reverse
 from django.contrib.sites.models import Site
-from django.utils.html import strip_tags
+from django.utils.html import escape, strip_tags
 
 from actstream import action, registry
 from taggit.managers import TaggableManager
@@ -91,7 +91,7 @@ class Message(models.Model):
                     user = User.objects.get(username=username)
                 except User.DoesNotExist:
                     return match.group()
-                new = '<a href="%s">@%s</a>' % (user.get_absolute_url(), username)
+                new = '<a href="%s">@%s</a>' % (escape(user.get_absolute_url()), escape(username))
                 return get_and_store_hash(new)
 
         def replace_hashtags(match):
@@ -101,7 +101,7 @@ class Message(models.Model):
                     tagobj = Tag.objects.get(name=tag)
                 except Tag.DoesNotExist:
                     return match.group()
-                new = '<a href="%s">#%s</a>' % (tagobj.get_absolute_url(), tag)
+                new = '<a href="%s">#%s</a>' % (escape(tagobj.get_absolute_url()), escape(tag))
                 return get_and_store_hash(new)
 
         def replace_objects_urls(match):
@@ -120,14 +120,17 @@ class Message(models.Model):
                 else:
                     return match.group()
                 text = obj.name[:25] + (obj.name[25:] and '..')
-                new = '<a href="%s"><i class="fa alias-%s"></i>%s</a>' % (obj.get_absolute_url(), obj._meta.verbose_name, text)
+                # Names are written by people: never markup.
+                new = '<a href="%s"><i class="fa alias-%s"></i>%s</a>' % (
+                    escape(obj.get_absolute_url()), escape(obj._meta.verbose_name), escape(text))
                 return get_and_store_hash(new)
 
         def replace_urls(match):
             if match:
                 url = match.group(0)
                 text = match.group(3)[:25] + (match.group(3)[25:] and '..')
-                new = '<a href="%s" target="_blank">%s</a>' % (url, text)
+                # A quote or a bracket in the address must not open an attribute or a tag.
+                new = '<a href="%s" target="_blank" rel="noopener nofollow">%s</a>' % (escape(url), escape(text))
                 return get_and_store_hash(new)
 
         # Replace strings for hashes and save the new html in context
@@ -136,8 +139,8 @@ class Message(models.Model):
         html = re.sub(OBJECTS_URL_REGEX, replace_objects_urls, html)
         html = re.sub(URL_REGEX, replace_urls, html)
 
-        # Remove all html tags
-        html = strip_tags(html)
+        # Remove all html tags, and escape what's left (a "<" without its ">", quotes, "&")
+        html = escape(strip_tags(html))
 
         # Replace the hashes with our versions of the html
         for rep_hash, new_html in html_replaces:

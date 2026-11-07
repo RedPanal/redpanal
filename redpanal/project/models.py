@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.db.models.signals import post_save
+from django.db.models.signals import post_delete, post_save
 from django.core.files.storage import default_storage
 from actstream import action, registry
 
@@ -230,8 +230,17 @@ class Project(models.Model, BaseModelMixin):
             for c in self.contributions.select_related("audio"):
                 c.audio.move_to_private_path()
         sync_action_visibility(self)
+        self.purge_cached_media()
         self.refresh_preview()
         self.reindex_search()
+
+    def purge_cached_media(self):
+        """Throw away the mixes built for this work: whoever kept their address keeps nothing."""
+        import shutil
+        from django.conf import settings
+        for folder in (os.path.join(settings.MEDIA_ROOT, "mixes", str(self.pk)),
+                       os.path.join(settings.MEDIA_ROOT, "audio_cache", str(self.pk))):
+            shutil.rmtree(folder, ignore_errors=True)
 
     def reindex_search(self):
         """Search only holds what anyone may see: refresh the work, its audio and comments."""
@@ -251,7 +260,7 @@ class Project(models.Model, BaseModelMixin):
             if os.path.exists(peaks_path):
                 os.remove(peaks_path)
             self.preview.delete(save=False)
-        if self.visibility == VISIBILITY_OPEN_CALL:
+        if self.visibility == VISIBILITY_OPEN_CALL and not self.moderation_hidden:
             content = build_preview(self)
             if content is not None:
                 self.preview.save("%s-preview.mp3" % self.slug, content, save=False)
@@ -419,9 +428,12 @@ class Project(models.Model, BaseModelMixin):
         hashsum = format(hashsum.hexdigest())
         filename = "%s.ogg" % hashsum
 
-        path = default_storage.path('audio_cache')
+        # One folder per work, so changing who can listen can throw its mixes away (purge_cached_media).
+        folder = os.path.join('audio_cache', str(self.pk))
+        path = default_storage.path(folder)
         if not default_storage.exists(path):
             os.makedirs(path)
+        filename = os.path.join(str(self.pk), filename)
 
         path = default_storage.path(os.path.join('audio_cache', filename))
         if not default_storage.exists(path):
@@ -765,6 +777,12 @@ def project_created_signal(sender, instance, created, **kwargs):
                     public=instance.is_listed)
 
 post_save.connect(project_created_signal, sender=Project)
+
+
+def project_deleted_signal(sender, instance, **kwargs):
+    instance.purge_cached_media()
+
+post_delete.connect(project_deleted_signal, sender=Project, dispatch_uid="project_deleted_signal")
 
 
 def sync_action_visibility(project):

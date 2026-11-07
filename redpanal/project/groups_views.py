@@ -78,7 +78,9 @@ def group_detail(request, slug):
     if not group.is_member(request.user):
         raise Http404
     is_owner = request.user == group.owner
-    works = group.works.select_related("user").order_by("-created_at")
+    # A work hidden by moderation stays only with its author.
+    works = (group.works.filter(Q(moderation_hidden=False) | Q(user=request.user))
+             .select_related("user").order_by("-created_at"))
     members = group.members.select_related("user", "user__userprofile")
     # Who took part: contributions of each member to the group's works.
     counts = dict(Contribution.objects.filter(project__in=works).exclude(status=Contribution.WITHDRAWN)

@@ -130,6 +130,12 @@ class AudioViewSet(viewsets.ModelViewSet):
         return Audio.objects.visible_to(self.request.user).order_by('-created_at')
 
     def perform_create(self, serializer):
+        # The same space limit as the web.
+        from project.stems import space_error
+        f = serializer.validated_data.get('audio')
+        error = space_error(self.request.user, getattr(f, 'size', 0)) if f else None
+        if error:
+            raise serializers.ValidationError({'audio': [error]})
         serializer.save(user=self.request.user)
 
     def perform_update(self, serializer):

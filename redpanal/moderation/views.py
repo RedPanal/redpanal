@@ -86,6 +86,8 @@ def set_hidden(obj, hidden):
     from actstream.models import Action
     if isinstance(obj, Project):
         sync_action_visibility(obj)
+        obj.purge_cached_media()
+        obj.refresh_preview()
         obj.reindex_search()
     else:
         from audio.models import Audio
@@ -103,6 +105,7 @@ def set_hidden(obj, hidden):
             comments = list(Message.objects.filter(content_type=ct, object_id=obj.pk))
             sync_message_actions(comments)
             for project in Project.objects.filter(contributions__audio=obj).distinct():
+                project.purge_cached_media()
                 project.refresh_preview()
             reindex([obj] + comments)
             return

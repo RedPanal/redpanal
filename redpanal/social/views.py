@@ -13,7 +13,7 @@ from django.utils.translation import gettext_lazy as _
 from actstream import actions, models
 from actstream.views import respond
 
-from redpanal.utils.helpers import is_ajax
+from redpanal.utils.helpers import back, is_ajax, safe_next
 from .forms import MessageForm, MessageWithContentForm
 from .models import Message
 
@@ -50,7 +50,7 @@ def person_follow(request, username):
         actions.follow(request.user, person, send_action=False, actor_only=True)
         notify(person, request.user, "followed", "", request.user.get_absolute_url())
         queue_event(request, "follow")
-    return HttpResponseRedirect(request.POST.get("next") or person.get_absolute_url())
+    return HttpResponseRedirect(safe_next(request, request.POST.get("next"), default=person.get_absolute_url()))
 
 
 REACTION_TARGETS = ("proyecto", "sonido", "comentario")
@@ -107,7 +107,7 @@ def react(request, kind, target, pk):
         else:
             notify(owner, request.user, "favorited", name, url)
             messages.success(request, _("Saved in your favorites: you find them in Estudio."))
-    return HttpResponseRedirect(request.POST.get("next") or request.META.get("HTTP_REFERER", "/"))
+    return HttpResponseRedirect(back(request))
 
 
 def _message_url(message):
@@ -145,7 +145,7 @@ def reply(request, target, pk):
         for person in {parent.user, obj.user} - {about_owner}:
             notify(person, request.user, "replied", getattr(about, "name", "") or parent.msg[:60],
                    _message_url(parent))
-    return HttpResponseRedirect(request.POST.get("next") or request.META.get("HTTP_REFERER", "/"))
+    return HttpResponseRedirect(back(request))
 
 
 @login_required
@@ -209,7 +209,7 @@ def message_create(request):
             queue_event(request, "post")
             # Posted from the floating pen on any page: say so, and where it can be seen.
             messages.success(request, _("Posted. It's on your profile and in the Comunidad of the people who follow you."))
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    return HttpResponseRedirect(back(request))
 
 @login_required
 def message_with_content_create(request):
@@ -231,4 +231,4 @@ def message_with_content_create(request):
             else:
                 raise PermissionDenied
             Message.objects.create(msg=form.cleaned_data["msg"], user=request.user, content_object=about)
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    return HttpResponseRedirect(back(request))

@@ -171,3 +171,63 @@ class PrivacyTestCase(TestCase):
         Action.objects.filter(pk=self.comment_action(m).pk).update(public=True)
         call_command("sync_visibility", stdout=open("/dev/null", "w"))
         self.assertFalse(self.comment_action(m).public)
+
+    # -- SEC-09: hidden works in Estudio and groups ---------------------------------------------
+
+    def test_a_hidden_work_is_not_listed_in_estudio_for_its_contributors(self):
+        work, _audio, _part = self.work_with_part()
+        audio = Audio.objects.create(user=self.tincho, name="Bajo", audio=tone())
+        Contribution.objects.create(project=work, audio=audio, contributor=self.tincho,
+                                    status=Contribution.INCLUDED)
+        Project.objects.filter(pk=work.pk).update(moderation_hidden=True)
+        self.client.login(username="tincho", password="pw")
+        self.assertNotContains(self.client.get(reverse("my-stuff")), "Obra secreta")
+
+    # -- SEC-10: cached mixes ---------------------------------------------------------------
+
+    def test_making_a_work_private_throws_its_cached_mixes_away(self):
+        import os
+        from django.conf import settings
+        work, a1, _p = self.work_with_part()
+        a2 = Audio(user=self.lucia, name="Bajo", audio=tone("tone.ogg"))
+        a2._part_of_work = True
+        a2.save()
+        work.audios.add(a2)
+        filename = work.mix_audios([a1.pk, a2.pk])
+        path = os.path.join(settings.MEDIA_ROOT, "audio_cache", filename)
+        self.assertTrue(os.path.exists(path))
+        work.set_visibility("private")
+        self.assertFalse(os.path.exists(path))
+
+    # -- SEC-11: open redirects ----------------------------------------------------------------
+
+    def test_next_cant_send_people_to_another_site(self):
+        self.client.login(username="tincho", password="pw")
+        response = self.client.post(reverse("person-follow", args=["lucia"]), {"next": "https://evil.example/"})
+        self.assertEqual(response["Location"], self.lucia.get_absolute_url())
+        response = self.client.post(reverse("message-create"), {"msg": "hola"},
+                                    HTTP_REFERER="https://evil.example/")
+        self.assertEqual(response["Location"], "/")
+
+    # -- SEC-12: comments are escaped -----------------------------------------------------------
+
+    def test_names_and_addresses_in_comments_cant_inject_markup(self):
+        from django.contrib.sites.models import Site
+        Audio.objects.create(user=self.lucia, name='<img src=x onerror=alert(1)>', audio=tone(), slug="pad")
+        domain = Site.objects.get_current().domain
+        html = Message.to_html('mirá http://%s/a/pad/ y http://x.example/"onmouseover="alert(1) <b' % domain)
+        self.assertNotIn("<img", html)
+        self.assertNotIn('"onmouseover', html)
+        self.assertNotIn("<b", html)
+
+    # -- QUOTA-01 --------------------------------------------------------------------------------
+
+    def test_every_upload_counts_against_the_space(self):
+        self.client.login(username="lucia", password="pw")
+        with self.settings(RP_USER_QUOTA_MB=0):
+            self.client.post(reverse("create-sound"), {"audio": tone(), "name": "Loop", "use_type": "loop"})
+            self.client.post(reverse("create"), {"audio": tone(), "name": "Lluvia", "status": "idea",
+                                                 "visibility": "public", "part_instrument": "guitar"})
+            r = self.client.post("/api/audio/", {"name": "Api", "audio": tone(), "tags": "[]"}, **self.token("lucia"))
+        self.assertEqual(r.status_code, 400)
+        self.assertFalse(Audio.objects.exists())

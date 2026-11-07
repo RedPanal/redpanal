@@ -8,3 +8,9 @@ venv/
 .venv/
 .git/
 .github/
+# Secretos locales: Docker no lee .gitignore, y COPY . . los metería en la imagen.
+**/local_settings.py
+.env
+.env.*
+**/*.pem
+**/*.key

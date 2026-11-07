@@ -65,6 +65,25 @@ def quota_bytes():
     return settings.RP_USER_QUOTA_MB * 1024 * 1024
 
 
+def space_error(user, nbytes):
+    """Why `nbytes` more don't fit in this person's space, or None. Every way of uploading asks this."""
+    used = usage_bytes(user)
+    if used + (nbytes or 0) > quota_bytes():
+        return _("Not enough space: you use %(used)d MB of %(total)d MB.") % {
+            "used": used // (1024 * 1024), "total": settings.RP_USER_QUOTA_MB}
+    return None
+
+
+def form_fits(form, user, field="audio"):
+    """After form.is_valid(): the uploaded file fits in the person's space, else a form error."""
+    f = form.cleaned_data.get(field)
+    error = space_error(user, getattr(f, "size", 0)) if f else None
+    if error:
+        form.add_error(field, error)
+        return False
+    return True
+
+
 class StemsResult(object):
     def __init__(self):
         self.added, self.replaced, self.unchanged = [], [], []
