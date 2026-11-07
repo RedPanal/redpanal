@@ -43,6 +43,7 @@
   }
   function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
   var T = window.RP_QUEUE_TEXT || {};
+  var USER = window.RP_QUEUE_USER;
 
   function entriesOf(form) {
     var fd = new FormData(form), out = [];
@@ -56,7 +57,7 @@
   }
 
   function save(form, url, title) {
-    return queueAdd({ url: url, title: title, entries: entriesOf(form), created: Date.now() }).then(function () {
+    return queueAdd({ url: url, title: title, entries: entriesOf(form), created: Date.now(), owner: USER }).then(function () {
       var status = form.querySelector("[data-uploading]");
       if (status) { status.hidden = false; status.textContent = T.queued || "Sin conexión: se va a subir sola cuando vuelva la señal."; }
       var btn = form.querySelector("[data-submit]");
@@ -101,9 +102,16 @@
     flushing = true;
     queueAll().then(function (items) {
       return items.reduce(function (chain, item) {
+        // Someone else's uploads (another person used this browser): they wait for their owner.
+        if (USER === undefined || item.owner !== USER) return chain;
         return chain.then(function () {
           return fetch(item.url, { method: "POST", body: formDataOf(item.entries), credentials: "same-origin" })
             .then(function (res) {
+              // The session expired: the login page answers 200 after a redirect. Keep the file.
+              if (res.redirected && /\/accounts\/login\//.test(new URL(res.url).pathname)) {
+                toast((T.login || "Iniciá sesión de nuevo: «%s» sigue esperando para subirse.").replace("%s", esc(item.title)));
+                return;
+              }
               if (res.ok) {
                 toast((T.sent || "Se subió «%s».").replace("%s", esc(item.title)) +
                       ' <a href="' + esc(res.url) + '">' + (T.see || "Ver") + "</a>");

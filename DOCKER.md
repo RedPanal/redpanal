@@ -60,7 +60,7 @@ docker compose exec web python manage.py compilemessages -l es -i uploaded_media
 ```
 
 ## Agregar dependencias
-Editar `requirements.txt` y correr `docker compose build`.
+Editar `requirements.txt`, regenerar `requirements.lock` (versiones exactas probadas) y correr `docker compose build`.
 
 ## Límites a tener en cuenta
 - Lo que se escriba en `/app` **sí** afecta a la carpeta real del proyecto.

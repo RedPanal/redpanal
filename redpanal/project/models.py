@@ -237,7 +237,6 @@ class Project(models.Model, BaseModelMixin):
     def purge_cached_media(self):
         """Throw away the mixes built for this work: whoever kept their address keeps nothing."""
         import shutil
-        from django.conf import settings
         for folder in (os.path.join(settings.MEDIA_ROOT, "mixes", str(self.pk)),
                        os.path.join(settings.MEDIA_ROOT, "audio_cache", str(self.pk))):
             shutil.rmtree(folder, ignore_errors=True)

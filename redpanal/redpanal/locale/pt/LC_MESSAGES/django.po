@@ -4643,3 +4643,7 @@ msgstr "Até %d imagens: o resto ficou de fora."
 
 #~ msgid "here"
 #~ msgstr "aqui"
+
+#: redpanal/templates/base.html
+msgid "Log in again: «%s» is still waiting to upload."
+msgstr "Entre de novo: «%s» continua esperando para ser enviado."

@@ -22,8 +22,20 @@ from taggit_serializer.serializers import (TagListSerializerField,
                                            TaggitSerializer)
 from avatar.utils import get_primary_avatar
 
+from django.utils.crypto import constant_time_compare
+
 _TOKEN_SALT = 'redpanal-spa-auth'
 _TOKEN_MAX_AGE = 30 * 24 * 3600  # 30 days
+
+
+def _password_mark(user):
+    """Changes when the password changes (or is set unusable): tokens issued before stop working."""
+    from django.utils.crypto import salted_hmac
+    return salted_hmac(_TOKEN_SALT, user.password).hexdigest()[:16]
+
+
+def make_token(user):
+    return signing.dumps({'user_id': user.id, 'pw': _password_mark(user)}, salt=_TOKEN_SALT)
 
 
 class SignedTokenAuthentication(BaseAuthentication):
@@ -39,12 +51,15 @@ class SignedTokenAuthentication(BaseAuthentication):
         token = auth[7:].strip()
         try:
             data = signing.loads(token, salt=_TOKEN_SALT, max_age=_TOKEN_MAX_AGE)
-            user = User.objects.get(id=data['user_id'])
-            return (user, token)
+            user = User.objects.get(id=data['user_id'], is_active=True)
         except signing.SignatureExpired:
             raise AuthenticationFailed(_('Expired token'))
         except Exception:
             raise AuthenticationFailed(_('Invalid token'))
+        # A new password (or a deactivated account) revokes every token issued before.
+        if not constant_time_compare(data.get('pw', ''), _password_mark(user)):
+            raise AuthenticationFailed(_('Invalid token'))
+        return (user, token)
 
     def authenticate_header(self, request):
         return 'Bearer'
@@ -247,7 +262,7 @@ def auth_login_view(request):
     user = authenticate(request, username=username, password=password)
     if user is None:
         return Response({'error': _('Wrong username or password')}, status=400)
-    token = signing.dumps({'user_id': user.id}, salt=_TOKEN_SALT)
+    token = make_token(user)
     return Response({'token': token, **_user_response(user)})
 
 
@@ -396,7 +411,7 @@ class AudioCommentsView(APIView):
 
     def post(self, request, slug):
         audio = get_object_or_404(Audio.objects.visible_to(request.user), slug=slug)
-        msg_text = request.data.get('msg', '').strip()
+        msg_text = str(request.data.get('msg', '')).strip()[:1000]  # same limit as the site's forms
         if not msg_text:
             return Response({'error': 'msg is required'}, status=400)
         ct = ContentType.objects.get_for_model(Audio)
@@ -497,7 +512,10 @@ def tags_popular(request):
     """Top tags by usage count. ?limit=N (default 20, max 50)."""
     from taggit.models import Tag
     from django.db.models import Count
-    limit = min(int(request.query_params.get('limit', 20)), 50)
+    try:
+        limit = max(1, min(int(request.query_params.get('limit', 20)), 50))
+    except (TypeError, ValueError):
+        limit = 20
     tags = (
         Tag.objects
         .annotate(n=Count('taggit_taggeditem_items'))

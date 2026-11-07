@@ -63,27 +63,27 @@
 			<!-- 
 			<div class="menu-profile">
 				<div class="dropdown top-user-menu">
-            	<button 
-            				class="btn btn-outline-secondary dropdown-toggle" 
-            				type="button" id="userDropdown" 
-            				data-bs-toggle="dropdown" 
-            				aria-haspopup="true" aria-expanded="false">
-               			{% avatar user 40 %} <span class="btn-text">{{ request.user }}</span>
-            	</button>
-            	<div class="dropdown-menu"  aria-labelledby="userDropdown">
-           			<a class="dropdown-item" href="{% url 'user-profile' %}">
-               		<i class="fas fa-profile"></i> {% trans "My Profile" %}
-            		</a>
-               	<a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
-                 		<i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
-               	</a>
-            	</div>
-         	</div> 
+                <button
+                            class="btn btn-outline-secondary dropdown-toggle"
+                            type="button" id="userDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        {% avatar user 40 %} <span class="btn-text">{{ request.user }}</span>
+                </button>
+                <div class="dropdown-menu"  aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="{% url 'user-profile' %}">
+                    <i class="fas fa-profile"></i> {% trans "My Profile" %}
+                    </a>
+                <a class="dropdown-item" href="{% url 'account_logout' %}?next={{ request.path }}">
+                        <i class="fas fa-sign-out-alt"></i> {% trans "Log out" %}
+                </a>
+                </div>
+            </div>
 			</div>
 			-->
- 		</div>
+        </div>
 
-  	{% block post_message %}
+    {% block post_message %}
 	  {% if request.user.is_authenticated %}
 	    {% if request.user == user %}
 	      {% include "social/message_form.html" %}
@@ -121,9 +121,9 @@
 	<div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasRightLabel">{% trans "More..." %}</h5>
       <button 	type="button" class="btn-close"
-      			data-bs-target="#offcanvasRight"
-      			data-bs-dismiss="offcanvas"
-      			aria-label="Close"></button>
+                data-bs-target="#offcanvasRight"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
 	</div>
 	<div class="offcanvas-body"><div class="d-flex flex-wrap">
 

@@ -208,12 +208,15 @@
 {% endblock %}
 {% if request.user.is_authenticated %}
 <script>
+ // Uploads waiting in this browser belong to whoever queued them: never sent from someone else's session.
+ window.RP_QUEUE_USER = {{ request.user.pk }};
  window.RP_QUEUE_TEXT = {
   queued: "{% trans 'No connection: it will upload by itself when the signal comes back.' %}",
   progress: "{% trans 'Uploading… %s' %}",
   sent: "{% trans 'Uploaded «%s».' %}",
   failed: "{% trans 'Could not upload «%s».' %}",
-  see: "{% trans 'See' %}"
+  see: "{% trans 'See' %}",
+  login: "{% trans 'Log in again: «%s» is still waiting to upload.' %}"
  };
 </script>
 <script src="{% static 'js/upload-queue.js' %}"></script>

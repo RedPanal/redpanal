@@ -5130,3 +5130,7 @@ msgstr "Hasta %d imágenes: el resto quedó afuera."
 
 #~ msgid "Play / Pause"
 #~ msgstr "Reproducir / Pausar"
+
+#: redpanal/templates/base.html
+msgid "Log in again: «%s» is still waiting to upload."
+msgstr "Iniciá sesión de nuevo: «%s» sigue esperando para subirse."

@@ -17,10 +17,10 @@ RUN apt-get update \
 
 # Dependencias de Python instaladas como root en tiempo de build.
 # Para agregar una: editar requirements.txt y reconstruir (docker compose build).
-COPY requirements.txt /tmp/requirements.txt
+COPY requirements.txt requirements.lock /tmp/
 RUN pip install "setuptools<58" tzdata \
- && pip install -r /tmp/requirements.txt \
- && rm /tmp/requirements.txt
+ && pip install -r /tmp/requirements.txt -c /tmp/requirements.lock \
+ && rm /tmp/requirements.txt /tmp/requirements.lock
 
 # Usuario sin privilegios
 RUN groupadd --gid 1000 dev \

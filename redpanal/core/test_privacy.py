@@ -231,3 +231,21 @@ class PrivacyTestCase(TestCase):
             r = self.client.post("/api/audio/", {"name": "Api", "audio": tone(), "tags": "[]"}, **self.token("lucia"))
         self.assertEqual(r.status_code, 400)
         self.assertFalse(Audio.objects.exists())
+
+    # -- P2 / P3 --------------------------------------------------------------------------------
+
+    def test_changing_the_password_revokes_api_tokens(self):
+        token = self.token("lucia")
+        self.assertEqual(self.client.get("/api/activity/me/", **token).status_code, 200)
+        self.lucia.set_password("otra")
+        self.lucia.save()
+        self.assertEqual(self.client.get("/api/activity/me/", **token).status_code, 401)
+
+    def test_a_bad_limit_does_not_break_popular_tags(self):
+        self.assertEqual(self.client.get("/api/tags/popular/?limit=abc").status_code, 200)
+        self.assertEqual(self.client.get("/api/tags/popular/?limit=-5").status_code, 200)
+
+    def test_api_comments_have_the_same_length_limit_as_the_site(self):
+        sound = Audio.objects.create(user=self.lucia, name="Pad", audio=tone())
+        self.client.post("/api/audio/%s/comments/" % sound.slug, {"msg": "a" * 5000}, **self.token("tincho"))
+        self.assertEqual(len(Message.objects.get().msg), 1000)
