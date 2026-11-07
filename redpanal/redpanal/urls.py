@@ -67,7 +67,8 @@ urlpatterns = [
     path('accounts/profile/', moved('user-profile')),  # old address of the settings
     path('accounts/', include('allauth.urls')),
     path('activity/', include('social.urls')),
-    path('activity/', include('actstream.urls')),
+    # actstream's own pages and feeds (RSS/Atom/JSON) are not served: they list actions without
+    # checking who may see them. Following goes through social.urls.
     path('avatar/', include('avatar.urls')),
     # Old search page: searching now happens in Explore, across works, sounds and people.
     path('search/', RedirectView.as_view(pattern_name='explore', query_string=True), name='haystack_search'),

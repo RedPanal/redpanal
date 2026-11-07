@@ -3,12 +3,13 @@ import tempfile
 import zipfile
 
 from django.contrib import messages
+from django.core.files.storage import default_storage
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 from django.db import transaction
-from django.db.models import Case, Count, Q, When
+from django.db.models import Case, Count, Prefetch, Q, When
 from django.http import FileResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -24,7 +25,8 @@ from audio.uploads import prepare_audio_file
 from social.models import Message
 from social.following import reaction_state
 from .models import (Project, PartRequest, Contribution, Version, Membership, WorkGroup, guess_alignment,
-                     VISIBILITY_PUBLIC, VISIBILITY_OPEN_CALL, VISIBILITY_PRIVATE, VISIBILITY_CHOICES)
+                     VISIBILITY_PUBLIC, VISIBILITY_OPEN_CALL, VISIBILITY_PRIVATE, VISIBILITY_CHOICES,
+                     sync_action_visibility)
 from .forms import (ProjectForm, NewWorkForm, ContributionForm, PartRequestForm,
                     CommentForm, VersionForm, VisibilityForm, InviteForm, AccessRequestForm,
                     FolderWorkForm, SoundForm)
@@ -116,7 +118,7 @@ def project_detail(request, slug):
         "follows_project": user.is_authenticated and not is_owner and is_following(user, project),
         "reactions": reaction_state(user, project),
         "is_public": project.visibility == "public" and not project.moderation_hidden,
-        "latest_version": versions.first(),
+        "latest_version": visible_versions.order_by("-number").first(),
         "can_contribute": project.can_contribute(user),
         "can_download": project.can_download(user, request),
         "parts": shown,
@@ -131,7 +133,10 @@ def project_detail(request, slug):
         # One level of replies, like a conversation thread.
         "comments": (Message.objects.filter(content_type=ct, object_id=project.pk, moderation_hidden=False,
                                             parent__isnull=True)
-                     .select_related('user').prefetch_related('replies__user').order_by('created_at')),
+                     .select_related('user')
+                     .prefetch_related(Prefetch('replies', queryset=Message.objects.filter(moderation_hidden=False)
+                                                .select_related('user')))
+                     .order_by('created_at')),
         "attachments": [a for a in attachments if a.name.lower().rsplit(".", 1)[-1] not in DOCUMENT_EXTENSIONS],
         "sound_sources": project.sources.filter(audio__in=Audio.objects.visible_to(user))
                                         .select_related("audio", "audio__user"),
@@ -386,7 +391,7 @@ def sound_create(request):
 def _declare_sources(user, project, source_project, audios):
     """Credit what a new work is made from, and let the authors know."""
     from .models import WorkSource
-    public = project.visibility == VISIBILITY_PUBLIC
+    public = project.content_is_public()
     if source_project is not None:
         WorkSource.objects.create(project=project, source_project=source_project)
         if source_project.user != user:
@@ -480,7 +485,7 @@ def contribute(request, slug):
             project.reindex_search()
             from core.analytics import queue_event
             queue_event(request, "contribute")
-            public = project.visibility == VISIBILITY_PUBLIC
+            public = project.content_is_public()
             if is_owner:
                 project.refresh_preview()
                 action.send(request.user, verb='version_saved', action_object=version, target=project, public=public)
@@ -505,12 +510,7 @@ def contribute(request, slug):
 
 def _visible_versions(project, user):
     """Versions on the work's page: the ones its author hid stay for the author and whoever made them."""
-    versions = project.versions_saved.select_related("created_by", "parent")
-    if user == project.user:
-        return versions
-    if user is not None and user.is_authenticated:
-        return versions.filter(Q(hidden=False) | Q(created_by=user))
-    return versions.filter(hidden=False)
+    return project.visible_versions(user)
 
 
 @login_required
@@ -588,7 +588,7 @@ def version_create(request, slug):
     message = form.cleaned_data["message"] if form.is_valid() else ""
     version = project.save_version(request.user, message)
     action.send(request.user, verb='version_saved', action_object=version, target=project,
-                public=project.visibility == VISIBILITY_PUBLIC)
+                public=project.content_is_public())
 
     if message:
         others = [c["user"] for c in version.credits() if c["user"] != request.user]
@@ -602,7 +602,7 @@ def version_create(request, slug):
 
 def version_detail(request, slug, number):
     project = _listenable(request, slug)
-    version = get_object_or_404(Version, project=project, number=number)
+    version = get_object_or_404(_visible_versions(project, request.user), number=number)
     parts = version.parts()
     versions = project.versions_saved.all()
     return render(request, "project/version_detail.html", {
@@ -665,6 +665,7 @@ def version_hide(request, slug, number):
     version = get_object_or_404(Version, project=project, number=number)
     version.hidden = not version.hidden
     version.save(update_fields=["hidden"])
+    sync_action_visibility(project)
     return redirect("%s#versiones" % reverse("project-settings", args=[project.slug]))
 
 
@@ -675,7 +676,7 @@ def version_mix(request, slug, number):
     from django.conf import settings
     from .preview import mix_parts
     project = _downloadable(request, slug)
-    version = get_object_or_404(Version, project=project, number=number)
+    version = get_object_or_404(_visible_versions(project, request.user), number=number)
     parts = list(version.parts().filter(alignment=Contribution.ALIGNED, audio__moderation_hidden=False))
     if not parts:
         raise Http404
@@ -770,7 +771,7 @@ def parts_zip(request, slug):
     project = _downloadable(request, slug)
     tmp = tempfile.TemporaryFile()
     with zipfile.ZipFile(tmp, "w", zipfile.ZIP_STORED) as zf:
-        for i, part in enumerate(project.parts(), start=1):
+        for i, part in enumerate(project.visible_parts(request.user), start=1):
             path = part.audio.audio.path
             if not os.path.exists(path):
                 continue
@@ -843,7 +844,7 @@ def attachment_download(request, slug, pk):
 def visibility_update(request, slug):
     project = get_object_or_404(Project, slug=slug)
     _owner_or_403(request, project)
-    form = VisibilityForm(request.POST, already_public=project.visibility == VISIBILITY_PUBLIC)
+    form = VisibilityForm(request.POST, already_public=project.content_is_public())
     if not form.is_valid():
         messages.error(request, _("To make the work public, confirm that you understand what it implies."))
         return _to_settings(project)
@@ -1212,7 +1213,9 @@ def download_mix(request, slug=None):
         if len(ids) > 1:
             try:
                 filename = project.mix_audios(ids)
-                return redirect("/media/audio_cache/%s" % filename)
+                # Served here, after the permission check, not as a public media address.
+                path = default_storage.path(os.path.join("audio_cache", filename))
+                return FileResponse(open(path, "rb"), as_attachment=True, filename=filename)
             except ValueError:
                 pass  # fewer than two of them could be read: same message as choosing one
         errors = {'two_tracks': True}

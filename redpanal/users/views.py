@@ -107,7 +107,8 @@ def user_projects(request, username):
 
 def user_activities(request, username):
     user = get_object_or_404(User, username=username)
-    action_list = actstream.models.actor_stream(user)
+    from social.visibility import visible_actions
+    action_list = visible_actions(actstream.models.actor_stream(user), request.user, limit=200)
 
     if is_ajax(request):
         template = "social/actions_list.html"

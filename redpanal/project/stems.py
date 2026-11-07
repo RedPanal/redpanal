@@ -189,5 +189,5 @@ def add_stems(project, user, files, instruments=None, note="", accept_terms=Fals
         project.reindex_search()
     if first_contribution is not None and not is_owner:
         action.send(user, verb='contributed', action_object=first_contribution, target=project,
-                    public=project.visibility == VISIBILITY_PUBLIC)
+                    public=project.content_is_public())
     return result

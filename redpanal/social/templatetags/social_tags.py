@@ -46,11 +46,12 @@ def message_form_for(context, obj):
 
 @register.simple_tag(takes_context=True)
 def show_messages_for(context, obj):
-    from social.models import Message
+    from social.models import Message, visible_messages
     content_type = ContentType.objects.get_for_model(obj)
-
-    messages = Message.objects.filter(object_id=obj.pk,
-                                      content_type=content_type)
+    request = context.get('request')
+    # The same rules as everywhere else: hidden comments and things this person can't hear stay out.
+    messages = visible_messages(Message.objects.filter(object_id=obj.pk, content_type=content_type),
+                                getattr(request, 'user', None))
     return render_to_string("social/messages_for_object.html",
                             {"messages": messages},
                             request=context.get('request'))

@@ -2,6 +2,7 @@ import os
 import hashlib
 import secrets
 
+from django.conf import settings
 from django.db import models, transaction
 from django.db.models import Q, Max
 from django.contrib.auth.models import User
@@ -149,6 +150,10 @@ class Project(models.Model, BaseModelMixin):
     @property
     def is_listed(self):
         return self.visibility in LISTED_VISIBILITIES and not self.moderation_hidden
+
+    def content_is_public(self):
+        """Anyone hears what's inside (parts, versions, comments): public and not hidden by moderation."""
+        return self.visibility == VISIBILITY_PUBLIC and not self.moderation_hidden
 
     def _hidden_for(self, user):
         """Hidden by moderation: only its author and the moderators get in."""
@@ -325,6 +330,22 @@ class Project(models.Model, BaseModelMixin):
     def latest_version(self):
         return self.versions_saved.order_by('-number').first()
 
+    def visible_versions(self, user):
+        """Versions this person may open: the ones its author hid stay for the author and whoever made them."""
+        versions = self.versions_saved.select_related("created_by", "parent")
+        if user is not None and user.is_authenticated and user.pk == self.user_id:
+            return versions
+        if user is not None and user.is_authenticated:
+            return versions.filter(Q(hidden=False) | Q(created_by=user))
+        return versions.filter(hidden=False)
+
+    def visible_parts(self, user, contributions=None):
+        """Included parts this person may hear: a part hidden by moderation stays only with its author."""
+        contributions = self.parts() if contributions is None else contributions
+        if user is not None and user.is_authenticated:
+            return contributions.filter(Q(audio__moderation_hidden=False) | Q(audio__user=user))
+        return contributions.filter(audio__moderation_hidden=False)
+
     @transaction.atomic
     def save_version(self, user, message=""):
         number = (self.versions_saved.aggregate(n=Max('number'))['n'] or 0) + 1
@@ -370,7 +391,8 @@ class Project(models.Model, BaseModelMixin):
         return self.latest_version()
 
     def mix_audios(self, ids):
-        audios = self.audios.filter(id__in=ids)
+        # Only this work's audio, never one hidden by moderation.
+        audios = self.audios.filter(id__in=ids, moderation_hidden=False)
         if len(audios) < 2:
             raise ValueError("Need at least 2 audios to mix")
 
@@ -388,7 +410,9 @@ class Project(models.Model, BaseModelMixin):
         if len(readable) < 2:
             raise ValueError("Need at least 2 readable audios to mix")
 
-        hashsum = hashlib.sha1()
+        # The name can't be worked out from the parts' fingerprints (the API shows them):
+        # cached files are served without asking who you are.
+        hashsum = hashlib.sha1(settings.SECRET_KEY.encode())
         for _audio, fingerprint in readable:
             hashsum.update(fingerprint.encode())
 
@@ -757,21 +781,27 @@ def sync_action_visibility(project):
     ct_audio = ContentType.objects.get_for_model(Audio)
     ct_contribution = ContentType.objects.get_for_model(Contribution)
     ct_version = ContentType.objects.get_for_model(Version)
-    ct_message = ContentType.objects.get_for_model(Message)
+    from social.models import sync_message_actions
     pk = str(project.pk)
-    is_public = project.visibility == VISIBILITY_PUBLIC
+    # Hidden by moderation: nothing of it is public, whatever its visibility says.
+    is_public = project.visibility == VISIBILITY_PUBLIC and not project.moderation_hidden
 
     Action.objects.filter(action_object_content_type=ct_project, action_object_object_id=pk).update(
         public=project.is_listed)
     audio_ids = [str(i) for i in project.contributions.values_list("audio_id", flat=True)]
     contribution_ids = [str(i) for i in project.contributions.values_list("pk", flat=True)]
     version_ids = [str(i) for i in project.versions_saved.values_list("pk", flat=True)]
-    message_ids = [str(i) for i in Message.objects.filter(content_type=ct_project, object_id=project.pk)
-                   .values_list("pk", flat=True)]
     Action.objects.filter(
         Q(action_object_content_type=ct_audio, action_object_object_id__in=audio_ids)
         | Q(action_object_content_type=ct_contribution, action_object_object_id__in=contribution_ids)
         | Q(action_object_content_type=ct_version, action_object_object_id__in=version_ids)
-        | Q(action_object_content_type=ct_message, action_object_object_id__in=message_ids)
         | Q(target_content_type=ct_project, target_object_id=pk)
     ).update(public=is_public)
+    # Comments on the work and on its audio: each one decides by what it talks about.
+    sync_message_actions(Message.objects.filter(
+        Q(content_type=ct_project, object_id=project.pk)
+        | Q(content_type=ct_audio, object_id__in=[int(i) for i in audio_ids])))
+    # Hidden versions are never public.
+    hidden_versions = [str(i) for i in project.versions_saved.filter(hidden=True).values_list("pk", flat=True)]
+    Action.objects.filter(action_object_content_type=ct_version,
+                          action_object_object_id__in=hidden_versions).update(public=False)

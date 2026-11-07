@@ -54,11 +54,12 @@ def work_detail(request, slug):
             "contributor": c.contributor.username, "status": c.status, "offset_ms": c.offset_ms,
             "source_filename": c.source_filename,
             "sha256": [h for h in (c.audio.sha256, c.audio.source_sha256) if h],
-        } for c in project.contributions.exclude(status=Contribution.WITHDRAWN).select_related("audio", "contributor")]
+        } for c in project.visible_parts(request.user, project.contributions.exclude(status=Contribution.WITHDRAWN))
+            .select_related("audio", "contributor")]
         data["attachments"] = [{"name": a.name, "kind": a.kind, "size": a.size, "sha256": a.sha256}
                                for a in project.attachments.filter(replaced=False)]
         data["versions"] = [{"number": v.number, "created_at": v.created_at, "message": v.message}
-                            for v in project.versions_saved.all()]
+                            for v in project.visible_versions(request.user)]
     data["accepted_extensions"] = {"audio": ACCEPTED_EXTENSIONS, "attachments": ATTACHMENT_EXTENSIONS}
     return Response(data)
 
@@ -94,5 +95,5 @@ def work_versions(request, slug):
         return Response({"error": _("Only the person who created the work saves versions.")}, status=403)
     version = project.save_version(request.user, str(request.data.get("message", ""))[:500])
     action.send(request.user, verb='version_saved', action_object=version, target=project,
-                public=project.visibility == VISIBILITY_PUBLIC)
+                public=project.content_is_public())
     return Response({"number": version.number, "url": version.get_absolute_url()}, status=201)

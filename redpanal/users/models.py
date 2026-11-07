@@ -12,7 +12,15 @@ DEFAULT_GROUP = 'users'
 
 User.add_to_class('following', lambda self: actstream.models.following(self)[::-1])
 User.add_to_class('followers', lambda self: actstream.models.followers(self)[::-1])
-User.add_to_class('action_list', lambda self: actstream.models.actor_stream(self))
+
+
+def _public_action_list(self):
+    """What anyone may see of what this person did (templates have no viewer: only public things)."""
+    from social.visibility import visible_actions
+    return visible_actions(actstream.models.actor_stream(self), None, limit=100)
+
+
+User.add_to_class('action_list', _public_action_list)
 
 @property
 def created_at(self):

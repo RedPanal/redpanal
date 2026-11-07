@@ -244,7 +244,9 @@ class Audio(models.Model, BaseModelMixin):
         self.save(update_fields=["visibility"])
         ct = ContentType.objects.get_for_model(Audio)
         Action.objects.filter(action_object_content_type=ct, action_object_object_id=str(self.pk),
-                              verb="audio_created").update(public=True)
+                              verb="audio_created").update(public=not self.moderation_hidden)
+        from social.models import Message, sync_message_actions
+        sync_message_actions(Message.objects.filter(content_type=ct, object_id=self.pk))
 
     def get_sha256(self):
         """SHA-256 of the stored file, for the proof of prior existence."""

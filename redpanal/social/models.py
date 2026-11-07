@@ -181,12 +181,33 @@ class Message(models.Model):
     class Meta:
         ordering = ['-created_at']
 
+def message_is_public(message):
+    """Anyone may read it: not hidden, and about something everyone can hear (or a general post)."""
+    if message.moderation_hidden or (message.parent_id and message.parent.moderation_hidden):
+        return False
+    about = message.content_object
+    if isinstance(about, Project):
+        return about.visibility == "public" and not about.moderation_hidden
+    if isinstance(about, Audio):
+        return Audio.objects.visible_to(None).filter(pk=about.pk).exists()
+    return True
+
+
+def sync_message_actions(messages):
+    """Keep the `public` flag of the actions about these comments (and their replies) up to date."""
+    from actstream.models import Action
+    ct = ContentType.objects.get_for_model(Message)
+    messages = list(messages)
+    replies = Message.objects.filter(parent__in=[m.pk for m in messages]).exclude(pk__in=[m.pk for m in messages])
+    for m in messages + list(replies):
+        Action.objects.filter(action_object_content_type=ct, action_object_object_id=str(m.pk)).update(
+            public=message_is_public(m))
+
+
 def message_created_signal(sender, instance, created, **kwargs):
     if created:
-        # A comment on a work that isn't public stays out of the public feeds.
-        target = instance.content_object
-        public = not isinstance(target, Project) or target.visibility == "public"
-        action.send(instance.user, verb='commented', action_object=instance, public=public)
+        # A comment on a work or sound not everyone can hear stays out of the public feeds.
+        action.send(instance.user, verb='commented', action_object=instance, public=message_is_public(instance))
 
 
 class Reaction(models.Model):
@@ -295,10 +316,16 @@ def notify_from_action(sender, instance, created, **kwargs):
 
 
 def visible_messages(queryset, user):
-    """Leave out comments on works this person can't listen to."""
-    hidden = Project.objects.exclude(pk__in=Project.objects.listenable_by(user).values("pk")).values("pk")
-    ct = ContentType.objects.get_for_model(Project)
-    return queryset.exclude(content_type=ct, object_id__in=hidden).exclude(moderation_hidden=True)
+    """Leave out hidden comments, replies to hidden comments, and comments on works or sounds this
+    person can't listen to. Every page, feed, API and index that lists comments goes through here."""
+    hidden_projects = Project.objects.exclude(pk__in=Project.objects.listenable_by(user).values("pk")).values("pk")
+    hidden_audios = Audio.objects.exclude(pk__in=Audio.objects.visible_to(user).values("pk")).values("pk")
+    ct_project = ContentType.objects.get_for_model(Project)
+    ct_audio = ContentType.objects.get_for_model(Audio)
+    return (queryset.exclude(content_type=ct_project, object_id__in=hidden_projects)
+            .exclude(content_type=ct_audio, object_id__in=hidden_audios)
+            .exclude(moderation_hidden=True)
+            .exclude(parent__moderation_hidden=True))
 
 post_save.connect(message_created_signal, sender=Message, dispatch_uid="message_created_signal")
 

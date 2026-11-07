@@ -88,9 +88,24 @@ def set_hidden(obj, hidden):
         sync_action_visibility(obj)
         obj.reindex_search()
     else:
+        from audio.models import Audio
+        from social.models import Message, sync_message_actions
         ct = ContentType.objects.get_for_model(type(obj))
         if hidden:
             Action.objects.filter(action_object_content_type=ct, action_object_object_id=str(obj.pk)).update(public=False)
+        if isinstance(obj, Message):
+            # The comment and its replies.
+            sync_message_actions([obj])
+            reindex([obj] + list(obj.replies.all()))
+            return
+        if isinstance(obj, Audio):
+            # Comments on a hidden sound leave the public feeds too; they come back with it.
+            comments = list(Message.objects.filter(content_type=ct, object_id=obj.pk))
+            sync_message_actions(comments)
+            for project in Project.objects.filter(contributions__audio=obj).distinct():
+                project.refresh_preview()
+            reindex([obj] + comments)
+            return
         reindex([obj])
 
 

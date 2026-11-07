@@ -6,8 +6,9 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
 from django.urls import path, re_path
 from audio.models import Audio
-from social.models import Message
+from social.models import Message, visible_messages
 from actstream.models import actor_stream, user_stream
+from social.visibility import visible_actions
 from rest_framework import routers, serializers, viewsets, generics, pagination
 from rest_framework.filters import SearchFilter
 from rest_framework.authentication import BaseAuthentication
@@ -292,8 +293,8 @@ def _serialize_action(a):
 def activity_global(request):
     """Latest public actions across all users — no auth required."""
     from actstream.models import Action as ActstreamAction
-    qs = ActstreamAction.objects.filter(public=True).order_by('-timestamp')[:20]
-    return Response([_serialize_action(a) for a in qs])
+    qs = ActstreamAction.objects.filter(public=True).order_by('-timestamp')
+    return Response([_serialize_action(a) for a in visible_actions(qs, request.user, limit=20)])
 
 
 @api_view(['GET'])
@@ -303,19 +304,20 @@ def activity_me(request):
     """Actions performed by the logged-in user (actor_stream)."""
     actions_qs = actor_stream(request.user).select_related(
         'actor_content_type', 'action_object_content_type', 'target_content_type'
-    )[:50]
-    return Response([_serialize_action(a) for a in actions_qs])
+    )
+    return Response([_serialize_action(a) for a in visible_actions(actions_qs, request.user, limit=50)])
 
 
 @api_view(['GET'])
 @authentication_classes([SignedTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def activity_feed(request):
-    """Activity feed of users the logged-in user follows (user_stream)."""
+    """Activity feed of users the logged-in user follows (user_stream), only what this person may see:
+    following someone needs no approval, so it can't open anything that isn't theirs to hear."""
     actions_qs = user_stream(request.user).select_related(
         'actor_content_type', 'action_object_content_type', 'target_content_type'
-    )[:50]
-    return Response([_serialize_action(a) for a in actions_qs])
+    )
+    return Response([_serialize_action(a) for a in visible_actions(actions_qs, request.user, limit=50)])
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -381,9 +383,9 @@ class AudioCommentsView(APIView):
     def get(self, request, slug):
         audio = get_object_or_404(Audio.objects.visible_to(request.user), slug=slug)
         ct = ContentType.objects.get_for_model(Audio)
-        comments = Message.objects.filter(
+        comments = visible_messages(Message.objects.filter(
             content_type=ct, object_id=audio.pk
-        ).order_by('created_at')
+        ), request.user).order_by('created_at')
         return Response(MessageSerializer(comments, many=True).data)
 
     def post(self, request, slug):
