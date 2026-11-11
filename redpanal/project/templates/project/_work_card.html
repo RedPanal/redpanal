@@ -1,0 +1,13 @@
+{% load i18n obra_tags thumbnail %}{# Same shape as a sound card; the cover (or its icon and color) says it's a project. #}<article class="rp-card rp-work-card">
+ <div class="rp-card-head">
+  {% if work.image %}<img class="rp-cover rp-cover-sm" src="{% thumbnail work.image 112x112 crop %}" alt="">
+  {% else %}<span class="rp-cover rp-cover-sm rp-cover-icon rp-kind-project" title="{% trans 'Project' %}"><i class="fa fa-layer-group" aria-hidden="true"></i><span class="visually-hidden">{% trans "Project" %}</span></span>{% endif %}
+  <div class="rp-card-id">
+   <span class="d-flex justify-content-between align-items-start gap-2">
+    <a class="rp-work-title rp-card-title" href="{{ work.get_absolute_url }}">{{ work.name }}</a>
+   </span>
+   <span class="rp-muted small d-block rp-dots">{% if not hide_author %}<a class="rp-muted" href="{{ work.user.get_absolute_url }}">{{ work.user|display_name }}</a>{% endif %}{% if work.tempo %}<span>{{ work.tempo }} BPM</span>{% endif %}{% if work.musical_key %}<span>{{ work.musical_key }}</span>{% endif %}</span>
+  </div>
+ </div>
+ {% work_files work %}
+</article>

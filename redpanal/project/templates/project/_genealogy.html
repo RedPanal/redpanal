@@ -1,0 +1,15 @@
+{% load i18n obra_tags %}{# Where something comes from and what was made from it, drawn as a short tree. #}
+{% if above or below %}
+<section class="{% if not bare %}rp-card {% endif %}rp-genealogy" aria-labelledby="genealogy-title">
+ <h2 class="rp-sec" id="genealogy-title">{% trans "Genealogy" %}</h2>
+ {% if above %}
+ <p class="rp-eyebrow mb-1">{% trans "Comes from" %}</p>
+ {% for item in above %}<a class="rp-gen-node" href="{{ item.url }}"><b>{{ item.name }}</b> <span class="rp-muted small">· {{ item.who|display_name }}</span></a>{% endfor %}
+ {% endif %}
+ <p class="rp-gen-here">↓ {{ here }} ↓</p>
+ {% if below %}
+ <p class="rp-eyebrow mb-1">{% blocktrans count n=below|length %}{{ n }} made from it{% plural %}{{ n }} made from it{% endblocktrans %}</p>
+ {% for item in below %}<a class="rp-gen-node" href="{{ item.url }}"><b>{{ item.name }}</b> <span class="rp-muted small">· {{ item.who|display_name }}</span></a>{% endfor %}
+ {% endif %}
+</section>
+{% endif %}

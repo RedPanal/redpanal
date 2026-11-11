@@ -1,14 +1,45 @@
 {% extends "base.html" %}
-{% load i18n crispy_forms_tags %}
+{% load i18n %}
 
-{% block title %}{% if object %}{% trans "Edit" %}{% else %}{% trans "Create" %}{% endif %}{% trans " Project" %}{% endblock %}
+{% block title %}{% trans "Edit details" %} · {{ object.name }}{% endblock %}
 
 {% block content %}
-<div class="my-5" style="max-width: 700px;">
- <div class="p-4 rounded-4 border">
-  <h2 class="pb-4 text-center"><i class="fa fa-plus"></i> <b>{% trans "Create Project" %}</b></h2>
-  {% crispy form %}
- </div>
+<div class="rp-narrow">
+ <p class="rp-muted small mb-1"><a href="{{ object.get_absolute_url }}">{{ object.name }}</a> › {% trans "Edit details" %}</p>
+ <h1 class="rp-h1">{% trans "Edit details" %}</h1>
+ <form method="post" enctype="multipart/form-data" class="d-grid gap-3">{% csrf_token %}
+  {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+  <div>
+   <label class="form-label fw-bold" for="id_name">{% trans "Title" %}</label>
+   <input class="form-control" type="text" name="name" id="id_name" maxlength="100" required value="{{ form.name.value|default:'' }}">
+   {% for error in form.name.errors %}<p class="text-danger small mb-0">{{ error }}</p>{% endfor %}
+  </div>
+  {% if object.image %}
+  {% include "project/_image_field.html" with current=object.image.url errors=form.image.errors %}
+  <label class="small"><input type="checkbox" name="image-clear"> {% trans "Remove the image" %}</label>
+  {% else %}{% include "project/_image_field.html" with errors=form.image.errors %}{% endif %}
+  <div class="row g-3">
+   <div class="col-sm-6">
+    <label class="form-label fw-bold" for="id_tempo">{% trans "Tempo (BPM)" %}</label>
+    <input class="form-control" type="number" name="tempo" id="id_tempo" min="1" max="999" value="{{ form.tempo.value|default:'' }}">
+   </div>
+   <div class="col-sm-6">
+    <label class="form-label fw-bold" for="id_musical_key">{% trans "Key" %}</label>
+    <input class="form-control" type="text" name="musical_key" id="id_musical_key" maxlength="20" value="{{ form.musical_key.value|default:'' }}">
+   </div>
+  </div>
+  <div>
+   <label class="form-label fw-bold" for="id_description">{% trans "Description (optional)" %}</label>
+   <textarea class="form-control" name="description" id="id_description" rows="4">{{ form.description.value|default:'' }}</textarea>
+  </div>
+  <div class="rp-auth">{# the tag widget renders the current tags as editable text #}
+   <label class="form-label fw-bold" for="id_tags">{% trans "Hashtags" %}</label>
+   {{ form.tags }}
+  </div>
+  <div class="d-flex gap-2">
+   <button class="btn rp-btn-primary">{% trans "Save" %}</button>
+   <a class="btn btn-link" href="{{ object.get_absolute_url }}">{% trans "Cancel" %}</a>
+  </div>
+ </form>
 </div>
 {% endblock %}
-

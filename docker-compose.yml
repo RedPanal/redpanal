@@ -1,0 +1,19 @@
+# Compose simple, sin endurecer. El recomendado es compose.yaml (ver DOCKER.md):
+# `docker compose up` usa ese y este queda solo para quien lo pida con -f docker-compose.yml.
+services:
+  web:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"   # solo esta máquina, no toda la red local
+    volumes:
+      - ./redpanal:/app/redpanal
+      # MEDIA_ROOT es redpanal/uploaded_media (settings.py): el volumen va ahí para que los archivos persistan.
+      - media:/app/redpanal/uploaded_media
+    environment:
+      - DJANGO_SETTINGS_MODULE=redpanal.settings
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  media:

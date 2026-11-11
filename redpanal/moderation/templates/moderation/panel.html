@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n obra_tags %}
+
+{% block title %}{% trans "Moderation" %}{% endblock %}
+
+{% block content %}
+<h1 class="rp-h1">{% trans "Moderation" %}</h1>
+<nav class="rp-tabs mb-3" aria-label="{% trans 'Reports' %}">
+ {% for value, label in statuses %}<a href="?ver={{ value }}" {% if value == show %}aria-current="page"{% endif %}>{{ label|capfirst }}</a>{% endfor %}
+</nav>
+<p class="rp-muted small">{% trans "Hiding takes something out of sight for everyone except its author. It deletes nothing: works that used it keep their credits, and it can be brought back." %}</p>
+
+{% for item in items %}
+{% with r=item.report obj=item.object %}
+<article class="rp-card">
+ <div class="d-flex justify-content-between flex-wrap gap-2">
+  <span><span class="rp-tag">{{ r.get_reason_display }}</span>
+   <b class="ms-1">{% if item.kind == "message" %}{% trans "Comment" %}{% elif item.kind == "audio" %}{% trans "Audio" %}{% else %}{% trans "Work" %}{% endif %}:</b>
+   {% if obj %}{% if item.kind == "message" %}«{{ obj.msg|truncatechars:140 }}» · {{ obj.user|display_name }}{% else %}<a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a> · {{ obj.user|display_name }}{% endif %}{% else %}<span class="rp-muted">{% trans "(deleted)" %}</span>{% endif %}</span>
+  <span class="rp-muted small">{{ r.reporter|display_name }} · {% blocktrans with t=r.created_at|timesince %}{{ t }} ago{% endblocktrans %}</span>
+ </div>
+ {% if r.detail %}<p class="mb-1">«{{ r.detail }}»</p>{% endif %}
+ {% if item.works %}<p class="small mb-1">{% trans "Part of" %}: {% for w in item.works %}<a href="{{ w.get_absolute_url }}">{{ w.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</p>{% endif %}
+ {% if item.derived %}<p class="small mb-1">{% trans "Works made from it (they keep their credits)" %}: {% for w in item.derived %}<a href="{{ w.get_absolute_url }}">{{ w.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</p>{% endif %}
+ {% if r.status != "open" %}<p class="rp-muted small mb-0">{{ r.get_status_display|capfirst }}{% if r.resolved_by %} · {{ r.resolved_by|display_name }}{% endif %}{% if r.resolution %} · «{{ r.resolution }}»{% endif %}</p>{% endif %}
+ {% if obj and r.status == "open" or obj and obj.moderation_hidden %}
+ <form method="post" action="{% url 'moderation-decide' r.pk %}" class="d-flex gap-2 flex-wrap align-items-end mt-2">{% csrf_token %}
+  <div class="flex-grow-1"><label class="form-label small" for="note-{{ r.pk }}">{% trans "Note (optional)" %}</label><input class="form-control form-control-sm" id="note-{{ r.pk }}" name="note" maxlength="500"></div>
+  {% if r.status == "open" %}
+   <button class="btn rp-btn-primary btn-sm" name="decision" value="hide">{% trans "Hide" %}</button>
+   <button class="btn btn-outline-dark btn-sm" name="decision" value="dismiss">{% trans "Dismiss" %}</button>
+  {% elif obj.moderation_hidden %}
+   <button class="btn btn-outline-dark btn-sm" name="decision" value="restore">{% trans "Bring back" %}</button>
+  {% endif %}
+ </form>
+ {% endif %}
+</article>
+{% endwith %}
+{% empty %}<p class="rp-muted">{% trans "No reports here." %}</p>{% endfor %}
+{% endblock %}
