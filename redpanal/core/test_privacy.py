@@ -2,6 +2,7 @@
 import json
 import shutil
 import tempfile
+from unittest.mock import patch
 
 from actstream import action
 from actstream.actions import follow
@@ -13,9 +14,9 @@ from django.urls import reverse
 
 from audio.models import Audio
 from moderation.views import set_hidden
-from project.models import Contribution, Project, Version
+from project.models import Contribution, Membership, Project, Version
 from project.test_collaboration import tone
-from social.models import Message, visible_messages
+from social.models import Message, message_is_public, visible_messages
 
 TEMP_MEDIA = tempfile.mkdtemp()
 
@@ -124,6 +125,55 @@ class PrivacyTestCase(TestCase):
         set_hidden(sound, False)
         self.assertTrue(self.comment_action(m).public)
 
+    def test_restoring_a_sound_restores_its_announcement(self):
+        sound = Audio.objects.create(user=self.lucia, name="Pad", audio=tone())
+        announcement = Action.objects.get(verb="audio_created", action_object_object_id=str(sound.pk))
+        self.assertTrue(announcement.public)
+        set_hidden(sound, True)
+        announcement.refresh_from_db()
+        self.assertFalse(announcement.public)
+        set_hidden(sound, False)
+        announcement.refresh_from_db()
+        self.assertTrue(announcement.public)
+
+    def test_comunidad_hides_replies_to_hidden_comments_even_with_a_stale_flag(self):
+        from social.following import community_feed
+        work, _audio, _part = self.work_with_part()
+        parent = Message.objects.create(msg="padre", user=self.lucia, content_object=work)
+        reply = Message.objects.create(msg="respuesta", user=self.lucia, parent=parent,
+                                       content_type=parent.content_type, object_id=parent.object_id)
+        follow(self.tincho, self.lucia, send_action=False, actor_only=True)
+        Action.objects.filter(verb="commented", action_object_object_id=str(reply.pk)).update(public=True)
+        # Simulate an old row whose stored flag was never resynced.
+        Message.objects.filter(pk=parent.pk).update(moderation_hidden=True)
+        comments = [item["object"].pk for item in community_feed(self.tincho) if item["kind"] == "comment"]
+        self.assertNotIn(reply.pk, comments)
+
+    def test_a_comment_on_a_deleted_target_is_not_public(self):
+        ct = ContentType.objects.get_for_model(Project)
+        orphan = Message.objects.create(msg="huérfano", user=self.lucia, content_type=ct, object_id=999999)
+        post = Message.objects.create(msg="post general", user=self.lucia)
+        self.assertFalse(message_is_public(orphan))
+        self.assertFalse(visible_messages(Message.objects.filter(pk=orphan.pk), None).exists())
+        self.assertTrue(visible_messages(Message.objects.filter(pk=post.pk), None).exists())
+
+    @patch("redpanal.utils.search.reindex")
+    def test_reindex_search_includes_comments_on_the_work_audio(self, reindex):
+        work, audio, _part = self.work_with_part()
+        comment = Message.objects.create(msg="en la parte", user=self.tincho, content_object=audio)
+        work.reindex_search()
+        self.assertIn(comment, reindex.call_args[0][0])
+
+    def test_hidden_versions_are_not_in_version_navigation(self):
+        work, _audio, _part = self.work_with_part()
+        first = work.save_version(self.lucia)
+        hidden = work.save_version(self.lucia)
+        work.save_version(self.lucia)
+        Version.objects.filter(pk=hidden.pk).update(hidden=True)
+        self.client.login(username="tincho", password="pw")
+        page = self.client.get(reverse("project-version", args=[work.slug, 3]))
+        self.assertEqual(page.context["previous"].pk, first.pk)
+
     # -- SEC-06: hidden versions ------------------------------------------------------------
 
     def test_a_hidden_version_cant_be_opened_or_downloaded(self):
@@ -183,6 +233,23 @@ class PrivacyTestCase(TestCase):
         self.client.login(username="tincho", password="pw")
         self.assertNotContains(self.client.get(reverse("my-stuff")), "Obra secreta")
 
+    def test_a_hidden_work_has_no_certificate_for_its_members(self):
+        work, _audio, _part = self.work_with_part()
+        Membership.objects.create(project=work, user=self.tincho)
+        Project.objects.filter(pk=work.pk).update(moderation_hidden=True)
+        self.client.login(username="tincho", password="pw")
+        self.assertEqual(self.client.get(reverse("project-certificate", args=[work.slug])).status_code, 404)
+
+    def test_certificate_leaves_out_hidden_parts_of_someone_else(self):
+        work, _audio, _part = self.work_with_part()
+        hidden = Audio.objects.create(user=self.tincho, name="Bajo oculto", audio=tone("tone.ogg"))
+        Contribution.objects.create(project=work, audio=hidden, contributor=self.tincho,
+                                    status=Contribution.INCLUDED)
+        Audio.objects.filter(pk=hidden.pk).update(moderation_hidden=True)
+        self.client.login(username="lucia", password="pw")
+        rows = self.client.get(reverse("project-certificate", args=[work.slug])).context["rows"]
+        self.assertNotIn(hidden, [contribution.audio for contribution, _digest in rows])
+
     # -- SEC-10: cached mixes ---------------------------------------------------------------
 
     def test_making_a_work_private_throws_its_cached_mixes_away(self):
@@ -219,6 +286,13 @@ class PrivacyTestCase(TestCase):
         self.assertNotIn("<img", html)
         self.assertNotIn('"onmouseover', html)
         self.assertNotIn("<b", html)
+
+    def test_private_object_urls_are_not_expanded_in_comments(self):
+        from django.contrib.sites.models import Site
+        Project.objects.create(user=self.lucia, name="Obra privada", slug="privada", visibility="private")
+        domain = Site.objects.get_current().domain
+        html = Message.to_html("mirá http://%s/p/privada/" % domain)
+        self.assertNotIn("Obra privada", html)
 
     # -- QUOTA-01 --------------------------------------------------------------------------------
 

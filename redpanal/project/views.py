@@ -82,6 +82,9 @@ def project_detail(request, slug):
     # Listening to another version (?v=3): its files, one click from the author's.
     visible_versions = _visible_versions(project, user)
     current = project.current_version()
+    # A hidden version is not the work's public face, even if its parts are what sound today.
+    if current is not None and not visible_versions.filter(pk=current.pk).exists():
+        current = None
     viewing = None
     if str(request.GET.get("v", "")).isdigit():
         viewing = visible_versions.filter(number=request.GET["v"]).first()
@@ -603,9 +606,11 @@ def version_create(request, slug):
 
 def version_detail(request, slug, number):
     project = _listenable(request, slug)
-    version = get_object_or_404(_visible_versions(project, request.user), number=number)
+    visible_versions = _visible_versions(project, request.user)
+    version = get_object_or_404(visible_versions, number=number)
     parts = version.parts()
-    versions = project.versions_saved.all()
+    # Navigation follows the same visibility as the list: a hidden version leaves no link behind.
+    versions = visible_versions
     return render(request, "project/version_detail.html", {
         "object": project, "version": version,
         "is_owner": request.user == project.user,
@@ -786,12 +791,14 @@ def parts_zip(request, slug):
 
 def certificate(request, slug):
     """Proof of prior existence: when each part was uploaded and its fingerprint."""
-    project = get_object_or_404(Project, slug=slug)
+    # Hidden works are not proof pages for all their members; hidden parts keep their file private.
+    project = _viewable(request, slug)
     if not project.is_member(request.user):
         raise Http404
+    contributions = project.visible_parts(
+        request.user, project.contributions.exclude(status=Contribution.WITHDRAWN))
     rows = [(c, c.audio.get_sha256()) for c in
-            project.contributions.exclude(status=Contribution.WITHDRAWN)
-            .select_related("audio", "contributor").order_by("created_at")]
+            contributions.select_related("audio", "contributor").order_by("created_at")]
     return render(request, "project/certificate.html", {
         "object": project, "rows": rows, "now": timezone.now(),
     })

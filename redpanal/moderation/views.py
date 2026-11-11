@@ -104,9 +104,14 @@ def set_hidden(obj, hidden):
             # Comments on a hidden sound leave the public feeds too; they come back with it.
             comments = list(Message.objects.filter(content_type=ct, object_id=obj.pk))
             sync_message_actions(comments)
+            # The sound's own announcement (and any reaction to it) follows its public status.
+            Action.objects.filter(action_object_content_type=ct,
+                                  action_object_object_id=str(obj.pk)).update(
+                public=Audio.objects.visible_to(None).filter(pk=obj.pk).exists())
             for project in Project.objects.filter(contributions__audio=obj).distinct():
                 project.purge_cached_media()
                 project.refresh_preview()
+                sync_action_visibility(project)
             reindex([obj] + comments)
             return
         reindex([obj])

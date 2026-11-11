@@ -20,7 +20,7 @@ def community_feed(user, limit=40):
     from actstream.models import Action
     from audio.models import Audio
     from project.models import Project
-    from social.models import Message
+    from social.models import Message, visible_messages
     from django.db.models import Q
     from actstream.models import Follow
     ids = following_ids(user)
@@ -56,21 +56,24 @@ def community_feed(user, limit=40):
                 continue
             kind, work = "sound", None
         elif isinstance(obj, Message):
-            if obj.moderation_hidden:
+            # Same rule as every other comment surface: hidden parents, deleted targets and
+            # private works/sounds stay out, even if an old action still says public=True.
+            if not visible_messages(Message.objects.filter(pk=obj.pk), user).exists():
                 continue
             about = obj.content_object
-            if isinstance(about, Project) and about.pk not in listenable:
-                continue
-            if isinstance(about, Audio) and not audible.filter(pk=about.pk).exists():
-                continue
             # A general post (from a profile) has nothing attached; a comment talks about a project or sound.
             kind, work = ("comment" if about is not None else "post"), None
         elif a.verb == "contributed" and a.target is not None:
             if a.target.pk not in listenable:
                 continue
+            if not audible.filter(pk=getattr(obj, "audio_id", None)).exists():
+                continue
             kind, work = "layer", a.target
         elif a.verb == "version_saved" and a.target is not None:
             if a.target.pk not in listenable:
+                continue
+            if getattr(obj, "hidden", False) and user.pk not in (
+                    getattr(obj, "created_by_id", None), a.target.user_id):
                 continue
             kind, work, obj = "version", a.target, obj
         else:

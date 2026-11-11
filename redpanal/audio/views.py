@@ -88,7 +88,7 @@ def sound_add_to_project(request, pk):
     """Credit a loose sound in one of your projects: it shows in the project's genealogy and its author hears about it."""
     from django.contrib import messages
     from actstream import action
-    from project.models import WorkSource, VISIBILITY_PUBLIC
+    from project.models import WorkSource
     audio = _listenable_audio_or_404(request, pk=pk)
     if request.method != "POST":
         return redirect(audio)
@@ -96,7 +96,7 @@ def sound_add_to_project(request, pk):
     if not WorkSource.objects.filter(project=project, audio=audio).exists():
         WorkSource.objects.create(project=project, audio=audio)
         action.send(request.user, verb="used_as_source", action_object=project, target=audio,
-                    public=project.visibility == VISIBILITY_PUBLIC)
+                    public=project.content_is_public())
     messages.success(request, _("«%(sound)s» is now credited in «%(project)s».") % {"sound": audio.name, "project": project.name})
     return redirect(project)
 

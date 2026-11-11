@@ -246,9 +246,15 @@ class Project(models.Model, BaseModelMixin):
         from django.contrib.contenttypes.models import ContentType
         from social.models import Message
         from redpanal.utils.search import reindex
-        ct = ContentType.objects.get_for_model(Project)
-        reindex([self] + list(Audio.objects.filter(contributions__project=self).distinct())
-                + list(Message.objects.filter(content_type=ct, object_id=self.pk)))
+        ct_project = ContentType.objects.get_for_model(Project)
+        ct_audio = ContentType.objects.get_for_model(Audio)
+        audios = list(Audio.objects.filter(contributions__project=self).distinct())
+        audio_ids = [a.pk for a in audios]
+        # Comments on the work and on any of its parts: both stop being public when the work does.
+        comments = list(Message.objects.filter(
+            Q(content_type=ct_project, object_id=self.pk)
+            | Q(content_type=ct_audio, object_id__in=audio_ids)))
+        reindex([self] + audios + comments)
 
     def refresh_preview(self):
         """Open calls get a short excerpt of the current mix; other works none."""

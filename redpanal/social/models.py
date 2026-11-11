@@ -1,6 +1,7 @@
 import re
 
 from django.db import models
+from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.auth.models import User
@@ -119,6 +120,13 @@ class Message(models.Model):
                         return match.group()
                 else:
                     return match.group()
+                # The HTML is cached and shared by every viewer: only public objects may be expanded.
+                if isinstance(obj, Audio):
+                    is_public = Audio.objects.visible_to(None).filter(pk=obj.pk).exists()
+                else:
+                    is_public = Project.objects.visible_to(None).filter(pk=obj.pk).exists()
+                if not is_public:
+                    return match.group()
                 text = obj.name[:25] + (obj.name[25:] and '..')
                 # Names are written by people: never markup.
                 new = '<a href="%s"><i class="fa alias-%s"></i>%s</a>' % (
@@ -189,6 +197,9 @@ def message_is_public(message):
     if message.moderation_hidden or (message.parent_id and message.parent.moderation_hidden):
         return False
     about = message.content_object
+    # A comment whose project or sound was deleted is not a general post: it has nothing to show.
+    if about is None:
+        return message.object_id is None
     if isinstance(about, Project):
         return about.visibility == "public" and not about.moderation_hidden
     if isinstance(about, Audio):
@@ -321,12 +332,17 @@ def notify_from_action(sender, instance, created, **kwargs):
 def visible_messages(queryset, user):
     """Leave out hidden comments, replies to hidden comments, and comments on works or sounds this
     person can't listen to. Every page, feed, API and index that lists comments goes through here."""
-    hidden_projects = Project.objects.exclude(pk__in=Project.objects.listenable_by(user).values("pk")).values("pk")
-    hidden_audios = Audio.objects.exclude(pk__in=Audio.objects.visible_to(user).values("pk")).values("pk")
+    allowed_projects = Project.objects.listenable_by(user).values("pk")
+    allowed_audios = Audio.objects.visible_to(user).values("pk")
     ct_project = ContentType.objects.get_for_model(Project)
     ct_audio = ContentType.objects.get_for_model(Audio)
-    return (queryset.exclude(content_type=ct_project, object_id__in=hidden_projects)
-            .exclude(content_type=ct_audio, object_id__in=hidden_audios)
+    # Keep only targets this person can hear (deleted ones are not in the allowed set), plus
+    # general posts and other content types. Written as an allow-list so NULL content_type works.
+    visible = (Q(content_type=ct_project, object_id__in=allowed_projects)
+               | Q(content_type=ct_audio, object_id__in=allowed_audios)
+               | Q(content_type__isnull=True)
+               | ~Q(content_type__in=[ct_project, ct_audio]))
+    return (queryset.filter(visible)
             .exclude(moderation_hidden=True)
             .exclude(parent__moderation_hidden=True))
 
