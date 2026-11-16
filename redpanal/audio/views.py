@@ -144,4 +144,7 @@ def audio_peaks_json(request, pk):
             })
         except (FileNotFoundError, json.JSONDecodeError):
             continue
-    return JsonResponse({'peaks': [], 'duration': 0})
+    # No waveform file yet (uploads from before 3.0 had an image instead; `manage.py build_waveforms`
+    # makes them): the player still gets the real duration, and draws the wave once it plays.
+    duration_ms = audio.get_duration()
+    return JsonResponse({'peaks': [], 'duration': duration_ms / 1000 if duration_ms else 0})

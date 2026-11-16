@@ -60,6 +60,9 @@ def community_feed(user, limit=40):
             # private works/sounds stay out, even if an old action still says public=True.
             if not visible_messages(Message.objects.filter(pk=obj.pk), user).exists():
                 continue
+            # A reply is shown inside its thread: the comment it answers, with the replies under it.
+            if obj.parent_id:
+                obj = obj.parent
             about = obj.content_object
             # A general post (from a profile) has nothing attached; a comment talks about a project or sound.
             kind, work = ("comment" if about is not None else "post"), None
