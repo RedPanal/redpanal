@@ -964,7 +964,9 @@ def explore(request):
     works = listed.select_related("user").order_by("-created_at")
     ct_project = ContentType.objects.get_for_model(Project)
     ct_audio = ContentType.objects.get_for_model(Audio)
-    comments = (visible_messages(Message.objects.filter(content_type__in=[ct_project, ct_audio]), request.user)
+    # Threads, not loose replies: a reply shows under its comment, where the conversation is.
+    comments = (visible_messages(Message.objects.filter(content_type__in=[ct_project, ct_audio],
+                                                        parent__isnull=True), request.user)
                 .filter(Q(content_type=ct_audio) | Q(object_id__in=listed.values("pk")))
                 .select_related("user").order_by("-created_at"))
     if q:

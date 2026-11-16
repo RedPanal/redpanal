@@ -319,11 +319,18 @@ class PlaylistItem(models.Model):
         unique_together = (("playlist", "audio"),)
 
 
+def save_waveforms(audio, sound=None):
+    """Write the two waveform files the players read, next to the audio file."""
+    if sound is None:
+        sound = AudioSegment.from_file(audio.audio.path)
+    Waveform(sound, width=460, height=100, bar_count=200).save_peaks_to_json(audio.audio.path + '.json')
+    Waveform(sound, width=940, height=150, bar_count=400).save_peaks_to_json(audio.audio.path + '.big.json')
+    return sound
+
+
 def audio_processing(audio):
     try:
-        sound = AudioSegment.from_file(audio.audio.path)
-        Waveform(sound, width=460, height=100, bar_count=200).save_peaks_to_json(audio.audio.path + '.json')
-        Waveform(sound, width=940, height=150, bar_count=400).save_peaks_to_json(audio.audio.path + '.big.json')
+        sound = save_waveforms(audio)
 
         audio.channels = sound.channels
         audio.blocksize = 0

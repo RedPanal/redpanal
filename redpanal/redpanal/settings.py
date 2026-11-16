@@ -88,10 +88,13 @@ LOGGING = {
     }
 }
 
-# CORS, only for the API. Token auth is header-based (no cookie credentials), but production lists
-# the frontends that may call it in local_settings.py: CORS_ALLOWED_ORIGINS = ["https://app.example"].
+# CORS, only for the API. Token auth is header-based (no cookie credentials). A frontend on this
+# machine may always call it (development); production lists the others in its own settings:
+# CORS_ALLOWED_ORIGINS = ["https://app.example"].
+# Nothing here depends on DEBUG: production settings change it after this file is read.
 CORS_URLS_REGEX = r"^/api/.*$"
 CORS_ALLOWED_ORIGINS = []
+CORS_ALLOWED_ORIGIN_REGEXES = [r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$"]
 CORS_ALLOW_HEADERS = [
     'accept', 'accept-encoding', 'authorization', 'content-type',
     'dnt', 'origin', 'user-agent', 'x-csrftoken', 'x-requested-with',
@@ -101,7 +104,3 @@ try:
     from .local_settings import *
 except ImportError:
     pass
-
-# In development any origin may call the API, unless local_settings.py says otherwise.
-if "CORS_ALLOW_ALL_ORIGINS" not in globals():
-    CORS_ALLOW_ALL_ORIGINS = DEBUG and not CORS_ALLOWED_ORIGINS

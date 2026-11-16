@@ -22,12 +22,11 @@
 		<div class="ago small text-secondary" style="margin-top: -0.25rem;">{% blocktrans with timeago=action.timestamp|timesince %}{{ timeago }} ago{% endblocktrans %}</div>
 {% endblock %}
  	  </div>
-{# if request.user.is_authenticated #}
+{% if action.verb == 'commented' and action.action_object %}
 		<ul class="actions nav ms-auto">
-		   <li class="nav-item"><button type="button" class="btn btn-outline-secondary btn-sm modal-reply-message" data-username="{{ action.actor }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</button></li>
-		   {% comment %}<li><button type="button" class="btn btn-link comment-amplify"><i class="fa fa-repeat"></i> {% trans 'amplify' %}</button></li>{% endcomment %}
+		   <li class="nav-item"><a class="btn btn-outline-secondary btn-sm" href="{{ action.action_object.get_absolute_url }}"><i class="fa fa-reply"></i> {% trans 'reply' %}</a></li>
 		</ul>
-{# endif #}
+{% endif %}
 
 {% block message %}
 	   <span class="message w-100 d-flex flex-wrap mt-3 {% if action.verb != 'commented' %}justify-content-between{% endif %}">

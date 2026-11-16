@@ -85,22 +85,13 @@
         </div>
     </div>
 
+    {# Replying happens where the comment lives (its project, sound or profile), in its thread. #}
     <ul class="actions nav ms-auto">
-        {% if request.user.is_authenticated %}
-            <li class="nav-item">
-                <button type="button" class="btn btn-outline-secondary btn-sm modal-reply-message" 
-                        data-username="{{ action.actor }}">
-                    <i class="fa fa-reply"></i> {% trans 'reply' %}
-                </button>
-            </li>
-        {% else %}
-            <li class="nav-item">
-                <a class="btn btn-outline-secondary btn-sm" 
-                   href="{% url 'account_login' %}?next={{ request.path }}">
-                    <i class="fa fa-reply"></i> {% trans 'reply' %}
-                </a>
-            </li>
-        {% endif %}
+        <li class="nav-item">
+            <a class="btn btn-outline-secondary btn-sm" href="{{ object.get_absolute_url }}">
+                <i class="fa fa-reply"></i> {% trans 'reply' %}
+            </a>
+        </li>
     </ul>
 
     <span class="message w-100 d-flex flex-wrap mt-3 fs-5 text-secondary">
