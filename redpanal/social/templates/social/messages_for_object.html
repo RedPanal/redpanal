@@ -1,9 +1,31 @@
-{% load i18n social_tags %}
-
-<ul class="action-stream">
-    {% for object in messages %}
-        <li class="messages_for_object">{% include "social/message_teaser.html" %}</li>
-    {% empty %}
-        {% trans "No comments yet" %}
-    {% endfor %}
+{% load i18n obra_tags %}
+{# The conversation on a sound: comments oldest first, each with its replies under it (one level), like on a project. #}
+<ul class="rp-comments">
+ {% for m in messages %}
+ <li id="c{{ m.pk }}">
+  <a href="{{ m.user.get_absolute_url }}"><b>{{ m.user|display_name }}</b></a>
+  <span class="rp-muted small">· {% blocktrans with t=m.created_at|timesince %}{{ t }} ago{% endblocktrans %}</span>
+  {% if request.user.is_authenticated and request.user != m.user %}<a class="rp-muted small ms-1 rp-on-hover" href="{% url 'report-create' 'comentario' m.pk %}" aria-label="{% trans 'Report this comment' %}"><i class="fa fa-flag" aria-hidden="true"></i></a>{% endif %}
+  <div>{{ m.as_html|safe }}</div>
+  {% if m.visible_replies %}
+  <ul class="rp-replies">
+   {% for r in m.visible_replies %}
+   <li id="c{{ r.pk }}"><a href="{{ r.user.get_absolute_url }}"><b>{{ r.user|display_name }}</b></a> <span class="rp-muted small">· {% blocktrans with t=r.created_at|timesince %}{{ t }} ago{% endblocktrans %}</span>
+    <div>{{ r.as_html|safe }}</div></li>
+   {% endfor %}
+  </ul>
+  {% endif %}
+  {% if request.user.is_authenticated %}
+  <details class="rp-reply">
+   <summary class="small">{% trans "Reply" %}</summary>
+   <form method="post" action="{% url 'reply' 'comentario' m.pk %}" class="d-flex gap-2 mt-1">{% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.path }}#c{{ m.pk }}">
+    <label class="visually-hidden" for="reply-{{ m.pk }}">{% trans "Reply" %}</label>
+    <input class="form-control form-control-sm" type="text" id="reply-{{ m.pk }}" name="msg" maxlength="1000" required>
+    <button class="btn btn-outline-dark btn-sm">{% trans "Send" %}</button>
+   </form>
+  </details>
+  {% endif %}
+ </li>
+ {% endfor %}
 </ul>

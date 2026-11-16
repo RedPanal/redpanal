@@ -1,0 +1,187 @@
+/* The four palettes. Only colors change between them: the layout, sizes and shapes are the same.
+   <html data-palette="..."> picks one; "Moderna" is the default and lives in rp-collab.css :root.
+   Brand colors that are too light for text get a darker "-ink" twin, so text and controls keep 4.5:1. */
+
+html[data-palette="neon"] {
+  --rp-bg: #12181e;
+  --rp-surface: #1a232c;
+  --rp-ink: #f4fcfe;
+  --rp-ink-2: #94a3b8;
+  --rp-line: #2c3946;
+  --rp-soft: #222d38;
+  --rp-brand: #28ccea;
+  --rp-brand-ink: #28ccea;
+  --rp-on-brand: #0b1015;
+  --rp-fill: #28ccea;
+  --rp-fill-hover: #5fdaf1;
+  --rp-on-fill: #0b1015;
+  --rp-accent: #84bf08;
+  --rp-accent-ink: #9fd42a;
+  --rp-wave: #3e4f5e;
+  --rp-wave-strong: #6a8094;
+  --rp-cover-bg: #1f3320;
+  --rp-cover-ink: #9fd42a;
+  --rp-project-bg: #13303a;
+  --rp-dock-bg: #0b1015;
+  --rp-on-dock: #f4fcfe;
+  --rp-badge: #84bf08;
+  --rp-on-badge: #0b1015;
+  --rp-unread-bg: #16303a;
+  --rp-warn-bg: #2e2616;
+  --rp-warn-line: #6b5326;
+  --rp-toast-link: #0b1015;
+  --rp-logo-top: #28ccea;
+  --rp-logo-bottom: #15b8d5;
+  --rp-logo-text: #f4fcfe;
+  --rp-link-rgb: 40, 204, 234;
+}
+
+html[data-palette="calida"] {
+  --rp-bg: #f6f0e6;
+  --rp-surface: #efe6d5;
+  --rp-ink: #252525;
+  --rp-ink-2: #505050;
+  --rp-line: #d9cbb2;
+  --rp-soft: #e9dcc6;
+  --rp-brand: #e07a5f;
+  --rp-brand-ink: #a84a34;
+  --rp-on-brand: #fff;
+  --rp-fill: #4f7500;        /* forest green, dark enough for white text */
+  --rp-fill-hover: #3e5c00;
+  --rp-on-fill: #fff;
+  --rp-accent: #d7b351;
+  --rp-accent-ink: #a84a34;
+  --rp-wave: #cdbb9c;
+  --rp-wave-strong: #9c8a6c;
+  --rp-cover-bg: #f3e3b5;
+  --rp-cover-ink: #7a5a08;
+  --rp-project-bg: #f5d9cf;
+  --rp-dock-bg: #252525;
+  --rp-on-dock: #f6f0e6;
+  --rp-badge: #a84a34;
+  --rp-on-badge: #fff;
+  --rp-unread-bg: #f8e9df;
+  --rp-warn-bg: #f8ebd0;
+  --rp-warn-line: #d7b351;
+  --rp-toast-link: #f3d27a;
+  --rp-logo-top: #e8917a;
+  --rp-logo-bottom: #cf6449;
+  --rp-logo-text: #252525;
+  --rp-link-rgb: 168, 74, 52;
+}
+
+html[data-palette="lavanda"] {
+  --rp-bg: #f8f9fa;
+  --rp-surface: #fff;
+  --rp-ink: #252525;
+  --rp-ink-2: #6b6b6b;
+  --rp-line: #e4e1ee;
+  --rp-soft: #f1eefa;
+  --rp-brand: #b3a5dc;
+  --rp-brand-ink: #6a58a8;
+  --rp-on-brand: #fff;
+  --rp-fill: #6a58a8;
+  --rp-fill-hover: #574693;
+  --rp-on-fill: #fff;
+  --rp-accent: #d782ac;
+  --rp-accent-ink: #a8457a;
+  --rp-wave: #d3cce8;
+  --rp-wave-strong: #a79ccb;
+  --rp-cover-bg: #fbe7f1;
+  --rp-cover-ink: #a8457a;
+  --rp-project-bg: #e3fbff;
+  --rp-dock-bg: #2f2a45;
+  --rp-on-dock: #fff;
+  --rp-badge: #a8457a;
+  --rp-on-badge: #fff;
+  --rp-unread-bg: #f4f1fc;
+  --rp-warn-bg: #fff5ea;
+  --rp-warn-line: #f0c48c;
+  --rp-toast-link: #e9e3ff;
+  --rp-logo-top: #c3b6e7;
+  --rp-logo-bottom: #9b8bcf;
+  --rp-logo-text: #252525;
+  --rp-link-rgb: 106, 88, 168;
+}
+
+/* Bootstrap takes its colors from the palette too. */
+:root, html[data-bs-theme] {
+  --rp-link-rgb: 0, 121, 154;
+  --bs-body-bg: var(--rp-surface);
+  --bs-body-color: var(--rp-ink);
+  --bs-emphasis-color: var(--rp-ink);
+  --bs-heading-color: inherit;
+  --bs-secondary-color: var(--rp-ink-2);
+  --bs-tertiary-color: var(--rp-ink-2);
+  --bs-secondary-bg: var(--rp-soft);
+  --bs-tertiary-bg: var(--rp-soft);
+  --bs-border-color: var(--rp-line);
+  --bs-link-color: var(--rp-brand-ink);
+  --bs-link-hover-color: var(--rp-brand-ink);
+  --bs-link-color-rgb: var(--rp-link-rgb);
+  --bs-link-hover-color-rgb: var(--rp-link-rgb);
+}
+.btn-primary {
+  --bs-btn-bg: var(--rp-brand-ink); --bs-btn-border-color: var(--rp-brand-ink); --bs-btn-color: var(--rp-on-brand);
+  --bs-btn-hover-bg: var(--rp-fill); --bs-btn-hover-border-color: var(--rp-fill); --bs-btn-hover-color: var(--rp-on-fill);
+  --bs-btn-active-bg: var(--rp-fill); --bs-btn-active-border-color: var(--rp-fill); --bs-btn-active-color: var(--rp-on-fill);
+  --bs-btn-disabled-bg: var(--rp-brand-ink); --bs-btn-disabled-border-color: var(--rp-brand-ink); --bs-btn-disabled-color: var(--rp-on-brand);
+}
+.btn-outline-dark {
+  --bs-btn-color: var(--rp-ink); --bs-btn-border-color: var(--rp-ink);
+  --bs-btn-hover-bg: var(--rp-fill); --bs-btn-hover-border-color: var(--rp-fill); --bs-btn-hover-color: var(--rp-on-fill);
+  --bs-btn-active-bg: var(--rp-fill); --bs-btn-active-border-color: var(--rp-fill); --bs-btn-active-color: var(--rp-on-fill);
+  --bs-btn-disabled-color: var(--rp-ink-2); --bs-btn-disabled-border-color: var(--rp-line);
+}
+.btn-outline-secondary {
+  --bs-btn-color: var(--rp-ink-2); --bs-btn-border-color: var(--rp-line);
+  --bs-btn-hover-bg: var(--rp-soft); --bs-btn-hover-border-color: var(--rp-line); --bs-btn-hover-color: var(--rp-ink);
+  --bs-btn-active-bg: var(--rp-soft); --bs-btn-active-border-color: var(--rp-line); --bs-btn-active-color: var(--rp-ink);
+}
+.btn-light {
+  --bs-btn-bg: var(--rp-soft); --bs-btn-border-color: var(--rp-line); --bs-btn-color: var(--rp-ink);
+  --bs-btn-hover-bg: var(--rp-line); --bs-btn-hover-border-color: var(--rp-line); --bs-btn-hover-color: var(--rp-ink);
+}
+.card { --bs-card-bg: var(--rp-surface); --bs-card-border-color: var(--rp-line); --bs-card-color: var(--rp-ink); }
+.dropdown-menu {
+  --bs-dropdown-bg: var(--rp-surface); --bs-dropdown-color: var(--rp-ink); --bs-dropdown-border-color: var(--rp-line);
+  --bs-dropdown-link-color: var(--rp-ink); --bs-dropdown-link-hover-color: var(--rp-ink); --bs-dropdown-link-hover-bg: var(--rp-soft);
+  --bs-dropdown-link-active-color: var(--rp-on-fill); --bs-dropdown-link-active-bg: var(--rp-fill); --bs-dropdown-divider-bg: var(--rp-line);
+  --bs-dropdown-header-color: var(--rp-ink-2);
+}
+.modal { --bs-modal-bg: var(--rp-surface); --bs-modal-color: var(--rp-ink); --bs-modal-border-color: var(--rp-line);
+  --bs-modal-header-border-color: var(--rp-line); --bs-modal-footer-border-color: var(--rp-line); }
+.table { --bs-table-color: var(--rp-ink); --bs-table-bg: transparent; --bs-table-border-color: var(--rp-line); }
+.list-group { --bs-list-group-bg: var(--rp-surface); --bs-list-group-color: var(--rp-ink); --bs-list-group-border-color: var(--rp-line); }
+.text-dark { color: var(--rp-ink) !important; }
+.text-secondary { color: var(--rp-ink-2) !important; }
+.bg-primary, .bg-redpanal { background-color: var(--rp-brand) !important; }
+.a-custom-primary a, .btn.btn-link.modal-reply-message { color: var(--rp-brand-ink) !important; }
+.form-control::placeholder { color: var(--rp-ink-2); opacity: .8; }
+
+
+/* The color sample on each choice, in Ajustes › Colors. */
+.rp-palette-picker { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.rp-palette-option { display: flex; flex-direction: column; gap: 6px; padding: 10px; border: 1.5px solid var(--rp-line); border-radius: var(--rp-radius);
+  background: var(--rp-surface); cursor: pointer; font-size: 14px; }
+.rp-palette-option:has(input:checked) { border-color: var(--rp-fill); box-shadow: 0 0 0 2px var(--rp-fill); }
+.rp-palette-option input { position: absolute; opacity: 0; }
+.rp-palette-option:has(input:focus-visible) { outline: 3px solid var(--rp-accent); outline-offset: 2px; }
+.rp-palette-sample { display: flex; height: 28px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,0,0,.08); }
+.rp-palette-sample i { flex: 1; }
+.rp-palette-sample[data-palette="moderna"] i:nth-child(1) { background: #f4fcfe; }
+.rp-palette-sample[data-palette="moderna"] i:nth-child(2) { background: #00b8d9; }
+.rp-palette-sample[data-palette="moderna"] i:nth-child(3) { background: #1b2a34; }
+.rp-palette-sample[data-palette="moderna"] i:nth-child(4) { background: #56c596; }
+.rp-palette-sample[data-palette="neon"] i:nth-child(1) { background: #12181e; }
+.rp-palette-sample[data-palette="neon"] i:nth-child(2) { background: #1a232c; }
+.rp-palette-sample[data-palette="neon"] i:nth-child(3) { background: #28ccea; }
+.rp-palette-sample[data-palette="neon"] i:nth-child(4) { background: #84bf08; }
+.rp-palette-sample[data-palette="calida"] i:nth-child(1) { background: #f6f0e6; }
+.rp-palette-sample[data-palette="calida"] i:nth-child(2) { background: #e07a5f; }
+.rp-palette-sample[data-palette="calida"] i:nth-child(3) { background: #d7b351; }
+.rp-palette-sample[data-palette="calida"] i:nth-child(4) { background: #669601; }
+.rp-palette-sample[data-palette="lavanda"] i:nth-child(1) { background: #f8f9fa; }
+.rp-palette-sample[data-palette="lavanda"] i:nth-child(2) { background: #b3a5dc; }
+.rp-palette-sample[data-palette="lavanda"] i:nth-child(3) { background: #d782ac; }
+.rp-palette-sample[data-palette="lavanda"] i:nth-child(4) { background: #a2f0fe; }

@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% load i18n static obra_tags %}
+
+{% block title %}{% if source %}{% trans "New work based on another" %}{% else %}{% trans "Create" %}{% endif %}{% endblock %}
+
+{% block content %}
+<div class="rp-narrow">
+ <div class="d-flex align-items-center justify-content-between mb-3">
+  <h1 class="rp-h1 mb-0">{% if source %}{% blocktrans with name=source.name %}New work based on «{{ name }}»{% endblocktrans %}{% else %}{% trans "Create" %}{% endif %}</h1>
+  <a class="btn btn-link" href="{% url 'index' %}" data-cancel data-confirm="{% trans 'Discard the recording?' %}">{% trans "Cancel" %}</a>
+ </div>
+
+ <form method="post" enctype="multipart/form-data" id="work-form" class="rp-steps" data-offline-queue>
+  {% csrf_token %}
+  {{ form.source }}{{ form.trim_start_ms }}{{ form.trim_end_ms }}
+  {% if sound %}<p class="small"><i class="fa fa-music" aria-hidden="true"></i> {% blocktrans with name=sound.name who=sound.user|display_name %}With «{{ name }}» by {{ who }}: it will be credited as a source.{% endblocktrans %}</p>{% endif %}
+  {% if group %}<input type="hidden" name="grupo" value="{{ group.pk }}"><p class="small"><i class="fa fa-users" aria-hidden="true"></i> {% blocktrans with name=group.name %}It will be shared with the group «{{ name }}».{% endblocktrans %}</p>{% endif %}
+  {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+
+  <section data-step="choose" aria-labelledby="step-choose">
+   <h2 id="step-choose" class="visually-hidden">{% trans "Choose how to start" %}</h2>
+   <div data-recorder data-target-input="id_audio" data-countdown="3"
+        data-error-text="{% trans 'The microphone could not be used. Check the browser permissions or upload a file.' %}">
+    <button type="button" class="rp-bigoption" data-rec-start>
+     <span class="rp-bigoption-icon"><i class="fa fa-microphone" aria-hidden="true"></i></span>
+     <span><b>{% trans "Record now" %}</b><span class="rp-muted d-block">{% trans "Starts in 3 seconds" %}</span></span>
+    </button>
+    <div class="rp-recording" aria-live="polite">
+     <div class="rp-countdown" data-rec-countdown></div>
+     <div class="rp-rec-now"><span class="rp-rec-dot" aria-hidden="true"></span> <b>{% trans "Recording" %}</b></div>
+     <div class="rp-rec-time" data-rec-time>0:00</div>
+     <div class="rp-level" data-rec-level aria-hidden="true"><span></span></div>
+     <p class="rp-muted small">{% trans "The screen stays on while you record." %}</p>
+     <div class="d-flex justify-content-center gap-4 align-items-center">
+      <button type="button" class="rp-round" data-rec-pause aria-label="{% trans 'Pause' %}"><i class="fa fa-pause" aria-hidden="true"></i></button>
+      <button type="button" class="rp-round rp-round-lg" data-rec-stop><i class="fa fa-stop" aria-hidden="true"></i><span>{% trans "Done" %}</span></button>
+     </div>
+    </div>
+    <p class="text-danger small" data-rec-error role="alert"></p>
+   </div>
+
+   <label class="rp-bigoption" for="id_audio">
+    <span class="rp-bigoption-icon"><i class="fa fa-upload" aria-hidden="true"></i></span>
+    <span><b>{% trans "Upload a file" %}</b><span class="rp-muted d-block">{% trans "Voice notes, MP3, WAV, OGG, FLAC, M4A" %}</span></span>
+   </label>
+   <input type="file" name="audio" id="id_audio" class="rp-file" accept="audio/*,.m4a,.opus,.webm" required>
+   {% for error in form.audio.errors %}<p class="text-danger small">{{ error }}</p>{% endfor %}
+
+   {% if not source and not group and not sound %}
+   <a class="rp-bigoption" href="{% url 'create-folder' %}">
+    <span class="rp-bigoption-icon"><i class="fa fa-folder-open" aria-hidden="true"></i></span>
+    <span><b>{% trans "A studio folder" %}</b><span class="rp-muted d-block">{% trans "Stems exported from your program: each file becomes a part" %}</span></span>
+   </a>
+   {% if bases %}
+   <details class="rp-bigoption-group">
+    <summary class="rp-bigoption">
+     <span class="rp-bigoption-icon"><i class="fa fa-code-branch" aria-hidden="true"></i></span>
+     <span><b>{% trans "Based on another work" %}</b><span class="rp-muted d-block">{% trans "A version, a remix or a follow-up, credited to the original" %}</span></span>
+    </summary>
+    <ul class="list-unstyled mb-0">
+     {% for w in bases %}<li><a class="rp-row" href="{% url 'create' %}?from={{ w.slug }}"><span><b>{{ w.name }}</b> <span class="rp-muted small">· {{ w.user|display_name }}</span></span><i class="fa fa-chevron-right rp-muted" aria-hidden="true"></i></a></li>{% endfor %}
+    </ul>
+    <a class="small d-block mt-2" href="{% url 'explore' %}?ver=obras">{% trans "Find another one in Explore" %}</a>
+    <p class="rp-muted small mb-0">{% trans "On any work you can listen to, the ⋯ menu has «Create a new work based on this one»." %}</p>
+   </details>
+   {% endif %}
+
+   <a class="rp-bigoption" href="{% url 'create-sound' %}">
+    <span class="rp-bigoption-icon"><i class="fa fa-share-alt" aria-hidden="true"></i></span>
+    <span><b>{% trans "A sound to share" %}</b><span class="rp-muted d-block">{% trans "A loop, a sample or a field recording for other people to use" %}</span></span>
+   </a>
+   {% endif %}
+  </section>
+
+  <section data-step="review" aria-labelledby="step-review" hidden>
+   <h2 id="step-review" class="rp-h2">{% trans "Check the take" %}</h2>
+   <p class="rp-muted">{% trans "Drag the handles to trim the beginning and the end." %}</p>
+   <div class="rp-trim" data-trim>
+    <canvas data-trim-wave aria-hidden="true"></canvas>
+    <div class="rp-trim-shade rp-trim-shade-start" data-shade-start></div>
+    <div class="rp-trim-shade rp-trim-shade-end" data-shade-end></div>
+    <label class="visually-hidden" for="trim-start">{% trans "Trim start" %}</label>
+    <input type="range" id="trim-start" data-trim-start min="0" max="1000" value="0" step="100">
+    <label class="visually-hidden" for="trim-end">{% trans "Trim end" %}</label>
+    <input type="range" id="trim-end" data-trim-end min="0" max="1000" value="1000" step="100">
+   </div>
+   <p class="d-flex justify-content-between small"><span data-trim-from>0:00</span><b data-trim-length></b><span data-trim-to></span></p>
+   <p class="rp-muted small" data-trim-unavailable hidden>{% trans "This file can't be previewed here. It will be published whole." %}</p>
+   <div class="text-center my-3">
+    <button type="button" class="rp-round rp-round-lg" data-trim-play aria-label="{% trans 'Listen' %}"><i class="fa fa-play" aria-hidden="true"></i></button>
+   </div>
+   <div class="d-flex gap-2">
+    <button type="button" class="btn btn-outline-dark flex-fill" data-again>{% trans "Record again" %}</button>
+    <button type="button" class="btn rp-btn-primary flex-fill" data-continue>{% trans "Continue" %}</button>
+   </div>
+  </section>
+
+  <section data-step="details" aria-labelledby="step-details">
+   <h2 id="step-details" class="rp-h2">{% trans "Publish" %}</h2>
+   <div class="mb-3">
+    <label class="form-label fw-bold" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+    <input class="form-control" type="text" name="name" id="{{ form.name.id_for_label }}" value="{{ form.name.value|default:'' }}" maxlength="100" required>
+    {% for error in form.name.errors %}<p class="text-danger small">{{ error }}</p>{% endfor %}
+   </div>
+   <div class="mb-3">{% include "project/_image_field.html" with errors=form.image.errors %}</div>
+
+   <fieldset class="mb-3">
+    <legend class="form-label fw-bold fs-6">{{ form.missing.label }}</legend>
+    <div class="rp-chips">
+     {% for cb in form.missing %}<label class="rp-chip">{{ cb.tag }}<span>{{ cb.choice_label|capfirst }}</span></label>{% endfor %}
+    </div>
+    <label class="form-label small rp-muted mt-2" for="{{ form.missing_text.id_for_label }}">{{ form.missing_text.label }}</label>
+    <textarea class="form-control" name="missing_text" id="{{ form.missing_text.id_for_label }}" rows="2" maxlength="200">{{ form.missing_text.value|default:'' }}</textarea>
+   </fieldset>
+
+   <div class="row g-3 mb-3">
+    <div class="col-sm-6">
+     <label class="form-label fw-bold" for="{{ form.part_instrument.id_for_label }}">{{ form.part_instrument.label }}</label>
+     {{ form.part_instrument.as_widget }}
+    </div>
+    <div class="col-sm-6">
+     <label class="form-label fw-bold" for="{{ form.tempo.id_for_label }}">{{ form.tempo.label }} <span class="rp-muted fw-normal">{% trans "(optional)" %}</span></label>
+     <input class="form-control" type="number" name="tempo" id="{{ form.tempo.id_for_label }}" min="20" max="300" value="{{ form.tempo.value|default:'' }}">
+     <p class="rp-muted small mt-1 mb-0" data-tempo-note data-template="{% trans 'Estimated: %s BPM. Correct it if it doesn’t match.' %}" hidden></p>
+    </div>
+   </div>
+
+   {% if form.fields.sources.queryset %}
+   <fieldset class="mb-3">
+    <legend class="form-label fw-bold fs-6">{{ form.sources.label }}</legend>
+    <p class="rp-muted small mb-1">{% trans "Suggested from what you downloaded in the last 30 days. Check the ones you used: their authors are credited and notified." %}</p>
+    {% for cb in form.sources %}<label class="d-block">{{ cb.tag }} {{ cb.choice_label }}</label>{% endfor %}
+   </fieldset>
+   {% endif %}
+   {% if source %}<p class="small mb-3"><i class="fa fa-code-branch" aria-hidden="true"></i> {% blocktrans with name=source.name %}Based on «{{ name }}»: it will be credited and appear in its lineage.{% endblocktrans %}</p>{% endif %}
+
+   <div class="mb-3">{% include "project/_visibility_choices.html" with field=form.visibility %}</div>
+
+   <div class="rp-license mb-4" data-license-note>
+    <b data-when="public">{% trans "Anyone can use it if they credit you and share alike." %}</b>
+    <b data-when="closed">{% trans "While it isn't public, only the people with access listen to it. If you publish it, it will be under a free license: anyone can use it if they credit you and share alike." %}</b>
+    <a class="small d-block" href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="license noopener">{% trans "What this means (CC BY-SA 4.0)" %}</a>
+   </div>
+
+   <button type="submit" class="btn rp-btn-primary w-100 btn-lg" data-submit>{% trans "Publish" %}</button>
+   <p class="rp-muted small text-center mt-2" data-uploading hidden>{% trans "Uploading… don't close this page." %}</p>
+  </section>
+ </form>
+</div>
+{% endblock %}
+
+{% block body_end_scripts %}
+<script src="{% static 'js/obra-player.js' %}"></script>
+<script src="{% static 'js/recorder.js' %}"></script>
+<script src="{% static 'js/tempo.js' %}"></script>
+<script src="{% static 'js/create-work.js' %}"></script>
+{% endblock %}

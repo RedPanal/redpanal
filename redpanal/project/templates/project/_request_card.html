@@ -1,0 +1,10 @@
+{% load i18n obra_tags %}{% with city=r.project.user.userprofile.location %}<article class="rp-card rp-request-card">
+ <p class="rp-eyebrow mb-0">{% trans "Wanted" %}{% if city %} · {{ city }}{% endif %}</p>
+ <a class="rp-card-title rp-request-what" href="{{ r.project.get_absolute_url }}">{{ r.get_instrument_display|capfirst }}</a>
+ <span class="small">{% blocktrans with name=r.project.name %}for «{{ name }}»{% endblocktrans %} <span class="rp-muted">· {{ r.project.user|display_name }}{% if r.project.tempo %} · {{ r.project.tempo }} BPM{% endif %}{% if r.open_until %} · {% blocktrans with d=r.open_until|date:"j M" %}until {{ d }}{% endblocktrans %}{% endif %}</span></span>
+ {% if r.description %}<span class="small">«{{ r.description }}»</span>{% endif %}
+ {% work_files r.project %}
+ <span class="d-flex gap-2 mt-1">
+  <a class="btn btn-outline-dark btn-sm" href="{% url 'project-contribute' r.project.slug %}?pedido={{ r.pk }}">{% trans "Add a layer" %}</a>
+ </span>
+</article>{% endwith %}

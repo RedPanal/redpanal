@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n obra_tags %}
+
+{% block title %}{% trans "Proof of authorship" %} · {{ object.name }}{% endblock %}
+
+{% block content %}
+<div class="rp-narrow rp-narrow-wide rp-certificate">
+ <p class="rp-muted small mb-1 d-print-none"><a href="{{ object.get_absolute_url }}">{{ object.name }}</a> › {% trans "Proof of authorship" %}</p>
+ <h1 class="rp-h1">{% trans "Proof of authorship" %}</h1>
+ <p>{% blocktrans with name=object.name date=object.created_at|date:"j F Y, H:i e" %}RedPanal records that the work «{{ name }}» was created on {{ date }}, and when each of its parts was uploaded, with the fingerprint (SHA-256) of the exact file.{% endblocktrans %}</p>
+
+ <div class="table-responsive">
+  <table class="table table-sm align-middle">
+   <thead><tr><th scope="col">{% trans "Part" %}</th><th scope="col">{% trans "Who uploaded it" %}</th><th scope="col">{% trans "Uploaded" %}</th><th scope="col">SHA-256</th></tr></thead>
+   <tbody>
+   {% for c, digest in rows %}
+    <tr>
+     <td>{{ c.audio|part_role }}{% if c.status != "included" %} <span class="rp-muted small">({{ c.get_status_display }})</span>{% endif %}</td>
+     <td>{{ c.contributor|display_name }} <span class="rp-muted small">@{{ c.contributor.username }}</span></td>
+     <td class="text-nowrap">{{ c.audio.created_at|date:"j M Y, H:i e" }}</td>
+     <td><code class="rp-hash">{{ digest|default:"—" }}</code></td>
+    </tr>
+   {% endfor %}
+   </tbody>
+  </table>
+ </div>
+
+ <h2 class="rp-h2 mt-4">{% trans "How to use it" %}</h2>
+ <ul class="small">
+  <li>{% trans "Keep your original files: anyone can compute the SHA-256 of a file and check that it matches this list." %}</li>
+  <li>{% trans "This record is as reliable as RedPanal's own records. For stronger proof, you can also register the work with a copyright office or a timestamping service." %}</li>
+ </ul>
+ <p class="rp-muted small">{% blocktrans with date=now|date:"j F Y, H:i e" %}Issued on {{ date }}.{% endblocktrans %}</p>
+ <button type="button" class="btn btn-outline-dark d-print-none" onclick="window.print()"><i class="fa fa-print" aria-hidden="true"></i> {% trans "Print or save as PDF" %}</button>
+</div>
+{% endblock %}

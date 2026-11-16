@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load i18n obra_tags %}
+
+{% block title %}{% blocktrans with name=object.name %}Settings · {{ name }}{% endblocktrans %}{% endblock %}
+
+{% block content %}
+{# What the author sets once and changes rarely, away from the work page. #}
+<div class="rp-narrow" data-settings>
+ <a class="small" href="{{ object.get_absolute_url }}"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{ object.name }}</a>
+ <h1 class="rp-h1 mt-2">{% trans "Settings" %}</h1>
+
+ {% include "project/_access_panel.html" %}
+
+ <section class="rp-card" aria-labelledby="details-title">
+  <h2 class="rp-sec" id="details-title">{% trans "Details" %}</h2>
+  <p class="rp-muted small">{% trans "Name, description, status, tempo, key, cover image and hashtags." %}</p>
+  <a class="btn btn-outline-dark btn-sm" href="{% url 'project-edit' object.slug %}"><i class="fa fa-pencil-alt" aria-hidden="true"></i> {% trans "Edit details" %}</a>
+ </section>
+
+ {% if others_versions %}
+ <section class="rp-card" id="versiones" aria-labelledby="versions-title">
+  <h2 class="rp-sec" id="versions-title">{% trans "Versions by other people" %}</h2>
+  <p class="rp-muted small">{% trans "A hidden version leaves the work's page; whoever made it can still listen to it." %}</p>
+  {% for v in others_versions %}
+  <div class="rp-row">
+   <a href="{{ object.get_absolute_url }}?v={{ v.number }}"><b>v{{ v.number }}</b> · {{ v.created_by|display_name }}{% if v.hidden %} <span class="rp-muted small">· {% trans "hidden" %}</span>{% endif %}</a>
+   <form method="post" action="{% url 'project-version-hide' object.slug v.number %}">{% csrf_token %}
+    <button class="btn btn-link btn-sm p-0">{% if v.hidden %}{% trans "Show again" %}{% else %}{% trans "Hide" %}{% endif %}</button></form>
+  </div>
+  {% endfor %}
+ </section>
+ {% endif %}
+
+ <section class="rp-card" aria-labelledby="proof-title">
+  <h2 class="rp-sec" id="proof-title">{% trans "Proof of authorship" %}</h2>
+  <p class="rp-muted small">{% trans "A record of each part with its date and digital fingerprint, to show who made what and when." %}</p>
+  <a class="btn btn-outline-dark btn-sm" href="{% url 'project-certificate' object.slug %}"><i class="fa fa-certificate" aria-hidden="true"></i> {% trans "See the proof" %}</a>
+ </section>
+
+ <section class="rp-card rp-danger" aria-labelledby="delete-title">
+  <h2 class="rp-sec" id="delete-title">{% trans "Delete the work" %}</h2>
+  <p class="rp-muted small">{% trans "It can't be undone." %}</p>
+  <a class="btn btn-outline-danger btn-sm" href="{% url 'project-delete' object.slug %}"><i class="fa fa-trash" aria-hidden="true"></i> {% trans "Delete" %}</a>
+ </section>
+</div>
+{% endblock %}
+
+{% block body_end_scripts %}
+<script>
+/* Access: show the preview settings or the publish warning for the chosen option; copy the secret link. */
+(function () {
+  var root = document.querySelector("[data-settings]");
+  var form = root.querySelector("[data-visibility-form]");
+  if (form) {
+    var sync = function () {
+      var checked = form.querySelector("input[name=visibility]:checked");
+      form.querySelectorAll("[data-show-for]").forEach(function (el) {
+        el.hidden = !checked || el.dataset.showFor !== checked.value;
+      });
+    };
+    form.querySelectorAll("input[name=visibility]").forEach(function (r) { r.addEventListener("change", sync); });
+    sync();
+  }
+  root.querySelectorAll("[data-copy]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var input = root.querySelector(btn.dataset.copy);
+      input.select();
+      if (navigator.clipboard) navigator.clipboard.writeText(input.value);
+      var old = btn.textContent;
+      btn.textContent = btn.dataset.copied;
+      setTimeout(function () { btn.textContent = old; }, 2000);
+    });
+  });
+})();
+</script>
+{% endblock %}

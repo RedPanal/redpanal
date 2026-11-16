@@ -1,0 +1,70 @@
+{% load i18n %}{% comment %}
+The persistent player (rp-dock.js). A dark pill floating over the navigation, hidden until something plays:
+cover, title, play. Touching it opens "Escuchando": everything about the sound, then the queue and collections.
+{% endcomment %}
+<section class="rp-dock" id="rp-dock" hidden aria-label="{% trans 'Player' %}" data-tab="queue"
+         data-play="{% trans 'Play' %}" data-pause="{% trans 'Pause' %}"
+         data-empty-queue="{% trans 'Nothing after this one yet.' %}"
+         data-empty-favorites="{% trans 'Sounds you mark as favorites show up here.' %}"
+         data-empty-downloads="{% trans 'Sounds you download show up here.' %}"
+         data-empty-playlists="{% trans 'No playlists yet: add what is playing to a new one.' %}"
+         data-empty-playlist="{% trans 'This playlist is empty.' %}"
+         data-new-list="{% trans 'New playlist' %}" data-create="{% trans 'Create' %}"
+         data-added="{% trans 'Added to the playlist.' %}" data-track-of="{% trans 'Track of' %}">
+
+ {# The pill: the least, always at hand. #}
+ <div class="rp-dock-pill" data-dock-pill>
+  <span class="rp-dock-line" aria-hidden="true"><span data-dock-line></span></span>
+  <button type="button" class="rp-dock-open" data-dock-expand aria-expanded="false" aria-label="{% trans 'Open the player' %}">
+   <span class="rp-dock-cover" data-dock-cover aria-hidden="true"></span>
+   <span class="rp-dock-id"><span class="rp-dock-title" data-dock-title></span><span class="rp-dock-artist" data-dock-artist></span></span>
+  </button>
+  <button type="button" class="rp-dock-btn" data-dock-prev aria-label="{% trans 'Previous' %}"><i class="fa fa-step-backward" aria-hidden="true"></i></button>
+  <button type="button" class="rp-dock-btn rp-dock-play" data-dock-play aria-pressed="false" aria-label="{% trans 'Play' %}"><i class="fa fa-play" aria-hidden="true"></i></button>
+  <button type="button" class="rp-dock-btn" data-dock-next aria-label="{% trans 'Next' %}"><i class="fa fa-step-forward" aria-hidden="true"></i></button>
+  <button type="button" class="rp-dock-btn rp-dock-x" data-dock-close aria-label="{% trans 'Close the player' %}" title="{% trans 'Close the player' %}"><i class="fa fa-times" aria-hidden="true"></i></button>
+ </div>
+
+ {# "Escuchando": everything about the sound; below, the queue and collections. #}
+ <div class="rp-dock-sheet" data-dock-sheet hidden role="dialog" aria-label="{% trans 'Now playing' %}">
+  <div class="rp-sheet-top">
+   <button type="button" class="rp-dock-btn" data-dock-collapse aria-label="{% trans 'Close' %}"><i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+   <span class="rp-sec mb-0">{% trans "Now playing" %}</span>
+   <button type="button" class="rp-dock-btn" data-dock-close aria-label="{% trans 'Close the player' %}" title="{% trans 'Close the player' %}"><i class="fa fa-times" aria-hidden="true"></i></button>
+  </div>
+  <div class="rp-sheet-body">
+   <div class="rp-sheet-cover" data-sheet-cover aria-hidden="true"></div>
+   <a class="rp-sheet-title" data-sheet-title href="#"></a>
+   <span class="rp-sheet-artist" data-sheet-artist></span>
+   <span class="rp-sheet-project small" data-sheet-project></span>
+   <p class="rp-labels justify-content-center mb-0" data-sheet-labels></p>
+   <div class="rp-sheet-wave" data-sheet-wave title="{% trans 'Click to jump to that moment' %}"><canvas aria-hidden="true"></canvas><span class="rp-sheet-progress"></span></div>
+   <label class="visually-hidden" for="rp-dock-seek">{% trans "Position" %}</label>
+   <input type="range" class="rp-dock-seek" id="rp-dock-seek" min="0" max="1000" value="0" data-dock-seek>
+   <span class="rp-sheet-time" data-dock-time></span>
+   <div class="rp-sheet-transport">
+    <button type="button" class="rp-dock-btn" data-dock-prev aria-label="{% trans 'Previous' %}"><i class="fa fa-step-backward" aria-hidden="true"></i></button>
+    <button type="button" class="rp-dock-btn rp-dock-play rp-dock-play-lg" data-dock-play aria-label="{% trans 'Play' %}"><i class="fa fa-play" aria-hidden="true"></i></button>
+    <button type="button" class="rp-dock-btn" data-dock-next aria-label="{% trans 'Next' %}"><i class="fa fa-step-forward" aria-hidden="true"></i></button>
+   </div>
+   <div class="rp-sheet-actions">
+    <button type="button" class="rp-act" data-sheet-favorite hidden title="{% trans 'Favorite' %}"><i class="far fa-heart" aria-hidden="true"></i><span class="visually-hidden">{% trans "Favorite" %}</span></button>
+    <button type="button" class="rp-act" data-sheet-amplify hidden title="{% trans 'Amplify' %}"><i class="fa fa-retweet" aria-hidden="true"></i><span class="visually-hidden">{% trans "Amplify" %}</span></button>
+    <a class="rp-act" data-sheet-download hidden title="{% trans 'Download original' %}"><i class="fa fa-download" aria-hidden="true"></i><span class="visually-hidden">{% trans "Download original" %}</span></a>
+    {% if request.user.is_authenticated %}<button type="button" class="rp-act" data-dock-add title="{% trans "Add what's playing to a playlist" %}"><i class="fa fa-list-ul" aria-hidden="true"></i><span class="visually-hidden">{% trans "Add what's playing to a playlist" %}</span></button>{% endif %}
+    <a class="rp-act" data-sheet-page href="#" title="{% trans 'Go to the page' %}"><i class="fa fa-external-link-alt" aria-hidden="true"></i><span class="visually-hidden">{% trans "Go to the page" %}</span></a>
+   </div>
+  </div>
+  <div class="rp-sheet-lists">
+   <div class="rp-dock-tabs" role="tablist">
+    <button type="button" role="tab" data-dock-tab="queue" aria-selected="true">{% trans "Up next" %}</button>
+    {% if request.user.is_authenticated %}
+    <button type="button" role="tab" data-dock-tab="favorites" aria-selected="false">{% trans "Favorites" %}</button>
+    <button type="button" role="tab" data-dock-tab="downloads" aria-selected="false">{% trans "Downloaded" %}</button>
+    <button type="button" role="tab" data-dock-tab="playlists" aria-selected="false">{% trans "Playlists" %}</button>
+    {% endif %}
+   </div>
+   <div class="rp-dock-list" data-dock-list></div>
+  </div>
+ </div>
+</section>

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n obra_tags %}
+
+{% block title %}{% trans "Downloads" %}{% endblock %}
+
+{% block content %}
+{% include "project/_estudio_tabs.html" %}
+{% if downloads %}
+{% for d in downloads %}
+<div class="rp-row rp-row-line">
+ <span><a href="{{ d.audio.get_absolute_url }}"><b>{{ d.audio.name }}</b></a> <span class="rp-muted small">· {{ d.audio.user|display_name }}</span></span>
+ <span class="rp-muted small">{{ d.created_at|date:"j M" }}</span>
+</div>
+{% endfor %}
+{% else %}
+<p class="rp-muted">{% trans "The sounds you download will be here, to find them again." %}</p>
+{% endif %}
+{% endblock %}

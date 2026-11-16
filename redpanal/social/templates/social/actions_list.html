@@ -1,10 +1,8 @@
-{% load i18n el_pagination_tags %}
+{% load i18n el_pagination_tags social_tags %}
 
 {% paginate action_list %}
 {% for action in action_list %}
-  {% with template='social/action_'|add:action.verb|add:'_teaser.html' %}
-     <li class="action_list">{% include template %}</li>
-  {% endwith %}
+     <li class="action_list">{% include action|action_templates %}</li>
 {% empty %}
   {% trans "No actions yet" %}
 {% endfor %}

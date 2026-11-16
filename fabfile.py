@@ -64,7 +64,7 @@ def run_venv(c, command, **kwargs):
 
 def install_dependencies(c):
     ensure_virtualenv(c)
-    run_venv(c, f"cd {SRC_DIR} && pip install -r requirements.txt")
+    run_venv(c, f"cd {SRC_DIR} && pip install -r requirements.txt -c requirements.lock")
 
 def ensure_virtualenv(c):
     if dir_exists(c, VENV_DIR):
@@ -164,6 +164,11 @@ def rebuild_index(c):
     run_venv(c, f'cd {MANAGEPY_SUBDIR} && ' + managepy + "rebuild_index --noinput --settings=redpanal.production_settings")
     c.sudo("chown -R www-data /var/www/redpanal/whoosh_index")
 
+def build_waveforms(c):
+    """Waveform files (.json) for the sounds that don't have them (uploads from before 3.0). Skips the rest."""
+    run_venv(c, f"cd {MANAGEPY_SUBDIR} && {PYTHON_BIN} manage.py build_waveforms --settings=redpanal.production_settings")
+
+
 def deploy(c):
     """
     Deploy project.
@@ -177,6 +182,7 @@ def deploy(c):
     rebuild_index(c)
     build_static(c)
     webserver_start(c)
+    build_waveforms(c)  # after the site is back: it can take a while the first time
 
 
 """
@@ -196,6 +202,7 @@ TASKS = {
     'webserver_stop': webserver_stop,
     'webserver_restart': webserver_stop,
     'rebuild_index': rebuild_index,
+    'build_waveforms': build_waveforms,
     'install_dependencies': install_dependencies,
     'clear_sessions': clear_sessions,
     'backup_database': backup_database,

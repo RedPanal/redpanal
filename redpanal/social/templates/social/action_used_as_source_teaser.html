@@ -1,0 +1,9 @@
+{% extends "social/action_teaser.html" %}
+{% load i18n %}
+
+{% block action_text %}{% trans "used as a source" %}{% endblock action_text %}
+
+{% block action_body %}
+  {% if action.target %}«{{ action.target.name }}»{% endif %}
+  {% if action.action_object %}→ <a href="{{ action.action_object.get_absolute_url }}">«{{ action.action_object.name }}»</a>{% endif %}
+{% endblock action_body %}

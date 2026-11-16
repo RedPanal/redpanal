@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Share a sound" %}{% endblock %}
+
+{% block content %}
+<div class="rp-narrow">
+ <p class="rp-muted small mb-1"><a href="{% url 'create' %}">{% trans "Create" %}</a> › {% trans "A sound to share" %}</p>
+ <h1 class="rp-h1">{% trans "Share a sound" %}</h1>
+ <p class="rp-muted">{% trans "A loop, a sample or a field recording that anyone can use in their works. Tempo and key help people find it." %}</p>
+
+ <form method="post" enctype="multipart/form-data" id="sound-form" class="d-grid gap-3" data-offline-queue>{% csrf_token %}
+  {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+  <div>
+   <div class="d-flex flex-wrap gap-2 align-items-center">
+    <label class="btn btn-outline-dark mb-0" for="id_audio"><i class="fa fa-upload" aria-hidden="true"></i> {% trans "Choose a file" %}</label>
+    <input type="file" name="audio" id="id_audio" class="rp-file" accept="audio/*,.m4a,.opus,.webm" required>
+    <div data-recorder data-target-input="id_audio" data-countdown="3" class="d-flex align-items-center gap-2"
+         data-error-text="{% trans 'The microphone could not be used. Check the browser permissions or upload a file.' %}">
+     <button type="button" class="btn btn-outline-dark" data-rec-start><i class="fa fa-microphone" aria-hidden="true"></i> {% trans "Record" %}</button>
+     <span class="rp-countdown rp-countdown-sm" data-rec-countdown aria-live="polite"></span>
+     <span class="rp-inline-rec"><span class="rp-rec-dot" aria-hidden="true"></span> <b data-rec-time>0:00</b>
+      <span class="rp-level rp-level-sm" data-rec-level aria-hidden="true"><span></span></span>
+      <button type="button" class="btn rp-btn-primary btn-sm" data-rec-stop>{% trans "Stop" %}</button></span>
+     <span class="text-danger small" data-rec-error role="alert"></span>
+    </div>
+   </div>
+   <p class="small mt-2 mb-0" data-file-name></p>
+   {% for error in form.audio.errors %}<p class="text-danger small mb-0">{{ error }}</p>{% endfor %}
+  </div>
+
+  <div>
+   <label class="form-label fw-bold" for="id_name">{{ form.name.label }}</label>
+   <input class="form-control" type="text" name="name" id="id_name" value="{{ form.name.value|default:'' }}" maxlength="100" required>
+   {% for error in form.name.errors %}<p class="text-danger small mb-0">{{ error }}</p>{% endfor %}
+  </div>
+  {% include "project/_image_field.html" with errors=form.image.errors %}
+
+  <fieldset>
+   <legend class="form-label fw-bold fs-6">{{ form.use_type.label }}</legend>
+   <div class="rp-chips">{% for radio in form.use_type %}<label class="rp-chip">{{ radio.tag }}<span>{{ radio.choice_label|capfirst }}</span></label>{% endfor %}</div>
+  </fieldset>
+
+  <div class="row g-3">
+   <div class="col-sm-4">
+    <label class="form-label fw-bold" for="id_tempo">{{ form.tempo.label }}</label>
+    <input class="form-control" type="number" name="tempo" id="id_tempo" min="20" max="300" value="{{ form.tempo.value|default:'' }}">
+    <p class="rp-muted small mt-1 mb-0" data-tempo-note data-template="{% trans 'Estimated: %s BPM. Correct it if it doesn’t match.' %}" hidden></p>
+   </div>
+   <div class="col-sm-4">
+    <label class="form-label fw-bold" for="id_musical_key">{{ form.musical_key.label }}</label>
+    <input class="form-control" type="text" name="musical_key" id="id_musical_key" maxlength="20" placeholder="{% trans 'e.g. A minor' %}" value="{{ form.musical_key.value|default:'' }}">
+   </div>
+   <div class="col-sm-4">
+    <label class="form-label fw-bold" for="id_instrument">{{ form.instrument.label }}</label>
+    <select class="form-select" name="instrument" id="id_instrument">
+     {% for value, label in form.fields.instrument.choices %}<option value="{{ value }}" {% if form.instrument.value == value %}selected{% endif %}>{{ label|capfirst }}</option>{% endfor %}
+    </select>
+   </div>
+  </div>
+
+  <details>
+   <summary class="small">{% trans "Add a description" %}</summary>
+   <label class="visually-hidden" for="id_description">{{ form.description.label }}</label>
+   <textarea class="form-control mt-2" name="description" id="id_description" rows="2">{{ form.description.value|default:'' }}</textarea>
+  </details>
+
+  <div class="rp-license">
+   <b>{% trans "Anyone can use it if they credit you and share alike." %}</b>
+   <a class="small d-block" href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="license noopener">{% trans "What this means (CC BY-SA 4.0)" %}</a>
+  </div>
+
+  <div class="d-flex gap-2">
+   <button type="submit" class="btn rp-btn-primary" data-submit>{% trans "Share" %}</button>
+   <a class="btn btn-link" href="{% url 'create' %}">{% trans "Cancel" %}</a>
+  </div>
+  <p class="rp-muted small" data-uploading hidden>{% trans "Uploading… don't close this page." %}</p>
+ </form>
+</div>
+{% endblock %}
+
+{% block body_end_scripts %}
+<script src="{% static 'js/recorder.js' %}"></script>
+<script src="{% static 'js/tempo.js' %}"></script>
+<script>
+/* Share a sound: name it after the file and estimate the tempo, both editable. */
+(function () {
+  "use strict";
+  var form = document.getElementById("sound-form"), input = document.getElementById("id_audio");
+  var name = document.getElementById("id_name"), tempo = document.getElementById("id_tempo");
+  var note = form.querySelector("[data-tempo-note]");
+  input.classList.add("visually-hidden");
+  function analyse() {
+    var file = input.files[0];
+    if (!file) return;
+    form.querySelector("[data-file-name]").textContent = file.name;
+    if (!name.value) name.value = file.name.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ");
+    if (tempo.value || !window.rpEstimateTempo || !window.AudioContext) return;
+    var ctx = new AudioContext();
+    file.arrayBuffer().then(function (ab) { return ctx.decodeAudioData(ab); }).then(function (buf) {
+      var estimate = window.rpEstimateTempo(buf);
+      if (!estimate || estimate.confidence < 12 || tempo.value) return;
+      tempo.value = estimate.bpm;
+      note.textContent = note.dataset.template.replace("%s", estimate.bpm);
+      note.hidden = false;
+    }).catch(function () {}).then(function () { ctx.close(); });
+  }
+  input.addEventListener("change", analyse);
+  form.querySelector("[data-recorder]").addEventListener("recorder:done", analyse);
+  form.addEventListener("submit", function () {
+    form.querySelector("[data-submit]").disabled = true;
+    form.querySelector("[data-uploading]").hidden = false;
+  });
+})();
+</script>
+{% endblock %}

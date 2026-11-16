@@ -18,13 +18,19 @@ class InstanceTestMixin(object):
         response = self.client.get(instance.get_absolute_url())
         self.assertEqual(200, response.status_code)
 
+    # The route where this kind of thing is created (all creating happens under /crear/).
+    create_url_name = None
+
+    def create_url(self):
+        return reverse(self.create_url_name or '%s-create' % self.get_model_name())
+
     def test_get_create_view_redirect_unauthenticated(self):
-        response = self.client.get(reverse('%s-create' % self.get_model_name()))
+        response = self.client.get(self.create_url())
         self.assertEqual(302, response.status_code)
 
     def test_get_create_view(self):
         self.login()
-        response = self.client.get(reverse('%s-create' % self.get_model_name()))
+        response = self.client.get(self.create_url())
         self.assertEqual(200, response.status_code)
 
     def test_get_edit_view(self):

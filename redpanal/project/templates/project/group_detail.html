@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load i18n obra_tags %}
+
+{% block title %}{{ group.name }}{% endblock %}
+
+{% block content %}
+<div class="rp-narrow rp-narrow-wide">
+ <p class="rp-muted small mb-1"><a href="{% url 'groups' %}">{% trans "Groups" %}</a> › {{ group.name }}</p>
+ <h1 class="rp-h1">{{ group.name }}</h1>
+ <p class="rp-muted">{% blocktrans with who=group.owner|display_name %}Coordinated by {{ who }}{% endblocktrans %}</p>
+
+ {% if is_owner %}
+ <section class="rp-card rp-card-strong">
+  <span class="rp-sec">{% trans "Code to join" %}</span>
+  <span class="rp-group-code" aria-label="{% trans 'Code' %}">{{ group.code }}</span>
+  <span class="rp-muted small">{% trans "Each person signs in and enters it in Groups › Join with a code." %}</span>
+  {# Or add people directly, by their @username. #}
+  <form method="post" action="{% url 'group-invite' group.slug %}" class="d-flex gap-2 mt-2">{% csrf_token %}
+   <label class="visually-hidden" for="g-people">{% trans "Invite people" %}</label>
+   <input class="form-control" id="g-people" name="people" placeholder="{% trans '@lucia @tincho' %}" autocomplete="off" required>
+   <button class="btn btn-outline-dark text-nowrap">{% trans "Invite" %}</button>
+  </form>
+  <a class="btn rp-btn-primary align-self-start mt-2" href="{% url 'create' %}?grupo={{ group.pk }}"><i class="fa fa-plus" aria-hidden="true"></i> {% trans "Create a work for the group" %}</a>
+ </section>
+ {% endif %}
+
+ <section class="mb-4" aria-labelledby="g-works">
+  <h2 class="rp-sec" id="g-works">{% trans "Works of the group" %}</h2>
+  <div class="rp-grid">
+   {% for work in works %}{% include "project/_work_card.html" %}{% endfor %}
+  </div>
+ </section>
+
+ <section aria-labelledby="g-members">
+  <h2 class="rp-sec" id="g-members">{% trans "Members" %}</h2>
+  <table class="table table-sm align-middle">
+   <thead><tr><th scope="col">{% trans "Person" %}</th>{% if is_owner %}<th scope="col">{% trans "Contributions to the group's works" %}</th>{% endif %}<th scope="col"><span class="visually-hidden">{% trans "Actions" %}</span></th></tr></thead>
+   <tbody>
+   {% for m, n in rows %}
+    <tr>
+     <td><a href="{{ m.user.get_absolute_url }}">{{ m.user|display_name }}</a></td>
+     {% if is_owner %}<td>{% if n %}{{ n }}{% else %}<span class="rp-muted">{% trans "none yet" %}</span>{% endif %}</td>{% endif %}
+     <td class="text-end">{% if is_owner or m.user == request.user %}
+      <form method="post" action="{% url 'group-member-remove' group.slug m.pk %}">{% csrf_token %}
+       <button class="btn btn-link btn-sm p-0">{% if m.user == request.user %}{% trans "Leave" %}{% else %}{% trans "Remove" %}{% endif %}</button></form>
+     {% endif %}</td>
+    </tr>
+   {% endfor %}
+   </tbody>
+  </table>
+ </section>
+</div>
+{% endblock %}

@@ -46,11 +46,21 @@ def message_form_for(context, obj):
 
 @register.simple_tag(takes_context=True)
 def show_messages_for(context, obj):
-    from social.models import Message
+    from social.models import Message, visible_messages
     content_type = ContentType.objects.get_for_model(obj)
-
-    messages = Message.objects.filter(object_id=obj.pk,
-                                      content_type=content_type)
+    request = context.get('request')
+    # The same rules as everywhere else: hidden comments and things this person can't hear stay out.
+    user = getattr(request, 'user', None)
+    about = Message.objects.filter(object_id=obj.pk, content_type=content_type)
+    # Threads: top-level comments oldest first, each with its replies under it.
+    messages = list(visible_messages(about.filter(parent__isnull=True), user)
+                    .select_related('user').order_by('created_at'))
+    replies = {}
+    for r in (visible_messages(about.filter(parent__in=[m.pk for m in messages]), user)
+              .select_related('user').order_by('created_at')):
+        replies.setdefault(r.parent_id, []).append(r)
+    for m in messages:
+        m.visible_replies = replies.get(m.pk, [])
     return render_to_string("social/messages_for_object.html",
                             {"messages": messages},
                             request=context.get('request'))
@@ -59,3 +69,9 @@ def show_messages_for(context, obj):
 def render_collaborators(project):
     return " ".join(["@%s" % user.username for user in project.collaborators()])
 
+
+
+@register.filter
+def action_templates(action):
+    """Templates to show an action with: its own, else the plain one (old or unknown verbs must not break the page)."""
+    return ["social/action_%s_teaser.html" % action.verb, "social/action_teaser.html"]

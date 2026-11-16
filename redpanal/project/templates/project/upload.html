@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load i18n static obra_tags %}
+
+{% block title %}{% trans "Create" %}{% endblock %}
+
+{% block content %}
+{# Two ways in: Subir and Grabar. Only the file is needed; everything else comes after. #}
+<div class="rp-narrow" data-upload
+     data-file-url="{% url 'upload-file' %}" data-organize-url="{% url 'upload-organize' %}"
+     data-attachment-url="{% url 'upload-attachment' 'SLUG' %}"
+     data-audio-ext="{{ audio_extensions|join:',' }}" data-attachment-ext="{{ attachment_extensions|join:',' }}"
+     data-recording-name="{% blocktrans %}Recording{% endblocktrans %}" data-default-name="{{ default_name }}"
+     data-skipped="{% trans 'Not an audio file: left out.' %}">
+ <h1 class="rp-h1">{% trans "Create" %}</h1>
+
+ {% if sound or source or group %}
+ <ul class="rp-chips rp-chips-static mb-3" aria-label="{% trans 'Where it comes from' %}">
+  {% if sound %}<li class="rp-chip"><span><i class="fa fa-music" aria-hidden="true"></i> {% blocktrans with name=sound.name %}Comes from «{{ name }}»{% endblocktrans %}</span></li>{% endif %}
+  {% if source %}<li class="rp-chip"><span><i class="fa fa-code-branch" aria-hidden="true"></i> {% blocktrans with name=source.name %}Based on «{{ name }}»{% endblocktrans %}</span></li>{% endif %}
+  {% if group %}<li class="rp-chip"><span><i class="fa fa-users" aria-hidden="true"></i> {% blocktrans with name=group.name %}Shared with «{{ name }}»{% endblocktrans %}</span></li>{% endif %}
+ </ul>
+ {% endif %}
+
+ {% if sound or source %}
+ {# Coming from a sound or a work: a name is enough to start; a track can come now or later. #}
+ <form method="post" action="{% url 'upload-new-project' %}" class="d-grid gap-2 mb-4" data-new-project>{% csrf_token %}
+  {% if sound %}<input type="hidden" name="sonido" value="{{ sound.pk }}">{% endif %}
+  {% if source %}<input type="hidden" name="from" value="{{ source.slug }}">{% endif %}
+  {% if group %}<input type="hidden" name="grupo" value="{{ group.pk }}">{% endif %}
+  <label class="form-label fw-bold mb-0" for="np-name">{% trans "Project name" %}</label>
+  <input class="form-control" id="np-name" name="name" maxlength="100" required value="{{ default_name }}" data-top-name>
+  <button class="btn rp-btn-primary">{% trans "Create project" %}</button>
+  <p class="rp-muted small mb-0 mt-2">{% trans "If you want, add a track now (optional):" %}</p>
+ </form>
+ {% endif %}
+
+ <section data-step="start">
+  <div class="rp-drop" data-drop tabindex="0" role="button" aria-describedby="drop-help">
+   <span class="rp-bigoption-icon"><i class="fa fa-upload" aria-hidden="true"></i></span>
+   <b>{% trans "Upload" %}</b>
+   <span class="rp-muted" id="drop-help">{% trans "Drop files or a folder here, or choose them. One or many." %}</span>
+   <span class="d-flex gap-2 flex-wrap justify-content-center mt-2">
+    <label class="btn btn-outline-dark btn-sm" for="up-files">{% trans "Choose files" %}</label>
+    <label class="btn btn-outline-dark btn-sm rp-hide-touch" for="up-folder">{% trans "Choose a folder" %}</label>
+   </span>
+   <input type="file" id="up-files" class="visually-hidden" multiple accept="audio/*,.m4a,.opus,.webm,{% for e in attachment_extensions %}.{{ e }},{% endfor %}" data-files>
+   <input type="file" id="up-folder" class="visually-hidden" webkitdirectory multiple data-files>
+  </div>
+
+  <div data-recorder data-countdown="3" class="mt-3"
+       data-error-text="{% trans 'The microphone could not be used. Check the browser permissions or upload a file.' %}">
+   <button type="button" class="rp-bigoption" data-rec-start>
+    <span class="rp-bigoption-icon"><i class="fa fa-microphone" aria-hidden="true"></i></span>
+    <span><b>{% trans "Record" %}</b><span class="rp-muted d-block">{% trans "Starts in 3 seconds" %}</span></span>
+   </button>
+   <div class="rp-recording" aria-live="polite">
+    <div class="rp-countdown" data-rec-countdown></div>
+    <div class="rp-rec-now"><span class="rp-rec-dot" aria-hidden="true"></span> <b>{% trans "Recording" %}</b></div>
+    <div class="rp-rec-time" data-rec-time>0:00</div>
+    <div class="rp-level" data-rec-level aria-hidden="true"><span></span></div>
+    <p class="rp-muted small">{% trans "The screen stays on while you record." %}</p>
+    <div class="d-flex justify-content-center gap-4 align-items-center">
+     <button type="button" class="rp-round" data-rec-pause aria-label="{% trans 'Pause' %}"><i class="fa fa-pause" aria-hidden="true"></i></button>
+     <button type="button" class="rp-round rp-round-lg" data-rec-stop><i class="fa fa-stop" aria-hidden="true"></i><span>{% trans "Done" %}</span></button>
+    </div>
+   </div>
+   <p class="text-danger small" data-rec-error role="alert"></p>
+  </div>
+ </section>
+
+ {# While the files go up, and the only questions there are. #}
+ <section data-step="files" hidden>
+  <ul class="rp-uploads list-unstyled" data-list aria-live="polite"></ul>
+  <p class="text-danger small" data-error role="alert"></p>
+
+  <div data-ask hidden>
+   <div data-ask-group hidden>
+    <p class="fw-bold mb-2">{% trans "Are they from the same project?" %}</p>
+    <div class="d-flex gap-2 flex-wrap">
+     <button type="button" class="btn rp-btn-primary" data-together="1">{% trans "Yes, group them" %}</button>
+     <button type="button" class="btn btn-outline-dark" data-together="0">{% trans "No, they are separate sounds" %}</button>
+    </div>
+   </div>
+
+   <div data-ask-project hidden class="mt-3">
+    <label class="form-label fw-bold" for="up-name">{% trans "Project name" %}</label>
+    <input class="form-control" id="up-name" maxlength="100" data-name>
+    {% if my_projects %}<div data-existing-wrap>
+    <label class="form-label small rp-muted mt-2" for="up-existing">{% trans "Or add them to one of your projects" %}</label>
+    <select class="form-select" id="up-existing" data-existing>
+     <option value="">{% trans "A new project" %}</option>
+     {% for p in my_projects %}<option value="{{ p.slug }}">{{ p.name }}</option>{% endfor %}
+    </select>
+    </div>{% endif %}
+    <div data-ask-stems hidden class="mt-3">
+     <p class="fw-bold mb-1">{% trans "They last the same: are they stems that play together?" %}</p>
+     <p class="rp-muted small">{% trans "Exported from the same session, they can be heard in sync." %}</p>
+     <label class="me-3"><input type="radio" name="stems" value="1" checked data-stems> {% trans "Yes, in sync" %}</label>
+     <label><input type="radio" name="stems" value="0" data-stems> {% trans "No" %}</label>
+    </div>
+   </div>
+
+   <div data-ask-single hidden>
+    <label class="form-label small rp-muted" for="up-into">{% trans "Is it part of a project? (optional)" %}</label>
+    <select class="form-select" id="up-into" data-into>
+     <option value="">{% trans "No, it's a sound on its own" %}</option>
+     <option value="new">{% trans "A new project" %}</option>
+     {% for p in my_projects %}<option value="{{ p.slug }}">{{ p.name }}</option>{% endfor %}
+    </select>
+   </div>
+
+   <button type="button" class="btn rp-btn-primary w-100 mt-4" data-continue>{% trans "Continue" %}</button>
+  </div>
+ </section>
+
+ <form data-context hidden>
+  {% if sound %}<input type="hidden" name="sonido" value="{{ sound.pk }}">{% endif %}
+  {% if source %}<input type="hidden" name="from" value="{{ source.slug }}">{% endif %}
+  {% if group %}<input type="hidden" name="grupo" value="{{ group.pk }}">{% endif %}
+  {% csrf_token %}
+ </form>
+</div>
+{% endblock %}
+
+{% block body_end_scripts %}
+<script src="{% static 'js/recorder.js' %}"></script>
+<script src="{% static 'js/upload.js' %}?{{ GIT_SHORT_VERSION }}"></script>
+{% endblock %}

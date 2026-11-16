@@ -1,0 +1,4 @@
+{% load i18n obra_tags %}<a class="rp-card rp-comment-card" href="{{ m.content_object.get_absolute_url }}">
+ <span class="small"><i class="fa fa-comment rp-muted" aria-hidden="true"></i> <b>{{ m.user|display_name }}</b>{% if m.content_object.name %} <span class="rp-muted">{% blocktrans with name=m.content_object.name %}on «{{ name }}»{% endblocktrans %}</span>{% endif %}</span>
+ <span>«{{ m.msg|truncatechars:200 }}»</span>
+</a>

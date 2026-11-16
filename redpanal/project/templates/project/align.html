@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load i18n static obra_tags %}
+
+{% block title %}{% trans "Align a part" %} · {{ object.name }}{% endblock %}
+
+{% block content %}
+<div class="rp-narrow rp-narrow-wide">
+ <p class="rp-muted small mb-1"><a href="{{ object.get_absolute_url }}">{{ object.name }}</a> › {% trans "Align a part" %}</p>
+ <h1 class="rp-h1">{% blocktrans with role=c.audio|part_role who=c.contributor|display_name %}Align: {{ role }} by {{ who }}{% endblocktrans %}</h1>
+ <p class="rp-muted">{% trans "Listen to the part together with the work and move it until it lines up. We look for the best offset automatically; check it by ear." %}</p>
+
+ {% if not references %}
+  <p class="rp-card">{% trans "There are no aligned parts to compare with: this part can set the work's timeline." %}</p>
+ {% endif %}
+
+ <form method="post" class="d-grid gap-3" data-mixer id="align-form">{% csrf_token %}
+  <div class="rp-transport">
+   <button type="button" class="rp-play" data-play data-label-play="{% trans 'Listen together' %}" data-label-pause="{% trans 'Pause' %}" aria-label="{% trans 'Listen together' %}"><i class="fa fa-play" aria-hidden="true"></i></button>
+   <span class="rp-time"><b data-time>0:00</b> <span class="rp-muted">/ <span data-duration>0:00</span></span></span>
+   <label class="visually-hidden" for="rp-seek">{% trans "Position" %}</label>
+   <input id="rp-seek" class="rp-seek" type="range" min="0" max="1000" value="0" data-seek>
+   <span class="rp-muted small" data-status data-loading="{% trans 'Loading…' %}"></span>
+  </div>
+  <div class="rp-tracks">
+   {% for r in references %}{% include "project/_track.html" with c=r candidate=False %}{% endfor %}
+   <div class="rp-track is-mine" id="track-align" data-track data-align-target
+        data-src="{{ c.audio.get_stream_url }}" data-peaks="{% url 'audio_peaks_json' c.audio_id %}" data-offset="{{ c.offset_ms }}">
+    <div class="rp-track-label"><b>{{ c.audio|part_role }}</b><span>{% trans "this part" %}</span></div>
+    <div class="rp-track-wave" data-wave></div>
+    <div class="rp-track-ctrls">
+     <button type="button" class="rp-mini" data-mute aria-pressed="false" aria-label="{% trans 'Mute this part' %}">M</button>
+     <button type="button" class="rp-mini" data-solo aria-pressed="false" aria-label="{% trans 'Solo this part' %}">S</button>
+    </div>
+   </div>
+  </div>
+
+  <div class="rp-card" role="status" aria-live="polite" data-suggestion
+       data-analysing="{% trans 'Looking for the best offset…' %}"
+       data-aligned="{% trans 'It already lines up (confidence %c).' %}"
+       data-shifted="{% trans 'It lines up if moved %s ms (confidence %c). We applied it: check it by ear.' %}"
+       data-unclear="{% trans 'We found no clear match: it may be a separate idea, or have little in common with the rest. Try by ear.' %}"
+       data-failed="{% trans 'This file could not be analysed here. Try by ear.' %}"
+       data-high="{% trans 'high' %}" data-medium="{% trans 'medium' %}">
+   {% trans "Looking for the best offset…" %}
+  </div>
+
+  <div class="d-flex flex-wrap align-items-center gap-2">
+   <label class="fw-bold" for="id_offset_ms">{% trans "Offset" %}</label>
+   <button type="button" class="btn btn-outline-dark btn-sm" data-nudge="-100">−100</button>
+   <button type="button" class="btn btn-outline-dark btn-sm" data-nudge="-10">−10</button>
+   <input class="form-control form-control-sm rp-offset" type="number" name="offset_ms" id="id_offset_ms" value="{{ c.offset_ms }}" step="1">
+   <button type="button" class="btn btn-outline-dark btn-sm" data-nudge="10">+10</button>
+   <button type="button" class="btn btn-outline-dark btn-sm" data-nudge="100">+100</button>
+   <span class="rp-muted small">ms · {% trans "Negative values start the part earlier." %}</span>
+  </div>
+
+  <div class="d-flex gap-2 flex-wrap">
+   <button class="btn rp-btn-primary" name="decision" value="aligned">{% trans "It lines up: add it to the work's player" %}</button>
+   <button class="btn btn-outline-dark" name="decision" value="separate">{% trans "It's independent: keep it on its own" %}</button>
+   <a class="btn btn-link" href="{{ object.get_absolute_url }}">{% trans "Cancel" %}</a>
+  </div>
+ </form>
+</div>
+{% endblock %}
+
+{% block body_end_scripts %}
+<script src="{% static 'js/align.js' %}"></script>
+<script src="{% static 'js/align-page.js' %}"></script>
+{% endblock %}

@@ -31,6 +31,8 @@ class AudioEditForm(forms.ModelForm):
             'license': forms.RadioSelect,
         }
         fields = '__all__'
+        # Who can listen is decided when sharing, not here.
+        exclude = ("visibility", "shared_groups", "shared_with")
 
     def __init__(self, data=None, *args, **kwargs):
         user = kwargs.pop('user')
@@ -48,6 +50,14 @@ class AudioEditForm(forms.ModelForm):
         if not get_file_extension(f.name) in AUDIO_EXTENSIONS:
             raise ValidationError(_("Invalid audio file extension"))
         return f
+
+class SoundEditForm(forms.ModelForm):
+    """What can change after sharing a sound: how it's described and found, and its picture."""
+
+    class Meta:
+        model = Audio
+        fields = ["name", "image", "use_type", "instrument", "tempo", "musical_key", "description"]
+
 
 class AudioUploadForm(forms.ModelForm):
     #Upload Form

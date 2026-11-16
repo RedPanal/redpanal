@@ -1,0 +1,6 @@
+{% load i18n obra_tags avatar_tags %}<div class="rp-card rp-person">
+ <a href="{{ person.get_absolute_url }}"><span class="rp-nav-avatar" aria-hidden="true">{% avatar person 64 %}</span></a>
+ <span class="flex-grow-1"><a class="rp-card-title" href="{{ person.get_absolute_url }}">{{ person|display_name }}</a>{% if person.userprofile.location %} <span class="rp-muted small">· {{ person.userprofile.location }}</span>{% endif %}
+  <span class="rp-muted small d-block">{% for label in person.userprofile.instrument_labels %}{{ label|capfirst }}{% if not forloop.last %}, {% endif %}{% empty %}@{{ person.username }}{% endfor %}</span></span>
+ {% include "users/_follow_button.html" %}
+</div>

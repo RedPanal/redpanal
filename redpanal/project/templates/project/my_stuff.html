@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load i18n obra_tags thumbnail %}
+
+{% block title %}{% trans "My stuff" %}{% endblock %}
+
+{% block content %}
+{# Only what exists is shown: sections appear when there's something in them; shortcuts, when there are two or more. #}
+{% include "project/_estudio_tabs.html" %}
+{% if to_complete %}<p class="rp-card rp-reminder"><i class="fa fa-pen" aria-hidden="true"></i>
+ {% blocktrans count n=to_complete %}{{ n }} file uploaded without details.{% plural %}{{ n }} files uploaded without details.{% endblocktrans %}
+ <a href="{% url 'upload-complete' %}?pendientes=1">{% trans "Complete" %}</a></p>{% endif %}
+
+{% if show_jump %}
+<nav class="rp-profile-jump" aria-label="{% trans 'Sections' %}">
+ {% if projects %}<a href="#obras">{% trans "Works" %} <span class="rp-muted">{{ projects|length }}</span></a>{% endif %}
+ {% if joined %}<a href="#compartidos">{% trans "Shared with you" %} <span class="rp-muted">{{ joined|length }}</span></a>{% endif %}
+ {% if contributions %}<a href="#aportes">{% trans "Contributions" %} <span class="rp-muted">{{ contributions|length }}</span></a>{% endif %}
+ {% if sounds %}<a href="#sonidos">{% trans "Sounds" %} <span class="rp-muted">{{ sounds|length }}</span></a>{% endif %}
+</nav>
+{% endif %}
+{% if not projects and not joined and not contributions and not sounds %}
+<p class="rp-muted">{% trans "Your projects and sounds." %}</p>
+<p><a class="btn rp-btn-primary" href="{% url 'create' %}"><i class="fa fa-plus" aria-hidden="true"></i> {% trans "Create" %}</a></p>
+{% endif %}
+
+{% if projects %}
+<section class="mb-4" id="obras" aria-labelledby="mine-works">
+ <h2 class="rp-sec" id="mine-works">{% trans "My works" %}</h2>
+ <div class="rp-grid">
+  {% for work in projects %}
+  <article class="rp-card rp-work-card">
+   <div class="rp-card-head">
+    {% if work.image %}<img class="rp-cover rp-cover-sm" src="{% thumbnail work.image 112x112 crop %}" alt="">
+    {% else %}<span class="rp-cover rp-cover-sm rp-cover-icon rp-kind-project" aria-hidden="true"><i class="fa fa-layer-group"></i></span>{% endif %}
+    <div class="rp-card-id">
+     <span class="d-flex justify-content-between align-items-start gap-2"><a class="rp-work-title rp-card-title" href="{{ work.get_absolute_url }}">{{ work.name }}</a></span>
+     <span class="rp-muted small">{% blocktrans count n=work.n_parts %}{{ n }} part{% plural %}{{ n }} parts{% endblocktrans %} · <i class="fa fa-{{ work.visibility_icon }}" aria-hidden="true"></i> {{ work.visibility_short }}</span>
+    </div>
+   </div>
+   {% if work.n_proposed %}<a class="rp-badge align-self-start" href="{{ work.get_absolute_url }}#aportes">{% blocktrans count n=work.n_proposed %}{{ n }} new contribution{% plural %}{{ n }} new contributions{% endblocktrans %}</a>{% endif %}
+   {% work_files work %}
+  </article>
+  {% endfor %}
+ </div>
+</section>
+{% endif %}
+
+{% if joined %}
+{# Other people's projects that aren't public and you can hear and add to: they invited you, or shared them with your group. #}
+<section class="mb-4" id="compartidos" aria-labelledby="mine-joined">
+ <h2 class="rp-sec" id="mine-joined">{% trans "Shared with you" %}</h2>
+ <div class="rp-grid">{% for work in joined %}{% include "project/_work_card.html" %}{% endfor %}</div>
+</section>
+{% endif %}
+
+{% if contributions %}
+<section class="mb-4" id="aportes" aria-labelledby="mine-contribs">
+ <h2 class="rp-sec" id="mine-contribs">{% trans "My contributions" %}</h2>
+ {% for c in contributions %}
+ <div class="rp-row rp-row-line">
+  <span><b>{{ c.audio|part_role }}</b> · <a href="{{ c.project.get_absolute_url }}">«{{ c.project.name }}»</a> <span class="rp-muted small">{% trans "by" %} {{ c.project.user|display_name }}</span></span>
+  <span class="rp-tag{% if c.status != 'proposed' %} rp-tag-quiet{% endif %}">{% if c.status == "proposed" %}{% trans "waiting for an answer" %}{% else %}{{ c.get_status_display }}{% endif %}</span>
+ </div>
+ {% endfor %}
+</section>
+{% endif %}
+
+{% if sounds %}
+<section class="mb-4" id="sonidos" aria-labelledby="mine-sounds">
+ <h2 class="rp-sec" id="mine-sounds">{% trans "My sounds" %}</h2>
+ <div class="rp-grid">{% for sound in sounds %}{% include "project/_sound_card.html" %}{% endfor %}</div>
+</section>
+{% endif %}
+
+{% if usage_mb %}
+<footer class="rp-usage mt-5">
+ <span class="small rp-muted">{% blocktrans %}Space used: {{ usage_mb }} MB of {{ quota_mb }} MB{% endblocktrans %}</span>
+ <div class="rp-level rp-usage-bar" role="progressbar" aria-valuenow="{{ usage_pct }}" aria-valuemin="0" aria-valuemax="100" aria-label="{% trans 'Space used' %}"><span style="width: {{ usage_pct }}%"></span></div>
+</footer>
+{% endif %}
+{% endblock %}

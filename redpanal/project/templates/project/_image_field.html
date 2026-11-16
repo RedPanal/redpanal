@@ -1,0 +1,10 @@
+{% load i18n %}{# The picture of a project or sound: part of its artistic identity, always optional. #}
+<div class="rp-image-field">
+ <img class="rp-cover rp-cover-md" data-image-preview-of="id_image" src="{{ current|default:'' }}" alt="" {% if not current %}hidden{% endif %}>
+ <div>
+  <label class="btn btn-outline-dark btn-sm mb-0" for="id_image"><i class="fa fa-image" aria-hidden="true"></i> {% if current %}{% trans "Change the image" %}{% else %}{% trans "Add an image" %}{% endif %}</label>
+  <input type="file" name="image" id="id_image" accept="image/*" class="visually-hidden" data-image-preview>
+  <p class="rp-muted small mb-0 mt-1">{% trans "Optional. A cover or a picture that goes with it." %}</p>
+  {% for error in errors %}<p class="text-danger small mb-0">{{ error }}</p>{% endfor %}
+ </div>
+</div>

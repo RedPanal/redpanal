@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Share" %}{% endblock %}
+
+{% block content %}
+{# Private until shared. Four ways, one choice. #}
+<div class="rp-narrow">
+ <h1 class="rp-h1 mb-1">{% trans "Share" %}</h1>
+ <p class="rp-muted">{% if project %}{% blocktrans with name=project.name %}«{{ name }}» is private: only you can listen to it.{% endblocktrans %}{% elif audios|length == 1 %}{% blocktrans with name=audios.0.name %}«{{ name }}» is private: only you can listen to it.{% endblocktrans %}{% else %}{% trans "They are private: only you can listen to them." %}{% endif %}</p>
+
+ <form method="post" class="d-grid gap-2" data-share-form>{% csrf_token %}
+  {% if project %}<input type="hidden" name="proyecto" value="{{ project.slug }}">
+  {% else %}<input type="hidden" name="ids" value="{% for a in audios %}{{ a.pk }}{% if not forloop.last %},{% endif %}{% endfor %}">{% endif %}
+
+  <label class="rp-share-option">
+   <input type="radio" name="how" value="public" data-how>
+   <span><b><i class="fa fa-globe-americas fa-fw" aria-hidden="true"></i> {% trans "Publish openly" %}</b>
+    <span class="rp-muted small d-block">{% trans "Anyone can listen, download and make something new with it, crediting you." %}</span></span>
+  </label>
+  <div class="rp-share-more" data-for="public" hidden>
+   <label class="small"><input type="checkbox" name="accept_license" value="1"> {% trans "I accept publishing it under a free license (CC BY-SA 4.0)." %}</label>
+   <a class="small d-block" href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="license noopener">{% trans "What this means" %}</a>
+  </div>
+
+  <label class="rp-share-option">
+   <input type="radio" name="how" value="group" data-how>
+   <span><b><i class="fa fa-users fa-fw" aria-hidden="true"></i> {% trans "Share with a group" %}</b>
+    <span class="rp-muted small d-block">{% trans "Only the people in the group." %}</span></span>
+  </label>
+  <div class="rp-share-more" data-for="group" hidden>
+   {% if groups %}
+   <label class="visually-hidden" for="share-group">{% trans "Group" %}</label>
+   <select class="form-select" id="share-group" name="group">{% for g in groups %}<option value="{{ g.pk }}">{{ g.name }}</option>{% endfor %}</select>
+   {% else %}<p class="small mb-0">{% trans "You are not in any group yet." %} <a href="{% url 'groups' %}">{% trans "Create or join a group" %}</a></p>{% endif %}
+  </div>
+
+  <label class="rp-share-option">
+   <input type="radio" name="how" value="person" data-how>
+   <span><b><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> {% trans "Invite someone" %}</b>
+    <span class="rp-muted small d-block">{% trans "It isn't published: only that person can listen." %}</span></span>
+  </label>
+  <div class="rp-share-more" data-for="person" hidden>
+   <label class="visually-hidden" for="share-user">{% trans "Username" %}</label>
+   <input class="form-control" id="share-user" name="username" placeholder="{% trans '@username' %}">
+  </div>
+
+  <label class="rp-share-option">
+   <input type="radio" name="how" value="private" data-how checked>
+   <span><b><i class="fa fa-lock fa-fw" aria-hidden="true"></i> {% trans "Keep it private for now" %}</b>
+    <span class="rp-muted small d-block">{% trans "You can share it later." %}</span></span>
+  </label>
+
+  <button class="btn rp-btn-primary mt-3">{% trans "Done" %}</button>
+ </form>
+</div>
+{% endblock %}
+
+{% block body_end_scripts %}
+<script>
+(function () {
+  var form = document.querySelector("[data-share-form]");
+  if (!form) return;
+  function sync() {
+    var how = form.querySelector("[data-how]:checked").value;
+    form.querySelectorAll("[data-for]").forEach(function (el) { el.hidden = el.dataset.for !== how; });
+  }
+  form.querySelectorAll("[data-how]").forEach(function (r) { r.addEventListener("change", sync); });
+  sync();
+})();
+</script>
+{% endblock %}

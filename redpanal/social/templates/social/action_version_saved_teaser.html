@@ -1,0 +1,8 @@
+{% extends "social/action_teaser.html" %}
+{% load i18n %}
+
+{% block action_text %}{% trans "saved a new version of" %}{% endblock action_text %}
+
+{% block action_body %}
+  {% if action.action_object %}<a href="{{ action.action_object.get_absolute_url }}">«{{ action.action_object.project.name }}» · v{{ action.action_object.number }}</a>{% endif %}
+{% endblock action_body %}

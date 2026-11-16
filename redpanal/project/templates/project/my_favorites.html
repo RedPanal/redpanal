@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n obra_tags %}
+
+{% block title %}{% trans "Favorites" %}{% endblock %}
+
+{% block content %}
+{% include "project/_estudio_tabs.html" %}
+{% if any %}
+{# Filters only for the kinds you have; no totals shown as popularity, just to know what's there. #}
+<nav class="rp-chips mb-3" aria-label="{% trans 'Show' %}">
+ <a class="rp-chip-link{% if not show %} is-on{% endif %}" href="{% url 'my-favorites' %}"{% if not show %} aria-current="page"{% endif %}>{% trans "Everything" %}</a>
+ {% if counts.proyectos %}<a class="rp-chip-link{% if show == 'proyectos' %} is-on{% endif %}" href="?ver=proyectos"{% if show == 'proyectos' %} aria-current="page"{% endif %}>{% trans "Projects" %}</a>{% endif %}
+ {% if counts.sonidos %}<a class="rp-chip-link{% if show == 'sonidos' %} is-on{% endif %}" href="?ver=sonidos"{% if show == 'sonidos' %} aria-current="page"{% endif %}>{% trans "Sounds" %}</a>{% endif %}
+ {% if counts.publicaciones %}<a class="rp-chip-link{% if show == 'publicaciones' %} is-on{% endif %}" href="?ver=publicaciones"{% if show == 'publicaciones' %} aria-current="page"{% endif %}>{% trans "Posts and comments" %}</a>{% endif %}
+</nav>
+
+{% if works %}
+<section class="mb-4" aria-labelledby="fav-works">
+ <h2 class="rp-sec" id="fav-works">{% trans "Projects" %}</h2>
+ <div class="rp-grid">{% for work in works %}{% include "project/_work_card.html" %}{% endfor %}</div>
+</section>
+{% endif %}
+
+{% if sounds %}
+<section class="mb-4" aria-labelledby="fav-sounds">
+ <h2 class="rp-sec" id="fav-sounds">{% trans "Sounds" %}</h2>
+ <div class="rp-grid">{% for sound in sounds %}{% include "project/_sound_card.html" %}{% endfor %}</div>
+</section>
+{% endif %}
+
+{% if posts %}
+<section class="mb-4" aria-labelledby="fav-posts">
+ <h2 class="rp-sec" id="fav-posts">{% trans "Posts and comments" %}</h2>
+ <div class="rp-feed">
+  {% for m in posts %}
+  <article class="rp-feed-item">
+   <div class="rp-card rp-comment-card">
+    <span class="small"><a href="{{ m.user.get_absolute_url }}"><b>{{ m.user|display_name }}</b></a>
+     {% with about=m.where %}<span class="rp-muted">· {% if about %}{% blocktrans with name=about.name %}on «{{ name }}»{% endblocktrans %}{% else %}{% trans "post" %}{% endif %} · {% blocktrans with t=m.created_at|timesince %}{{ t }} ago{% endblocktrans %}</span>{% endwith %}</span>
+    <span>{{ m.as_html|safe }}</span>
+    <a class="small" href="{{ m.get_absolute_url }}">{% trans "See it where it was written" %}</a>
+   </div>
+   {% include "social/_interactions.html" with target="comentario" target_obj=m is_favorite=True is_amplified=m.is_amplified no_reply=True public=False %}
+  </article>
+  {% endfor %}
+ </div>
+</section>
+{% endif %}
+{% else %}
+<p class="rp-muted">{% trans "Mark projects, sounds, posts or comments with the heart and they will be here." %}</p>
+{% endif %}
+{% endblock %}

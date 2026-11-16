@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Notifications" %}{% endblock %}
+
+{% block content %}
+<div class="rp-narrow">
+ <h1 class="rp-h1">{% trans "Notifications" %}</h1>
+ {% if items %}
+ <div class="rp-notices">{% for n in items %}{% include "social/_notification.html" %}{% endfor %}</div>
+ {% else %}
+ <p class="rp-muted">{% trans "When someone sends you a part, comments or follows you, you'll see it here." %}</p>
+ {% endif %}
+ <p class="small mt-4"><a href="{% url 'user-profile' %}#avisos">{% trans "Choose what to be notified about" %}</a></p>
+</div>
+{% endblock %}

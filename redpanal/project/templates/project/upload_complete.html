@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load i18n obra_tags %}
+
+{% block title %}{% trans "Complete" %}{% endblock %}
+
+{% block content %}
+{# Already guessed from the file names: only correct what's wrong. It can wait. #}
+<div class="rp-narrow">
+ {% if audios %}<h1 class="rp-h1 mb-1">{% if audios|length == 1 %}{% trans "It's uploaded" %}{% else %}{% blocktrans count n=audios|length %}{{ n }} file uploaded{% plural %}{{ n }} files uploaded{% endblocktrans %}{% endif %}</h1>
+ <p class="rp-muted">{% trans "Check what we guessed. You can also do it later from Estudio." %}</p>{% else %}<h1 class="rp-h1">{% trans "Complete" %}</h1>{% endif %}
+
+ <form method="post" enctype="multipart/form-data" class="d-grid gap-3" data-complete>{% csrf_token %}
+  {% if project %}<input type="hidden" name="proyecto" value="{{ project.slug }}">
+  <div class="rp-complete-head">
+   {# The image takes the place of the icon on cards and in the player. #}
+   <label class="rp-image-pick" for="project_image" title="{% trans 'Image (optional)' %}">
+    <img data-image-preview-of="project_image" src="{% if project.image %}{{ project.image.url }}{% endif %}" alt="" {% if not project.image %}hidden{% endif %}>
+    <i class="fa fa-image" aria-hidden="true"></i><span class="visually-hidden">{% trans "Image (optional)" %}</span>
+   </label>
+   <input type="file" id="project_image" name="project_image" accept="image/*" class="visually-hidden" data-image-preview>
+   <div class="flex-grow-1">
+    <label class="form-label fw-bold" for="project_name">{% trans "Project name" %}</label>
+    <input class="form-control" id="project_name" name="project_name" value="{{ project.name }}" maxlength="100">
+   </div>
+  </div>
+  {% else %}<input type="hidden" name="ids" value="{% for a in audios %}{{ a.pk }}{% if not forloop.last %},{% endif %}{% endfor %}">{% endif %}
+
+  {% for a in audios %}
+  <fieldset class="rp-card rp-complete-file">
+   <legend class="visually-hidden">{{ a.name }}</legend>
+   {% audio_player a %}
+   <div class="row g-2 mt-1">
+    <div class="col-auto">
+     <span class="form-label small d-block">{% trans "Image" %}</span>
+     <label class="rp-image-pick rp-image-pick-sm" for="f{{ a.pk }}-image" title="{% trans 'Image (optional)' %}">
+      <img data-image-preview-of="f{{ a.pk }}-image" src="{% if a.image %}{{ a.image.url }}{% endif %}" alt="" {% if not a.image %}hidden{% endif %}>
+      <i class="fa fa-image" aria-hidden="true"></i><span class="visually-hidden">{% trans "Image (optional)" %}</span>
+     </label>
+     <input type="file" id="f{{ a.pk }}-image" name="f{{ a.pk }}-image" accept="image/*" class="visually-hidden" data-image-preview>
+    </div>
+    <div class="col-12 col-sm">
+     <label class="form-label small" for="f{{ a.pk }}-name">{% trans "Name" %}</label>
+     <input class="form-control form-control-sm" id="f{{ a.pk }}-name" name="f{{ a.pk }}-name" value="{{ a.name }}" maxlength="100">
+    </div>
+    <div class="col-6 col-sm-3">
+     <label class="form-label small" for="f{{ a.pk }}-type">{% trans "Type" %}</label>
+     <button type="button" class="rp-info rp-info-list" data-tip="{{ types_help }}" aria-label="{{ types_help }}"><i class="fa fa-question-circle" aria-hidden="true"></i></button>
+     <select class="form-select form-select-sm" id="f{{ a.pk }}-type" name="f{{ a.pk }}-type">
+      {% for code, label in types %}<option value="{{ code }}"{% if code == a.use_type %} selected{% endif %}>{{ label|capfirst }}</option>{% endfor %}
+     </select>
+    </div>
+    <div class="col-6 col-sm-3">
+     <label class="form-label small" for="f{{ a.pk }}-instrument">{% trans "Instrument" %}</label>
+     {# Open: write anything; the known instruments are suggested. #}
+     <input class="form-control form-control-sm" id="f{{ a.pk }}-instrument" name="f{{ a.pk }}-instrument" list="rp-instruments" maxlength="30" value="{% if a.instrument %}{{ a.get_instrument_display|capfirst }}{% endif %}">
+    </div>
+    <div class="col-12">
+     <label class="form-label small" for="f{{ a.pk }}-tags">{% trans "Hashtags" %} <span class="rp-muted">{% trans "(optional)" %}</span></label>
+     <input class="form-control form-control-sm" id="f{{ a.pk }}-tags" name="f{{ a.pk }}-tags" value="{% for tag in a.tags.all %}{{ tag.name }}{% if not forloop.last %} {% endif %}{% endfor %}" placeholder="{% trans 'candombe, field, rain' %}">
+    </div>
+   </div>
+   {# On a phone, a field recording is one tap away: where it was recorded. #}
+   <div class="rp-touch-only mt-2">
+    <button type="button" class="btn btn-link btn-sm p-0" data-locate="{{ a.pk }}"><i class="fa fa-map-marker-alt" aria-hidden="true"></i> {% trans "Add location" %}</button>
+    <span class="small rp-muted" data-located="{{ a.pk }}"></span>
+    <input type="hidden" name="f{{ a.pk }}-lat"><input type="hidden" name="f{{ a.pk }}-lng">
+   </div>
+  </fieldset>
+  {% empty %}
+  <p class="rp-muted">{% trans "Nothing left to complete." %}</p>
+  {% endfor %}
+
+  <datalist id="rp-instruments">{% for code, label in instruments %}<option value="{{ label|capfirst }}">{% endfor %}</datalist>
+
+  {% if origins and audios %}
+  <div>
+   <label class="form-label small" for="origin">{% trans "Does it come from something? (optional)" %}</label>
+   <select class="form-select" id="origin" name="origin">
+    <option value="">{% trans "No" %}</option>
+    {% for value, label in origins %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+   </select>
+  </div>
+  {% endif %}
+
+  {% if audios %}
+  <div class="d-flex gap-2 flex-wrap align-items-center">
+   <button class="btn rp-btn-primary">{% trans "Continue" %}</button>
+   <a class="btn btn-link" href="{% url 'upload-share' %}?{{ query }}">{% trans "Complete later" %}</a>
+  </div>
+  {% endif %}
+ </form>
+</div>
+{% endblock %}
+
+{% block body_end_scripts %}
+<script>
+(function () {
+  document.querySelectorAll("[data-locate]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var id = btn.dataset.locate, out = document.querySelector('[data-located="' + id + '"]');
+      if (!navigator.geolocation) return;
+      out.textContent = "…";
+      navigator.geolocation.getCurrentPosition(function (p) {
+        document.querySelector('[name="f' + id + '-lat"]').value = p.coords.latitude.toFixed(5);
+        document.querySelector('[name="f' + id + '-lng"]').value = p.coords.longitude.toFixed(5);
+        out.textContent = p.coords.latitude.toFixed(3) + ", " + p.coords.longitude.toFixed(3);
+      }, function () { out.textContent = ""; });
+    });
+  });
+})();
+</script>
+{% endblock %}
