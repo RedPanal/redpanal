@@ -6,7 +6,11 @@
 
 import sys
 import json
-from pydub import AudioSegment
+
+try:
+    from .utils import load_audio
+except ImportError:  # run as a standalone script
+    from utils import load_audio
 
 
 class Waveform(object):
@@ -70,7 +74,7 @@ if __name__ == '__main__':
 
     # 2. Cargar el audio usando pydub
     try:
-        sound = AudioSegment.from_file(audio_filename)
+        sound = load_audio(audio_filename)
     except Exception as e:
         print(f"Error al cargar el archivo de audio con pydub/ffmpeg: {e}")
         sys.exit(1)

@@ -20,11 +20,11 @@ from actstream import action, registry
 
 from taggit.managers import TaggableManager
 from autoslug.fields import AutoSlugField
-from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
 
 from redpanal.utils.models import BaseModelMixin
 from core import licenses
+from .utils import load_audio
 from .waveform import Waveform
 
 
@@ -322,7 +322,7 @@ class PlaylistItem(models.Model):
 def save_waveforms(audio, sound=None):
     """Write the two waveform files the players read, next to the audio file."""
     if sound is None:
-        sound = AudioSegment.from_file(audio.audio.path)
+        sound = load_audio(audio.audio.path)
     Waveform(sound, width=460, height=100, bar_count=200).save_peaks_to_json(audio.audio.path + '.json')
     Waveform(sound, width=940, height=150, bar_count=400).save_peaks_to_json(audio.audio.path + '.big.json')
     return sound

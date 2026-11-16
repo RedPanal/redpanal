@@ -6,6 +6,8 @@ from django.core.files.base import ContentFile
 from pydub import AudioSegment
 from pydub.exceptions import CouldntDecodeError
 
+from audio.utils import load_audio
+
 logger = logging.getLogger(__name__)
 
 
@@ -44,7 +46,7 @@ def mix_parts(parts):
     tracks = []
     for part in parts:
         try:
-            tracks.append((part.offset_ms, AudioSegment.from_file(part.audio.audio.path)))
+            tracks.append((part.offset_ms, load_audio(part.audio.audio.path)))
         except (CouldntDecodeError, FileNotFoundError, OSError):
             logger.exception("mix: could not read %s", part.audio.audio.name)
     if not tracks:

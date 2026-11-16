@@ -196,6 +196,21 @@ class AudioProcessingTestCase(TestCase):
         audio.save()
         self.assertIsNotNone(audio.samplerate)
 
+    def test_audio_loading_survives_an_extensible_wav_header(self):
+        """24-bit files make ffmpeg write WAVE_FORMAT_EXTENSIBLE; pydub can't read it.
+
+        Reproduces ``wave.Error: unknown format: 65534`` and checks the fallback
+        decodes to plain PCM instead of giving up.
+        """
+        import wave
+        from pydub import AudioSegment
+        from .utils import load_audio
+        audio = self.create_audio()
+        with mock.patch.object(AudioSegment, "from_file", side_effect=wave.Error("unknown format: 65534")):
+            sound = load_audio(audio.audio.path)
+        self.assertGreater(sound.frame_count(), 0)
+        self.assertEqual(sound.frame_rate, audio.samplerate)
+
     def test_deferred_file_is_not_loaded_nor_reprocessed(self):
         self.create_audio()
         with mock.patch("audio.models.audio_processing") as processing:

@@ -17,6 +17,7 @@ from taggit.managers import TaggableManager
 from autoslug.fields import AutoSlugField
 from redpanal.utils.models import BaseModelMixin
 from audio.models import Audio, INSTRUMENT_CHOICES, LICENSES_CHOICES
+from audio.utils import load_audio
 from core import licenses
 from pydub import AudioSegment
 
@@ -445,7 +446,7 @@ class Project(models.Model, BaseModelMixin):
             mix = AudioSegment.empty()
             for audio, _fingerprint in readable:
                 try:
-                    a = AudioSegment.from_file(audio.audio.path)
+                    a = load_audio(audio.audio.path)
                 except (CouldntDecodeError, FileNotFoundError, OSError):
                     continue
                 if a.duration_seconds > mix.duration_seconds:

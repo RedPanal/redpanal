@@ -3,9 +3,9 @@ import io
 import os
 
 from django.core.files.base import ContentFile
-from pydub import AudioSegment
 
 from redpanal.utils.helpers import get_file_extension
+from .utils import load_audio
 
 # Formats every browser can play: stored as they come.
 PLAYABLE_EXTENSIONS = ["mp3", "ogg", "oga", "flac", "wav"]
@@ -26,7 +26,7 @@ def prepare_audio_file(uploaded, trim_start_ms=None, trim_end_ms=None):
 
     uploaded.seek(0)
     # ffmpeg probes the real container: the extension a browser or phone gives is not reliable.
-    sound = AudioSegment.from_file(uploaded, format=None)
+    sound = load_audio(uploaded)
     if trim:
         start = max(0, int(trim_start_ms or 0))
         end = len(sound) if trim_end_ms is None else min(len(sound), int(trim_end_ms))
